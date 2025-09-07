@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - Islamic Library</title>
+    
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- All CSS and JavaScript are embedded in this file -->
+    <style>
+        /* ------------------- */
+        /* --- CSS STYLES ---- */
+        /* ------------------- */
+        
+        /* This stylesheet is identical to the other pages for design consistency */
+
+        /* --- 1. Global Styles & Variables --- */
+        :root {
+            --primary-color: #2c5b4c; /* Deep Islamic Green */
+            --secondary-color: #5ab18f; /* Lighter Green */
+            --text-color: #333;
+            --text-light: #f5f5f5;
+            --bg-gradient-start: #e0f2f1; /* Very light teal */
+            --bg-gradient-end: #ffffff;
+            --card-bg: rgba(255, 255, 255, 0.6); /* Glassmorphism effect */
+            --footer-bg: #1a1a1a;
+            --shadow-light: rgba(0, 0, 0, 0.05);
+            --shadow-dark: rgba(0, 0, 0, 0.15);
+            --font-family: 'Poppins', sans-serif;
+            --header-height: 85px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-family);
+            color: var(--text-color);
+            background-image: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding-top: var(--header-height);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* --- 2. Header & Navigation (Consistent with other pages) --- */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px var(--shadow-light);
+            z-index: 1000;
+            padding: 15px 0;
+        }
+        
+        .header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+        }
+        
+        .logo-container img {
+            height: 55px;
+            width: auto;
+        }
+        
+        .logo-text {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .hamburger-menu {
+            display: none;
+            cursor: pointer;
+            z-index: 1002;
+            background: none;
+            border: none;
+        }
+
+        .hamburger-menu .line {
+            width: 30px;
+            height: 3px;
+            background-color: var(--primary-color);
+            margin: 6px 0;
+            transition: 0.4s;
+        }
+
+        /* --- 3. Sidebar Navigation --- */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 280px;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            box-shadow: -10px 0 30px var(--shadow-dark);
+            z-index: 1001;
+            transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            display: flex;
+            flex-direction: column;
+            padding-top: 80px;
+        }
+
+        .sidebar.open {
+            right: 0;
+        }
+        
+        .sidebar .close-btn {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            cursor: pointer;
+            border: none;
+            background: transparent;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+        }
+
+        .sidebar-nav a {
+            display: block;
+            padding: 15px 20px;
+            text-decoration: none;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            font-weight: 600;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .sidebar-nav a:hover {
+            background-color: var(--secondary-color);
+            color: var(--text-light);
+        }
+        
+        .desktop-nav ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .desktop-nav a {
+            text-decoration: none;
+            color: var(--primary-color);
+            font-weight: 600;
+            position: relative;
+            padding-bottom: 5px;
+        }
+
+        .desktop-nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--secondary-color);
+            transition: width 0.3s ease;
+        }
+
+        .desktop-nav a:hover::after {
+            width: 100%;
+        }
+
+        /* --- 4. Main Content for Privacy Page --- */
+        .page-section {
+            padding: 60px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 50px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: var(--secondary-color);
+            border-radius: 2px;
+        }
+
+        .content-box {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 8px 32px 0 var(--shadow-dark);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            text-align: left;
+        }
+        
+        .content-box h2 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+        .content-box h2:first-of-type {
+            margin-top: 0;
+        }
+        
+        .content-box p {
+            font-size: 1.1rem;
+            color: #444;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        /* --- 5. Footer (Consistent with other pages) --- */
+        .footer {
+            background-color: var(--footer-bg);
+            color: var(--text-light);
+            padding: 40px 0;
+            margin-top: 60px;
+        }
+
+        .footer .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .footer-copyright {
+            opacity: 0.8;
+        }
+
+        .social-icons a {
+            color: var(--text-light);
+            margin-left: 15px;
+            font-size: 1.5rem;
+            transition: color 0.3s ease, transform 0.3s ease;
+            display: inline-block;
+        }
+        .social-icons a:hover {
+            color: var(--secondary-color);
+            transform: scale(1.2);
+        }
+        
+        /* --- 6. Scroll Animations --- */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- 7. Responsive Media Queries --- */
+        @media (max-width: 768px) {
+            .desktop-nav { display: none; }
+            .hamburger-menu { display: block; }
+            .section-title { font-size: 2rem; }
+            .content-box { padding: 30px; }
+            .content-box p { font-size: 1rem; }
+            .footer .container { flex-direction: column; text-align: center; }
+            .social-icons a:first-child { margin-left: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ======================= -->
+    <!-- ==== HTML CONTENT ===== -->
+    <!-- ======================= -->
+
+    <!-- Header Section (Identical to other pages) -->
+    <header class="header">
+        <div class="container">
+            <a href="index.html" class="logo-container">
+                <img src="Logo.png" alt="Islamic Library Logo">
+                <span class="logo-text">Islamic Library</span>
+            </a>
+            <nav class="desktop-nav">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="quran.html">Quran</a></li>
+                    <li><a href="terms.html">Terms</a></li>
+                    <li><a href="privacy.html">Privacy Policy</a></li>
+                </ul>
+            </nav>
+            <button class="hamburger-menu" id="hamburger-btn" aria-label="Open menu">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+            </button>
+        </div>
+    </header>
+
+    <!-- Sidebar Navigation (Identical to other pages) -->
+    <nav class="sidebar" id="sidebar">
+        <button class="close-btn" id="close-btn" aria-label="Close menu">&times;</button>
+        <ul class="sidebar-nav">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="quran.html">Quran</a></li>
+            <li><a href="terms.html">Terms</a></li>
+            <li><a href="privacy.html">Privacy Policy</a></li>
+        </ul>
+    </nav>
+
+
+    <!-- Main Content Area for Privacy Policy Page -->
+    <main>
+        <section class="page-section">
+            <div class="container">
+                <h1 class="section-title fade-in">Privacy Policy</h1>
+                
+                <div class="content-box fade-in">
+                    <h2>Introduction</h2>
+                    <p>
+                        Your privacy is important to us. This Privacy Policy explains how Islamic Library collects, uses, and protects any information that you give us when you use this website. We are committed to ensuring that your privacy is protected.
+                    </p>
+                    
+                    <h2>Information We Collect</h2>
+                    <p>
+                        We do not collect any personal identification information from our visitors. Our website is designed to be a simple resource hub. You can browse and download all available content without providing any personal data like your name, email address, or phone number.
+                    </p>
+
+                    <h2>Non-Personal Information</h2>
+                    <p>
+                        Like most website operators, Islamic Library may collect non-personally-identifying information of the sort that web browsers and servers typically make available, such as the browser type, language preference, referring site, and the date and time of each visitor request. Our purpose in collecting this information is to better understand how our visitors use the website and to improve our service. This information is not used to identify individuals.
+                    </p>
+
+                    <h2>Cookies</h2>
+                    <p>
+                        A cookie is a small file which asks permission to be placed on your computer's hard drive. Our website does not use cookies to store personal information or track your activity. We may use them only for essential site functionality if required in the future, but not for advertising or tracking purposes.
+                    </p>
+                    
+                    <h2>Third-Party Links</h2>
+                    <p>
+                        Our website may contain links to other websites of interest (for example, to download files). However, once you have used these links to leave our site, you should note that we do not have any control over that other website. Therefore, we cannot be responsible for the protection and privacy of any information which you provide whilst visiting such sites.
+                    </p>
+
+                    <h2>Changes to This Policy</h2>
+                    <p>
+                        Islamic Library may change this policy from time to time by updating this page. You should check this page periodically to ensure that you are happy with any changes. This policy is effective from 2024.
+                    </p>
+                </div>
+                
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Section (Identical to other pages) -->
+    <footer class="footer">
+    <div class="container">
+        <div class="footer-copyright">
+            <p>&copy; 2025 Islamic Library. All Rights Reserved.</p>
+        </div>
+        <div class="social-icons">
+            <!-- Facebook -->
+            <a href="#" aria-label="Facebook">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
+                     viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667
+                             c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808
+                             c-3.596 0-5.192 1.583-5.192 4.615v2.385z"/>
+                </svg>
+            </a>
+
+            <!-- Instagram -->
+            <a href="https://www.instagram.com/tausifhoon?igsh=MWsxcHo5ejdvc3pp" aria-label="Instagram">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
+                     viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9A5.5 5.5 0 0 1 
+                             16.5 22h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 
+                             7.5 2zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 
+                             7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 
+                             16.5 4h-9zm4.5 3a5.5 5.5 0 1 1 0 11a5.5 5.5 0 0 1 
+                             0-11zm0 2a3.5 3.5 0 1 0 0 7a3.5 3.5 0 0 0 
+                             0-7zm5.25-2.75a1.25 1.25 0 1 1 0 2.5a1.25 1.25 
+                             0 0 1 0-2.5z"/>
+                </svg>
+            </a>
+
+            <!-- YouTube -->
+            <a href="#" aria-label="YouTube">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" 
+                     viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 
+                             0-3.897.266-4.356 2.62-4.385 8.816.029 
+                             6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 
+                             15.23 0 3.897-.266 4.356-2.62 
+                             4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 
+                             12.816v-8l8 3.993-8 4.007z"/>
+                </svg>
+            </a>
+        </div>
+    </div>
+</footer>
+
+    
+    <!-- ======================= -->
+    <!-- ==== JAVASCRIPT ======= -->
+    <!-- ======================= -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        
+        // --- Sidebar Toggle Functionality (Identical to other pages) ---
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const sidebar = document.getElementById('sidebar');
+        const closeBtn = document.getElementById('close-btn');
+
+        if (hamburgerBtn && sidebar && closeBtn) {
+            hamburgerBtn.addEventListener('click', () => sidebar.classList.add('open'));
+            closeBtn.addEventListener('click', () => sidebar.classList.remove('open'));
+            sidebar.addEventListener('click', (e) => {
+                if(e.target.tagName === 'A') sidebar.classList.remove('open');
+            });
+        }
+
+        // --- Smooth Scroll-in Animation ---
+        const fadeInElements = document.querySelectorAll('.fade-in');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        fadeInElements.forEach(el => observer.observe(el));
+    });
+    </script>
+    
+</body>
+</html>
