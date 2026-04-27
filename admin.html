@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Admin Dashboard</title>
+    <!-- Google Fonts: Poppins & Amiri -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* === THEME VARIABLES === */
+        :root {
+            --bg-color: #0d0d0d;
+            --surface-color: #1a1a1a;
+            --surface-light: #262626;
+            --gold-primary: #d4af37;
+            --gold-hover: #f1c40f;
+            --text-main: #ffffff;
+            --text-muted: #a0a0a0;
+            --danger: #e74c3c;
+            --success: #2ecc71;
+            --border-radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* === GLOBAL STYLES === */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-color); color: var(--text-main); overflow-x: hidden; }
+        .arabic-text { font-family: 'Amiri', serif; }
+        
+        h1, h2, h3 { color: var(--gold-primary); font-weight: 600; }
+        .hidden { display: none !important; }
+        .flex { display: flex; }
+        .align-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .text-center { text-align: center; }
+        .mt-1 { margin-top: 10px; } .mt-2 { margin-top: 20px; }
+
+        /* === LOADER & TOAST === */
+        #loader {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.8); z-index: 9999;
+            display: flex; justify-content: center; align-items: center;
+        }
+        .spinner {
+            width: 50px; height: 50px; border: 5px solid var(--surface-light);
+            border-top: 5px solid var(--gold-primary); border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        #toast-container { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); z-index: 9998; width: 90%; max-width: 400px; }
+        .toast {
+            background: var(--surface-light); color: var(--text-main);
+            padding: 12px 20px; border-radius: 8px; margin-top: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5); border-left: 4px solid var(--gold-primary);
+            animation: slideUp 0.3s ease-out; display: flex; align-items: center; gap: 10px;
+        }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* === CONFIRM DIALOG === */
+        #confirm-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.7); z-index: 9000;
+            display: flex; justify-content: center; align-items: center;
+        }
+        .confirm-box {
+            background: var(--surface-color); padding: 25px; border-radius: var(--border-radius);
+            width: 90%; max-width: 350px; text-align: center; border: 1px solid #333;
+        }
+        .confirm-actions { display: flex; gap: 10px; margin-top: 20px; }
+        .confirm-actions button { flex: 1; }
+
+        /* === FORMS & BUTTONS === */
+        input, textarea {
+            width: 100%; background: var(--bg-color); color: var(--text-main);
+            border: 1px solid #333; padding: 14px; border-radius: 10px;
+            margin-bottom: 15px; font-size: 14px; transition: var(--transition);
+        }
+        input:focus, textarea:focus { border-color: var(--gold-primary); outline: none; box-shadow: 0 0 8px rgba(212, 175, 55, 0.2); }
+        label { display: block; margin-bottom: 5px; font-size: 13px; color: var(--text-muted); }
+        
+        .btn {
+            background: var(--gold-primary); color: #000; border: none;
+            padding: 14px 20px; border-radius: 10px; font-weight: 600;
+            width: 100%; cursor: pointer; transition: var(--transition); font-size: 15px;
+        }
+        .btn:active { transform: scale(0.98); }
+        .btn-outline { background: transparent; color: var(--gold-primary); border: 1px solid var(--gold-primary); }
+        .btn-danger { background: var(--danger); color: white; border: none; }
+        .btn-success { background: var(--success); color: white; border: none; }
+
+        /* === TOGGLE SWITCH === */
+        .switch { position: relative; display: inline-block; width: 50px; height: 26px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #333; transition: .4s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: var(--gold-primary); }
+        input:checked + .slider:before { transform: translateX(24px); }
+
+        /* === VIEWS === */
+        #login-view { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; }
+        .login-card { background: var(--surface-color); padding: 30px; border-radius: var(--border-radius); width: 100%; max-width: 400px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid #2a2a2a; }
+        .login-logo { font-size: 40px; color: var(--gold-primary); text-align: center; margin-bottom: 10px; }
+
+        header { position: sticky; top: 0; background: var(--surface-color); z-index: 1000; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; }
+        header h2 { font-size: 18px; margin: 0; }
+        .logout-btn { background: transparent; border: none; color: var(--text-muted); font-size: 20px; cursor: pointer; }
+
+        main { padding: 20px; padding-bottom: 90px; }
+        .tab-content { display: none; animation: fadeIn 0.3s ease; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* === CARDS UI === */
+        .card { background: var(--surface-color); border-radius: var(--border-radius); padding: 15px; margin-bottom: 15px; display: flex; gap: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); border: 1px solid #2a2a2a; }
+        .ebook-thumb { width: 80px; height: 80px; border-radius: 10px; object-fit: cover; aspect-ratio: 1/1; background: #333; }
+        .card-details { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+        .card-title { font-size: 16px; font-weight: 600; margin-bottom: 5px; color: #fff; }
+        .card-sub { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
+        
+        .badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; display: inline-block; }
+        .badge-free { background: var(--gold-primary); color: #000; }
+        .badge-price { background: #333; color: var(--gold-primary); border: 1px solid var(--gold-primary); }
+        .badge-pending { background: #f39c12; color: #fff; }
+        .badge-approved { background: var(--success); color: #fff; }
+        .badge-rejected { background: var(--danger); color: #fff; }
+
+        .action-btn-sm { background: var(--surface-light); border: 1px solid #444; color: white; padding: 8px; border-radius: 8px; cursor: pointer; transition: var(--transition); }
+        .action-btn-sm:active { background: var(--gold-primary); color: black; }
+
+        /* === BOTTOM NAV === */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 70px; background: var(--surface-color); display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #2a2a2a; padding-bottom: env(safe-area-inset-bottom); z-index: 1000; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted); font-size: 11px; gap: 5px; cursor: pointer; width: 100%; height: 100%; }
+        .nav-item.active { color: var(--gold-primary); }
+    </style>
+</head>
+<body>
+
+    <!-- Global Loader -->
+    <div id="loader" class="hidden">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container"></div>
+
+    <!-- Confirm Dialog -->
+    <div id="confirm-overlay" class="hidden">
+        <div class="confirm-box">
+            <h3 id="confirm-title" style="margin-bottom: 10px; color:#fff;">Confirm Action</h3>
+            <p id="confirm-msg" style="font-size: 14px; color: var(--text-muted);">Are you sure?</p>
+            <div class="confirm-actions">
+                <button class="btn btn-outline" onclick="closeConfirm()">Cancel</button>
+                <button class="btn" id="confirm-yes-btn">Yes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- LOGIN VIEW -->
+    <!-- ============================================== -->
+    <div id="login-view">
+        <div class="login-card">
+            <!-- Bismillah on Login Page -->
+            <div class="bismillah arabic-text text-center" style="font-size: 26px; color: var(--gold-primary); margin-bottom: 15px;">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
+            <div class="login-logo"><i class="fas fa-crown"></i></div>
+            <h2 style="text-align: center; margin-bottom: 25px;">Admin Login</h2>
+            
+            <!-- Bulletproof Form: Page will never refresh -->
+            <form id="loginForm" onsubmit="event.preventDefault(); handleAdminLogin(); return false;">
+                <label>Username</label>
+                <input type="text" id="username" required placeholder="Enter username">
+                <label>Password</label>
+                <input type="password" id="password" required placeholder="Enter password">
+                <button type="submit" class="btn mt-1">Secure Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- MAIN APP VIEW -->
+    <!-- ============================================== -->
+    <div id="app-view" class="hidden">
+        <header>
+            <div class="flex align-center" style="gap: 10px;">
+                <i class="fas fa-shield-alt" style="color: var(--gold-primary); font-size: 20px;"></i>
+                <h2 id="header-title">Dashboard</h2>
+            </div>
+            <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i></button>
+        </header>
+
+        <main>
+            <!-- 1. DASHBOARD TAB -->
+            <section id="tab-dashboard" class="tab-content active">
+                <div class="bismillah arabic-text text-center" style="font-size: 22px; color: var(--gold-primary); margin-bottom: 20px; margin-top: 5px;">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
+                <div class="flex justify-between align-center" style="margin-bottom: 15px;">
+                    <h3>All Ebooks</h3>
+                    <button class="action-btn-sm" onclick="fetchEbooks()"><i class="fas fa-sync-alt"></i></button>
+                </div>
+                <div id="ebooks-list"></div>
+            </section>
+
+            <!-- 2. ADD/EDIT EBOOK TAB -->
+            <section id="tab-ebook-form" class="tab-content">
+                <div id="phrase-ebook" class="arabic-text text-center" style="font-size: 22px; color: var(--gold-primary); margin-bottom: 20px; font-weight: bold;"></div>
+                <h3 id="form-title" style="margin-bottom: 15px;">Add New Ebook</h3>
+                <div class="card" style="display: block;">
+                    
+                    <!-- Bulletproof Form -->
+                    <form id="ebookForm" onsubmit="event.preventDefault(); handleEbookSubmit(); return false;">
+                        <input type="hidden" id="ebook_id">
+                        <label>Ebook Title</label>
+                        <input type="text" id="eb_title" required placeholder="e.g., Mastering JavaScript">
+                        <label>Description</label>
+                        <textarea id="eb_desc" rows="3" required placeholder="Short description..."></textarea>
+                        <label>PDF Link (External URL)</label>
+                        <input type="url" id="eb_pdf" required placeholder="https://drive.google.com/...">
+                        <label>Thumbnail Image URL (1:1 Ratio)</label>
+                        <input type="url" id="eb_thumb" required placeholder="https://imgur.com/...png">
+                        
+                        <div class="flex align-center justify-between mt-1" style="margin-bottom: 15px;">
+                            <label style="margin:0; font-size:15px; color:#fff;">Is this Ebook FREE?</label>
+                            <label class="switch">
+                                <input type="checkbox" id="eb_isfree" onchange="togglePriceFields()">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <div id="price-fields">
+                            <div class="flex" style="gap: 10px;">
+                                <div style="flex: 1;"><label>Regular Price (₹)</label><input type="number" step="0.01" id="eb_price" placeholder="0.00"></div>
+                                <div style="flex: 1;"><label>Discount Price (₹)</label><input type="number" step="0.01" id="eb_discount" placeholder="0.00"></div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn mt-2" id="submit-ebook-btn">Save Ebook</button>
+                        <button type="button" class="btn btn-outline mt-1 hidden" id="cancel-edit-btn" onclick="resetEbookForm()">Cancel Edit</button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- 3. PAYMENTS TAB -->
+            <section id="tab-payments" class="tab-content">
+                <div id="phrase-payment" class="arabic-text text-center" style="font-size: 22px; color: var(--gold-primary); margin-bottom: 20px; font-weight: bold;"></div>
+                <div class="flex justify-between align-center" style="margin-bottom: 15px;">
+                    <h3>Payments</h3>
+                    <button class="action-btn-sm" onclick="fetchPayments()"><i class="fas fa-sync-alt"></i></button>
+                </div>
+                <div id="payments-list"></div>
+            </section>
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <div class="nav-item active" onclick="switchTab('dashboard', this)"><i class="fas fa-book"></i><span>Ebooks</span></div>
+            <div class="nav-item" onclick="switchTab('ebook-form', this)"><i class="fas fa-plus-circle"></i><span>Add</span></div>
+            <div class="nav-item" onclick="switchTab('payments', this)"><i class="fas fa-wallet"></i><span>Payments</span></div>
+        </nav>
+    </div>
+
+    <!-- ============================================== -->
+    <!-- JAVASCRIPT LOGIC -->
+    <!-- ============================================== -->
+    <script>
+        // === CONFIGURATION ===
+        // Yahan par apna exact Web App URL daalein. Quote mark (") mat hatana!
+        const API_URL = "https://script.google.com/macros/s/AKfycbzPE32HMSbmeSROZlBqDO7rFWzNhXKFiKhC9diJxn5hWLfqzy2f9ksuejl8J9bM8UJn/exec"; 
+        
+        // Random Arabic Phrases
+        const ARABIC_PHRASES = ["سُبْحَانَ اللَّهِ", "الْحَمْدُ لِلَّهِ", "اللَّهُ أَكْبَرُ", "لَا إِلَٰهَ إِلَّا اللَّهُ", "مَا شَاءَ اللَّهُ", "بَارَكَ اللَّهُ فِيكَ"];
+
+        let confirmCallback = null;
+        let ebooksData = [];
+
+        // === ON LOAD ===
+        document.addEventListener("DOMContentLoaded", () => {
+            const isLoggedIn = localStorage.getItem("admin_logged_in");
+            if (isLoggedIn === "true") showApp();
+            else showLogin();
+        });
+
+        // === UI UTILITIES ===
+        function showLoader() { document.getElementById("loader").classList.remove("hidden"); }
+        function hideLoader() { document.getElementById("loader").classList.add("hidden"); }
+
+        function showToast(msg, type = "success") {
+            const container = document.getElementById("toast-container");
+            const toast = document.createElement("div");
+            toast.className = "toast";
+            const icon = type === "success" ? '<i class="fas fa-check-circle" style="color:var(--success)"></i>' : '<i class="fas fa-exclamation-circle" style="color:var(--danger)"></i>';
+            toast.innerHTML = `${icon} <span>${msg}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => { toast.style.opacity = "0"; setTimeout(() => toast.remove(), 300); }, 3000);
+        }
+
+        function showConfirm(title, message, onConfirm) {
+            document.getElementById("confirm-title").innerText = title;
+            document.getElementById("confirm-msg").innerText = message;
+            document.getElementById("confirm-overlay").classList.remove("hidden");
+            confirmCallback = onConfirm;
+        }
+
+        function closeConfirm() {
+            document.getElementById("confirm-overlay").classList.add("hidden");
+            confirmCallback = null;
+        }
+
+        // ==========================================
+        // YES BUTTON FIX: This makes the Yes button actually trigger your approvals!
+        // ==========================================
+        document.getElementById("confirm-yes-btn").addEventListener("click", () => {
+            if (confirmCallback) confirmCallback();
+            closeConfirm();
+        });
+
+        // === API WRAPPER ===
+        async function apiCall(action, method = "GET", body = null) {
+            try {
+                if(API_URL.includes("YOUR_GOOGLE_APPS_SCRIPT")) {
+                    showToast("Please update API_URL in the code first!", "error");
+                    return null;
+                }
+
+                showLoader();
+                const url = method === "GET" ? `${API_URL}?action=${action}` : `${API_URL}?action=${action}`;
+                const options = { method: method };
+                
+                if (method === "POST" && body) {
+                    options.body = JSON.stringify(body);
+                    options.headers = { "Content-Type": "text/plain;charset=utf-8" };
+                }
+
+                const response = await fetch(url, options);
+                const data = await response.json();
+                hideLoader();
+                return data;
+            } catch (error) {
+                hideLoader();
+                console.error("API Error:", error);
+                showToast("Network error. Link check karein.", "error");
+                return null;
+            }
+        }
+
+        // === AUTHENTICATION LOGIC ===
+        async function handleAdminLogin() {
+            const u = document.getElementById("username").value;
+            const p = document.getElementById("password").value;
+
+            const res = await apiCall(`adminLogin&username=${encodeURIComponent(u)}&password=${encodeURIComponent(p)}`, "GET");
+            if (res && res.success) {
+                localStorage.setItem("admin_logged_in", "true");
+                showToast("Login Successful!");
+                showApp();
+            } else {
+                showToast("Invalid credentials!", "error");
+            }
+        }
+
+        function logout() {
+            showConfirm("Logout", "Are you sure you want to log out?", () => {
+                localStorage.removeItem("admin_logged_in");
+                showLogin();
+            });
+        }
+
+        function showLogin() {
+            document.getElementById("login-view").classList.remove("hidden");
+            document.getElementById("app-view").classList.add("hidden");
+            document.getElementById("loginForm").reset();
+        }
+
+        function showApp() {
+            document.getElementById("login-view").classList.add("hidden");
+            document.getElementById("app-view").classList.remove("hidden");
+            fetchEbooks();
+        }
+
+        // === NAVIGATION ===
+        function switchTab(tabName, navElement) {
+            document.querySelectorAll(".nav-item").forEach(el => el.classList.remove("active"));
+            if(navElement) navElement.classList.add("active");
+
+            const headers = { "dashboard": "Ebooks", "ebook-form": "Manage Ebook", "payments": "Payments" };
+            document.getElementById("header-title").innerText = headers[tabName];
+
+            if (tabName === "ebook-form") document.getElementById("phrase-ebook").innerText = ARABIC_PHRASES[Math.floor(Math.random() * ARABIC_PHRASES.length)];
+            if (tabName === "payments") document.getElementById("phrase-payment").innerText = ARABIC_PHRASES[Math.floor(Math.random() * ARABIC_PHRASES.length)];
+
+            document.querySelectorAll(".tab-content").forEach(el => el.classList.remove("active"));
+            document.getElementById(`tab-${tabName}`).classList.add("active");
+
+            if (tabName === "dashboard") fetchEbooks();
+            if (tabName === "payments") fetchPayments();
+            if (tabName === "ebook-form" && !document.getElementById("ebook_id").value) resetEbookForm();
+        }
+
+        // === EBOOK MANAGEMENT ===
+        function togglePriceFields() {
+            const isFree = document.getElementById("eb_isfree").checked;
+            const priceDiv = document.getElementById("price-fields");
+            if (isFree) {
+                priceDiv.style.display = "none";
+                document.getElementById("eb_price").removeAttribute("required");
+            } else {
+                priceDiv.style.display = "block";
+                document.getElementById("eb_price").setAttribute("required", "true");
+            }
+        }
+
+        async function fetchEbooks() {
+            const res = await apiCall("getEbooks", "GET");
+            if (res && Array.isArray(res)) {
+                ebooksData = res;
+                renderEbooks();
+            }
+        }
+
+        function renderEbooks() {
+            const container = document.getElementById("ebooks-list");
+            container.innerHTML = "";
+            if (ebooksData.length === 0) {
+                container.innerHTML = "<p style='text-align:center; color:var(--text-muted); margin-top:20px;'>No ebooks found.</p>";
+                return;
+            }
+
+            ebooksData.forEach(eb => {
+                const isFree = eb.is_free === true || String(eb.is_free).toLowerCase() === "true";
+                const badge = isFree ? `<span class="badge badge-free">FREE</span>` : `<span class="badge badge-price">₹${eb.discount_price || eb.price}</span>`;
+                container.innerHTML += `
+                <div class="card">
+                    <img src="${eb.thumbnail}" class="ebook-thumb">
+                    <div class="card-details">
+                        <div class="card-title">${eb.title}</div>
+                        <div class="card-sub">${eb.description.substring(0, 40)}...</div>
+                        <div>${badge}</div>
+                    </div>
+                    <div style="display:flex; flex-direction:column; justify-content:center;">
+                        <button class="action-btn-sm" onclick="editEbook('${eb.id}')"><i class="fas fa-edit"></i></button>
+                    </div>
+                </div>`;
+            });
+        }
+
+        async function handleEbookSubmit() {
+            const isFree = document.getElementById("eb_isfree").checked;
+            const payload = {
+                title: document.getElementById("eb_title").value,
+                description: document.getElementById("eb_desc").value,
+                pdf_link: document.getElementById("eb_pdf").value,
+                thumbnail: document.getElementById("eb_thumb").value,
+                is_free: isFree,
+                price: isFree ? 0 : parseFloat(document.getElementById("eb_price").value || 0),
+                discount_price: isFree ? 0 : parseFloat(document.getElementById("eb_discount").value || 0)
+            };
+
+            const id = document.getElementById("ebook_id").value;
+            let action = "addEbook";
+            if (id) { action = `updateEbook&id=${id}`; payload.id = id; }
+
+            const res = await apiCall(action, "POST", payload);
+            if (res && res.success) {
+                showToast(id ? "Ebook Updated!" : "Ebook Added!");
+                resetEbookForm();
+                switchTab('dashboard', document.querySelector(".nav-item:nth-child(1)"));
+            } else { showToast("Operation failed.", "error"); }
+        }
+
+        function editEbook(id) {
+            const eb = ebooksData.find(e => String(e.id) === String(id));
+            if (!eb) return;
+            document.getElementById("form-title").innerText = "Edit Ebook";
+            document.getElementById("ebook_id").value = eb.id;
+            document.getElementById("eb_title").value = eb.title;
+            document.getElementById("eb_desc").value = eb.description;
+            document.getElementById("eb_pdf").value = eb.pdf_link;
+            document.getElementById("eb_thumb").value = eb.thumbnail;
+            document.getElementById("eb_isfree").checked = eb.is_free === true || String(eb.is_free).toLowerCase() === "true";
+            document.getElementById("eb_price").value = eb.price || "";
+            document.getElementById("eb_discount").value = eb.discount_price || "";
+            
+            togglePriceFields();
+            document.getElementById("submit-ebook-btn").innerText = "Update Ebook";
+            document.getElementById("cancel-edit-btn").classList.remove("hidden");
+            switchTab('ebook-form', document.querySelector(".nav-item:nth-child(2)"));
+        }
+
+        function resetEbookForm() {
+            document.getElementById("ebookForm").reset();
+            document.getElementById("ebook_id").value = "";
+            document.getElementById("form-title").innerText = "Add New Ebook";
+            document.getElementById("submit-ebook-btn").innerText = "Save Ebook";
+            document.getElementById("cancel-edit-btn").classList.add("hidden");
+            togglePriceFields();
+        }
+
+        // === PAYMENT MANAGEMENT ===
+        async function fetchPayments() {
+            const res = await apiCall("getPayments", "GET");
+            if (res && Array.isArray(res)) renderPayments(res);
+        }
+
+        function renderPayments(payments) {
+            const container = document.getElementById("payments-list");
+            container.innerHTML = "";
+            if (payments.length === 0) {
+                container.innerHTML = "<p style='text-align:center; color:var(--text-muted); margin-top:20px;'>No payments found.</p>";
+                return;
+            }
+
+            payments.forEach(pay => {
+                let badgeClass = "badge-pending";
+                let statusText = (pay.status || "pending").toUpperCase();
+                if (statusText === "APPROVED") badgeClass = "badge-approved";
+                if (statusText === "REJECTED") badgeClass = "badge-rejected";
+
+                let actionButtons = `<div style="display:flex; gap:8px; margin-top:10px; width:100%;">`;
+                
+                if (statusText === "PENDING") {
+                    actionButtons += `
+                        <button class="btn btn-success" style="padding:8px; font-size:12px; flex:1;" onclick="handlePaymentStatus('${pay.id}', 'approved')"><i class="fas fa-check"></i> Approve</button>
+                        <button class="btn btn-danger" style="padding:8px; font-size:12px; flex:1;" onclick="handlePaymentStatus('${pay.id}', 'rejected')"><i class="fas fa-times"></i> Reject</button>`;
+                } else if (statusText === "APPROVED") {
+                    actionButtons += `<button class="btn btn-outline" style="padding:8px; font-size:12px; flex:1; color: var(--danger); border-color: var(--danger);" onclick="handlePaymentStatus('${pay.id}', 'rejected')"><i class="fas fa-undo"></i> Change to Reject</button>`;
+                } else if (statusText === "REJECTED") {
+                    actionButtons += `<button class="btn btn-outline" style="padding:8px; font-size:12px; flex:1; color: var(--success); border-color: var(--success);" onclick="handlePaymentStatus('${pay.id}', 'approved')"><i class="fas fa-undo"></i> Change to Approve</button>`;
+                }
+                actionButtons += `</div>`;
+
+                container.innerHTML += `
+                <div class="card" style="flex-direction:column; gap:5px;">
+                    <div class="flex justify-between align-center">
+                        <div class="card-title" style="margin:0;">Txn: ${pay.txn_id}</div>
+                        <span class="badge ${badgeClass}">${statusText}</span>
+                    </div>
+                    <div class="card-sub" style="margin:0;">User ID: ${pay.user_id}</div>
+                    <div class="card-sub" style="margin:0;">Ebook ID: ${pay.ebook_id}</div>
+                    ${actionButtons}
+                </div>`;
+            });
+        }
+
+        function handlePaymentStatus(paymentId, status) {
+            showConfirm(`Update Payment`, `Are you sure you want to mark this transaction as ${status.toUpperCase()}?`, async () => {
+                const payload = { payment_id: paymentId, status: status };
+                const res = await apiCall("updatePaymentStatus", "POST", payload);
+                if (res && res.success) {
+                    showToast(`Payment successfully marked as ${status}!`, "success");
+                    fetchPayments();
+                } else { showToast("Failed to update status.", "error"); }
+            });
+        }
+
+        togglePriceFields();
+    </script>
+</body>
+</html>
