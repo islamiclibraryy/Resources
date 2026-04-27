@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Hikmah Islamic Store - Free & Paid Islamic eBooks</title>
+    <title>Islamic Library by Shekh - Free & Paid Islamic eBooks</title>
 
     <!-- ✅ SEO META -->
-    <meta name="description" content="Hikmah Islamic Store se Islamic eBooks, Quran PDFs, Hadith books download karein. Free aur premium Islamic digital library.">
-    <meta name="keywords" content="Hikmah Islamic Store, Islamic ebooks, Quran PDF, Hadith books">
-    <meta name="author" content="Hikmah Islamic Store">
+    <meta name="description" content="Islamic Library by Shekh – Download Islamic eBooks, Quran PDFs, and Hadith books. A free and premium Islamic digital library." content="">
+    <meta name="keywords" content="Islamic Library by Shekh, Islamic ebooks, Quran PDF, Hadith books">
+    <meta name="author" content="Islamic Library by Shekh">
 
     <!-- ✅ FAVICON (LOCAL LOGO) -->
     <link rel="icon" type="image/png" sizes="32x32" href="hikmahlogo.png">
@@ -16,10 +16,10 @@
     <link rel="apple-touch-icon" sizes="180x180" href="hikmahlogo.png">
 
     <!-- ✅ OPEN GRAPH -->
-    <meta property="og:title" content="Hikmah Islamic Store">
+    <meta property="og:title" content="Islamic Library by Shekh">
     <meta property="og:description" content="Free & Paid Islamic eBooks, Quran PDFs, Hadith books available.">
     <meta property="og:image" content="hikmahlogo.png">
-    <meta property="og:url" content="https://islamiclibraryy.github.io/Resources/">
+    <meta property="og:url" content="https://mysite.github.io/Resources/">
     <meta property="og:type" content="website">
 
     <!-- Fonts: Original Amiri for Arabic + Resume Builder Fonts -->
@@ -176,12 +176,10 @@
             background: rgba(10,10,15,0.8); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border);
             transition: background var(--transition);
         }
-        .header-logo { 
-            font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.25rem; 
-            background: linear-gradient(135deg, var(--accent2), #c084fc); 
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
-            letter-spacing: -0.02em; display: flex; align-items: center; gap: 8px; 
-        }
+        
+        .header-logo-container { display: flex; flex-direction: column; justify-content: center; }
+        .header-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.25rem; background: linear-gradient(135deg, var(--accent2), #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; letter-spacing: -0.02em; }
+        .header-sub { font-family: 'DM Mono', monospace; font-size: .7rem; font-weight: 500; color: var(--accent2); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 4px; }
         
         .main-content { padding: 24px 20px 90px; max-width: 1400px; margin: 0 auto; animation: fadeIn .5s ease both; }
 
@@ -255,7 +253,7 @@
         .nav-item { 
             display: flex; flex-direction: column; align-items: center; justify-content: center; 
             color: var(--text3); font-size: .75rem; font-weight: 500; gap: 6px; cursor: pointer; flex: 1; height: 100%; 
-            transition: all var(--transition); 
+            transition: all var(--transition); text-decoration: none;
         }
         .nav-item i { font-size: 1.2rem; transition: all var(--transition); }
         .nav-item.active { color: var(--accent2); }
@@ -374,8 +372,14 @@
     <div id="app-views" class="hidden">
         
         <header>
-            <div class="header-logo"><i class="fas fa-book-open"></i> Hikmah Store</div>
-            <div style="font-size: 1.1rem; color: var(--text2); cursor: pointer; transition: 0.3s;" onclick="logout()" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text2)'">
+            <div class="flex align-center" style="gap: 12px;">
+                <i class="fas fa-book-open" style="color: var(--accent2); font-size: 1.4rem; text-shadow: 0 0 10px var(--glow);"></i>
+                <div class="header-logo-container">
+                    <div class="header-logo">Islamic Library</div>
+                    <div class="header-sub">by Shekh</div>
+                </div>
+            </div>
+            <div style="font-size: 1.1rem; color: var(--text2); cursor: pointer; transition: 0.3s;" onclick="logout()" title="Logout" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text2)'">
                 <i class="fas fa-sign-out-alt"></i>
             </div>
         </header>
@@ -451,6 +455,8 @@
         <div id="bottom-nav" class="bottom-nav">
             <div class="nav-item active" id="nav-home" onclick="navSwitch('home')"><i class="fas fa-home"></i><span>Home</span></div>
             <div class="nav-item" id="nav-library" onclick="navSwitch('library')"><i class="fas fa-book-reader"></i><span>Library</span></div>
+            <!-- Added Info Tab to redirect to info.html -->
+            <a href="info.html" class="nav-item"><i class="fas fa-info-circle"></i><span>Info</span></a>
         </div>
 
     </div>
@@ -459,7 +465,7 @@
     <!-- STRICT JAVASCRIPT LOGIC WITH SMART CACHING -->
     <!-- ============================================== -->
     <script>
-        // === AAPKI DETAILS YAHAN DAALEIN ===
+        // === ===
         const API_URL = "https://script.google.com/macros/s/AKfycbzPE32HMSbmeSROZlBqDO7rFWzNhXKFiKhC9diJxn5hWLfqzy2f9ksuejl8J9bM8UJn/exec"; // Replace this
         const UPI_ID = "yourname@upi"; // Replace this
         const UPI_QR_URL = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=${UPI_ID}&pn=Store`; 
@@ -639,8 +645,13 @@
             hideAllPages();
             document.getElementById("bottom-nav").classList.remove("hidden");
             document.querySelectorAll(".nav-item").forEach(el => el.classList.remove("active"));
-            document.getElementById(`nav-${tab}`).classList.add("active");
-            document.getElementById(`page-${tab}`).classList.remove("hidden");
+            
+            // Only add active class if the clicked tab is not info (info redirects)
+            const activeTab = document.getElementById(`nav-${tab}`);
+            if(activeTab) activeTab.classList.add("active");
+            
+            const activePage = document.getElementById(`page-${tab}`);
+            if(activePage) activePage.classList.remove("hidden");
 
             if (tab === 'home') loadHome();
             if (tab === 'library') loadLibrary();
@@ -783,8 +794,7 @@
                 showToast("Payment Submitted!");
                 userPayments.push({ ebook_id: currentEbook.id, status: "pending" });
                 
-                // SMART INVALIDATION: User ne payment ki hai toh cache clear kar do 
-                // taaki library tab instantly fresh data laaye (bina wait kiye)
+               
                 localStorage.removeItem(`cache_payments_${userId}_time`);
                 
                 navSwitch('library');
