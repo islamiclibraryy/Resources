@@ -19,7 +19,7 @@
     <meta property="og:title" content="Islamic Library by Shekh">
     <meta property="og:description" content="Free & Paid Islamic eBooks, Quran PDFs, Hadith books available.">
     <meta property="og:image" content="hikmahlogo.png">
-    <meta property="og:url" content="https://mysite.github.io/Resources/">
+    <meta property="og:url" content="https://islamiclibraryy.github.io/Resources/">
     <meta property="og:type" content="website">
 
     <!-- Fonts: Original Amiri for Arabic + Resume Builder Fonts -->
@@ -505,8 +505,8 @@
             }, 3000);
         }
 
-        // === PURE API CALL ===
-        async function apiCall(action, method = "GET", body = null) {
+        // === API CALL HANDLER ===
+        async function apiCall(action, method = "GET", body = null, isBackground = false) {
             const url = `${API_URL}?action=${action}`;
             const options = { method: method };
             
@@ -516,49 +516,65 @@
             }
 
             try {
-                showLoader();
+                if (!isBackground) showLoader();
                 const response = await fetch(url, options);
                 const data = await response.json();
-                hideLoader();
+                if (!isBackground) hideLoader();
                 return data;
             } catch (error) {
-                hideLoader();
+                if (!isBackground) hideLoader();
                 console.error("Backend Error:", error);
-                showToast("Network Error: Backend not responding", "error");
+                if (!isBackground) showToast("Network Error: Backend not responding", "error");
                 return null;
             }
         }
 
-        // === SMART CACHING SYSTEM ===
-        async function getCachedData(action, cacheKey) {
-            const CACHE_DURATION = 150000; // EXACTLY 2.5 Minutes in milliseconds
+        // === SWR (STALE-WHILE-REVALIDATE) CACHE SYSTEM ===
+        function fetchSWR(action, cacheKey, onDataChange) {
             const now = new Date().getTime();
+            const cachedDataStr = localStorage.getItem(cacheKey + "_data");
             
-            const cachedData = localStorage.getItem(cacheKey + "_data");
-            const cachedTime = localStorage.getItem(cacheKey + "_time");
-            
-            // 1. Check if cache is valid (Under 2.5 minutes)
-            if (cachedData && cachedTime && (now - parseInt(cachedTime)) < CACHE_DURATION) {
-                return JSON.parse(cachedData); // Instant Return: No Loader, No API call
-            }
-            
-            // 2. Lock mechanism (Prevents concurrent identical API calls)
-            if (apiLocks[cacheKey]) {
-                return await apiLocks[cacheKey];
+            let hasCache = false;
+
+            // 1. Instant UI update from Cache
+            if (cachedDataStr) {
+                hasCache = true;
+                try {
+                    onDataChange(JSON.parse(cachedDataStr));
+                } catch (e) {
+                    console.error("Cache Parse Error", e);
+                    hasCache = false;
+                }
             }
 
-            // 3. Fetch fresh data & update cache
-            apiLocks[cacheKey] = (async () => {
-                const data = await apiCall(action, "GET"); // This shows the loader
-                if (data) {
-                    localStorage.setItem(cacheKey + "_data", JSON.stringify(data));
-                    localStorage.setItem(cacheKey + "_time", now.toString());
-                }
-                delete apiLocks[cacheKey]; // Release lock
-                return data;
-            })();
-            
-            return await apiLocks[cacheKey];
+            // Only show loader if absolute no cache exists
+            if (!hasCache) showLoader();
+
+            // 2. Prevent overlapping duplicate background requests
+            if (apiLocks[cacheKey]) return;
+            apiLocks[cacheKey] = true;
+
+            // 3. Always run silent background fetch
+            apiCall(action, "GET", null, true)
+                .then(freshData => {
+                    if (freshData) {
+                        const freshDataStr = JSON.stringify(freshData);
+                        
+                        // 4. Update UI ONLY if data actually changed
+                        if (cachedDataStr !== freshDataStr) {
+                            localStorage.setItem(cacheKey + "_data", freshDataStr);
+                            localStorage.setItem(cacheKey + "_time", now.toString());
+                            onDataChange(freshData); // Silent UI update
+                        } else {
+                            // Data matches, just refresh the time lock
+                            localStorage.setItem(cacheKey + "_time", now.toString());
+                        }
+                    }
+                })
+                .finally(() => {
+                    if (!hasCache) hideLoader(); // remove initial loader if it was on
+                    delete apiLocks[cacheKey]; // Release lock
+                });
         }
 
         // === AUTHENTICATION ===
@@ -613,7 +629,6 @@
         function logout() {
             const userId = localStorage.getItem("islamic_user_id");
             if(userId) {
-                // Clear user-specific cache on logout for safety
                 localStorage.removeItem(`cache_payments_${userId}_data`);
                 localStorage.removeItem(`cache_payments_${userId}_time`);
             }
@@ -646,7 +661,6 @@
             document.getElementById("bottom-nav").classList.remove("hidden");
             document.querySelectorAll(".nav-item").forEach(el => el.classList.remove("active"));
             
-            // Only add active class if the clicked tab is not info (info redirects)
             const activeTab = document.getElementById(`nav-${tab}`);
             if(activeTab) activeTab.classList.add("active");
             
@@ -663,20 +677,33 @@
             document.getElementById("page-home").classList.remove("hidden");
         }
 
-        // === DATA LOGIC WITH SMART CACHE ===
-        async function loadHome() {
-            // Ebooks via Cache System
-            const ebooksRes = await getCachedData("getEbooks", "cache_ebooks");
-            if (ebooksRes && Array.isArray(ebooksRes)) ebooksData = ebooksRes;
-            
-            // User Library via Cache System
+        // === DATA LOGIC WITH SWR ===
+        function loadHome() {
+            // SWR for Ebooks
+            fetchSWR("getEbooks", "cache_ebooks", (data) => {
+                if (Array.isArray(data)) {
+                    ebooksData = data;
+                    if (!document.getElementById("page-home").classList.contains("hidden")) {
+                        renderGrid();
+                    }
+                    if (!document.getElementById("page-detail").classList.contains("hidden") && currentEbook) {
+                        openDetail(currentEbook.id, true); // Silent update if detail is open
+                    }
+                }
+            });
+
+            // SWR for User Payments
             const userId = localStorage.getItem("islamic_user_id");
             if (userId) {
-                const payRes = await getCachedData(`getUserPayments&user_id=${userId}`, `cache_payments_${userId}`);
-                if (payRes && Array.isArray(payRes)) userPayments = payRes;
+                fetchSWR(`getUserPayments&user_id=${userId}`, `cache_payments_${userId}`, (data) => {
+                    if (Array.isArray(data)) {
+                        userPayments = data;
+                        if (!document.getElementById("page-detail").classList.contains("hidden") && currentEbook) {
+                            openDetail(currentEbook.id, true); // Silent update if detail is open
+                        }
+                    }
+                });
             }
-            
-            renderGrid();
         }
 
         function renderGrid() {
@@ -700,22 +727,24 @@
             });
         }
 
-        function openDetail(id) {
+        function openDetail(id, isSilent = false) {
             currentEbook = ebooksData.find(e => String(e.id) === String(id));
             if (!currentEbook) return;
 
-            hideAllPages();
-            document.getElementById("bottom-nav").classList.add("hidden"); 
-            document.getElementById("page-detail").classList.remove("hidden");
-            
-            document.getElementById("action-footer").classList.remove("hidden");
+            // Only run UI transitions if it's NOT a background silent update
+            if (!isSilent) {
+                hideAllPages();
+                document.getElementById("bottom-nav").classList.add("hidden"); 
+                document.getElementById("page-detail").classList.remove("hidden");
+                document.getElementById("action-footer").classList.remove("hidden");
 
-            document.getElementById("det-thumb").src = currentEbook.thumbnail;
-            document.getElementById("det-title").innerText = currentEbook.title;
-            document.getElementById("det-desc").innerText = currentEbook.description;
+                document.getElementById("det-thumb").src = currentEbook.thumbnail;
+                document.getElementById("det-title").innerText = currentEbook.title;
+                document.getElementById("det-desc").innerText = currentEbook.description;
 
-            const randomPhrase = ARABIC_PHRASES[Math.floor(Math.random() * ARABIC_PHRASES.length)];
-            document.getElementById("det-arabic-phrase").innerText = randomPhrase;
+                const randomPhrase = ARABIC_PHRASES[Math.floor(Math.random() * ARABIC_PHRASES.length)];
+                document.getElementById("det-arabic-phrase").innerText = randomPhrase;
+            }
 
             const isFree = String(currentEbook.is_free) === "true";
             const priceBox = document.getElementById("det-price-box");
@@ -736,6 +765,7 @@
             actionBtn.disabled = false;
             actionBtn.style.background = "";
             actionBtn.style.color = "";
+            actionBtn.style.boxShadow = "";
 
             if (ownedBook) {
                 if (ownedBook.status.toLowerCase() === "approved") {
@@ -779,7 +809,10 @@
             showToast("UPI ID Copied!");
         }
 
-        document.getElementById("paymentForm").addEventListener("submit", async (e) => {
+        // ===============================================
+        // 🚀 INSTANT SUBMIT (OPTIMISTIC UI) LOGIC
+        // ===============================================
+        document.getElementById("paymentForm").addEventListener("submit", (e) => {
             e.preventDefault();
             const userId = localStorage.getItem("islamic_user_id");
             const payload = {
@@ -789,27 +822,68 @@
                 status: "pending"
             };
 
-            const res = await apiCall("submitPayment", "POST", payload);
-            if (res && res.success) {
-                showToast("Payment Submitted!");
-                userPayments.push({ ebook_id: currentEbook.id, status: "pending" });
-                
-               
-                localStorage.removeItem(`cache_payments_${userId}_time`);
-                
-                navSwitch('library');
-            } else { 
-                showToast(res ? (res.message || "Submission failed") : "API Error", "error"); 
-            }
+            // 1. INSTANT UI FEEDBACK
+            showToast("Payment Submitted!");
+            
+            // Push to local memory instantly
+            userPayments.push({ ebook_id: currentEbook.id, status: "pending" });
+            
+            // Update LocalStorage cache immediately to persist it locally
+            localStorage.setItem(`cache_payments_${userId}_data`, JSON.stringify(userPayments));
+            localStorage.setItem(`cache_payments_${userId}_time`, Date.now().toString());
+            
+            // Instantly switch to Library page to show pending status
+            navSwitch('library');
+
+            // 2. SILENT BACKGROUND API CALL
+            // 'true' as 4th parameter prevents loader from showing
+            apiCall("submitPayment", "POST", payload, true).then(res => {
+                if (!res || !res.success) {
+                    showToast(res ? (res.message || "Background sync failed") : "API Error", "error");
+                } else {
+                    // Optional: Trigger a silent re-fetch just to ensure perfect synchronization
+                    fetchSWR(`getUserPayments&user_id=${userId}`, `cache_payments_${userId}`, (data) => {
+                        if (Array.isArray(data)) {
+                            userPayments = data;
+                            if (!document.getElementById("page-library").classList.contains("hidden")) {
+                                renderLibrary();
+                            }
+                        }
+                    });
+                }
+            });
         });
 
-        async function loadLibrary() {
+        function loadLibrary() {
             const userId = localStorage.getItem("islamic_user_id");
             
-            // Library Via Cache System
-            const res = await getCachedData(`getUserPayments&user_id=${userId}`, `cache_payments_${userId}`);
-            if (res && Array.isArray(res)) userPayments = res;
+            // Revalidate Payments
+            if (userId) {
+                fetchSWR(`getUserPayments&user_id=${userId}`, `cache_payments_${userId}`, (data) => {
+                    if (Array.isArray(data)) {
+                        userPayments = data;
+                        if (!document.getElementById("page-library").classList.contains("hidden")) {
+                            renderLibrary();
+                        }
+                    }
+                });
+            }
 
+            // Revalidate Ebooks
+            fetchSWR("getEbooks", "cache_ebooks", (data) => {
+                if (Array.isArray(data)) {
+                    ebooksData = data;
+                    if (!document.getElementById("page-library").classList.contains("hidden")) {
+                        renderLibrary();
+                    }
+                }
+            });
+
+            // Optimistically render instantly with whatever is in memory
+            renderLibrary();
+        }
+
+        function renderLibrary() {
             const container = document.getElementById("library-list");
             container.innerHTML = "";
 

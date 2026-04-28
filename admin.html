@@ -206,6 +206,9 @@
             cursor: pointer; transition: var(--transition); 
         }
         .action-btn-sm:hover { background: var(--glow2); color: var(--accent2); border-color: var(--accent); transform: translateY(-2px); }
+        
+        /* Optional: small spin animation for refresh button */
+        .spin-icon { animation: spin 1s linear infinite; }
 
         /* ===== BOTTOM NAV ===== */
         .bottom-nav { 
@@ -292,7 +295,7 @@
                 <div class="bismillah arabic-text text-center" style="margin-bottom: 24px; margin-top: 5px;">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
                 <div class="flex justify-between align-center" style="margin-bottom: 16px;">
                     <h3 style="font-size: 1.2rem;">All Ebooks</h3>
-                    <button class="action-btn-sm" onclick="forceFetchEbooks()" title="Force Refresh"><i class="fas fa-sync-alt"></i></button>
+                    <button class="action-btn-sm" id="refresh-ebooks-btn" onclick="forceFetchEbooks()" title="Refresh Ebooks"><i class="fas fa-sync-alt"></i></button>
                 </div>
                 <div id="ebooks-list"></div>
             </section>
@@ -350,7 +353,7 @@
                 <div id="phrase-payment" class="arabic-text text-center" style="font-size: 24px; color: var(--accent2); margin-bottom: 20px; font-weight: bold; text-shadow: 0 0 10px var(--glow);"></div>
                 <div class="flex justify-between align-center" style="margin-bottom: 16px;">
                     <h3 style="font-size: 1.2rem;">Payments</h3>
-                    <button class="action-btn-sm" onclick="forceFetchPayments()" title="Force Refresh"><i class="fas fa-sync-alt"></i></button>
+                    <button class="action-btn-sm" id="refresh-payments-btn" onclick="forceFetchPayments()" title="Refresh Payments"><i class="fas fa-sync-alt"></i></button>
                 </div>
                 <div id="payments-list"></div>
             </section>
@@ -377,6 +380,7 @@
 
         let confirmCallback = null;
         let ebooksData = [];
+        let paymentsData = []; // Store Payments Globally for Optimistic UI
         let apiLocks = {}; // SMART LOCK for Caching System
 
         // === ON LOAD ===
@@ -394,9 +398,17 @@
             const container = document.getElementById("toast-container");
             const toast = document.createElement("div");
             toast.className = "toast";
-            const icon = type === "success" ? '<span style="font-size:1.1rem; color:var(--success)">✓</span>' : '<span style="font-size:1.1rem; color:var(--danger)">✕</span>';
+            
+            // Icon styling based on type
+            let icon = '';
+            if (type === "success") icon = '<span style="font-size:1.1rem; color:var(--success)">✓</span>';
+            else if (type === "error") icon = '<span style="font-size:1.1rem; color:var(--danger)">✕</span>';
+            else if (type === "info") icon = '<i class="fas fa-sync-alt spin-icon" style="font-size:1rem; color:var(--accent2)"></i>';
+            
             toast.innerHTML = `${icon} <span>${msg}</span>`;
             container.appendChild(toast);
+            
+            // Remove toast after 3 seconds
             setTimeout(() => { 
                 toast.style.transform = "translateX(110%)";
                 toast.style.opacity = "0";
@@ -422,15 +434,15 @@
             closeConfirm();
         });
 
-        // === API WRAPPER ===
-        async function apiCall(action, method = "GET", body = null) {
+        // === API WRAPPER (WITH BACKGROUND FLAG) ===
+        async function apiCall(action, method = "GET", body = null, isBackground = false) {
             try {
                 if(API_URL.includes("YOUR_GOOGLE_APPS_SCRIPT") || API_URL.includes("example/exec")) {
-                    showToast("Please update API_URL in the code first!", "error");
+                    if (!isBackground) showToast("Please update API_URL in the code first!", "error");
                     return null;
                 }
 
-                showLoader();
+                if (!isBackground) showLoader();
                 const url = method === "GET" ? `${API_URL}?action=${action}` : `${API_URL}?action=${action}`;
                 const options = { method: method };
                 
@@ -441,55 +453,115 @@
 
                 const response = await fetch(url, options);
                 const data = await response.json();
-                hideLoader();
+                if (!isBackground) hideLoader();
                 return data;
             } catch (error) {
-                hideLoader();
+                if (!isBackground) hideLoader();
                 console.error("API Error:", error);
-                showToast("Network error. Link check karein.", "error");
+                if (!isBackground) showToast("Network error. Link check karein.", "error");
                 return null;
             }
         }
 
-        // === SMART CACHING SYSTEM (2.5 Mins) ===
-        async function getCachedData(action, cacheKey) {
-            const CACHE_DURATION = 150000; // 2.5 Mins
+        // === SMART SWR CACHING SYSTEM ===
+        function fetchSWR(action, cacheKey, onDataChange) {
             const now = new Date().getTime();
+            const cachedDataStr = localStorage.getItem(cacheKey + "_data");
             
-            const cachedData = localStorage.getItem(cacheKey + "_data");
-            const cachedTime = localStorage.getItem(cacheKey + "_time");
-            
-            // 1. Valid Cache
-            if (cachedData && cachedTime && (now - parseInt(cachedTime)) < CACHE_DURATION) {
-                return JSON.parse(cachedData);
-            }
-            
-            // 2. Lock check for multiple rapid calls
-            if (apiLocks[cacheKey]) return await apiLocks[cacheKey];
+            let hasCache = false;
 
-            // 3. Fetch fresh API
-            apiLocks[cacheKey] = (async () => {
-                const data = await apiCall(action, "GET"); 
-                if (data) {
-                    localStorage.setItem(cacheKey + "_data", JSON.stringify(data));
-                    localStorage.setItem(cacheKey + "_time", now.toString());
+            // 1. Instant UI update from Cache
+            if (cachedDataStr) {
+                hasCache = true;
+                try {
+                    onDataChange(JSON.parse(cachedDataStr));
+                } catch (e) {
+                    console.error("Cache Parse Error", e);
+                    hasCache = false;
                 }
-                delete apiLocks[cacheKey]; 
-                return data;
-            })();
-            
-            return await apiLocks[cacheKey];
+            }
+
+            // Only show loader if absolute no cache exists
+            if (!hasCache) showLoader();
+
+            // 2. Prevent duplicate background requests
+            if (apiLocks[cacheKey]) return;
+            apiLocks[cacheKey] = true;
+
+            // 3. Always run silent background fetch
+            apiCall(action, "GET", null, true)
+                .then(freshData => {
+                    if (freshData) {
+                        const freshDataStr = JSON.stringify(freshData);
+                        
+                        // 4. Update UI ONLY if data actually changed
+                        if (cachedDataStr !== freshDataStr) {
+                            localStorage.setItem(cacheKey + "_data", freshDataStr);
+                            localStorage.setItem(cacheKey + "_time", now.toString());
+                            onDataChange(freshData); // Silent UI update
+                        } else {
+                            // Data matches, just refresh the time lock
+                            localStorage.setItem(cacheKey + "_time", now.toString());
+                        }
+                    }
+                })
+                .finally(() => {
+                    if (!hasCache) hideLoader(); 
+                    delete apiLocks[cacheKey]; // Release lock
+                });
         }
 
-        // Manual Force Refresh Functions
+        // ===============================================
+        // 🚀 OPTIMISTIC REFRESH BUTTONS (NO LOADER)
+        // ===============================================
         function forceFetchEbooks() {
-            localStorage.removeItem("admin_cache_ebooks_time"); // Invalidate Cache
-            fetchEbooks();
+            const btnIcon = document.querySelector("#refresh-ebooks-btn i");
+            btnIcon.classList.add("spin-icon"); // Visual feedback on button
+            showToast("Syncing latest ebooks...", "info"); // Show background sync toast
+
+            // Call API directly in background (true = background, no full-screen loader)
+            apiCall("getEbooks", "GET", null, true).then(data => {
+                btnIcon.classList.remove("spin-icon");
+                if (data && Array.isArray(data)) {
+                    ebooksData = data;
+                    // Update Local Cache
+                    localStorage.setItem("admin_cache_ebooks_data", JSON.stringify(data));
+                    localStorage.setItem("admin_cache_ebooks_time", new Date().getTime().toString());
+                    
+                    // Re-render if on dashboard
+                    if (document.getElementById("tab-dashboard").classList.contains("active")) {
+                        renderEbooks();
+                    }
+                    showToast("Ebooks refreshed successfully!", "success");
+                } else {
+                    showToast("Failed to refresh ebooks.", "error");
+                }
+            });
         }
 
         function forceFetchPayments() {
-            localStorage.removeItem("admin_cache_payments_time"); // Invalidate Cache
-            fetchPayments();
+            const btnIcon = document.querySelector("#refresh-payments-btn i");
+            btnIcon.classList.add("spin-icon");
+            showToast("Syncing latest payments...", "info");
+
+            // Call API directly in background
+            apiCall("getPayments", "GET", null, true).then(data => {
+                btnIcon.classList.remove("spin-icon");
+                if (data && Array.isArray(data)) {
+                    paymentsData = data;
+                    // Update Local Cache
+                    localStorage.setItem("admin_cache_payments_data", JSON.stringify(data));
+                    localStorage.setItem("admin_cache_payments_time", new Date().getTime().toString());
+                    
+                    // Re-render if on payments tab
+                    if (document.getElementById("tab-payments").classList.contains("active")) {
+                        renderPayments(paymentsData);
+                    }
+                    showToast("Payments refreshed successfully!", "success");
+                } else {
+                    showToast("Failed to refresh payments.", "error");
+                }
+            });
         }
 
 
@@ -565,12 +637,15 @@
             }
         }
 
-        async function fetchEbooks() {
-            const res = await getCachedData("getEbooks", "admin_cache_ebooks");
-            if (res && Array.isArray(res)) {
-                ebooksData = res;
-                renderEbooks();
-            }
+        function fetchEbooks() {
+            fetchSWR("getEbooks", "admin_cache_ebooks", (data) => {
+                if (Array.isArray(data)) {
+                    ebooksData = data;
+                    if (document.getElementById("tab-dashboard").classList.contains("active")) {
+                        renderEbooks();
+                    }
+                }
+            });
         }
 
         function renderEbooks() {
@@ -602,7 +677,7 @@
             });
         }
 
-        async function handleEbookSubmit() {
+        function handleEbookSubmit() {
             const isFree = document.getElementById("eb_isfree").checked;
             const payload = {
                 title: document.getElementById("eb_title").value,
@@ -618,16 +693,22 @@
             let action = "addEbook";
             if (id) { action = `updateEbook&id=${id}`; payload.id = id; }
 
-            const res = await apiCall(action, "POST", payload);
-            if (res && res.success) {
-                showToast(id ? "Ebook Updated!" : "Ebook Added!");
-                
-                // SMART INVALIDATION: Clear cache so Dashboard shows new ebook instantly
-                localStorage.removeItem("admin_cache_ebooks_time");
-                
-                resetEbookForm();
-                switchTab('dashboard', document.querySelector(".nav-item:nth-child(1)"));
-            } else { showToast("Operation failed.", "error"); }
+            // 1. INSTANT UI FEEDBACK & REDIRECT
+            showToast(id ? "Updating Ebook..." : "Adding Ebook...", "info");
+            resetEbookForm();
+            switchTab('dashboard', document.querySelector(".nav-item:nth-child(1)"));
+
+            // 2. SILENT BACKGROUND API CALL
+            apiCall(action, "POST", payload, true).then(res => {
+                if (res && res.success) {
+                    showToast(id ? "Ebook Updated Successfully!" : "Ebook Added Successfully!", "success");
+                    // Invalidate Cache and sync fresh data silently
+                    localStorage.removeItem("admin_cache_ebooks_time");
+                    fetchEbooks();
+                } else { 
+                    showToast("Operation failed.", "error"); 
+                }
+            });
         }
 
         function editEbook(id) {
@@ -659,9 +740,15 @@
         }
 
         // === PAYMENT MANAGEMENT ===
-        async function fetchPayments() {
-            const res = await getCachedData("getPayments", "admin_cache_payments");
-            if (res && Array.isArray(res)) renderPayments(res);
+        function fetchPayments() {
+            fetchSWR("getPayments", "admin_cache_payments", (data) => {
+                if (Array.isArray(data)) {
+                    paymentsData = data;
+                    if (document.getElementById("tab-payments").classList.contains("active")) {
+                        renderPayments(paymentsData);
+                    }
+                }
+            });
         }
 
         function renderPayments(payments) {
@@ -707,18 +794,35 @@
             });
         }
 
+        // ===============================================
+        // 🚀 OPTIMISTIC UI - INSTANT PAYMENT STATUS UPDATE
+        // ===============================================
         function handlePaymentStatus(paymentId, status) {
-            showConfirm(`Update Payment`, `Are you sure you want to mark this transaction as ${status.toUpperCase()}?`, async () => {
+            showConfirm(`Update Payment`, `Are you sure you want to mark this transaction as ${status.toUpperCase()}?`, () => {
+                
+                // 1. INSTANT UI FEEDBACK
+                showToast(`Payment marked as ${status}!`, "success");
+                
+                const payIndex = paymentsData.findIndex(p => String(p.id) === String(paymentId));
+                if(payIndex !== -1) {
+                    paymentsData[payIndex].status = status;
+                    // Persist to local cache immediately
+                    localStorage.setItem("admin_cache_payments_data", JSON.stringify(paymentsData));
+                    localStorage.setItem("admin_cache_payments_time", Date.now().toString());
+                    // Re-render UI Instantly
+                    renderPayments(paymentsData);
+                }
+
+                // 2. SILENT BACKGROUND API CALL
                 const payload = { payment_id: paymentId, status: status };
-                const res = await apiCall("updatePaymentStatus", "POST", payload);
-                if (res && res.success) {
-                    showToast(`Payment successfully marked as ${status}!`, "success");
-                    
-                    // SMART INVALIDATION: Clear cache to force refresh list
-                    localStorage.removeItem("admin_cache_payments_time");
-                    
-                    fetchPayments();
-                } else { showToast("Failed to update status.", "error"); }
+                apiCall("updatePaymentStatus", "POST", payload, true).then(res => {
+                    if (!res || !res.success) {
+                        showToast("Background sync failed. Reverting data...", "error");
+                        // If API fails, clear cache and fetch true state from server
+                        localStorage.removeItem("admin_cache_payments_time");
+                        fetchPayments();
+                    }
+                });
             });
         }
 
