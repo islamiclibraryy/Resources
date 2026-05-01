@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Islamic Library by Shekh - Free & Paid Islamic eBooks</title>
+
+    <!-- ✅ SEO META -->
+    <meta name="description" content="Islamic Library by Shekh – Download Islamic eBooks, Quran PDFs, and Hadith books. A free and premium Islamic digital library.">
+    <meta name="keywords" content="Islamic Library by Shekh, Islamic ebooks, Quran PDF, Hadith books">
+    <meta name="author" content="Islamic Library by Shekh">
+
+    <!-- ✅ FAVICON (LOCAL LOGO) -->
+    <link rel="icon" type="image/png" sizes="32x32" href="hikmahlogo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="hikmahlogo.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="hikmahlogo.png">
+
+    <!-- ✅ OPEN GRAPH -->
+    <meta property="og:title" content="Islamic Library by Shekh">
+    <meta property="og:description" content="Free & Paid Islamic eBooks, Quran PDFs, Hadith books available.">
+    <meta property="og:image" content="hikmahlogo.png">
+    <meta property="og:url" content="https://islamiclibraryy.github.io/Resources/">
+    <meta property="og:type" content="website">
+
+    <!-- Fonts: Original Amiri for Arabic + Resume Builder Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- ✅ SECURITY CHECK SCRIPT -->
+    <script>
+        if (!localStorage.getItem("islamic_user_id") || !sessionStorage.getItem("selected_book_data")) {
+            window.location.replace("index.html");
+        }
+    </script>
+
+    <style>
+        /* ===== CSS VARIABLES ===== */
+        :root {
+            --bg: #0a0a0f; --bg2: #0f0f18; --bg3: #13131e;
+            --surface: #1a1a28; --surface2: #1f1f30; --surface3: #252538;
+            --border: rgba(255,255,255,0.07); --border2: rgba(255,255,255,0.12);
+            --text: #f0f0f8; --text2: #a8a8c0; --text3: #686888;
+            --accent: #7c6af7; --accent2: #9f91fa; --accent3: #c4bafe;
+            --glow: rgba(124,106,247,0.25); --glow2: rgba(124,106,247,0.1);
+            --danger: #f43f5e; --success: #10b981; --amber: #f59e0b;
+            --r: 12px; --r2: 16px; --r3: 20px;
+            --shadow: 0 4px 24px rgba(0,0,0,0.4); --shadow2: 0 8px 40px rgba(0,0,0,0.5);
+            --transition: 0.2s cubic-bezier(0.4,0,0.2,1);
+        }
+
+        *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; min-height: 100vh; -webkit-tap-highlight-color: transparent; }
+        
+        body::before { content:''; position:fixed; inset:0; pointer-events:none; z-index:9999; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E"); opacity:0.4; }
+
+        .hero-bg { position:fixed; inset:0; pointer-events:none; z-index:-2; background: radial-gradient(ellipse 80% 50% at 50% -10%,rgba(124,106,247,0.2) 0%,transparent 70%), radial-gradient(ellipse 50% 40% at 80% 60%,rgba(168,85,247,0.12) 0%,transparent 60%), radial-gradient(ellipse 40% 30% at 20% 70%,rgba(99,102,241,0.1) 0%,transparent 60%); }
+        .hero-grid { position:fixed; inset:0; pointer-events:none; z-index:-1; background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px); background-size:48px 48px; mask-image:radial-gradient(ellipse 100% 100% at 50% 50%,black 40%,transparent 100%); opacity:0.6; }
+        .blob { position:fixed; border-radius:50%; filter:blur(80px); pointer-events:none; animation:blobFloat 8s ease-in-out infinite; z-index:-1; }
+        .blob1 { width:400px; height:400px; background:rgba(124,106,247,0.18); top:-100px; left:-100px; animation-delay:0s; }
+        .blob2 { width:350px; height:350px; background:rgba(168,85,247,0.12); bottom:-80px; right:-80px; animation-delay:3s; }
+        .blob3 { width:250px; height:250px; background:rgba(99,102,241,0.1); top:40%; right:10%; animation-delay:5s; }
+
+        .arabic-text { font-family: 'Amiri', serif; }
+        h1, h2, h3 { font-family: 'Syne', sans-serif; font-weight: 700; letter-spacing: -0.02em; color: var(--text); }
+        .hidden { display: none !important; } .flex { display: flex; } .align-center { align-items: center; } .text-center { text-align: center; } .mt-1 { margin-top: 10px; } .mt-2 { margin-top: 20px; } .mb-2 { margin-bottom: 20px; }
+
+        #loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10,10,15,0.85); backdrop-filter: blur(5px); z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .spinner { width: 50px; height: 50px; border: 4px solid var(--surface3); border-top: 4px solid var(--accent); border-radius: 50%; animation: spin 1s cubic-bezier(0.4,0,0.2,1) infinite; }
+        #toast-container { position: fixed; bottom: 85px; right: 28px; z-index: 9998; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
+        .toast { background: var(--surface); color: var(--text); padding: 12px 18px; border-radius: var(--r2); box-shadow: var(--shadow2); border: 1px solid var(--border2); animation: slideUp 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards; display: flex; align-items: center; gap: 10px; font-size: .85rem; font-weight: 500; }
+
+        .form-group { margin-bottom: 16px; text-align: left; }
+        .form-group label { display: block; margin-bottom: 6px; font-size: .78rem; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.06em; }
+        .form-group input { width: 100%; background: var(--surface2); color: var(--text); border: 1px solid var(--border2); padding: 12px 16px; border-radius: var(--r); font-size: .92rem; transition: var(--transition); }
+        .form-group input:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px var(--glow2); }
+        
+        .btn { background: linear-gradient(135deg, #7c6af7, #9f3fbf); color: #fff; border: none; padding: 14px 20px; border-radius: 99px; font-weight: 600; font-family: 'DM Sans', sans-serif; width: 100%; cursor: pointer; transition: var(--transition); font-size: 1rem; display: block; text-align: center; position: relative; overflow: hidden; box-shadow: 0 4px 20px rgba(124,106,247,0.4); }
+        .btn::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,0.15),transparent); opacity:0; transition:opacity var(--transition); }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(124,106,247,0.5); } .btn:hover::before { opacity: 1; } .btn:active { transform: translateY(0) scale(0.98); }
+        .btn-outline { background: transparent; color: var(--text2); border: 1px solid var(--border2); padding: 10px 20px; border-radius: 99px; font-weight: 500; font-size: .85rem; transition: var(--transition); cursor: pointer; }
+        .btn-outline:hover { border-color: var(--accent); color: var(--accent2); background: var(--glow2); }
+
+        header { position: sticky; top: 0; left: 0; right: 0; z-index: 1000; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; background: rgba(10,10,15,0.8); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
+        .header-logo-container { display: flex; flex-direction: column; justify-content: center; }
+        .header-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.25rem; background: linear-gradient(135deg, var(--accent2), #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; letter-spacing: -0.02em; }
+        .header-sub { font-family: 'DM Mono', monospace; font-size: .7rem; font-weight: 500; color: var(--accent2); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 4px; }
+        .main-content { padding: 24px 20px 90px; max-width: 1400px; margin: 0 auto; animation: fadeIn .5s ease both; }
+        
+        .price-tag { font-family: 'DM Mono', monospace; font-size: .9rem; color: var(--accent2); font-weight: 700; }
+        .strike-price { font-size: .75rem; color: var(--text3); text-decoration: line-through; margin-left: 6px; font-weight: normal; }
+        .badge-free { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 99px; background: var(--glow2); border: 1px solid rgba(124,106,247,0.3); font-size: .75rem; font-weight: 600; color: var(--accent3); }
+        
+        /* Details UI */
+        .detail-header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+        .back-btn { background: var(--surface2); color: var(--text); border: 1px solid var(--border2); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; cursor: pointer; transition: all var(--transition); }
+        .back-btn:hover { border-color: var(--accent); color: var(--accent2); background: var(--glow2); transform: rotate(-5deg) scale(1.05); }
+        .detail-thumb { width: 100%; max-width: 250px; aspect-ratio: 1/1; border-radius: var(--r3); object-fit: cover; margin: 0 auto 24px auto; display: block; border: 1px solid var(--border); box-shadow: var(--shadow); animation: cardIn .5s ease both; }
+        .action-footer { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(10,10,15,0.9); backdrop-filter: blur(20px); padding: 16px 24px; border-top: 1px solid var(--border); z-index: 1000; display: flex; justify-content: space-between; align-items: center; }
+        
+        .qr-box img { width: 200px; height: 200px; display: block; margin: 0 auto; border-radius: var(--r); border: 4px solid var(--surface3); box-shadow: var(--shadow); }
+        .upi-box { background: var(--surface2); padding: 16px; border-radius: var(--r2); margin: 20px 0; display: flex; justify-content: space-between; align-items: center; border: 1px dashed rgba(124,106,247,0.4); transition: var(--transition); }
+        .upi-box:hover { border-color: var(--accent); background: var(--glow2); }
+        .auth-card { background: var(--surface); padding: 32px 28px; border-radius: var(--r3); box-shadow: var(--shadow); border: 1px solid var(--border); }
+
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 70px; background: rgba(10,10,15,0.9); backdrop-filter: blur(20px); display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--border); z-index: 999; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text3); font-size: .75rem; font-weight: 500; gap: 6px; cursor: pointer; flex: 1; height: 100%; transition: all var(--transition); text-decoration: none; }
+        .nav-item i { font-size: 1.2rem; transition: all var(--transition); }
+        .nav-item.active { color: var(--accent2); }
+        .nav-item.active i { background: var(--glow2); padding: 8px; border-radius: 50%; box-shadow: 0 0 15px var(--glow); transform: translateY(-4px); color: var(--accent); }
+        .nav-item:hover:not(.active) { color: var(--text2); }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } } @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } } @keyframes cardIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } } @keyframes slideUp { from { opacity: 0; transform: translateY(20px) translateX(110%); } to { opacity: 1; transform: translateX(0); } } @keyframes spin { to { transform: rotate(360deg); } } @keyframes blobFloat { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(20px,-20px) scale(1.05)} 66%{transform:translate(-15px,15px) scale(0.97)} }
+    </style>
+</head>
+<body>
+
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="blob blob1"></div>
+    <div class="blob blob2"></div>
+
+    <div id="loader" class="hidden"><div class="spinner"></div></div>
+    <div id="toast-container"></div>
+
+    <header>
+        <div class="flex align-center" style="gap: 12px;">
+            <i class="fas fa-book-open" style="color: var(--accent2); font-size: 1.4rem; text-shadow: 0 0 10px var(--glow);"></i>
+            <div class="header-logo-container">
+                <div class="header-logo">Islamic Library</div>
+                <div class="header-sub">by Shekh</div>
+            </div>
+        </div>
+        <div style="font-size: 1.1rem; color: var(--text2); cursor: pointer; transition: 0.3s;" onclick="logout()" title="Logout">
+            <i class="fas fa-sign-out-alt"></i>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <!-- Detail Page -->
+        <div id="page-detail" class="hidden">
+            <div class="detail-header">
+                <button class="back-btn" onclick="window.location.href='index.html'"><i class="fas fa-arrow-left"></i></button>
+                <h3 style="font-size: 1.2rem;">Book Details</h3>
+            </div>
+            <img src="" id="det-thumb" class="detail-thumb">
+            <h2 id="det-title" style="font-size: 1.6rem; margin-bottom: 12px;"></h2>
+            <div id="det-price-box" style="margin-bottom: 20px;"></div>
+            
+            <p id="det-arabic-phrase" class="arabic-text text-center" style="color:var(--accent2); font-size: 26px; margin-bottom: 20px; font-weight: bold; text-shadow: 0 0 10px var(--glow);"></p>
+            
+            <p id="det-desc" style="font-size: .95rem; color: var(--text2); line-height: 1.8; padding-bottom: 110px;"></p>
+        </div>
+
+        <!-- Payment Page -->
+        <div id="page-payment" class="hidden">
+            <div class="detail-header">
+                <button class="back-btn" onclick="showDetailView()"><i class="fas fa-arrow-left"></i></button>
+                <h3 style="font-size: 1.2rem;">Complete Payment</h3>
+            </div>
+            
+            <div class="text-center">
+                <p style="color: var(--text2); font-size: .9rem; margin-bottom: 24px;">Pay <strong style="color:var(--accent); font-family: 'DM Mono', monospace; font-size: 1.1rem;" id="pay-amt"></strong> using QR or UPI ID</p>
+                <div class="qr-box"><img id="pay-qr" src=""></div>
+                
+                <div class="upi-box">
+                    <div style="text-align: left;">
+                        <div style="font-size: .75rem; color: var(--text3); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;">UPI ID</div>
+                        <div id="pay-upi" style="font-family: 'DM Mono', monospace; font-weight: 600; font-size: 1rem; color: var(--text);"></div>
+                    </div>
+                    <button class="btn-outline" style="padding: 6px 16px; border-radius: 99px; font-size: .8rem;" onclick="copyUPI()">Copy</button>
+                </div>
+            </div>
+
+            <form id="paymentForm" class="auth-card" style="max-width:100%; text-align:left; padding:24px; margin-top:24px;">
+                <div class="form-group">
+                    <label>Transaction ID (UTR)</label>
+                    <input type="text" id="pay-txn" required placeholder="Enter 12-digit UTR from your app">
+                </div>
+                <button type="submit" class="btn" style="margin-top: 8px;">Submit Verification ✦</button>
+            </form>
+        </div>
+    </div> 
+
+    <!-- Action Footer -->
+    <div id="action-footer" class="action-footer hidden">
+        <div id="det-footer-price" class="price-tag" style="font-size: 1.2rem; font-family: 'DM Mono', monospace;"></div>
+        <button id="det-action-btn" class="btn" style="width: auto; padding: 12px 32px; font-size: .95rem; border-radius: 99px;"></button>
+    </div>
+
+    <!-- Bottom Nav -->
+    <div id="bottom-nav" class="bottom-nav">
+        <!-- Root Tab (Home) remains active visually even inside book details -->
+        <div class="nav-item active" onclick="window.location.href='index.html'"><i class="fas fa-home"></i><span>Home</span></div>
+        <div class="nav-item" onclick="window.location.href='library.html'"><i class="fas fa-book-reader"></i><span>Library</span></div>
+        <a href="info.html" class="nav-item"><i class="fas fa-info-circle"></i><span>Info</span></a>
+    </div>
+
+    <script>
+        // ✅ API URL HERE
+        const API_URL = "https://script.google.com/macros/s/AKfycbzPE32HMSbmeSROZlBqDO7rFWzNhXKFiKhC9diJxn5hWLfqzy2f9ksuejl8J9bM8UJn/exec"; 
+        // ✅ UPI DETAILS HERE
+        const UPI_ID = "yourname@upi"; 
+        const UPI_QR_URL = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=${UPI_ID}&pn=Store`; 
+        
+        const ARABIC_PHRASES = ["سُبْحَانَ اللَّهِ", "الْحَمْدُ لِلَّهِ", "اللَّهُ أَكْبَرُ", "لَا إِلَٰهَ إِلَّا اللَّهُ", "مَا شَاءَ اللَّهُ", "بَارَكَ اللَّهُ فِيكَ"];
+
+        let userPayments = [];
+        let currentEbook = null;
+        let apiLocks = {};
+
+        const userId = localStorage.getItem("islamic_user_id");
+
+        function showLoader() { document.getElementById("loader").classList.remove("hidden"); }
+        function hideLoader() { document.getElementById("loader").classList.add("hidden"); }
+        function showToast(msg, type = "success") {
+            const container = document.getElementById("toast-container");
+            const toast = document.createElement("div");
+            toast.className = "toast";
+            toast.innerHTML = (type === "success" ? '<span style="font-size:1.1rem; color:var(--success)">✓</span>' : '<span style="font-size:1.1rem; color:var(--danger)">✕</span>') + ` <span>${msg}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => { toast.style.transform = "translateX(110%)"; toast.style.opacity = "0"; setTimeout(() => toast.remove(), 400); }, 3000);
+        }
+
+        async function apiCall(action, method = "GET", body = null, isBackground = false) {
+            const url = `${API_URL}?action=${action}`;
+            const options = { method: method };
+            if (method === "POST" && body) { options.body = JSON.stringify(body); options.headers = { "Content-Type": "text/plain;charset=utf-8" }; }
+            try {
+                if (!isBackground) showLoader();
+                const response = await fetch(url, options);
+                const data = await response.json();
+                if (!isBackground) hideLoader();
+                return data;
+            } catch (error) {
+                if (!isBackground) hideLoader();
+                if (!isBackground) showToast("Network Error", "error");
+                return null;
+            }
+        }
+
+        function fetchSWR(action, cacheKey, onDataChange, showBlockingLoader = false) {
+            const now = new Date().getTime();
+            const cachedDataStr = localStorage.getItem(cacheKey + "_data");
+            let hasCache = false;
+            
+            if (cachedDataStr) {
+                hasCache = true;
+                try { onDataChange(JSON.parse(cachedDataStr)); } catch (e) { hasCache = false; }
+            }
+            
+            if (!hasCache && showBlockingLoader) showLoader();
+            
+            if (apiLocks[cacheKey]) return;
+            apiLocks[cacheKey] = true;
+            
+            apiCall(action, "GET", null, true).then(freshData => {
+                if (freshData) {
+                    const freshDataStr = JSON.stringify(freshData);
+                    if (cachedDataStr !== freshDataStr) {
+                        localStorage.setItem(cacheKey + "_data", freshDataStr);
+                        localStorage.setItem(cacheKey + "_time", now.toString());
+                        onDataChange(freshData); 
+                    } else { localStorage.setItem(cacheKey + "_time", now.toString()); }
+                }
+            }).finally(() => { 
+                if (!hasCache && showBlockingLoader) hideLoader(); 
+                delete apiLocks[cacheKey]; 
+            });
+        }
+
+        function logout() {
+            if(userId) { localStorage.removeItem(`cache_payments_${userId}_data`); localStorage.removeItem(`cache_payments_${userId}_time`); }
+            localStorage.removeItem("islamic_user_id");
+            window.location.href = "index.html";
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            initBook();
+        });
+
+        // ✅ INSTANT LOAD TRICK: Direct Memory Access
+        function initBook() {
+            const bookDataStr = sessionStorage.getItem("selected_book_data");
+            if(bookDataStr) {
+                currentEbook = JSON.parse(bookDataStr);
+                
+                const cachedPayments = localStorage.getItem(`cache_payments_${userId}_data`);
+                if(cachedPayments) {
+                    try { userPayments = JSON.parse(cachedPayments); } catch(e) {}
+                }
+
+                // Instantly render UI
+                renderDetail();
+
+                // Run a silent background check for payments
+                fetchSWR(`getUserPayments&user_id=${userId}`, `cache_payments_${userId}`, (data) => {
+                    if (Array.isArray(data)) {
+                        userPayments = data;
+                        renderDetail(); 
+                    }
+                }, false);
+            } else {
+                window.location.replace("index.html");
+            }
+        }
+
+        function showDetailView() {
+            document.getElementById("page-payment").classList.add("hidden");
+            document.getElementById("page-detail").classList.remove("hidden");
+            document.getElementById("action-footer").classList.remove("hidden");
+        }
+
+        function renderDetail() {
+            showDetailView();
+
+            document.getElementById("det-thumb").src = currentEbook.thumbnail;
+            document.getElementById("det-title").innerText = currentEbook.title;
+            document.getElementById("det-desc").innerText = currentEbook.description;
+
+            if(!document.getElementById("det-arabic-phrase").innerText) {
+                document.getElementById("det-arabic-phrase").innerText = ARABIC_PHRASES[Math.floor(Math.random() * ARABIC_PHRASES.length)];
+            }
+
+            const isFree = String(currentEbook.is_free) === "true";
+            const priceBox = document.getElementById("det-price-box");
+            const footerPrice = document.getElementById("det-footer-price");
+            const actionBtn = document.getElementById("det-action-btn");
+            
+            const ownedBook = userPayments.find(p => String(p.ebook_id) === String(currentEbook.id) && p.status.toLowerCase() !== "rejected");
+
+            if (isFree) {
+                priceBox.innerHTML = `<span class="badge-free" style="padding: 6px 16px; font-size: .85rem;">✦ 100% FREE</span>`;
+            } else {
+                let pHTML = `₹${currentEbook.discount_price || currentEbook.price}`;
+                if (currentEbook.discount_price && currentEbook.price > currentEbook.discount_price) pHTML += ` <span class="strike-price">₹${currentEbook.price}</span>`;
+                priceBox.innerHTML = `<span class="price-tag" style="font-size: 1.6rem;">${pHTML}</span>`;
+            }
+
+            actionBtn.className = "btn";
+            actionBtn.disabled = false;
+            actionBtn.style.background = "";
+            actionBtn.style.color = "";
+            actionBtn.style.boxShadow = "";
+
+            if (ownedBook) {
+                if (ownedBook.status.toLowerCase() === "approved") {
+                    footerPrice.innerHTML = "Owned";
+                    actionBtn.innerHTML = `<i class="fas fa-download"></i> Download`;
+                    actionBtn.onclick = () => window.open(currentEbook.pdf_link, "_blank");
+                    actionBtn.style.background = "var(--success)"; 
+                    actionBtn.style.boxShadow = "0 4px 20px rgba(16,185,129,0.3)";
+                    actionBtn.style.color = "#fff";
+                } else {
+                    footerPrice.innerHTML = "In Verification";
+                    actionBtn.innerHTML = `<i class="fas fa-hourglass-half spin"></i> Verifying...`;
+                    actionBtn.disabled = true; 
+                    actionBtn.onclick = null;
+                }
+            } else if (isFree) {
+                footerPrice.innerHTML = "Free";
+                actionBtn.innerHTML = `<i class="fas fa-download"></i> Download`;
+                actionBtn.onclick = () => window.open(currentEbook.pdf_link, "_blank");
+            } else {
+                footerPrice.innerHTML = `₹${currentEbook.discount_price || currentEbook.price}`;
+                actionBtn.innerHTML = `Buy Now <i class="fas fa-arrow-right" style="margin-left:6px;"></i>`;
+                actionBtn.style.background = "linear-gradient(135deg, #7c6af7, #9f3fbf)";
+                actionBtn.style.color = "#fff";
+                actionBtn.onclick = () => openPayment();
+            }
+        }
+
+        function openPayment() {
+            document.getElementById("page-detail").classList.add("hidden");
+            document.getElementById("action-footer").classList.add("hidden");
+            document.getElementById("page-payment").classList.remove("hidden");
+            
+            const amt = currentEbook.discount_price || currentEbook.price;
+            document.getElementById("pay-amt").innerText = `₹${amt}`;
+            document.getElementById("pay-upi").innerText = UPI_ID;
+            document.getElementById("pay-qr").src = UPI_QR_URL;
+            document.getElementById("paymentForm").reset();
+        }
+
+        function copyUPI() { navigator.clipboard.writeText(UPI_ID); showToast("UPI ID Copied!"); }
+
+        document.getElementById("paymentForm").addEventListener("submit", (e) => {
+            e.preventDefault();
+            const payload = { user_id: userId, ebook_id: currentEbook.id, txn_id: document.getElementById("pay-txn").value, status: "pending" };
+            
+            // 1. Optimistic Memory Update
+            userPayments.push({ ebook_id: currentEbook.id, status: "pending" });
+            localStorage.setItem(`cache_payments_${userId}_data`, JSON.stringify(userPayments));
+            localStorage.setItem(`cache_payments_${userId}_time`, Date.now().toString());
+            
+            // 2. Queue for Library page to handle API call
+            localStorage.setItem("sync_pending_payment", JSON.stringify(payload));
+
+            // 3. Instant Redirect
+            window.location.href = 'library.html';
+        });
+    </script>
+</body>
+</html>
