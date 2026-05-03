@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Manage Payments - Islamic Library Admin</title>
+    <link rel="icon" href="../hikmahlogo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="admin_style.css">
+</head>
+<body>
+    <div class="hero-bg"></div><div class="hero-grid"></div><div class="blob blob1"></div><div class="blob blob2"></div>
+    <div id="loader" class="hidden"><div class="spinner"></div></div>
+    <div id="toast-container"></div>
+    <div id="confirm-overlay" class="hidden">
+        <div class="confirm-box">
+            <h3 id="confirm-title" style="margin-bottom: 10px; color:var(--text);">Confirm Action</h3>
+            <p id="confirm-msg" style="font-size: .9rem; color: var(--text2);">Are you sure?</p>
+            <div class="confirm-actions">
+                <button class="btn btn-outline" onclick="closeConfirm()">Cancel</button>
+                <button class="btn" id="confirm-yes-btn">Yes &#10022;</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Change Password Modal -->
+    <div id="change-password-modal" class="modal-overlay hidden">
+        <div class="modal-box" style="text-align:left;">
+            <h3 style="margin-bottom: 20px;">Change Admin Password</h3>
+            <form id="changePasswordForm" onsubmit="event.preventDefault(); handleChangePassword();">
+                <div class="form-group"><label>New Password</label><input type="password" id="new_admin_password" required minlength="6" placeholder="Enter new strong password"></div>
+                <div class="modal-actions" style="margin-top:20px;">
+                    <button type="button" class="btn btn-outline" onclick="closeChangePasswordModal()">Cancel</button>
+                    <button type="submit" class="btn">Update Password</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div id="login-view" class="hidden"> <!-- Kept hidden for script compatibility --> </div>
+    <div id="app-view" class="hidden">
+        <header>
+            <div class="flex align-center" style="gap: 12px;">
+                <i class="fas fa-wallet" style="color: var(--accent2); font-size: 1.2rem; text-shadow: 0 0 10px var(--glow);"></i>
+                <h2>Manage Payments</h2>
+            </div>
+            <div class="flex align-center" style="gap: 20px;">
+                <i id="theme-toggle-icon" class="fas fa-moon" style="font-size: 1.2rem; color: var(--text2); cursor: pointer;" onclick="toggleTheme()" title="Switch Theme"></i>
+                <i class="fas fa-user-circle" style="font-size: 1.3rem; color: var(--text2); cursor: pointer;" onclick="openProfileDrawer()" title="Profile"></i>
+            </div>
+        </header>
+
+        <div id="drawer-overlay" class="drawer-overlay" onclick="closeProfileDrawer()"></div>
+        <div id="profile-drawer" class="profile-drawer">
+            <div class="drawer-header"><h3>Admin Profile</h3><i class="fas fa-times" onclick="closeProfileDrawer()"></i></div>
+            <div class="drawer-body">
+                <div class="drawer-avatar"><i class="fas fa-crown"></i></div>
+                <div class="drawer-name">Admin</div>
+                <div class="drawer-mobile">Main Administrator</div>
+                <div class="drawer-menu"><button class="btn btn-outline" onclick="openChangePassword()"><i class="fas fa-key"></i> Change Password</button></div>
+            </div>
+            <div class="drawer-footer"><button class="btn btn-danger" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Log Out</button></div>
+        </div>
+
+        <main>
+            <div class="flex justify-between align-center" style="margin-bottom: 24px;">
+                <h3 style="font-size: 1.2rem;">All Payments</h3>
+                <button class="action-btn-sm" id="refresh-payments-btn" onclick="forceFetchPayments()" title="Refresh Payments"><i class="fas fa-sync-alt"></i></button>
+            </div>
+            <div id="payments-list"></div>
+        </main>
+
+        <nav class="bottom-nav">
+            <a href="index.html" class="nav-item"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a>
+            <a href="books.html" class="nav-item"><i class="fas fa-book"></i><span>Books</span></a>
+            <a href="users.html" class="nav-item"><i class="fas fa-users"></i><span>Users</span></a>
+            <a href="payments.html" class="nav-item active"><i class="fas fa-wallet"></i><span>Payments</span></a>
+            <a href="new-ebook.html" class="nav-item add-btn"><i class="fas fa-plus"></i><span>Add</span></a>
+        </nav>
+    </div>
+
+    <script src="admin_script.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if (isAdminLoggedIn()) {
+                renderPaymentsSkeletons();
+                fetchPayments(false);
+            }
+        });
+
+        function renderPaymentsSkeletons() {
+            const container = document.getElementById("payments-list");
+            container.innerHTML = "";
+            for (let i = 0; i < 4; i++) {
+                container.innerHTML += `
+                <div class="card skeleton" style="flex-direction:column; gap:8px;">
+                    <div class="flex justify-between align-center">
+                        <div class="skeleton" style="height: 18px; width: 60%;"></div>
+                        <div class="skeleton" style="height: 24px; width: 80px; border-radius: 99px;"></div>
+                    </div>
+                    <div class="skeleton" style="height: 14px; width: 40%;"></div>
+                    <div class="skeleton" style="height: 14px; width: 35%;"></div>
+                    <div class="payment-actions">
+                        <div class="skeleton" style="flex:1; height: 36px; border-radius: 10px;"></div>
+                        <div class="skeleton" style="flex:1; height: 36px; border-radius: 10px;"></div>
+                    </div>
+                </div>`;
+            }
+        }
+
+        function renderPayments(data) {
+            const container = document.getElementById("payments-list");
+            
+            if(data === null) {
+                container.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-triangle"></i>Failed to load payments.</div>`;
+                return;
+            }
+
+            if (!data || data.length === 0) {
+                container.innerHTML = `<div class="empty-state"><i class="fas fa-wallet"></i>No payments found yet.</div>`;
+                return;
+            }
+
+            container.innerHTML = "";
+            data.forEach(pay => {
+                let badgeClass = "badge-pending";
+                let statusText = (pay.status || "pending").toUpperCase();
+                if (statusText === "APPROVED") badgeClass = "badge-approved";
+                if (statusText === "REJECTED") badgeClass = "badge-rejected";
+
+                let actionButtons = `<div style="display:flex; gap:10px; margin-top:12px; width:100%;">`;
+                
+                if (statusText === "PENDING") {
+                    actionButtons += `
+                        <button class="btn btn-success" style="padding:10px; font-size:.8rem; border-radius:10px; flex:1;" onclick="handlePaymentStatus('${pay.id}', 'approved')"><i class="fas fa-check"></i> Approve</button>
+                        <button class="btn btn-danger" style="padding:10px; font-size:.8rem; border-radius:10px; flex:1;" onclick="handlePaymentStatus('${pay.id}', 'rejected')"><i class="fas fa-times"></i> Reject</button>`;
+                } else if (statusText === "APPROVED") {
+                    actionButtons += `<button class="btn btn-outline" style="padding:10px; font-size:.8rem; border-radius:10px; flex:1; color: var(--danger); border-color: rgba(244, 63, 94, 0.4);" onclick="handlePaymentStatus('${pay.id}', 'rejected')"><i class="fas fa-undo" style="margin-right:6px;"></i> Change to Reject</button>`;
+                } else if (statusText === "REJECTED") {
+                    actionButtons += `<button class="btn btn-outline" style="padding:10px; font-size:.8rem; border-radius:10px; flex:1; color: var(--success); border-color: rgba(16, 185, 129, 0.4);" onclick="handlePaymentStatus('${pay.id}', 'approved')"><i class="fas fa-undo" style="margin-right:6px;"></i> Change to Approve</button>`;
+                }
+                actionButtons += `</div>`;
+
+                container.innerHTML += `
+                <div class="card" style="flex-direction:column; gap:6px; cursor: default;">
+                    <div class="flex justify-between align-center">
+                        <div class="card-title" style="margin:0; font-family:'DM Mono', monospace; font-size:1.05rem;">Txn: ${pay.txn_id}</div>
+                        <span class="badge ${badgeClass}">${statusText}</span>
+                    </div>
+                    <div class="card-sub" style="margin:0;"><strong>User ID:</strong> ${pay.user_id}</div>
+                    <div class="card-sub" style="margin:0;"><strong>Ebook ID:</strong> ${pay.ebook_id}</div>
+                    ${actionButtons}
+                </div>`;
+            });
+        }
+    </script>
+</body>
+</html>

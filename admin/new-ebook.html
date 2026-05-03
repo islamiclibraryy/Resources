@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Manage Ebook - Islamic Library Admin</title>
+    <link rel="icon" href="../hikmahlogo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="admin_style.css">
+</head>
+<body>
+    <div class="hero-bg"></div><div class="hero-grid"></div><div class="blob blob1"></div><div class="blob blob2"></div>
+    <div id="loader" class="hidden"><div class="spinner"></div></div>
+    <div id="toast-container"></div>
+    <div id="confirm-overlay" class="hidden">
+        <div class="confirm-box">
+            <h3 id="confirm-title" style="margin-bottom: 10px; color:var(--text);">Confirm Action</h3>
+            <p id="confirm-msg" style="font-size: .9rem; color: var(--text2);">Are you sure?</p>
+            <div class="confirm-actions">
+                <button class="btn btn-outline" onclick="closeConfirm()">Cancel</button>
+                <button class="btn" id="confirm-yes-btn">Yes &#10022;</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Change Password Modal -->
+    <div id="change-password-modal" class="modal-overlay hidden">
+        <div class="modal-box" style="text-align:left;">
+            <h3 style="margin-bottom: 20px;">Change Admin Password</h3>
+            <form id="changePasswordForm" onsubmit="event.preventDefault(); handleChangePassword();">
+                <div class="form-group"><label>New Password</label><input type="password" id="new_admin_password" required minlength="6" placeholder="Enter new strong password"></div>
+                <div class="modal-actions" style="margin-top:20px;">
+                    <button type="button" class="btn btn-outline" onclick="closeChangePasswordModal()">Cancel</button>
+                    <button type="submit" class="btn">Update Password</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="login-view" class="hidden"></div>
+    <div id="app-view" class="hidden">
+        <header>
+            <div class="flex align-center" style="gap: 12px;">
+                <i class="fas fa-plus-circle" style="color: var(--accent2); font-size: 1.2rem; text-shadow: 0 0 10px var(--glow);"></i>
+                <h2 id="form-title">Add New Ebook</h2>
+            </div>
+            <div class="flex align-center" style="gap: 20px;">
+                <i id="theme-toggle-icon" class="fas fa-moon" style="font-size: 1.2rem; color: var(--text2); cursor: pointer;" onclick="toggleTheme()" title="Switch Theme"></i>
+                <i class="fas fa-user-circle" style="font-size: 1.3rem; color: var(--text2); cursor: pointer;" onclick="openProfileDrawer()" title="Profile"></i>
+            </div>
+        </header>
+
+        <div id="drawer-overlay" class="drawer-overlay" onclick="closeProfileDrawer()"></div>
+        <div id="profile-drawer" class="profile-drawer">
+            <div class="drawer-header"><h3>Admin Profile</h3><i class="fas fa-times" onclick="closeProfileDrawer()"></i></div>
+            <div class="drawer-body">
+                <div class="drawer-avatar"><i class="fas fa-crown"></i></div>
+                <div class="drawer-name">Admin</div>
+                <div class="drawer-mobile">Main Administrator</div>
+                <div class="drawer-menu"><button class="btn btn-outline" onclick="openChangePassword()"><i class="fas fa-key"></i> Change Password</button></div>
+            </div>
+            <div class="drawer-footer"><button class="btn btn-danger" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Log Out</button></div>
+        </div>
+
+        <main>
+            <div id="phrase-ebook" class="bismillah arabic-text text-center" style="margin-bottom: 24px;"></div>
+            <form id="ebookForm" onsubmit="event.preventDefault(); handleEbookSubmit();">
+                <input type="hidden" id="ebook_id">
+                <div class="form-group"><label>Ebook Title</label><input type="text" id="eb_title" required placeholder="e.g., The Sealed Nectar"></div>
+                <div class="form-group"><label>Description</label><textarea id="eb_desc" rows="3" required placeholder="Short description..."></textarea></div>
+                <div class="form-group"><label>PDF Link (External URL)</label><input type="url" id="eb_pdf" required placeholder="https://drive.google.com/..."></div>
+                <div class="form-group"><label>Thumbnail Image URL (1:1 Ratio)</label><input type="url" id="eb_thumb" required placeholder="https://imgur.com/...png"></div>
+                
+                <div class="flex align-center justify-between mt-1" style="margin-bottom: 16px; padding: 12px; background: var(--surface3); border-radius: var(--r); border: 1px solid var(--border2);">
+                    <label style="margin:0; font-size:.9rem; color:var(--text); text-transform:none; font-weight:600;">Is this Ebook FREE?</label>
+                    <label class="switch"><input type="checkbox" id="eb_isfree" onchange="togglePriceFields()"><span class="slider"></span></label>
+                </div>
+
+                <div id="price-fields">
+                    <div class="flex" style="gap: 16px;">
+                        <div class="form-group" style="flex: 1;"><label>Regular Price ()</label><input type="number" step="0.01" id="eb_price" placeholder="0.00"></div>
+                        <div class="form-group" style="flex: 1;"><label>Discount Price ()</label><input type="number" step="0.01" id="eb_discount" placeholder="0.00"></div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn mt-2" id="submit-ebook-btn">Save Ebook &#10022;</button>
+                <button type="button" class="btn btn-outline mt-1 hidden" id="cancel-edit-btn" onclick="cancelEdit()">Cancel</button>
+            </form>
+        </main>
+
+        <nav class="bottom-nav">
+            <a href="index.html" class="nav-item"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a>
+            <a href="books.html" class="nav-item"><i class="fas fa-book"></i><span>Books</span></a>
+            <a href="users.html" class="nav-item"><i class="fas fa-users"></i><span>Users</span></a>
+            <a href="payments.html" class="nav-item"><i class="fas fa-wallet"></i><span>Payments</span></a>
+            <a href="new-ebook.html" class="nav-item add-btn active"><i class="fas fa-plus"></i><span>Add</span></a>
+        </nav>
+    </div>
+
+    <script src="admin_script.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if (isAdminLoggedIn()) {
+                const editId = sessionStorage.getItem('edit_ebook_id');
+                const submitBtn = document.getElementById('submit-ebook-btn');
+
+                if (editId) {
+                    document.getElementById('form-title').innerText = "Edit Ebook";
+                    submitBtn.innerHTML = "Update Ebook &#10022;";
+                    submitBtn.disabled = true;
+                    document.getElementById('cancel-edit-btn').classList.remove('hidden');
+
+                    fetchEbooks(false).then(() => { 
+                        const ebook = window.ebooksData.find(e => String(e.id) === String(editId));
+                        if(ebook) {
+                            document.getElementById("ebook_id").value = ebook.id;
+                            document.getElementById("eb_title").value = ebook.title;
+                            document.getElementById("eb_desc").value = ebook.description;
+                            document.getElementById("eb_pdf").value = ebook.pdf_link;
+                            document.getElementById("eb_thumb").value = ebook.thumbnail;
+                            // Nayi aur Sahi Line:
+                            document.getElementById("eb_isfree").checked = ebook.is_free === true || String(ebook.is_free).toLowerCase() === "true";
+                            document.getElementById("eb_price").value = ebook.price || "";
+                            document.getElementById("eb_discount").value = ebook.discount_price || "";
+                            togglePriceFields();
+                            submitBtn.disabled = false;
+                        } else {
+                            showToast("Could not find book to edit.", "error");
+                            cancelEdit();
+                        }
+                    });
+                } else {
+                    document.getElementById('form-title').innerText = "Add New Ebook";
+                    togglePriceFields();
+                }
+                document.getElementById('phrase-ebook').innerText = ARABIC_PHRASES[Math.floor(Math.random() * ARABIC_PHRASES.length)];
+            }
+        });
+
+        function cancelEdit() {
+            sessionStorage.removeItem('edit_ebook_id');
+            window.location.href = 'books.html';
+        }
+    </script>
+</body>
+</html>

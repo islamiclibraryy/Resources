@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Manage Books - Islamic Library Admin</title>
+    <link rel="icon" href="../hikmahlogo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="admin_style.css">
+</head>
+<body>
+    <div class="hero-bg"></div><div class="hero-grid"></div><div class="blob blob1"></div><div class="blob blob2"></div>
+    <div id="loader" class="hidden"><div class="spinner"></div></div>
+    <div id="toast-container"></div>
+    <div id="confirm-overlay" class="hidden">
+        <div class="confirm-box">
+            <h3 id="confirm-title" style="margin-bottom: 10px; color:var(--text);">Confirm Action</h3>
+            <p id="confirm-msg" style="font-size: .9rem; color: var(--text2);">Are you sure?</p>
+            <div class="confirm-actions">
+                <button class="btn btn-outline" onclick="closeConfirm()">Cancel</button>
+                <button class="btn" id="confirm-yes-btn">Yes ✦</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Custom Change Password Modal -->
+    <div id="change-password-modal" class="modal-overlay hidden">
+        <div class="modal-box" style="text-align:left;">
+            <h3 style="margin-bottom: 20px;">Change Admin Password</h3>
+            <form id="changePasswordForm" onsubmit="event.preventDefault(); handleChangePassword();">
+                <div class="form-group"><label>New Password</label><input type="password" id="new_admin_password" required minlength="6" placeholder="Enter new strong password"></div>
+                <div class="modal-actions" style="margin-top:20px;">
+                    <button type="button" class="btn btn-outline" onclick="closeChangePasswordModal()">Cancel</button>
+                    <button type="submit" class="btn">Update Password</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="app-view">
+        <header>
+            <div class="flex align-center" style="gap: 12px;">
+                <i class="fas fa-book" style="color: var(--accent2); font-size: 1.2rem; text-shadow: 0 0 10px var(--glow);"></i>
+                <h2>Manage Books</h2>
+            </div>
+            <div class="flex align-center" style="gap: 20px;">
+                <i id="theme-toggle-icon" class="fas fa-moon" style="font-size: 1.2rem; color: var(--text2); cursor: pointer;" onclick="toggleTheme()" title="Switch Theme"></i>
+                <i class="fas fa-user-circle" style="font-size: 1.3rem; color: var(--text2); cursor: pointer;" onclick="openProfileDrawer()" title="Profile"></i>
+            </div>
+        </header>
+
+        <div id="drawer-overlay" class="drawer-overlay" onclick="closeProfileDrawer()"></div>
+        <div id="profile-drawer" class="profile-drawer">
+            <div class="drawer-header"><h3>Admin Profile</h3><i class="fas fa-times" onclick="closeProfileDrawer()"></i></div>
+            <div class="drawer-body">
+                <div class="drawer-avatar"><i class="fas fa-crown"></i></div>
+                <div class="drawer-name">Admin</div>
+                <div class="drawer-mobile">Main Administrator</div>
+                <div class="drawer-menu"><button class="btn btn-outline" onclick="openChangePassword()"><i class="fas fa-key"></i> Change Password</button></div>
+            </div>
+            <div class="drawer-footer"><button class="btn btn-danger" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Log Out</button></div>
+        </div>
+
+        <main>
+            <div class="flex justify-between align-center" style="margin-bottom: 24px;">
+                <h3 style="font-size: 1.2rem;">All Ebooks</h3>
+                <button class="action-btn-sm" id="refresh-ebooks-btn" onclick="forceFetchEbooks()" title="Refresh Ebooks"><i class="fas fa-sync-alt"></i></button>
+            </div>
+            <div id="ebooks-list"></div>
+        </main>
+
+        <nav class="bottom-nav">
+            <a href="index.html" class="nav-item"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a>
+            <a href="books.html" class="nav-item active"><i class="fas fa-book"></i><span>Books</span></a>
+            <a href="users.html" class="nav-item"><i class="fas fa-users"></i><span>Users</span></a>
+            <a href="payments.html" class="nav-item"><i class="fas fa-wallet"></i><span>Payments</span></a>
+            <a href="new-ebook.html" class="nav-item add-btn"><i class="fas fa-plus"></i><span>Add</span></a>
+        </nav>
+    </div>
+
+    <script src="admin_script.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if (isAdminLoggedIn()) {
+                // Initial load: show skeletons, then fetch data without blocking loader
+                renderEbooksSkeletons();
+                fetchEbooks(false); 
+            }
+        });
+
+        function renderEbooksSkeletons() {
+            const container = document.getElementById("ebooks-list");
+            container.innerHTML = ""; // Clear previous content
+            for (let i = 0; i < 5; i++) {
+                container.innerHTML += `
+                <div class="card skeleton">
+                    <div class="ebook-thumb skeleton"></div>
+                    <div class="card-details">
+                        <div class="skeleton" style="height: 16px; width: 80%;"></div>
+                        <div class="skeleton" style="height: 12px; width: 50%;"></div>
+                        <div class="skeleton" style="height: 24px; width: 60px; border-radius: 99px;"></div>
+                    </div>
+                    <div class="flex" style="flex-direction:column; justify-content:center; gap: 8px;">
+                        <div class="skeleton" style="width: 36px; height: 36px; border-radius: 10px;"></div>
+                        <div class="skeleton" style="width: 36px; height: 36px; border-radius: 10px;"></div>
+                    </div>
+                </div>`;
+            }
+        }
+
+        function renderEbooks(data) {
+            const container = document.getElementById("ebooks-list");
+            
+            if (data === null) {
+                container.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-triangle"></i>Failed to load ebooks.</div>`;
+                return;
+            }
+            
+            if (!data || data.length === 0) {
+                container.innerHTML = `<div class="empty-state"><i class="fas fa-book-open"></i>No ebooks found. Add one!</div>`;
+                return;
+            }
+
+            container.innerHTML = ""; // Clear skeletons
+            data.forEach(eb => {
+                const isFree = eb.is_free === true || String(eb.is_free).toLowerCase() === "true";
+                const badge = isFree 
+                    ? `<span class="badge badge-free">✦ FREE</span>` 
+                    : `<span class="badge badge-price">₹${eb.discount_price || eb.price}</span>`;
+                
+                container.innerHTML += `
+                <div class="card">
+                    <img src="${eb.thumbnail}" class="ebook-thumb">
+                    <div class="card-details">
+                        <div class="card-title">${eb.title}</div>
+                        <div class="card-sub">${eb.description.substring(0, 40)}...</div>
+                        <div>${badge}</div>
+                    </div>
+                    <div class="flex" style="flex-direction:column; justify-content:center; gap: 8px;">
+                        <button class="action-btn-sm" onclick="editEbook('${eb.id}')" title="Edit Ebook"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn-sm btn-danger" onclick="deleteEbook('${eb.id}')" title="Delete Ebook"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>`;
+            });
+        }
+
+        function editEbook(id) {
+            sessionStorage.setItem('edit_ebook_id', id);
+            window.location.href = 'new-ebook.html';
+        }
+
+        function deleteEbook(id) {
+    showConfirm("Delete Ebook", "Are you sure you want to permanently delete this ebook?", () => {
+        showToast("Deleting ebook...", "info");
+        
+        // Card ko UI se turant na hatayein, server se success aane ke baad hatayein.
+        // Yeh behtar practice hai.
+        const cardToRemove = document.querySelector(`[onclick="deleteEbook('${id}')"]`).closest('.card');
+        
+        // API call ko uncomment kar dein
+        apiCall(`deleteEbook&id=${id}`, "POST", null, true).then(res => {
+           if (res && res.success) { 
+               showToast("Ebook deleted!", "success"); 
+               if (cardToRemove) {
+                   cardToRemove.style.opacity = '0';
+                   setTimeout(() => cardToRemove.remove(), 300);
+               }
+           } else { 
+               showToast("Delete failed on server.", "error"); 
+               // Agar delete fail ho, toh book list ko refresh kar lein
+               forceFetchEbooks(); 
+           }
+        });
+    });
+}
+    </script>
+</body>
+</html>
