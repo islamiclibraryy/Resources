@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>My Library - Islamic Library</title>
+    <title>My Library - Islamic Library by Shekh</title>
 
     <!-- ✅ SEO META -->
     <meta name="description" content="Islamic Library by Shekh – Download Islamic eBooks, Quran PDFs, and Hadith books. A free and premium Islamic digital library.">
@@ -127,18 +127,20 @@
         
         .main-content { padding: 90px 20px 90px; max-width: 1400px; margin: 0 auto; animation: fadeIn .5s ease both; }
         
-        /* ✅ PROFILE DRAWER UI */
+        /* ✅ PROFILE DRAWER UI (MATCHED WITH INFO.HTML) */
         .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 10001; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; backdrop-filter: blur(3px); }
         .drawer-overlay.active { opacity: 1; pointer-events: all; }
         
-        .profile-drawer { position: fixed; top: 0; right: -320px; width: 300px; height: 100vh; background: var(--surface); z-index: 10002; box-shadow: -5px 0 30px rgba(0,0,0,0.5); transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; }
+        /* Fixed height using 100% and 100dvh for mobile address bar fixing */
+        .profile-drawer { position: fixed; top: 0; right: -320px; width: 300px; height: 100%; height: 100dvh; background: var(--surface); z-index: 10002; box-shadow: -5px 0 30px rgba(0,0,0,0.5); transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; }
         .profile-drawer.active { right: 0; }
         
-        .drawer-header { padding: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
+        .drawer-header { padding: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); flex-shrink: 0;}
         .drawer-header h3 { margin: 0; font-size: 1.2rem; }
         .drawer-header i { font-size: 1.2rem; color: var(--text2); cursor: pointer; padding: 5px; }
         
-        .drawer-body { padding: 30px 20px; text-align: center; flex: 1; }
+        /* Drawer body is scrollable so footer is always pushed to bottom */
+        .drawer-body { padding: 30px 20px; text-align: center; flex: 1; overflow-y: auto; }
         .drawer-avatar { width: 80px; height: 80px; border-radius: 50%; background: var(--glow2); border: 2px solid var(--accent); color: var(--accent2); font-size: 2.5rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px auto; }
         .drawer-name { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 700; margin-bottom: 4px; color: var(--text); }
         .drawer-mobile { font-family: 'DM Mono', monospace; font-size: 0.9rem; color: var(--text2); margin-bottom: 30px; letter-spacing: 0.05em; }
@@ -146,7 +148,8 @@
         .drawer-menu .btn-outline { width: 100%; text-align: left; padding: 14px 20px; margin-bottom: 12px; display: flex; align-items: center; gap: 12px; font-size: 0.95rem; border-color: var(--border); }
         .drawer-menu .btn-outline i { width: 20px; text-align: center; font-size: 1.1rem; }
         
-        .drawer-footer { padding: 20px; border-top: 1px solid var(--border); }
+        /* Footer stays at bottom, added safe-area padding for iPhone bottom bar */
+        .drawer-footer { padding: 20px; border-top: 1px solid var(--border); flex-shrink: 0; padding-bottom: calc(20px + env(safe-area-inset-bottom)); }
 
         /* Library Specific */
         .lib-card { background: var(--surface2); border-radius: var(--r2); padding: 16px; margin-bottom: 16px; display: flex; gap: 16px; border: 1px solid var(--border); align-items: center; transition: all var(--transition); animation: cardIn .4s ease both; box-shadow: var(--shadow); }
@@ -268,16 +271,20 @@
             initTheme();
         }
 
-        // ✅ PROFILE DRAWER LOGIC
+        // ✅ PROFILE DRAWER LOGIC (MATCHED WITH INFO.HTML)
         function openProfileDrawer() {
             document.getElementById("profile-name").innerText = localStorage.getItem("islamic_user_name") || "Library User";
             document.getElementById("profile-mobile").innerText = localStorage.getItem("islamic_user_mobile") || "Registered User";
             document.getElementById("drawer-overlay").classList.add("active");
             document.getElementById("profile-drawer").classList.add("active");
+            // Prevent background scrolling
+            document.body.style.overflow = 'hidden';
         }
         function closeProfileDrawer() {
             document.getElementById("drawer-overlay").classList.remove("active");
             document.getElementById("profile-drawer").classList.remove("active");
+            // Restore background scrolling
+            document.body.style.overflow = '';
         }
 
         // ✅ UNIVERSAL MODAL SYSTEM

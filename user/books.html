@@ -3,16 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Book Details - Islamic Library</title>
+    <title>Book Details - Islamic Library by Shekh</title>
 
-    <meta name="description" content="Islamic Library by Shekh – Download Islamic eBooks, Quran PDFs, and Hadith books.">
+    <!-- ✅ SEO META -->
+    <meta name="description" content="Islamic Library by Shekh – Download Islamic eBooks, Quran PDFs, and Hadith books. A free and premium Islamic digital library.">
     <meta name="keywords" content="Islamic Library by Shekh, Islamic ebooks, Quran PDF, Hadith books">
     <meta name="author" content="Islamic Library by Shekh">
 
+    <!-- ✅ FAVICON (LOCAL LOGO) -->
     <link rel="icon" type="image/png" sizes="32x32" href="hikmahlogo.png">
     <link rel="icon" type="image/png" sizes="16x16" href="hikmahlogo.png">
     <link rel="apple-touch-icon" sizes="180x180" href="hikmahlogo.png">
-      
+
     <!-- ✅ OPEN GRAPH -->
     <meta property="og:title" content="Islamic Library by Shekh">
     <meta property="og:description" content="Free & Paid Islamic eBooks, Quran PDFs, Hadith books available.">
@@ -20,16 +22,21 @@
     <meta property="og:url" content="https://islamiclibraryy.github.io/Resources/">
     <meta property="og:type" content="website">
 
+    <!-- Fonts: Original Amiri for Arabic + Resume Builder Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+    
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- ✅ SECURITY CHECK SCRIPT -->
     <script>
         if (!localStorage.getItem("islamic_user_id") || !sessionStorage.getItem("selected_book_data")) {
             window.location.replace("index.html");
         }
     </script>
 
+    <!-- ✅ PREVENT THEME FLASH -->
     <script>
         (function() {
             const savedTheme = localStorage.getItem('islamic_theme') || 'dark';
@@ -38,6 +45,7 @@
     </script>
 
     <style>
+        /* ===== CSS VARIABLES (DARK MODE DEFAULT) ===== */
         :root {
             --bg: #0a0a0f; --bg2: #0f0f18; --bg3: #13131e;
             --surface: #1a1a28; --surface2: #1f1f30; --surface3: #252538;
@@ -51,6 +59,7 @@
             --transition: 0.2s cubic-bezier(0.4,0,0.2,1);
         }
 
+        /* ===== LIGHT MODE VARIABLES ===== */
         [data-theme="light"] {
             --bg: #f4f6f8; --bg2: #e9ecef; --bg3: #dee2e6;
             --surface: #ffffff; --surface2: #f8f9fa; --surface3: #e9ecef;
@@ -74,10 +83,14 @@
 
         .hero-bg { position:fixed; inset:0; pointer-events:none; z-index:-2; background: radial-gradient(ellipse 80% 50% at 50% -10%,rgba(124,106,247,0.2) 0%,transparent 70%), radial-gradient(ellipse 50% 40% at 80% 60%,rgba(168,85,247,0.12) 0%,transparent 60%), radial-gradient(ellipse 40% 30% at 20% 70%,rgba(99,102,241,0.1) 0%,transparent 60%); }
         .hero-grid { position:fixed; inset:0; pointer-events:none; z-index:-1; background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px); background-size:48px 48px; mask-image:radial-gradient(ellipse 100% 100% at 50% 50%,black 40%,transparent 100%); opacity:0.6; }
+        .blob { position:fixed; border-radius:50%; filter:blur(80px); pointer-events:none; animation:blobFloat 8s ease-in-out infinite; z-index:-1; }
+        .blob1 { width:400px; height:400px; background:rgba(124,106,247,0.18); top:-100px; left:-100px; animation-delay:0s; }
+        .blob2 { width:350px; height:350px; background:rgba(168,85,247,0.12); bottom:-80px; right:-80px; animation-delay:3s; }
+        .blob3 { width:250px; height:250px; background:rgba(99,102,241,0.1); top:40%; right:10%; animation-delay:5s; }
 
         .arabic-text { font-family: 'Amiri', serif; }
         h1, h2, h3 { font-family: 'Syne', sans-serif; font-weight: 700; letter-spacing: -0.02em; color: var(--text); }
-        .hidden { display: none !important; } .flex { display: flex; } .align-center { align-items: center; } .text-center { text-align: center; } .mb-2 { margin-bottom: 20px; }
+        .hidden { display: none !important; } .flex { display: flex; } .align-center { align-items: center; } .text-center { text-align: center; } .mt-1 { margin-top: 10px; } .mt-2 { margin-top: 20px; } .mb-2 { margin-bottom: 20px; }
 
         #loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10,10,15,0.85); backdrop-filter: blur(5px); z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center; }
         .spinner { width: 50px; height: 50px; border: 4px solid var(--surface3); border-top: 4px solid var(--accent); border-radius: 50%; animation: spin 1s cubic-bezier(0.4,0,0.2,1) infinite; }
@@ -90,21 +103,12 @@
         .modal-desc { font-size: 0.9rem; color: var(--text2); margin-bottom: 24px; line-height: 1.5; }
         .modal-actions { display: flex; gap: 12px; }
         .modal-actions button { flex: 1; padding: 12px; font-size: 0.9rem; }
+        .btn-danger { background: rgba(244, 63, 94, 0.1); color: var(--danger); border: 1px solid rgba(244, 63, 94, 0.3); }
+        .btn-danger:hover { background: var(--danger); color: #fff; box-shadow: 0 4px 20px rgba(244, 63, 94, 0.4); }
 
-        .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 10001; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; backdrop-filter: blur(3px); }
-        .drawer-overlay.active { opacity: 1; pointer-events: all; }
-        .profile-drawer { position: fixed; top: 0; right: -320px; width: 300px; height: 100vh; background: var(--surface); z-index: 10002; box-shadow: -5px 0 30px rgba(0,0,0,0.5); transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; }
-        .profile-drawer.active { right: 0; }
-        .drawer-header { padding: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
-        .drawer-header h3 { margin: 0; font-size: 1.2rem; }
-        .drawer-header i { font-size: 1.2rem; color: var(--text2); cursor: pointer; padding: 5px; }
-        .drawer-body { padding: 30px 20px; text-align: center; flex: 1; }
-        .drawer-avatar { width: 80px; height: 80px; border-radius: 50%; background: var(--glow2); border: 2px solid var(--accent); color: var(--accent2); font-size: 2.5rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px auto; }
-        .drawer-name { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 700; margin-bottom: 4px; color: var(--text); }
-        .drawer-mobile { font-family: 'DM Mono', monospace; font-size: 0.9rem; color: var(--text2); margin-bottom: 30px; letter-spacing: 0.05em; }
-        .drawer-menu .btn-outline { width: 100%; text-align: left; padding: 14px 20px; margin-bottom: 12px; display: flex; align-items: center; gap: 12px; font-size: 0.95rem; border-color: var(--border); }
-        .drawer-menu .btn-outline i { width: 20px; text-align: center; font-size: 1.1rem; }
-        .drawer-footer { padding: 20px; border-top: 1px solid var(--border); }
+        /* ===== SKELETON LOADERS ===== */
+        .skeleton { background: linear-gradient(90deg, var(--surface3) 25%, var(--surface2) 50%, var(--surface3) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite linear; border-radius: 4px; }
+        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
 
         .btn { background: linear-gradient(135deg, #7c6af7, #9f3fbf); color: #fff; border: none; padding: 14px 20px; border-radius: 99px; font-weight: 600; font-family: 'DM Sans', sans-serif; width: 100%; cursor: pointer; transition: var(--transition); font-size: 1rem; display: block; text-align: center; position: relative; overflow: hidden; box-shadow: 0 4px 20px rgba(124,106,247,0.4); }
         .btn::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,0.15),transparent); opacity:0; transition:opacity var(--transition); }
@@ -112,23 +116,47 @@
         .btn-outline { background: transparent; color: var(--text2); border: 1px solid var(--border2); padding: 10px 20px; border-radius: 99px; font-weight: 500; font-size: .85rem; transition: var(--transition); cursor: pointer; box-shadow: none; }
         .btn-outline:hover { border-color: var(--accent); color: var(--accent2); background: var(--glow2); }
 
-        /* ✅ HEADER EXACTLY SAME AS LIBRARY.HTML (Sticky, not fixed) */
+        /* ✅ FIXED HEADER - EXACT MATCH */
         header { 
-            position: sticky; top: 0; left: 0; right: 0; z-index: 1000; 
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000; 
             padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; 
-            background: rgba(10,10,15,0.8); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); 
-            transition: background var(--transition); 
+            background: rgba(10,10,15,0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
+            border-bottom: 1px solid var(--border); 
+            transition: background-color 0.3s ease, border-color 0.3s ease; 
+            transform: translateZ(0); 
         }
         .header-logo-container { display: flex; flex-direction: column; justify-content: center; }
         .header-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.25rem; background: linear-gradient(135deg, var(--accent2), #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; letter-spacing: -0.02em; }
         .header-sub { font-family: 'DM Mono', monospace; font-size: .7rem; font-weight: 500; color: var(--accent2); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 4px; }
         
-        .main-content { padding: 24px 20px 90px; max-width: 1400px; margin: 0 auto; animation: fadeIn .5s ease both; }
+        .main-content { padding: 90px 20px 90px; max-width: 1400px; margin: 0 auto; animation: fadeIn .5s ease both; }
         
+        /* ✅ PROFILE DRAWER UI (BUG FIXED: SCROLL & HEIGHT) */
+        .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 10001; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; backdrop-filter: blur(3px); }
+        .drawer-overlay.active { opacity: 1; pointer-events: all; }
+        
+        .profile-drawer { position: fixed; top: 0; right: -320px; width: 300px; height: 100%; height: 100dvh; background: var(--surface); z-index: 10002; box-shadow: -5px 0 30px rgba(0,0,0,0.5); transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; }
+        .profile-drawer.active { right: 0; }
+        
+        .drawer-header { padding: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); flex-shrink: 0;}
+        .drawer-header h3 { margin: 0; font-size: 1.2rem; }
+        .drawer-header i { font-size: 1.2rem; color: var(--text2); cursor: pointer; padding: 5px; }
+        
+        .drawer-body { padding: 30px 20px; text-align: center; flex: 1; overflow-y: auto; }
+        .drawer-avatar { width: 80px; height: 80px; border-radius: 50%; background: var(--glow2); border: 2px solid var(--accent); color: var(--accent2); font-size: 2.5rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px auto; }
+        .drawer-name { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 700; margin-bottom: 4px; color: var(--text); }
+        .drawer-mobile { font-family: 'DM Mono', monospace; font-size: 0.9rem; color: var(--text2); margin-bottom: 30px; letter-spacing: 0.05em; }
+        
+        .drawer-menu .btn-outline { width: 100%; text-align: left; padding: 14px 20px; margin-bottom: 12px; display: flex; align-items: center; gap: 12px; font-size: 0.95rem; border-color: var(--border); }
+        .drawer-menu .btn-outline i { width: 20px; text-align: center; font-size: 1.1rem; }
+        
+        .drawer-footer { padding: 20px; border-top: 1px solid var(--border); flex-shrink: 0; padding-bottom: calc(20px + env(safe-area-inset-bottom)); }
+
         .price-tag { font-family: 'DM Mono', monospace; font-size: .9rem; color: var(--accent2); font-weight: 700; }
         .strike-price { font-size: .75rem; color: var(--text3); text-decoration: line-through; margin-left: 6px; font-weight: normal; }
         .badge-free { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 99px; background: var(--glow2); border: 1px solid rgba(124,106,247,0.3); font-size: .75rem; font-weight: 600; color: var(--accent3); }
         
+        /* Details UI */
         .detail-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
         .back-btn, .share-btn { background: var(--surface2); color: var(--text); border: 1px solid var(--border2); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; cursor: pointer; transition: all var(--transition); }
         .back-btn:hover { border-color: var(--accent); color: var(--accent2); background: var(--glow2); transform: rotate(-5deg) scale(1.05); }
@@ -187,7 +215,7 @@
         </div>
     </div>
 
-    <!-- ✅ EXACT HEADER MATCH -->
+    <!-- ✅ HEADER EXACT MATCH -->
     <header>
         <div class="flex align-center" style="gap: 12px;">
             <i class="fas fa-book-open" style="color: var(--accent2); font-size: 1.4rem; text-shadow: 0 0 10px var(--glow);"></i>
@@ -231,6 +259,7 @@
 
     <!-- Bottom Nav -->
     <div id="bottom-nav" class="bottom-nav">
+        <!-- Root Tab (Home) remains active visually even inside book details -->
         <div class="nav-item active" onclick="window.location.href='index.html'"><i class="fas fa-home"></i><span>Home</span></div>
         <div class="nav-item" onclick="window.location.href='library.html'"><i class="fas fa-book-reader"></i><span>Library</span></div>
         <a href="info.html" class="nav-item"><i class="fas fa-info-circle"></i><span>Info</span></a>
@@ -258,15 +287,18 @@
             initTheme();
         }
 
+        // ✅ PROFILE DRAWER LOGIC WITH SCROLL LOCK FIX
         function openProfileDrawer() {
             document.getElementById("profile-name").innerText = localStorage.getItem("islamic_user_name") || "Library User";
             document.getElementById("profile-mobile").innerText = localStorage.getItem("islamic_user_mobile") || "Registered User";
             document.getElementById("drawer-overlay").classList.add("active");
             document.getElementById("profile-drawer").classList.add("active");
+            document.body.style.overflow = 'hidden'; // Prevents background scrolling
         }
         function closeProfileDrawer() {
             document.getElementById("drawer-overlay").classList.remove("active");
             document.getElementById("profile-drawer").classList.remove("active");
+            document.body.style.overflow = ''; // Restores background scrolling
         }
         function closeModal() { document.getElementById("confirm-modal").classList.add("hidden"); }
         function showLogoutModal() {
@@ -299,6 +331,7 @@
             if(redirect) window.location.href = "index.html";
         }
 
+        // SWIPE GESTURE (Right -> Home)
         let touchstartX = 0; let touchstartY = 0; let touchendX = 0; let touchendY = 0;
         document.addEventListener('touchstart', e => { touchstartX = e.changedTouches[0].screenX; touchstartY = e.changedTouches[0].screenY; }, {passive: true});
         document.addEventListener('touchend', e => { touchendX = e.changedTouches[0].screenX; touchendY = e.changedTouches[0].screenY; handleSwipe(); }, {passive: true});
@@ -439,7 +472,7 @@
                 actionBtn.innerHTML = `Buy Now <i class="fas fa-arrow-right" style="margin-left:6px;"></i>`;
                 actionBtn.style.background = "linear-gradient(135deg, #7c6af7, #9f3fbf)"; actionBtn.style.color = "#fff";
                 
-                // ✅ DIRECT TO PAYMENTS.HTML
+                // ✅ REDIRECT TO PAYMENTS.HTML
                 actionBtn.onclick = () => window.location.href = 'payments.html';
             }
         }
