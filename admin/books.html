@@ -13,7 +13,7 @@
     <meta property="og:title" content="Admin Dashboard - Islamic Library by Shekh">
     <meta property="og:description" content="Admin Dashboard for managing Islamic Library by Shekh">
     <meta property="og:image" content="hikmahadminlogonew.png">
-    <meta property="og:url" content="https://islamiclibraryy.github.io/Resources/admin">
+    <meta property="og:url" content="https://islamiclibraryy.github.io/Resources/admin/">
     <meta property="og:type" content="website">
 
     <!-- Google Fonts & Font Awesome -->
@@ -25,6 +25,11 @@
     <link rel="stylesheet" href="admin_style.css">
 </head>
 <body>
+     <script>
+    if (localStorage.getItem("admin_logged_in") !== "true") {
+        window.location.replace('index.html');
+    }
+    </script>
     <div class="hero-bg"></div><div class="hero-grid"></div><div class="blob blob1"></div><div class="blob blob2"></div>
     <div id="loader" class="hidden"><div class="spinner"></div></div>
     <div id="toast-container"></div>
