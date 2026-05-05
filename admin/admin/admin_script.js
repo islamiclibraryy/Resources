@@ -247,29 +247,38 @@ function togglePriceFields() {
 }
 
 function handleEbookSubmit() {
+    const submitBtn = document.getElementById('submit-ebook-btn');
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = `<i class="fas fa-spinner spin-icon"></i> Saving...`;
+
+    const ebookId = document.getElementById("ebook_id").value;
     const isFree = document.getElementById("eb_isfree").checked;
+
     const payload = {
         title: document.getElementById("eb_title").value,
         description: document.getElementById("eb_desc").value,
         pdf_link: document.getElementById("eb_pdf").value,
         thumbnail: document.getElementById("eb_thumb").value,
+        price: isFree ? "" : document.getElementById("eb_price").value,
+        discount_price: isFree ? "" : document.getElementById("eb_discount").value,
         is_free: isFree,
-        price: isFree ? 0 : parseFloat(document.getElementById("eb_price").value || 0),
-        discount_price: isFree ? 0 : parseFloat(document.getElementById("eb_discount").value || 0)
     };
-    const id = document.getElementById("ebook_id").value;
-    const action = id ? `updateEbook&id=${id}` : "addEbook";
 
-    showToast(id ? "Updating Ebook..." : "Adding Ebook...", "info");
-    
+    let action = ebookId ? `updateEbook&id=${ebookId}` : "addEbook";
+    let successMessage = ebookId ? "Ebook updated successfully!" : "Ebook added successfully!";
+
     apiCall(action, "POST", payload, true).then(res => {
         if (res && res.success) {
-            showToast(id ? "Ebook Updated!" : "Ebook Added!", "success");
-            sessionStorage.removeItem('edit_ebook_id');
-            localStorage.removeItem("admin_cache_ebooks_time"); // Invalidate cache
-            window.location.href = 'books.html';
-        } else { 
-            showToast("Operation failed on server.", "error"); 
+            showToast(successMessage, "success");
+            setTimeout(() => {
+                sessionStorage.removeItem('edit_ebook_id');
+                // YEH SAHI LINE HAI:
+                window.location.href = '../books/';
+            }, 1000);
+        } else {
+            showToast("Operation failed on server.", "error");
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = ebookId ? "Update Ebook &#10022;" : "Save Ebook &#10022;";
         }
     });
 }
