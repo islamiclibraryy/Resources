@@ -350,9 +350,9 @@
         </div>
 
         <div id="bottom-nav" class="bottom-nav">
-            <div class="nav-item active" onclick="window.location.href='index.html'"><i class="fas fa-home"></i><span>Home</span></div>
-            <div class="nav-item" onclick="window.location.href='library.html'"><i class="fas fa-book-reader"></i><span>Library</span></div>
-            <a href="info.html" class="nav-item"><i class="fas fa-info-circle"></i><span>Info</span></a>
+            <div class="nav-item active" onclick="window.location.href='./'"><i class="fas fa-home"></i><span>Home</span></div>
+            <div class="nav-item" onclick="window.location.href='library/'"><i class="fas fa-book-reader"></i><span>Library</span></div>
+            <a href="info/" class="nav-item"><i class="fas fa-info-circle"></i><span>Info</span></a>
         </div>
     </div>
 
@@ -457,7 +457,7 @@
             if (document.getElementById("profile-drawer").classList.contains("active")) return;
             if (document.getElementById("search-dropdown").classList.contains("active")) return;
             if (Math.abs(touchendY - touchstartY) > 50) return; // Prevent vertical scroll trigger
-            if (touchendX < touchstartX - 70) window.location.href = 'library.html'; // Swipe Left
+            if (touchendX < touchstartX - 70) window.location.href = 'library/'; // Swipe Left
         }
 
         document.addEventListener("DOMContentLoaded", () => {
@@ -659,7 +659,7 @@
             const selectedBook = ebooksData.find(e => String(e.id) === String(id));
             if(selectedBook) {
                 sessionStorage.setItem('selected_book_data', JSON.stringify(selectedBook));
-                window.location.href = 'books.html';
+                window.location.href = 'books/';
             }
         }
 
