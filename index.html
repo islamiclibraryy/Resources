@@ -439,9 +439,20 @@
             if (touchendX < touchstartX - 70) window.location.href = 'library/';
         }
 
+        // ✅✅✅ UPDATED TO HANDLE REDIRECTS FOR PASSWORD RESET ✅✅✅
         document.addEventListener("DOMContentLoaded", () => {
             initTheme();
-            if (localStorage.getItem("islamic_user_id")) {
+
+            // Pehle check karo ki 'reset' wala message aaya hai kya
+            if (sessionStorage.getItem('open_reset_tab') === 'true') {
+                // Agar message mila hai, to usko remove kar do taki dobara na chale
+                sessionStorage.removeItem('open_reset_tab');
+                
+                // Aur seedha reset wala form dikha do
+                switchAuth('reset');
+            } 
+            // Agar message nahi mila, to normal check karo
+            else if (localStorage.getItem("islamic_user_id")) {
                 showApp();
             } else {
                 switchAuth('login');
