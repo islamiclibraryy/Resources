@@ -312,6 +312,7 @@
             actionBtn.onclick = confirmLogout;
             document.getElementById("confirm-modal").classList.remove("hidden");
         }
+        // ✅✅✅ UPDATED FUNCTION TO WORK FROM ANY PAGE ✅✅✅
         function openChangePassword() {
             closeProfileDrawer();
             document.getElementById("modal-title-text").innerText = "Change Password";
@@ -320,9 +321,13 @@
             actionBtn.innerText = "Yes, Continue";
             actionBtn.onclick = () => {
                 closeModal();
-                executeLogout(false); 
-                sessionStorage.setItem("open_reset_tab", "true");
-                window.location.href = "../"; 
+                executeLogout(false); // Sirf background me logout karega
+
+                // index.html ke liye ek 'flag' ya 'message' set kar rahe hain
+                sessionStorage.setItem('open_reset_tab', 'true');
+                
+                // Ab index.html par jao, wo is message ko padh lega
+                window.location.href = 'index.html';
             };
             document.getElementById("confirm-modal").classList.remove("hidden");
         }
