@@ -6,23 +6,31 @@
     
     <title>Manage Ebook - Islamic Library by Shekh</title>
 
-    <!-- Favicon -->
     <link rel="icon" href="../hikmahadminlogonew.png">
 
-    <!-- Open Graph -->
-    <meta property="og:title" content="Manage Ebook - Islamic Library Admin">
+    <meta property="og:title" content="Admin Dashboard - Islamic Library by Shekh">
     <meta property="og:description" content="Admin Dashboard for managing Islamic Library by Shekh">
     <meta property="og:image" content="../hikmahadminlogonew.png">
-    <meta property="og:url" content="https://mysite.github.io/Resources/admin/new-ebook/">
+    <meta property="og:url" content="https://mysite.github.io/Resources/admin/">
     <meta property="og:type" content="website">
 
-    <!-- Google Fonts & Font Awesome -->
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Main Stylesheet -->
     <link rel="stylesheet" href="../admin_style.css">
+
+    <style>
+        .multi-select-container { position: relative; width: 100%; }
+        .multi-select-header { background: var(--surface2); border: 1px solid var(--border2); padding: 12px 16px; border-radius: var(--r); display: flex; justify-content: space-between; align-items: center; cursor: pointer; color: var(--text3); font-size: .92rem; transition: var(--transition); }
+        .multi-select-header:hover { border-color: var(--accent); }
+        .multi-select-dropdown { position: absolute; top: calc(100% + 5px); left: 0; right: 0; background: var(--surface2); border: 1px solid var(--border); border-radius: var(--r); box-shadow: var(--shadow2); z-index: 100; max-height: 220px; overflow-y: auto; display: none; flex-direction: column; }
+        .multi-select-dropdown.active { display: flex; animation: slideUp 0.2s ease forwards; }
+        .multi-select-option { padding: 12px 16px; display: flex; align-items: center; gap: 12px; cursor: pointer; color: var(--text); font-size: .9rem; border-bottom: 1px solid var(--border2); transition: background var(--transition); }
+        .multi-select-option:hover { background: var(--surface3); }
+        .multi-select-option:last-child { border-bottom: none; }
+        .multi-select-option input[type="checkbox"] { accent-color: var(--accent); width: 18px; height: 18px; cursor: pointer; }
+    </style>
 </head>
 <body>
     <script>
@@ -44,7 +52,6 @@
         </div>
     </div>
 
-    <!-- Custom Change Password Modal -->
     <div id="change-password-modal" class="modal-overlay hidden">
         <div class="modal-box" style="text-align:left;">
             <h3 style="margin-bottom: 20px;">Change Admin Password</h3>
@@ -92,6 +99,24 @@
                 <div class="form-group"><label>PDF Link (External URL)</label><input type="url" id="eb_pdf" required placeholder="https://drive.google.com/..."></div>
                 <div class="form-group"><label>Thumbnail Image URL (1:1 Ratio)</label><input type="url" id="eb_thumb" required placeholder="https://imgur.com/...png"></div>
                 
+                <div class="form-group">
+                    <label>Languages (Select Multiple)</label>
+                    <div class="multi-select-container">
+                        <div class="multi-select-header" onclick="toggleMultiSelect()">
+                            <span id="selected-langs-text">Select Languages</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="multi-select-dropdown" id="lang-dropdown">
+                            <label class="multi-select-option"><input type="checkbox" value="English" onchange="updateSelectedLangs()"> English</label>
+                            <label class="multi-select-option"><input type="checkbox" value="Urdu" onchange="updateSelectedLangs()"> Urdu</label>
+                            <label class="multi-select-option"><input type="checkbox" value="Hindi" onchange="updateSelectedLangs()"> Hindi</label>
+                            <label class="multi-select-option"><input type="checkbox" value="Arabic" onchange="updateSelectedLangs()"> Arabic</label>
+                            <label class="multi-select-option"><input type="checkbox" value="Roman Urdu / Hindi" onchange="updateSelectedLangs()"> Roman Urdu / Hindi</label>
+                        </div>
+                    </div>
+                    <input type="hidden" id="eb_language" required>
+                </div>
+
                 <div class="flex align-center justify-between mt-1" style="margin-bottom: 16px; padding: 12px; background: var(--surface3); border-radius: var(--r); border: 1px solid var(--border2);">
                     <label style="margin:0; font-size:.9rem; color:var(--text); text-transform:none; font-weight:600;">Is this Ebook FREE?</label>
                     <label class="switch"><input type="checkbox" id="eb_isfree" onchange="togglePriceFields()"><span class="slider"></span></label>
@@ -119,7 +144,39 @@
     </div>
 
     <script src="../admin_script.js"></script>
+    
     <script>
+        function toggleMultiSelect() {
+            document.getElementById('lang-dropdown').classList.toggle('active');
+        }
+
+        function updateSelectedLangs() {
+            let selected = [];
+            document.querySelectorAll('.multi-select-option input:checked').forEach(chk => {
+                selected.push(chk.value);
+            });
+            const hiddenInput = document.getElementById('eb_language');
+            const textDisplay = document.getElementById('selected-langs-text');
+            
+            hiddenInput.value = selected.join(', ');
+            
+            if(selected.length > 0) {
+                textDisplay.innerText = selected.join(', ');
+                textDisplay.style.color = 'var(--text)';
+            } else {
+                textDisplay.innerText = 'Select Languages';
+                textDisplay.style.color = 'var(--text3)';
+            }
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.multi-select-container')) {
+                const dropdown = document.getElementById('lang-dropdown');
+                if(dropdown) dropdown.classList.remove('active');
+            }
+        });
+
         document.addEventListener("DOMContentLoaded", () => {
             if (isAdminLoggedIn()) {
                 const editId = sessionStorage.getItem('edit_ebook_id');
@@ -142,6 +199,17 @@
                             document.getElementById("eb_isfree").checked = ebook.is_free === true || String(ebook.is_free).toLowerCase() === "true";
                             document.getElementById("eb_price").value = ebook.price || "";
                             document.getElementById("eb_discount").value = ebook.discount_price || "";
+                            
+                            // ✅ Auto-fill Language Selection
+                            if (ebook.language) {
+                                document.getElementById("eb_language").value = ebook.language;
+                                let langsArray = ebook.language.split(',').map(l => l.trim());
+                                document.querySelectorAll('.multi-select-option input').forEach(chk => {
+                                    chk.checked = langsArray.includes(chk.value);
+                                });
+                                updateSelectedLangs(); // Update text display
+                            }
+
                             togglePriceFields();
                             submitBtn.disabled = false;
                         } else {
