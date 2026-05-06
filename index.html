@@ -5,31 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Islamic Library by Shekh - Free & Paid Islamic eBooks</title>
 
-    <!-- ✅ SEO META -->
     <meta name="description" content="Islamic Library by Shekh – Download Islamic eBooks, Quran PDFs, and Hadith books. A free and premium Islamic digital library.">
     <meta name="keywords" content="Islamic Library by Shekh, Islamic ebooks, Quran PDF, Hadith books">
     <meta name="author" content="Islamic Library by Shekh">
 
-    <!-- ✅ FAVICON (LOCAL LOGO) -->
     <link rel="icon" type="image/png" sizes="32x32" href="hikmahlogo.png">
     <link rel="icon" type="image/png" sizes="16x16" href="hikmahlogo.png">
     <link rel="apple-touch-icon" sizes="180x180" href="hikmahlogo.png">
 
-    <!-- ✅ OPEN GRAPH -->
     <meta property="og:title" content="Islamic Library by Shekh">
     <meta property="og:description" content="Free & Paid Islamic eBooks, Quran PDFs, Hadith books available.">
     <meta property="og:image" content="hikmahlogo.png">
     <meta property="og:url" content="https://mysite.github.io/Resources/">
     <meta property="og:type" content="website">
 
-    <!-- Fonts: Original Amiri for Arabic + Resume Builder Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
     
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- ✅ PREVENT THEME FLASH -->
     <script>
         (function() {
             const savedTheme = localStorage.getItem('islamic_theme') || 'dark';
@@ -103,25 +97,14 @@
         .btn-danger { background: rgba(244, 63, 94, 0.1); color: var(--danger); border: 1px solid rgba(244, 63, 94, 0.3); }
         .btn-danger:hover { background: var(--danger); color: #fff; box-shadow: 0 4px 20px rgba(244, 63, 94, 0.4); }
 
-        /* ===== FORMS & BUTTONS ===== */
-        .form-group { margin-bottom: 16px; text-align: left; }
-        .form-group label { display: block; margin-bottom: 6px; font-size: .78rem; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.06em; }
-        .form-group input { width: 100%; background: var(--surface2); color: var(--text); border: 1px solid var(--border2); padding: 12px 16px; border-radius: var(--r); font-size: .92rem; transition: var(--transition); }
-        .form-group input:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px var(--glow2); }
+        /* ===== BUTTONS ===== */
         .btn { background: linear-gradient(135deg, #7c6af7, #9f3fbf); color: #fff; border: none; padding: 14px 20px; border-radius: 99px; font-weight: 600; font-family: 'DM Sans', sans-serif; width: 100%; cursor: pointer; transition: var(--transition); font-size: 1rem; display: block; text-align: center; position: relative; overflow: hidden; box-shadow: 0 4px 20px rgba(124,106,247,0.4); }
         .btn::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,0.15),transparent); opacity:0; transition:opacity var(--transition); }
         .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(124,106,247,0.5); } .btn:hover::before { opacity: 1; } .btn:active { transform: translateY(0) scale(0.98); }
         .btn-outline { background: transparent; color: var(--text2); border: 1px solid var(--border2); padding: 10px 20px; border-radius: 99px; font-weight: 500; font-size: .85rem; transition: var(--transition); cursor: pointer; }
         .btn-outline:hover { border-color: var(--accent); color: var(--accent2); background: var(--glow2); }
-        .link-text { color: var(--accent2); font-size: .85rem; cursor: pointer; padding: 10px; display: inline-block; font-weight: 500; transition: var(--transition); }
-        .link-text:hover { color: var(--accent3); text-shadow: 0 0 10px var(--glow); }
 
         /* ===== VIEWS & STRUCTURE ===== */
-        .auth-container { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; animation: fadeUp .6s ease both; }
-        .auth-card { background: var(--surface); padding: 32px 28px; border-radius: var(--r3); width: 100%; max-width: 400px; box-shadow: var(--shadow); border: 1px solid var(--border); text-align: center; animation: cardIn .5s ease both; transition: var(--transition); }
-        .auth-card:hover { border-color: var(--border2); }
-        
-        /* ✅ EXACT MATCH HEADER */
         header { 
             position: fixed; top: 0; left: 0; right: 0; z-index: 1000; 
             padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; 
@@ -135,7 +118,7 @@
         
         .main-content { padding: 90px 20px 90px; max-width: 1400px; margin: 0 auto; animation: fadeIn .5s ease both; transition: padding-top 0.3s ease; }
 
-        /* ✅ PROFILE DRAWER UI (BUG FIXED: SCROLL & HEIGHT) */
+        /* ✅ PROFILE DRAWER UI */
         .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 10001; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; backdrop-filter: blur(3px); }
         .drawer-overlay.active { opacity: 1; pointer-events: all; }
         
@@ -219,7 +202,6 @@
     <div id="loader" class="hidden"><div class="spinner"></div></div>
     <div id="toast-container"></div>
 
-    <!-- ✅ PROFILE DRAWER -->
     <div id="drawer-overlay" class="drawer-overlay" onclick="closeProfileDrawer()"></div>
     <div id="profile-drawer" class="profile-drawer">
         <div class="drawer-header">
@@ -240,7 +222,6 @@
         </div>
     </div>
 
-    <!-- ✅ GENERAL CONFIRMATION MODAL (Logout & Password Change) -->
     <div id="confirm-modal" class="modal-overlay hidden">
         <div class="modal-box">
             <h3 class="modal-title" id="modal-title-text">Log Out</h3>
@@ -252,61 +233,6 @@
         </div>
     </div>
 
-    <!-- ============================================== -->
-    <!-- AUTHENTICATION VIEWS -->
-    <!-- ============================================== -->
-    <div id="auth-views">
-        <!-- Login View -->
-        <div id="login-view" class="auth-container">
-            <div class="auth-card">
-                <div class="bismillah" style="margin-bottom: 16px;">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
-                <h2 style="margin-bottom: 6px;">Welcome Back</h2>
-                <p style="color: var(--text2); font-size: .85rem; margin-bottom: 28px;">Sign in to access your Islamic library</p>
-                <form id="loginForm">
-                    <div class="form-group"><label>Mobile Number</label><input type="tel" id="login-mobile" placeholder="Enter your number" required></div>
-                    <div class="form-group"><label>Password</label><input type="password" id="login-pass" placeholder="Enter your password" required></div>
-                    <button type="submit" class="btn" id="login-btn" style="margin-top: 24px;">Login ✦</button>
-                </form>
-                <div class="mt-2 flex justify-between align-center">
-                    <span class="link-text" onclick="switchAuth('reset')">Forgot Password?</span>
-                    <span class="link-text" onclick="switchAuth('signup')">Create Account</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Signup View -->
-        <div id="signup-view" class="auth-container hidden">
-            <div class="auth-card">
-                <h2 style="margin-bottom: 6px;">Create Account</h2>
-                <p style="color: var(--text2); font-size: .85rem; margin-bottom: 28px;">Join our Islamic eBook community</p>
-                <form id="signupForm">
-                    <div class="form-group"><label>Full Name</label><input type="text" id="reg-name" placeholder="e.g. Abdullah" required></div>
-                    <div class="form-group"><label>Mobile Number</label><input type="tel" id="reg-mobile" placeholder="Enter your number" required></div>
-                    <div class="form-group"><label>Password</label><input type="password" id="reg-pass" placeholder="Create a strong password" required></div>
-                    <button type="submit" class="btn" id="signup-btn" style="margin-top: 24px;">Sign Up ✦</button>
-                </form>
-                <div class="mt-2"><span class="link-text" onclick="switchAuth('login')"><i class="fas fa-arrow-left" style="margin-right: 6px;"></i> Back to Login</span></div>
-            </div>
-        </div>
-
-        <!-- Reset Password View -->
-        <div id="reset-view" class="auth-container hidden">
-            <div class="auth-card">
-                <h2 style="margin-bottom: 6px;">Reset Password</h2>
-                <p style="color: var(--text2); font-size: .85rem; margin-bottom: 28px;">Enter your registered mobile number</p>
-                <form id="resetForm">
-                    <div class="form-group"><label>Mobile Number</label><input type="tel" id="reset-mobile" placeholder="Enter registered number" required></div>
-                    <div class="form-group"><label>New Password</label><input type="password" id="reset-pass" placeholder="Create a new password" required></div>
-                    <button type="submit" class="btn" id="reset-btn" style="margin-top: 24px;">Update Password ✦</button>
-                </form>
-                <div class="mt-2"><span class="link-text" onclick="switchAuth('login')"><i class="fas fa-arrow-left" style="margin-right: 6px;"></i> Back to Login</span></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ============================================== -->
-    <!-- MAIN APP VIEW (HOME) -->
-    <!-- ============================================== -->
     <div id="app-views" class="hidden">
         
         <header>
@@ -401,6 +327,7 @@
             document.getElementById("confirm-modal").classList.remove("hidden");
         }
 
+        // ✅ CHANGE PASSWORD LOGIC (Redirects to Login folder with Reset Tab Command)
         function openChangePassword() {
             closeProfileDrawer();
             document.getElementById("modal-title-text").innerText = "Change Password";
@@ -410,8 +337,8 @@
             actionBtn.onclick = () => {
                 closeModal();
                 executeLogout(false);
-                document.getElementById('app-views').classList.add('hidden');
-                switchAuth('reset');
+                sessionStorage.setItem('open_reset_tab', 'true');
+                window.location.href = 'login/index.html'; // Redirecting to login folder
             };
             document.getElementById("confirm-modal").classList.remove("hidden");
         }
@@ -420,6 +347,7 @@
             executeLogout(true);
         }
 
+        // ✅ EXECUTE LOGOUT LOGIC
         function executeLogout(redirect) {
             const userId = localStorage.getItem("islamic_user_id");
             if(userId) { 
@@ -428,7 +356,9 @@
             localStorage.removeItem("islamic_user_id");
             localStorage.removeItem("islamic_user_name");
             localStorage.removeItem("islamic_user_mobile");
-            if(redirect) window.location.reload();
+            if(redirect) {
+                window.location.href = 'login/index.html'; // Back to Login page
+            }
         }
 
         let touchstartX = 0, touchstartY = 0, touchendX = 0, touchendY = 0;
@@ -439,24 +369,20 @@
             if (touchendX < touchstartX - 70) window.location.href = 'library/';
         }
 
-        // ✅✅✅ UPDATED TO HANDLE REDIRECTS FOR PASSWORD RESET ✅✅✅
+        // ✅ THE MAIN AUTHENTICATION CHECK
         document.addEventListener("DOMContentLoaded", () => {
             initTheme();
 
-            // Pehle check karo ki 'reset' wala message aaya hai kya
-            if (sessionStorage.getItem('open_reset_tab') === 'true') {
-                // Agar message mila hai, to usko remove kar do taki dobara na chale
-                sessionStorage.removeItem('open_reset_tab');
-                
-                // Aur seedha reset wala form dikha do
-                switchAuth('reset');
-            } 
-            // Agar message nahi mila, to normal check karo
-            else if (localStorage.getItem("islamic_user_id")) {
-                showApp();
-            } else {
-                switchAuth('login');
+            // Agar user login NAHI hai (localStorage me ID nahi hai)
+            if (!localStorage.getItem("islamic_user_id")) {
+                // Seedha login page par bhej do
+                window.location.href = 'login/index.html';
+                return;
             }
+            
+            // Agar user login hai, toh App views show kar do aur Data load karo
+            document.getElementById("app-views").classList.remove("hidden");
+            loadHome();
         });
 
         function showToast(msg, type = "success") {
@@ -467,10 +393,6 @@
             container.appendChild(toast);
             setTimeout(() => { toast.style.transform = "translateX(110%)"; toast.style.opacity = "0"; setTimeout(() => toast.remove(), 400); }, 3000);
         }
-
-        // =======================================================
-        // === YAHAN SE CODE UPDATE KIYA GAYA HAI (BUG FIX) ===
-        // =======================================================
 
         async function apiCall(action, method = "GET", body = null, showFullScreenLoader = true) {
             const loader = document.getElementById("loader");
@@ -516,124 +438,6 @@
                 if (!cachedDataStr && showBlockingLoader) document.getElementById('loader').classList.add('hidden'); 
                 delete apiLocks[cacheKey]; 
             });
-        }
-
-        // ✅ UPGRADED switchAuth FUNCTION TO PREVENT BUGS
-        function switchAuth(view) {
-            // 1. Reset all forms to clear previous input
-            document.getElementById("loginForm").reset();
-            document.getElementById("signupForm").reset();
-            document.getElementById("resetForm").reset();
-
-            // 2. Reset all buttons to their default state to fix stuck spinners
-            document.getElementById('login-btn').disabled = false;
-            document.getElementById('login-btn').innerHTML = 'Login ✦';
-            document.getElementById('signup-btn').disabled = false;
-            document.getElementById('signup-btn').innerHTML = 'Sign Up ✦';
-            document.getElementById('reset-btn').disabled = false;
-            document.getElementById('reset-btn').innerHTML = 'Update Password ✦';
-
-            // 3. Show the correct view
-            document.getElementById("auth-views").classList.remove("hidden");
-            document.querySelectorAll(".auth-container").forEach(el => el.classList.add("hidden"));
-            document.getElementById(`${view}-view`).classList.remove("hidden");
-        }
-
-        // ✅✅✅ UPDATED LOGIN FORM WITH SMART ERROR HANDLING ✅✅✅
-        document.getElementById("loginForm").addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const btn = document.getElementById("login-btn");
-            btn.disabled = true;
-            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i>`;
-            
-            const m = document.getElementById("login-mobile").value;
-            const p = document.getElementById("login-pass").value;
-            const res = await apiCall(`loginUser&mobile=${encodeURIComponent(m)}&password=${encodeURIComponent(p)}`, "GET", null, false);
-            
-            if (res && res.success) {
-                // Login successful
-                localStorage.setItem("islamic_user_id", res.user_id); 
-                localStorage.setItem("islamic_user_mobile", m); 
-                localStorage.setItem("islamic_user_name", res.name || "Library User"); 
-                showApp(); 
-                showToast("Login Successful!"); 
-            } else {
-                // Login failed, check for the specific reason from backend
-                if (res && res.error_code === 'USER_NOT_FOUND') {
-                    // User's mobile number doesn't exist
-                    showToast(res.message || "Account not found. Redirecting to sign up...", "error");
-                    // Redirect to signup page after 2 seconds so user can read message
-                    setTimeout(() => {
-                        switchAuth('signup');
-                    }, 2000);
-                } else if (res && res.error_code === 'INVALID_PASSWORD') {
-                    // Password is incorrect
-                    showToast(res.message || "Incorrect password. Please try again.", "error");
-                    btn.disabled = false;
-                    btn.innerHTML = `Login ✦`;
-                } else {
-                    // Generic error (for current/old backend and other issues)
-                    showToast(res ? (res.message || "Login failed!") : "API Failed", "error");
-                    btn.disabled = false;
-                    btn.innerHTML = `Login ✦`;
-                }
-            }
-        });
-
-        document.getElementById("signupForm").addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const btn = document.getElementById("signup-btn");
-            btn.disabled = true;
-            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i>`;
-
-            const n = document.getElementById("reg-name").value;
-            const m = document.getElementById("reg-mobile").value;
-            const payload = { name: n, mobile: m, password: document.getElementById("reg-pass").value };
-            const res = await apiCall("signupUser", "POST", payload, false);
-
-            if (res && res.success) { 
-                localStorage.setItem("islamic_user_id", res.user_id); 
-                localStorage.setItem("islamic_user_name", n); 
-                localStorage.setItem("islamic_user_mobile", m); 
-                showApp(); 
-                showToast("Account Created Successfully!"); 
-            } else {
-                showToast(res ? (res.message || "Signup failed!") : "API Failed", "error");
-                btn.disabled = false;
-                btn.innerHTML = `Sign Up ✦`;
-            }
-        });
-
-        // ✅ UPDATED RESET FORM WITH DELAY FOR TOAST
-        document.getElementById("resetForm").addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const btn = document.getElementById("reset-btn");
-            btn.disabled = true;
-            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i>`;
-
-            const payload = { mobile: document.getElementById("reset-mobile").value, new_password: document.getElementById("reset-pass").value };
-            const res = await apiCall("resetPassword", "POST", payload, false);
-
-            if (res && res.success) { 
-                showToast("Password Reset Successfully! Please log in.");
-                // Delay switching to login so user can see the toast
-                setTimeout(() => {
-                    switchAuth('login');
-                }, 1500);
-            } else {
-                showToast(res ? (res.message || "Mobile not found!") : "API Failed", "error");
-                btn.disabled = false;
-                btn.innerHTML = `Update Password ✦`;
-            }
-        });
-        
-        // === YAHAAN TAK CODE UPDATE HUA HAI ===
-        // =======================================================
-
-        function showApp() {
-            document.getElementById("auth-views").classList.add("hidden");
-            document.getElementById("app-views").classList.remove("hidden");
-            loadHome();
         }
 
         function showSkeletons() {
