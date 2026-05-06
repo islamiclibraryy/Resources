@@ -100,7 +100,7 @@
         .auth-card { background: var(--surface); padding: 32px 28px; border-radius: var(--r3); width: 100%; max-width: 400px; box-shadow: var(--shadow); border: 1px solid var(--border); text-align: center; animation: cardIn .5s ease both; transition: var(--transition); }
         .auth-card:hover { border-color: var(--border2); }
 
-        /* ✅ NEW: TOGGLE BUTTON STYLES */
+        /* ✅ TOGGLE BUTTON STYLES */
         .auth-toggle { display: flex; background: var(--surface3); border-radius: var(--r); margin-bottom: 20px; padding: 4px; border: 1px solid var(--border2); }
         .auth-toggle button { flex: 1; padding: 10px; border: none; background: transparent; color: var(--text2); font-weight: 600; border-radius: calc(var(--r) - 4px); cursor: pointer; transition: 0.3s; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; }
         .auth-toggle button.active { background: var(--accent); color: #fff; box-shadow: var(--shadow); }
@@ -199,25 +199,22 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
         import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
-        // 🛑 DUMMY KEYS - BHAIA YAHAN APNI ASLI FIREBASE KEYS PASTE KAR LENA 🛑
         const firebaseConfig = {
-    apiKey: "AIzaSyBhYLRH_0p7f4oRIZTDVf8bOb1bdRKPNe8",
-    authDomain: "islamic-library-3b1d4.firebaseapp.com",
-    projectId: "islamic-library-3b1d4",
-    storageBucket: "islamic-library-3b1d4.firebasestorage.app",
-    messagingSenderId: "139007174646",
-    appId: "1:139007174646:web:0139e6d5c6bf38c7e409d7"
-  };
-
+            apiKey: "AIzaSyBhYLRH_0p7f4oRIZTDVf8bOb1bdRKPNe8",
+            authDomain: "islamic-library-3b1d4.firebaseapp.com",
+            projectId: "islamic-library-3b1d4",
+            storageBucket: "islamic-library-3b1d4.firebasestorage.app",
+            messagingSenderId: "139007174646",
+            appId: "1:139007174646:web:0139e6d5c6bf38c7e409d7"
+        };
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // Global State for Modes
         window.currentAuthModes = { login: 'mobile', signup: 'mobile', reset: 'mobile' };
 
         document.addEventListener("DOMContentLoaded", () => {
@@ -259,7 +256,6 @@
             document.getElementById(`${view}-view`).classList.remove("hidden");
         }
 
-        // Toggle UI Logic
         window.setAuthType = function(formType, authType) {
             window.currentAuthModes[formType] = authType;
             
@@ -280,12 +276,11 @@
             }
         }
 
-        // Helper to format email securely
         function getFirebaseEmail(inputValue, type) {
             return type === 'mobile' ? `${inputValue.trim()}@islamiclibrary.com` : inputValue.trim();
         }
 
-        // ✅ LOGIN SUBMIT (FIREBASE)
+        // ✅ LOGIN (FIREBASE)
         document.getElementById("loginForm").addEventListener("submit", async (e) => {
             e.preventDefault();
             const btn = document.getElementById("login-btn");
@@ -299,7 +294,7 @@
             try {
                 const userCredential = await signInWithEmailAndPassword(auth, firebaseEmail, password);
                 
-                // Save to local storage for your app's frontend
+                // CACHE PRESERVATION: Sets cache keys exactly as before
                 localStorage.setItem("islamic_user_id", userCredential.user.uid); 
                 localStorage.setItem("islamic_user_mobile", inputValue); 
                 
@@ -314,7 +309,7 @@
             }
         });
 
-        // ✅ SIGNUP SUBMIT (FIREBASE)
+        // ✅ SIGNUP (FIREBASE)
         document.getElementById("signupForm").addEventListener("submit", async (e) => {
             e.preventDefault();
             const btn = document.getElementById("signup-btn");
@@ -330,7 +325,6 @@
                 const userCredential = await createUserWithEmailAndPassword(auth, firebaseEmail, password);
                 const user = userCredential.user;
 
-                // Save extra info in Firestore DB
                 await setDoc(doc(db, "users", user.uid), {
                     uid: user.uid,
                     name: name,
@@ -339,6 +333,7 @@
                     createdAt: new Date().toISOString()
                 });
 
+                // CACHE PRESERVATION: Sets cache keys exactly as before
                 localStorage.setItem("islamic_user_id", user.uid); 
                 localStorage.setItem("islamic_user_name", name); 
                 localStorage.setItem("islamic_user_mobile", inputValue); 
@@ -355,7 +350,7 @@
             }
         });
 
-        // ✅ RESET SUBMIT (FIREBASE)
+        // ✅ RESET PASSWORD (FIREBASE)
         document.getElementById("resetForm").addEventListener("submit", async (e) => {
             e.preventDefault();
             const btn = document.getElementById("reset-btn");
@@ -372,7 +367,6 @@
             } catch (error) {
                 let msg = "Failed to send reset link.";
                 if (error.code === 'auth/user-not-found') msg = "Account not found.";
-                // Custom warning for mobile
                 if (window.currentAuthModes.reset === 'mobile') msg = "Reset only works with real Email IDs.";
                 
                 window.showToast(msg, "error");
