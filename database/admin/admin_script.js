@@ -12,7 +12,7 @@ const firebaseConfig = {
     appId: "1:139007174646:web:0139e6d5c6bf38c7e409d7"
   };
 
-const AUTHORIZED_ADMIN_EMAIL = "admin@islamiclibrary.com"; // Apna admin email yahan daalein
+const AUTHORIZED_ADMIN_EMAIL = "admin@islamiclibrary.com"; 
 
 // Initialize Firebase SDK
 const app = initializeApp(firebaseConfig);
@@ -26,7 +26,7 @@ window.paymentsData = [];
 let confirmCallback = null;
 
 // ==========================================
-// 🔥 INSTANT CACHE & ROUTING (OPTIMISTIC UI)
+// 🔥 INSTANT CACHE & ROUTING (SMART SWR)
 // ==========================================
 const isAdminLocally = localStorage.getItem("islamic_admin_auth") === "true";
 const appView = document.getElementById('app-view');
@@ -36,17 +36,20 @@ if (isAdminLocally && appView) {
     appView.classList.remove('hidden');
     if (loginView) loginView.classList.add('hidden');
     
-    // URL check karke turant cache load karo (No loading wait)
+    // URL check karke turant cache load karo, agar cache nahi hai toh Skeleton dikhao
     const path = window.location.pathname;
     if (path.includes('/books/')) {
         const cache = localStorage.getItem("admin_cache_ebooks");
         if (cache && typeof window.renderEbooks === "function") window.renderEbooks(JSON.parse(cache));
+        else if (typeof window.renderEbooksSkeletons === "function") window.renderEbooksSkeletons();
     } else if (path.includes('/users/')) {
         const cache = localStorage.getItem("admin_cache_users");
         if (cache && typeof window.renderUsers === "function") window.renderUsers(JSON.parse(cache));
+        else if (typeof window.renderUsersSkeletons === "function") window.renderUsersSkeletons();
     } else if (path.includes('/payments/')) {
         const cache = localStorage.getItem("admin_cache_payments");
         if (cache && typeof window.renderPayments === "function") window.renderPayments(JSON.parse(cache));
+        else if (typeof window.renderPaymentsSkeletons === "function") window.renderPaymentsSkeletons();
     } else {
         const cache = localStorage.getItem("admin_stats_cache");
         if (cache) {
@@ -105,11 +108,20 @@ async function fetchDashboardStatsBackground() {
         const payCount = await getCountFromServer(collection(db, "payments"));
         
         const freshStats = { ebooks: ebookCount.data().count, users: userCount.data().count, payments: payCount.data().count };
-        localStorage.setItem("admin_stats_cache", JSON.stringify(freshStats));
+        const cachedStr = localStorage.getItem("admin_stats_cache");
         
-        updateStatUI('stats-ebooks-count', freshStats.ebooks);
-        updateStatUI('stats-users-count', freshStats.users);
-        updateStatUI('stats-purchases-count', freshStats.payments);
+        // Agar change hua hai tabhi UI update karo
+        if (cachedStr !== JSON.stringify(freshStats)) {
+            localStorage.setItem("admin_stats_cache", JSON.stringify(freshStats));
+            updateStatUI('stats-ebooks-count', freshStats.ebooks);
+            updateStatUI('stats-users-count', freshStats.users);
+            updateStatUI('stats-purchases-count', freshStats.payments);
+        } else {
+            // Skeleton hatane ke liye (Agar direct aaya ho toh)
+            updateStatUI('stats-ebooks-count', freshStats.ebooks);
+            updateStatUI('stats-users-count', freshStats.users);
+            updateStatUI('stats-purchases-count', freshStats.payments);
+        }
     } catch (e) { console.error(e); }
 }
 
@@ -122,18 +134,29 @@ function updateStatUI(id, val) {
 // 📚 BOOKS MANAGEMENT LOGIC
 // ==========================================
 window.loadBooks = async function() {
+    const cacheKey = "admin_cache_ebooks";
+    const cachedStr = localStorage.getItem(cacheKey);
     try {
         const snapshot = await getDocs(collection(db, "ebooks"));
-        window.ebooksData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        localStorage.setItem("admin_cache_ebooks", JSON.stringify(window.ebooksData));
-        if (typeof window.renderEbooks === "function") window.renderEbooks(window.ebooksData);
+        const freshData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        
+        // Data Compare Karo - Agar alag hai tabhi Refresh Karo
+        if (cachedStr !== JSON.stringify(freshData)) {
+            window.ebooksData = freshData;
+            localStorage.setItem(cacheKey, JSON.stringify(freshData));
+            if (typeof window.renderEbooks === "function") window.renderEbooks(freshData);
+        }
     } catch (e) { console.error(e); }
 };
 
 window.forceFetchEbooks = async function() {
-    if(typeof window.renderEbooksSkeletons === "function") window.renderEbooksSkeletons();
+    const btn = document.getElementById('refresh-ebooks-btn');
+    if(btn) btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i>`;
+    
     await window.loadBooks();
-    window.showToast("Ebooks refreshed!", "success");
+    
+    if(btn) btn.innerHTML = `<i class="fas fa-sync-alt"></i>`;
+    window.showToast("Ebooks Verified & Refreshed!", "success");
 };
 
 window.deleteEbook = function(id) {
@@ -192,18 +215,28 @@ window.handleEbookSubmit = async () => {
 // 👥 USERS MANAGEMENT LOGIC
 // ==========================================
 window.loadUsers = async function() {
+    const cacheKey = "admin_cache_users";
+    const cachedStr = localStorage.getItem(cacheKey);
     try {
         const snapshot = await getDocs(query(collection(db, "users"), orderBy("createdAt", "desc")));
-        window.usersData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        localStorage.setItem("admin_cache_users", JSON.stringify(window.usersData));
-        if (typeof window.renderUsers === "function") window.renderUsers(window.usersData);
+        const freshData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        
+        if (cachedStr !== JSON.stringify(freshData)) {
+            window.usersData = freshData;
+            localStorage.setItem(cacheKey, JSON.stringify(freshData));
+            if (typeof window.renderUsers === "function") window.renderUsers(freshData);
+        }
     } catch (e) { console.error(e); }
 };
 
 window.forceFetchUsers = async function() {
-    if(typeof window.renderUsersSkeletons === "function") window.renderUsersSkeletons();
+    const btn = document.getElementById('refresh-users-btn');
+    if(btn) btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i>`;
+    
     await window.loadUsers();
-    window.showToast("Users refreshed!", "success");
+    
+    if(btn) btn.innerHTML = `<i class="fas fa-sync-alt"></i>`;
+    window.showToast("Users Verified & Refreshed!", "success");
 };
 
 window.handleUserUpdate = async function() {
@@ -227,18 +260,28 @@ window.handleUserUpdate = async function() {
 // 💳 PAYMENTS MANAGEMENT LOGIC
 // ==========================================
 window.loadPayments = async function() {
+    const cacheKey = "admin_cache_payments";
+    const cachedStr = localStorage.getItem(cacheKey);
     try {
         const snapshot = await getDocs(query(collection(db, "payments"), orderBy("createdAt", "desc")));
-        window.paymentsData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        localStorage.setItem("admin_cache_payments", JSON.stringify(window.paymentsData));
-        if (typeof window.renderPayments === "function") window.renderPayments(window.paymentsData);
+        const freshData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        
+        if (cachedStr !== JSON.stringify(freshData)) {
+            window.paymentsData = freshData;
+            localStorage.setItem(cacheKey, JSON.stringify(freshData));
+            if (typeof window.renderPayments === "function") window.renderPayments(freshData);
+        }
     } catch (e) { console.error(e); }
 };
 
 window.forceFetchPayments = async function() {
-    if(typeof window.renderPaymentsSkeletons === "function") window.renderPaymentsSkeletons();
+    const btn = document.getElementById('refresh-payments-btn');
+    if(btn) btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i>`;
+    
     await window.loadPayments();
-    window.showToast("Payments refreshed!", "success");
+    
+    if(btn) btn.innerHTML = `<i class="fas fa-sync-alt"></i>`;
+    window.showToast("Payments Verified & Refreshed!", "success");
 };
 
 window.handlePaymentStatus = async function(paymentId, status) {
