@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
         // If not logged in and not on a page with a login view, redirect to index.
         if (!loginView) {
-            window.location.href = 'index.html';
+            window.location.href = './';
         } else {
             showLogin();
         }
@@ -59,7 +59,7 @@ function logout() {
     closeProfileDrawer(); 
     showConfirm("Logout", "Are you sure you want to log out?", () => {
         localStorage.clear();
-        window.location.href = 'index.html';
+        window.location.href = './';
     });
 }
 
