@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Login - Islamic Library by Shekh</title>
+
+    <meta name="description" content="Login to Islamic Library by Shekh to download Islamic eBooks, Quran PDFs, and Hadith books.">
+    <meta name="keywords" content="Islamic Library by Shekh, Islamic ebooks, Quran PDF, Hadith books">
+    <meta name="author" content="Islamic Library by Shekh">
+
+    <link rel="icon" type="image/png" sizes="32x32" href="../hikmahlogo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../hikmahlogo.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../hikmahlogo.png">
+
+    <meta property="og:title" content="Islamic Library by Shekh">
+    <meta property="og:description" content="Free & Paid Islamic eBooks, Quran PDFs, Hadith books available.">
+    <meta property="og:image" content="../hikmahlogo.png">
+    <meta property="og:url" content="https://mysite.github.io/Resources/">
+    <meta property="og:type" content="website">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('islamic_theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+
+    <style>
+        /* ===== CSS VARIABLES (DARK MODE DEFAULT) ===== */
+        :root {
+            --bg: #0a0a0f; --bg2: #0f0f18; --bg3: #13131e;
+            --surface: #1a1a28; --surface2: #1f1f30; --surface3: #252538;
+            --border: rgba(255,255,255,0.07); --border2: rgba(255,255,255,0.12);
+            --text: #f0f0f8; --text2: #a8a8c0; --text3: #686888;
+            --accent: #7c6af7; --accent2: #9f91fa; --accent3: #c4bafe;
+            --glow: rgba(124,106,247,0.25); --glow2: rgba(124,106,247,0.1);
+            --danger: #f43f5e; --success: #10b981; --amber: #f59e0b;
+            --r: 12px; --r2: 16px; --r3: 20px;
+            --shadow: 0 4px 24px rgba(0,0,0,0.4); --shadow2: 0 8px 40px rgba(0,0,0,0.5);
+            --transition: 0.2s cubic-bezier(0.4,0,0.2,1);
+        }
+
+        /* ===== LIGHT MODE VARIABLES ===== */
+        [data-theme="light"] {
+            --bg: #f4f6f8; --bg2: #e9ecef; --bg3: #dee2e6;
+            --surface: #ffffff; --surface2: #f8f9fa; --surface3: #e9ecef;
+            --border: rgba(0,0,0,0.08); --border2: rgba(0,0,0,0.15);
+            --text: #1a1b1e; --text2: #495057; --text3: #868e96;
+            --accent: #6366f1; --accent2: #4f46e5; --accent3: #4338ca;
+            --glow: rgba(99,102,241,0.15); --glow2: rgba(99,102,241,0.08);
+            --shadow: 0 4px 20px rgba(0,0,0,0.06); --shadow2: 0 8px 30px rgba(0,0,0,0.1);
+        }
+        
+        [data-theme="light"] .blob { opacity: 0.5; }
+
+        /* ===== GLOBAL STYLES ===== */
+        *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; min-height: 100vh; -webkit-tap-highlight-color: transparent; transition: background-color 0.3s ease, color 0.3s ease; }
+        
+        body::before { content:''; position:fixed; inset:0; pointer-events:none; z-index:9999; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E"); opacity:0.4; }
+
+        .hero-bg { position:fixed; inset:0; pointer-events:none; z-index:-2; background: radial-gradient(ellipse 80% 50% at 50% -10%,rgba(124,106,247,0.2) 0%,transparent 70%), radial-gradient(ellipse 50% 40% at 80% 60%,rgba(168,85,247,0.12) 0%,transparent 60%), radial-gradient(ellipse 40% 30% at 20% 70%,rgba(99,102,241,0.1) 0%,transparent 60%); }
+        .hero-grid { position:fixed; inset:0; pointer-events:none; z-index:-1; background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px); background-size:48px 48px; mask-image:radial-gradient(ellipse 100% 100% at 50% 50%,black 40%,transparent 100%); opacity:0.6; }
+        .blob { position:fixed; border-radius:50%; filter:blur(80px); pointer-events:none; animation:blobFloat 8s ease-in-out infinite; z-index:-1; }
+        .blob1 { width:400px; height:400px; background:rgba(124,106,247,0.18); top:-100px; left:-100px; animation-delay:0s; }
+        .blob2 { width:350px; height:350px; background:rgba(168,85,247,0.12); bottom:-80px; right:-80px; animation-delay:3s; }
+        .blob3 { width:250px; height:250px; background:rgba(99,102,241,0.1); top:40%; right:10%; animation-delay:5s; }
+
+        .arabic-text { font-family: 'Amiri', serif; }
+        .bismillah { font-family: 'Amiri', serif; color: var(--accent2); font-size: 26px; text-shadow: 0 0 12px var(--glow); animation: fadeUp .6s ease both; }
+        h1, h2, h3 { font-family: 'Syne', sans-serif; font-weight: 700; letter-spacing: -0.02em; color: var(--text); }
+        .hidden { display: none !important; } .flex { display: flex; } .align-center { align-items: center; } .justify-between { justify-content: space-between; } .text-center { text-align: center; } .mt-1 { margin-top: 10px; } .mt-2 { margin-top: 20px; } .mb-2 { margin-bottom: 20px; }
+
+        /* ===== LOADER & TOAST ===== */
+        #loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10,10,15,0.85); backdrop-filter: blur(5px); z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .spinner { width: 50px; height: 50px; border: 4px solid var(--surface3); border-top: 4px solid var(--accent); border-radius: 50%; animation: spin 1s cubic-bezier(0.4,0,0.2,1) infinite; }
+        #toast-container { position: fixed; bottom: 30px; right: 28px; z-index: 9998; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
+        .toast { background: var(--surface); color: var(--text); padding: 12px 18px; border-radius: var(--r2); box-shadow: var(--shadow2); border: 1px solid var(--border2); animation: slideUp 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards; display: flex; align-items: center; gap: 10px; font-size: .85rem; font-weight: 500; }
+
+        /* ===== FORMS & BUTTONS ===== */
+        .form-group { margin-bottom: 16px; text-align: left; }
+        .form-group label { display: block; margin-bottom: 6px; font-size: .78rem; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.06em; }
+        .form-group input { width: 100%; background: var(--surface2); color: var(--text); border: 1px solid var(--border2); padding: 12px 16px; border-radius: var(--r); font-size: .92rem; transition: var(--transition); }
+        .form-group input:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px var(--glow2); }
+        .btn { background: linear-gradient(135deg, #7c6af7, #9f3fbf); color: #fff; border: none; padding: 14px 20px; border-radius: 99px; font-weight: 600; font-family: 'DM Sans', sans-serif; width: 100%; cursor: pointer; transition: var(--transition); font-size: 1rem; display: block; text-align: center; position: relative; overflow: hidden; box-shadow: 0 4px 20px rgba(124,106,247,0.4); }
+        .btn::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,0.15),transparent); opacity:0; transition:opacity var(--transition); }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(124,106,247,0.5); } .btn:hover::before { opacity: 1; } .btn:active { transform: translateY(0) scale(0.98); }
+        .link-text { color: var(--accent2); font-size: .85rem; cursor: pointer; padding: 10px; display: inline-block; font-weight: 500; transition: var(--transition); }
+        .link-text:hover { color: var(--accent3); text-shadow: 0 0 10px var(--glow); }
+
+        /* ===== VIEWS & STRUCTURE ===== */
+        .auth-container { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; animation: fadeUp .6s ease both; }
+        .auth-card { background: var(--surface); padding: 32px 28px; border-radius: var(--r3); width: 100%; max-width: 400px; box-shadow: var(--shadow); border: 1px solid var(--border); text-align: center; animation: cardIn .5s ease both; transition: var(--transition); }
+        .auth-card:hover { border-color: var(--border2); }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } } 
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } } 
+        @keyframes cardIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } } 
+        @keyframes slideUp { from { opacity: 0; transform: translateY(10px) scaleY(0.95); } to { opacity: 1; transform: translateY(0) scaleY(1); } } 
+        @keyframes spin { to { transform: rotate(360deg); } } 
+        @keyframes blobFloat { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(20px,-20px) scale(1.05)} 66%{transform:translate(-15px,15px) scale(0.97)} }
+    </style>
+</head>
+<body>
+
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="blob blob1"></div>
+    <div class="blob blob2"></div>
+    <div class="blob blob3"></div>
+
+    <div id="loader" class="hidden"><div class="spinner"></div></div>
+    <div id="toast-container"></div>
+
+    <div id="auth-views">
+        <div id="login-view" class="auth-container">
+            <div class="auth-card">
+                <div class="bismillah" style="margin-bottom: 16px;">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
+                <h2 style="margin-bottom: 6px;">Welcome Back</h2>
+                <p style="color: var(--text2); font-size: .85rem; margin-bottom: 28px;">Sign in to access your Islamic library</p>
+                <form id="loginForm">
+                    <div class="form-group"><label>Mobile Number</label><input type="tel" id="login-mobile" placeholder="Enter your number" required></div>
+                    <div class="form-group"><label>Password</label><input type="password" id="login-pass" placeholder="Enter your password" required></div>
+                    <button type="submit" class="btn" id="login-btn" style="margin-top: 24px;">Login ✦</button>
+                </form>
+                <div class="mt-2 flex justify-between align-center">
+                    <span class="link-text" onclick="switchAuth('reset')">Forgot Password?</span>
+                    <span class="link-text" onclick="switchAuth('signup')">Create Account</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="signup-view" class="auth-container hidden">
+            <div class="auth-card">
+                <h2 style="margin-bottom: 6px;">Create Account</h2>
+                <p style="color: var(--text2); font-size: .85rem; margin-bottom: 28px;">Join our Islamic eBook community</p>
+                <form id="signupForm">
+                    <div class="form-group"><label>Full Name</label><input type="text" id="reg-name" placeholder="e.g. Abdullah" required></div>
+                    <div class="form-group"><label>Mobile Number</label><input type="tel" id="reg-mobile" placeholder="Enter your number" required></div>
+                    <div class="form-group"><label>Password</label><input type="password" id="reg-pass" placeholder="Create a strong password" required></div>
+                    <button type="submit" class="btn" id="signup-btn" style="margin-top: 24px;">Sign Up ✦</button>
+                </form>
+                <div class="mt-2"><span class="link-text" onclick="switchAuth('login')"><i class="fas fa-arrow-left" style="margin-right: 6px;"></i> Back to Login</span></div>
+            </div>
+        </div>
+
+        <div id="reset-view" class="auth-container hidden">
+            <div class="auth-card">
+                <h2 style="margin-bottom: 6px;">Reset Password</h2>
+                <p style="color: var(--text2); font-size: .85rem; margin-bottom: 28px;">Enter your registered mobile number</p>
+                <form id="resetForm">
+                    <div class="form-group"><label>Mobile Number</label><input type="tel" id="reset-mobile" placeholder="Enter registered number" required></div>
+                    <div class="form-group"><label>New Password</label><input type="password" id="reset-pass" placeholder="Create a new password" required></div>
+                    <button type="submit" class="btn" id="reset-btn" style="margin-top: 24px;">Update Password ✦</button>
+                </form>
+                <div class="mt-2"><span class="link-text" onclick="switchAuth('login')"><i class="fas fa-arrow-left" style="margin-right: 6px;"></i> Back to Login</span></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = "https://script.google.com/macros/s/AKfycbxCEiZaRqK2KKtcWGx0y9nMz5krOI9XeFnrS2ff_B5M0TU_dZFHYfKBPrys4eSBRJhx/exec"; // Tumhara API URL
+
+        function initTheme() {
+            const currentTheme = document.documentElement.getAttribute("data-theme");
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            initTheme();
+
+            // ✅ REDIRECT LOGIC: Agar pehle se login hai, toh home page bhej do
+            if (localStorage.getItem("islamic_user_id")) {
+                window.location.href = '../index.html';
+                return;
+            }
+
+            if (sessionStorage.getItem('open_reset_tab') === 'true') {
+                sessionStorage.removeItem('open_reset_tab');
+                switchAuth('reset');
+            } else {
+                switchAuth('login');
+            }
+        });
+
+        function showToast(msg, type = "success") {
+            const container = document.getElementById("toast-container");
+            const toast = document.createElement("div");
+            toast.className = "toast";
+            toast.innerHTML = (type === "success" ? '<span style="font-size:1.1rem; color:var(--success)">✓</span>' : '<span style="font-size:1.1rem; color:var(--danger)">✕</span>') + ` <span>${msg}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => { toast.style.transform = "translateX(110%)"; toast.style.opacity = "0"; setTimeout(() => toast.remove(), 400); }, 3000);
+        }
+
+        async function apiCall(action, method = "GET", body = null, showFullScreenLoader = true) {
+            const loader = document.getElementById("loader");
+            if (showFullScreenLoader) loader.classList.remove("hidden");
+            
+            const url = `${API_URL}?action=${action}`;
+            const options = { method: method, redirect: "follow" };
+            if (body) {
+                options.body = JSON.stringify(body);
+                options.headers = { "Content-Type": "text/plain;charset=utf-8" };
+            }
+            
+            try {
+                const response = await fetch(url, options);
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                return await response.json();
+            } catch (error) {
+                console.error("API Call Error:", error);
+                showToast("Network Error or API issue", "error");
+                return null;
+            } finally {
+                if (showFullScreenLoader) loader.classList.add("hidden");
+            }
+        }
+
+        function switchAuth(view) {
+            document.getElementById("loginForm").reset();
+            document.getElementById("signupForm").reset();
+            document.getElementById("resetForm").reset();
+
+            document.getElementById('login-btn').disabled = false;
+            document.getElementById('login-btn').innerHTML = 'Login ✦';
+            document.getElementById('signup-btn').disabled = false;
+            document.getElementById('signup-btn').innerHTML = 'Sign Up ✦';
+            document.getElementById('reset-btn').disabled = false;
+            document.getElementById('reset-btn').innerHTML = 'Update Password ✦';
+
+            document.getElementById("auth-views").classList.remove("hidden");
+            document.querySelectorAll(".auth-container").forEach(el => el.classList.add("hidden"));
+            document.getElementById(`${view}-view`).classList.remove("hidden");
+        }
+
+        // ✅ LOGIN SUBMIT WITH REDIRECT
+        document.getElementById("loginForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById("login-btn");
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i>`;
+            
+            const m = document.getElementById("login-mobile").value;
+            const p = document.getElementById("login-pass").value;
+            const res = await apiCall(`loginUser&mobile=${encodeURIComponent(m)}&password=${encodeURIComponent(p)}`, "GET", null, false);
+            
+            if (res && res.success) {
+                localStorage.setItem("islamic_user_id", res.user_id); 
+                localStorage.setItem("islamic_user_mobile", m); 
+                localStorage.setItem("islamic_user_name", res.name || "Library User"); 
+                
+                showToast("Login Successful! Redirecting..."); 
+                
+                // Redirecting to the main app index.html
+                setTimeout(() => {
+                    window.location.href = '../index.html';
+                }, 800);
+
+            } else {
+                if (res && res.error_code === 'USER_NOT_FOUND') {
+                    showToast(res.message || "Account not found. Redirecting to sign up...", "error");
+                    setTimeout(() => { switchAuth('signup'); }, 2000);
+                } else if (res && res.error_code === 'INVALID_PASSWORD') {
+                    showToast(res.message || "Incorrect password. Please try again.", "error");
+                    btn.disabled = false;
+                    btn.innerHTML = `Login ✦`;
+                } else {
+                    showToast(res ? (res.message || "Login failed!") : "API Failed", "error");
+                    btn.disabled = false;
+                    btn.innerHTML = `Login ✦`;
+                }
+            }
+        });
+
+        // ✅ SIGNUP SUBMIT WITH REDIRECT
+        document.getElementById("signupForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById("signup-btn");
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i>`;
+
+            const n = document.getElementById("reg-name").value;
+            const m = document.getElementById("reg-mobile").value;
+            const payload = { name: n, mobile: m, password: document.getElementById("reg-pass").value };
+            const res = await apiCall("signupUser", "POST", payload, false);
+
+            if (res && res.success) { 
+                localStorage.setItem("islamic_user_id", res.user_id); 
+                localStorage.setItem("islamic_user_name", n); 
+                localStorage.setItem("islamic_user_mobile", m); 
+                
+                showToast("Account Created! Redirecting..."); 
+                
+                // Redirecting to the main app index.html
+                setTimeout(() => {
+                    window.location.href = '../index.html';
+                }, 800);
+
+            } else {
+                showToast(res ? (res.message || "Signup failed!") : "API Failed", "error");
+                btn.disabled = false;
+                btn.innerHTML = `Sign Up ✦`;
+            }
+        });
+
+        document.getElementById("resetForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById("reset-btn");
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i>`;
+
+            const payload = { mobile: document.getElementById("reset-mobile").value, new_password: document.getElementById("reset-pass").value };
+            const res = await apiCall("resetPassword", "POST", payload, false);
+
+            if (res && res.success) { 
+                showToast("Password Reset Successfully! Please log in.");
+                setTimeout(() => { switchAuth('login'); }, 1500);
+            } else {
+                showToast(res ? (res.message || "Mobile not found!") : "API Failed", "error");
+                btn.disabled = false;
+                btn.innerHTML = `Update Password ✦`;
+            }
+        });
+    </script>
+</body>
+</html>
