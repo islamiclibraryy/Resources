@@ -13,15 +13,8 @@
     <link rel="icon" type="image/png" sizes="16x16" href="hikmahlogo.png">
     <link rel="apple-touch-icon" sizes="180x180" href="hikmahlogo.png">
 
-    <meta property="og:title" content="Islamic Library by Shekh">
-    <meta property="og:description" content="Free & Paid Islamic eBooks, Quran PDFs, Hadith books available.">
-    <meta property="og:image" content="hikmahlogo.png">
-    <meta property="og:url" content="https://mysite.github.io/Resources/">
-    <meta property="og:type" content="website">
-
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script>
@@ -32,7 +25,6 @@
     </script>
 
     <style>
-        /* ===== CSS VARIABLES (DARK MODE DEFAULT) ===== */
         :root {
             --bg: #0a0a0f; --bg2: #0f0f18; --bg3: #13131e;
             --surface: #1a1a28; --surface2: #1f1f30; --surface3: #252538;
@@ -46,7 +38,6 @@
             --transition: 0.2s cubic-bezier(0.4,0,0.2,1);
         }
 
-        /* ===== LIGHT MODE VARIABLES ===== */
         [data-theme="light"] {
             --bg: #f4f6f8; --bg2: #e9ecef; --bg3: #dee2e6;
             --surface: #ffffff; --surface2: #f8f9fa; --surface3: #e9ecef;
@@ -63,7 +54,6 @@
         [data-theme="light"] .search-dropdown { background: rgba(255, 255, 255, 0.95); }
         [data-theme="light"] .profile-drawer { background: #fff; }
 
-        /* ===== GLOBAL STYLES ===== */
         *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; font-size: 16px; }
         body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; min-height: 100vh; -webkit-tap-highlight-color: transparent; transition: background-color 0.3s ease, color 0.3s ease; }
@@ -82,7 +72,6 @@
         h1, h2, h3 { font-family: 'Syne', sans-serif; font-weight: 700; letter-spacing: -0.02em; color: var(--text); }
         .hidden { display: none !important; } .flex { display: flex; } .align-center { align-items: center; } .justify-between { justify-content: space-between; } .text-center { text-align: center; } .mt-1 { margin-top: 10px; } .mt-2 { margin-top: 20px; } .mb-2 { margin-bottom: 20px; }
 
-        /* ===== LOADER, TOAST & MODAL ===== */
         #loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10,10,15,0.85); backdrop-filter: blur(5px); z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center; }
         .spinner { width: 50px; height: 50px; border: 4px solid var(--surface3); border-top: 4px solid var(--accent); border-radius: 50%; animation: spin 1s cubic-bezier(0.4,0,0.2,1) infinite; }
         #toast-container { position: fixed; bottom: 85px; right: 28px; z-index: 9998; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
@@ -97,14 +86,12 @@
         .btn-danger { background: rgba(244, 63, 94, 0.1); color: var(--danger); border: 1px solid rgba(244, 63, 94, 0.3); }
         .btn-danger:hover { background: var(--danger); color: #fff; box-shadow: 0 4px 20px rgba(244, 63, 94, 0.4); }
 
-        /* ===== BUTTONS ===== */
         .btn { background: linear-gradient(135deg, #7c6af7, #9f3fbf); color: #fff; border: none; padding: 14px 20px; border-radius: 99px; font-weight: 600; font-family: 'DM Sans', sans-serif; width: 100%; cursor: pointer; transition: var(--transition); font-size: 1rem; display: block; text-align: center; position: relative; overflow: hidden; box-shadow: 0 4px 20px rgba(124,106,247,0.4); }
         .btn::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,0.15),transparent); opacity:0; transition:opacity var(--transition); }
         .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(124,106,247,0.5); } .btn:hover::before { opacity: 1; } .btn:active { transform: translateY(0) scale(0.98); }
         .btn-outline { background: transparent; color: var(--text2); border: 1px solid var(--border2); padding: 10px 20px; border-radius: 99px; font-weight: 500; font-size: .85rem; transition: var(--transition); cursor: pointer; }
         .btn-outline:hover { border-color: var(--accent); color: var(--accent2); background: var(--glow2); }
 
-        /* ===== VIEWS & STRUCTURE ===== */
         header { 
             position: fixed; top: 0; left: 0; right: 0; z-index: 1000; 
             padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; 
@@ -118,7 +105,6 @@
         
         .main-content { padding: 90px 20px 90px; max-width: 1400px; margin: 0 auto; animation: fadeIn .5s ease both; transition: padding-top 0.3s ease; }
 
-        /* ✅ PROFILE DRAWER UI */
         .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 10001; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; backdrop-filter: blur(3px); }
         .drawer-overlay.active { opacity: 1; pointer-events: all; }
         
@@ -139,8 +125,7 @@
         
         .drawer-footer { padding: 20px; border-top: 1px solid var(--border); flex-shrink: 0; padding-bottom: calc(20px + env(safe-area-inset-bottom)); }
 
-        /* ===== SEARCH BAR UI ===== */
-        .search-container { position: relative; margin-bottom: 24px; z-index: 900; }
+        .search-container { position: relative; margin-bottom: 16px; z-index: 900; }
         .search-input-wrapper { position: relative; display: flex; align-items: center; }
         .search-input-wrapper .fa-search { position: absolute; left: 18px; color: var(--text3); font-size: 1.1rem; pointer-events: none; }
         .search-input-wrapper .fa-times { position: absolute; right: 18px; color: var(--text3); font-size: 1.2rem; cursor: pointer; padding: 5px; }
@@ -157,13 +142,31 @@
         .search-info { flex: 1; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
         .search-title { font-family: 'Syne', sans-serif; font-size: .95rem; font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; }
         .search-desc { font-size: .75rem; color: var(--text3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .search-empty { padding: 20px; text-align: center; color: var(--text3); font-size: .85rem; }
 
-        /* ===== SKELETON LOADERS ===== */
+        /* ✅ COMPACT DROPDOWN FILTER UI */
+        .filters-wrapper { display: flex; gap: 12px; margin-bottom: 24px; z-index: 800; position: relative; }
+        .custom-filter { position: relative; flex: 1; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; color: var(--text2); font-size: 0.85rem; font-weight: 600; box-shadow: var(--shadow); transition: var(--transition); user-select: none; }
+        .custom-filter:hover { border-color: var(--accent); color: var(--text); }
+        .custom-filter.active-filter { border-color: var(--accent); color: var(--accent2); background: var(--glow2); }
+        .custom-filter .fa-chevron-down { font-size: 0.75rem; transition: transform 0.3s ease; }
+        .custom-filter.open .fa-chevron-down { transform: rotate(180deg); }
+        
+        .filter-options { position: absolute; top: calc(100% + 8px); left: 0; right: 0; background: var(--surface2); border: 1px solid var(--border); border-radius: var(--r); box-shadow: var(--shadow2); opacity: 0; pointer-events: none; transform: translateY(-10px); transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); z-index: 1000; overflow: hidden; }
+        .custom-filter.open .filter-options { opacity: 1; pointer-events: all; transform: translateY(0); }
+        
+        .f-option { padding: 12px 16px; color: var(--text2); font-size: 0.85rem; transition: background 0.2s, color 0.2s; border-bottom: 1px solid var(--border); }
+        .f-option:last-child { border-bottom: none; }
+        .f-option:hover { background: var(--surface3); color: var(--text); }
+        .f-option.selected { background: var(--glow2); color: var(--accent2); font-weight: 700; border-left: 3px solid var(--accent); padding-left: 13px; }
+        
+        .empty-state { text-align: center; padding: 40px 20px; grid-column: 1 / -1; animation: fadeIn 0.5s ease; }
+        .empty-state i { font-size: 3rem; color: var(--border2); margin-bottom: 16px; display: block; }
+        .empty-state h4 { font-family: 'Syne', sans-serif; font-size: 1.2rem; color: var(--text); margin-bottom: 8px; }
+        .empty-state p { font-size: 0.9rem; color: var(--text2); }
+
         .skeleton { background: linear-gradient(90deg, var(--surface3) 25%, var(--surface2) 50%, var(--surface3) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite linear; border-radius: 4px; }
         @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
 
-        /* ===== EBOOK GRID ===== */
         .grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 20px; }
         .book-card { background: var(--surface); border-radius: var(--r2); overflow: hidden; border: 1px solid var(--border); display: flex; flex-direction: column; cursor: pointer; box-shadow: var(--shadow); transition: all var(--transition); animation: cardIn .4s ease both; }
         .book-card:hover { border-color: var(--border2); transform: translateY(-4px); box-shadow: var(--shadow2); }
@@ -174,7 +177,6 @@
         .strike-price { font-size: .75rem; color: var(--text3); text-decoration: line-through; margin-left: 6px; font-weight: normal; }
         .badge-free { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 99px; background: var(--glow2); border: 1px solid rgba(124,106,247,0.3); font-size: .75rem; font-weight: 600; color: var(--accent3); }
 
-        /* ===== BOTTOM NAV ===== */
         .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 70px; background: rgba(10,10,15,0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--border); z-index: 999; transition: background-color 0.3s ease, border-color 0.3s ease; }
         .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text3); font-size: .75rem; font-weight: 500; gap: 6px; cursor: pointer; flex: 1; height: 100%; transition: all var(--transition); text-decoration: none; }
         .nav-item i { font-size: 1.2rem; transition: all var(--transition); }
@@ -182,7 +184,6 @@
         .nav-item.active i { background: var(--glow2); padding: 8px; border-radius: 50%; box-shadow: 0 0 15px var(--glow); transform: translateY(-4px); color: var(--accent); }
         .nav-item:hover:not(.active) { color: var(--text2); }
 
-        /* ===== ANIMATIONS ===== */
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } } 
         @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } } 
         @keyframes cardIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } } 
@@ -262,7 +263,35 @@
                     <div id="search-dropdown" class="search-dropdown"></div>
                 </div>
 
+                <div class="filters-wrapper">
+                    
+                    <div class="custom-filter" id="price-dropdown-btn" onclick="toggleFilterMenu('price')">
+                        <span id="price-label">Price: All</span>
+                        <i class="fas fa-chevron-down"></i>
+                        <div class="filter-options" id="price-options">
+                            <div class="f-option selected" onclick="setPriceFilter('all', 'Price: All', event)">All Books</div>
+                            <div class="f-option" onclick="setPriceFilter('free', 'Free Books', event)">Free Books</div>
+                            <div class="f-option" onclick="setPriceFilter('premium', 'Premium', event)">Premium</div>
+                        </div>
+                    </div>
+
+                    <div class="custom-filter" id="lang-dropdown-btn" onclick="toggleFilterMenu('lang')">
+                        <span id="lang-label">Lang: All</span>
+                        <i class="fas fa-chevron-down"></i>
+                        <div class="filter-options" id="lang-options">
+                            <div class="f-option selected" onclick="setLangFilter('all', 'Lang: All', event)">All Languages</div>
+                            <div class="f-option" onclick="setLangFilter('english', 'English', event)">English</div>
+                            <div class="f-option" onclick="setLangFilter('urdu', 'Urdu', event)">Urdu</div>
+                            <div class="f-option" onclick="setLangFilter('hindi', 'Hindi', event)">Hindi</div>
+                            <div class="f-option" onclick="setLangFilter('arabic', 'Arabic', event)">Arabic</div>
+                            <div class="f-option" onclick="setLangFilter('roman urdu / hindi', 'Roman Urdu', event)">Roman Urdu / Hindi</div>
+                        </div>
+                    </div>
+
+                </div>
+
                 <h3 class="mb-2" style="font-size: 1.4rem;">Discover eBooks</h3>
+                
                 <div id="ebook-grid" class="grid-container"></div>
                 
                 <div class="text-center mt-2" style="margin-bottom: 30px;">
@@ -279,11 +308,15 @@
     </div>
 
     <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbxCEiZaRqK2KKtcWGx0y9nMz5krOI9XeFnrS2ff_B5M0TU_dZFHYfKBPrys4eSBRJhx/exec"; // Update this
+        const API_URL = "https://script.google.com/macros/s/AKfycbxCEiZaRqK2KKtcWGx0y9nMz5krOI9XeFnrS2ff_B5M0TU_dZFHYfKBPrys4eSBRJhx/exec"; 
         let ebooksData = [];
         let apiLocks = {};
         let currentPage = 1;
         const itemsPerPage = 15;
+
+        // ✅ FILTER STATE VARIABLES
+        let currentPriceFilter = 'all';
+        let currentLangFilter = 'all';
 
         function initTheme() {
             const currentTheme = document.documentElement.getAttribute("data-theme");
@@ -327,7 +360,6 @@
             document.getElementById("confirm-modal").classList.remove("hidden");
         }
 
-        // ✅ CHANGE PASSWORD LOGIC (Redirects to Login folder with Reset Tab Command)
         function openChangePassword() {
             closeProfileDrawer();
             document.getElementById("modal-title-text").innerText = "Change Password";
@@ -338,49 +370,28 @@
                 closeModal();
                 executeLogout(false);
                 sessionStorage.setItem('open_reset_tab', 'true');
-                window.location.href = 'login/'; // Redirecting to login folder
+                window.location.href = 'login/'; 
             };
             document.getElementById("confirm-modal").classList.remove("hidden");
         }
 
-        function confirmLogout() {
-            executeLogout(true);
-        }
+        function confirmLogout() { executeLogout(true); }
 
-        // ✅ EXECUTE LOGOUT LOGIC
         function executeLogout(redirect) {
             const userId = localStorage.getItem("islamic_user_id");
-            if(userId) { 
-                localStorage.removeItem(`cache_payments_${userId}_data`);
-            }
+            if(userId) localStorage.removeItem(`cache_payments_${userId}_data`);
             localStorage.removeItem("islamic_user_id");
             localStorage.removeItem("islamic_user_name");
             localStorage.removeItem("islamic_user_mobile");
-            if(redirect) {
-                window.location.href = 'login/'; // Back to Login page
-            }
+            if(redirect) window.location.href = 'login/'; 
         }
 
-        let touchstartX = 0, touchstartY = 0, touchendX = 0, touchendY = 0;
-        document.addEventListener('touchstart', e => { touchstartX = e.changedTouches[0].screenX; touchstartY = e.changedTouches[0].screenY; }, {passive: true});
-        document.addEventListener('touchend', e => { touchendX = e.changedTouches[0].screenX; touchendY = e.changedTouches[0].screenY; handleSwipe(); }, {passive: true});
-        function handleSwipe() {
-            if (document.getElementById("profile-drawer").classList.contains("active") || document.getElementById("search-dropdown").classList.contains("active") || Math.abs(touchendY - touchstartY) > 50) return;
-            if (touchendX < touchstartX - 70) window.location.href = 'library/';
-        }
-
-        // ✅ THE MAIN AUTHENTICATION CHECK
         document.addEventListener("DOMContentLoaded", () => {
             initTheme();
-
-            // Agar user login NAHI hai (localStorage me ID nahi hai)
             if (!localStorage.getItem("islamic_user_id")) {
-                // Seedha login page par bhej do
                 window.location.href = 'login/';
                 return;
             }
-            
-            // Agar user login hai, toh App views show kar do aur Data load karo
             document.getElementById("app-views").classList.remove("hidden");
             loadHome();
         });
@@ -397,20 +408,17 @@
         async function apiCall(action, method = "GET", body = null, showFullScreenLoader = true) {
             const loader = document.getElementById("loader");
             if (showFullScreenLoader) loader.classList.remove("hidden");
-            
             const url = `${API_URL}?action=${action}`;
             const options = { method: method, redirect: "follow" };
             if (body) {
                 options.body = JSON.stringify(body);
                 options.headers = { "Content-Type": "text/plain;charset=utf-8" };
             }
-            
             try {
                 const response = await fetch(url, options);
                 if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 return await response.json();
             } catch (error) {
-                console.error("API Call Error:", error);
                 showToast("Network Error or API issue", "error");
                 return null;
             } finally {
@@ -420,9 +428,7 @@
 
         function fetchSWR(action, cacheKey, onDataChange, showBlockingLoader = false) {
             const cachedDataStr = localStorage.getItem(cacheKey + "_data");
-            if (cachedDataStr) {
-                try { onDataChange(JSON.parse(cachedDataStr)); } catch (e) {}
-            }
+            if (cachedDataStr) { try { onDataChange(JSON.parse(cachedDataStr)); } catch (e) {} }
             if (!cachedDataStr && showBlockingLoader) document.getElementById('loader').classList.remove('hidden');
             if (apiLocks[cacheKey]) return;
             apiLocks[cacheKey] = true;
@@ -473,14 +479,121 @@
             }
         }
 
+        // ✅ CUSTOM DROPDOWN LOGIC
+        function toggleFilterMenu(type) {
+            const priceBtn = document.getElementById('price-dropdown-btn');
+            const langBtn = document.getElementById('lang-dropdown-btn');
+            
+            if (type === 'price') {
+                priceBtn.classList.toggle('open');
+                langBtn.classList.remove('open'); // Close the other
+            } else {
+                langBtn.classList.toggle('open');
+                priceBtn.classList.remove('open'); // Close the other
+            }
+        }
+
+        // Close dropdowns if clicked outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.custom-filter')) {
+                document.getElementById('price-dropdown-btn').classList.remove('open');
+                document.getElementById('lang-dropdown-btn').classList.remove('open');
+            }
+            if (!e.target.closest('.search-container')) {
+                document.getElementById('search-dropdown').classList.remove('active');
+            }
+        });
+
+        // ✅ SET PRICE FILTER
+        function setPriceFilter(value, label, event) {
+            event.stopPropagation(); // Prevent closing immediately to show click effect
+            currentPriceFilter = value;
+            document.getElementById('price-label').innerText = label;
+            
+            // Handle UI selection
+            document.querySelectorAll('#price-options .f-option').forEach(el => el.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
+            
+            // Highlight Button if not "all"
+            const btn = document.getElementById('price-dropdown-btn');
+            if(value !== 'all') btn.classList.add('active-filter');
+            else btn.classList.remove('active-filter');
+
+            toggleFilterMenu('price'); // Close dropdown
+            renderGrid(true);
+        }
+
+        // ✅ SET LANGUAGE FILTER
+        function setLangFilter(value, label, event) {
+            event.stopPropagation();
+            currentLangFilter = value;
+            document.getElementById('lang-label').innerText = label;
+            
+            document.querySelectorAll('#lang-options .f-option').forEach(el => el.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
+
+            // Highlight Button if not "all"
+            const btn = document.getElementById('lang-dropdown-btn');
+            if(value !== 'all') btn.classList.add('active-filter');
+            else btn.classList.remove('active-filter');
+
+            toggleFilterMenu('lang'); // Close dropdown
+            renderGrid(true);
+        }
+
+        // ✅ UPDATED RENDER GRID WITH MULTI-LANGUAGE SUPPORT
         function renderGrid(reset = false) {
             if (reset) currentPage = 1;
             const grid = document.getElementById("ebook-grid");
+            const loadMoreBtn = document.getElementById("load-more-btn");
             if (reset) grid.innerHTML = "";
 
+            // 1. Filter Data based on selected dropdowns
+            let filteredBooks = ebooksData.filter(eb => {
+                // Check Price
+                const isFree = String(eb.is_free) === "true";
+                let passPrice = true;
+                if (currentPriceFilter === 'free') passPrice = isFree;
+                if (currentPriceFilter === 'premium') passPrice = !isFree;
+
+                // Check Language (MULTI-LANGUAGE LOGIC)
+                let passLang = true;
+                if (currentLangFilter !== 'all') {
+                    const langData = eb.language || 'none';
+                    let bookLangs = [];
+                    
+                    // Agar backend array bhejta hai (future proof)
+                    if (Array.isArray(langData)) {
+                        bookLangs = langData.map(l => l.toLowerCase().trim());
+                    } 
+                    // Agar backend comma-separated string bhejta hai (e.g., "Urdu, Arabic")
+                    else {
+                        bookLangs = String(langData).split(',').map(l => l.toLowerCase().trim());
+                    }
+
+                    // Check karo ki user ne jo select kiya hai wo book ki languages list me hai ya nahi
+                    passLang = bookLangs.includes(currentLangFilter.toLowerCase());
+                }
+
+                return passPrice && passLang;
+            });
+
+            // 2. Check for Empty State
+            if (filteredBooks.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-folder-open"></i>
+                        <h4>No books available</h4>
+                        <p>We couldn't find any books in this category right now.</p>
+                    </div>`;
+                loadMoreBtn.classList.add("hidden");
+                return; 
+            }
+
+            // 3. Render Cards if data exists
             const startIndex = (currentPage - 1) * itemsPerPage;
             const endIndex = startIndex + itemsPerPage;
-            const booksToShow = ebooksData.slice(startIndex, endIndex);
+            const booksToShow = filteredBooks.slice(startIndex, endIndex);
 
             booksToShow.forEach(eb => {
                 const isFree = String(eb.is_free) === "true";
@@ -497,8 +610,7 @@
                 </div>`;
             });
 
-            const loadMoreBtn = document.getElementById("load-more-btn");
-            loadMoreBtn.classList.toggle("hidden", ebooksData.length <= endIndex);
+            loadMoreBtn.classList.toggle("hidden", filteredBooks.length <= endIndex);
         }
 
         function loadMoreBooks() {
@@ -552,20 +664,6 @@
                 dropdown.classList.remove("active");
             }
         }
-
-        function clearSearch() {
-            const searchBar = document.getElementById("search-bar");
-            searchBar.value = "";
-            handleSearch("");
-            searchBar.focus();
-        }
-
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('.search-container')) {
-                document.getElementById('search-dropdown').classList.remove('active');
-            }
-        });
-
     </script>
 </body>
 </html>
