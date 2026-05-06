@@ -338,7 +338,7 @@
                 closeModal();
                 executeLogout(false);
                 sessionStorage.setItem('open_reset_tab', 'true');
-                window.location.href = 'login/index.html'; // Redirecting to login folder
+                window.location.href = 'login/'; // Redirecting to login folder
             };
             document.getElementById("confirm-modal").classList.remove("hidden");
         }
@@ -357,7 +357,7 @@
             localStorage.removeItem("islamic_user_name");
             localStorage.removeItem("islamic_user_mobile");
             if(redirect) {
-                window.location.href = 'login/index.html'; // Back to Login page
+                window.location.href = 'login/'; // Back to Login page
             }
         }
 
@@ -376,7 +376,7 @@
             // Agar user login NAHI hai (localStorage me ID nahi hai)
             if (!localStorage.getItem("islamic_user_id")) {
                 // Seedha login page par bhej do
-                window.location.href = 'login/index.html';
+                window.location.href = 'login/';
                 return;
             }
             
