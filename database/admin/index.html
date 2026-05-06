@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <title>Admin Dashboard - Islamic Library by Shekh</title>
+
+    <link rel="icon" href="hikmahadminlogonew.png">
+
+    <meta property="og:title" content="Admin Dashboard - Islamic Library by Shekh">
+    <meta property="og:description" content="Admin Dashboard for managing Islamic Library by Shekh">
+    <meta property="og:image" content="https://mysite.github.io/Resources/admin/hikmahadminlogonew.png">
+    <meta property="og:url" content="https://mysite.github.io/Resources/admin/">
+    <meta property="og:type" content="website">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="admin_style.css">
+
+    <style>
+        .modal-overlay { transition: opacity 0.3s ease, visibility 0.3s ease; opacity: 1; visibility: visible; }
+        .modal-overlay.hidden { display: flex !important; opacity: 0; visibility: hidden; pointer-events: none; }
+    </style>
+</head>
+<body>
+    <div class="hero-bg"></div><div class="hero-grid"></div><div class="blob blob1"></div><div class="blob blob2"></div>
+
+    <div id="loader" class="hidden"><div class="spinner"></div></div>
+    
+    <div id="toast-container"></div>
+    
+    <div id="confirm-overlay" class="modal-overlay hidden">
+        <div class="confirm-box">
+            <h3 id="confirm-title">Confirm Action</h3>
+            <p id="confirm-msg">Are you sure?</p>
+            <div class="confirm-actions">
+                <button class="btn btn-outline" onclick="window.closeConfirm()">Cancel</button>
+                <button class="btn" id="confirm-yes-btn">Yes ✦</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="change-password-modal" class="modal-overlay hidden">
+        <div class="modal-box" style="text-align:left;">
+            <h3 style="margin-bottom: 20px;">Change Admin Password</h3>
+            <form id="changePasswordForm" onsubmit="event.preventDefault(); window.handleChangePassword();">
+                <div class="form-group"><label>New Password</label><input type="password" id="new_admin_password" required minlength="6" placeholder="Enter new strong password"></div>
+                <div class="modal-actions" style="margin-top:20px;">
+                    <button type="button" class="btn btn-outline" onclick="window.closeChangePasswordModal()">Cancel</button>
+                    <button type="submit" class="btn">Update Password</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="login-view" class="hidden">
+        <div class="login-card">
+            <div class="bismillah arabic-text text-center" style="margin-bottom: 16px;">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
+            <div class="login-logo"><i class="fas fa-crown"></i></div>
+            <h2 style="text-align: center; margin-bottom: 25px;">Admin Login</h2>
+            <form id="adminLoginForm" onsubmit="event.preventDefault(); window.handleAdminLogin();">
+                <div class="form-group"><label>Admin Email</label><input type="email" id="admin_email" required placeholder="admin@example.com"></div>
+                <div class="form-group"><label>Password</label><input type="password" id="admin_password" required placeholder="Enter password"></div>
+                <button type="submit" class="btn mt-1" id="login-btn">Secure Login ✦</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="app-view" class="hidden">
+        <header>
+            <div class="flex align-center" style="gap: 12px;">
+                <i class="fas fa-shield-alt" style="color: var(--accent2); font-size: 1.2rem; text-shadow: 0 0 10px var(--glow);"></i>
+                <h2>Dashboard</h2>
+            </div>
+            <div class="flex align-center" style="gap: 20px;">
+                <i id="theme-toggle-icon" class="fas fa-moon" style="font-size: 1.2rem; color: var(--text2); cursor: pointer;" onclick="window.toggleTheme()" title="Switch Theme"></i>
+                <i class="fas fa-user-circle" style="font-size: 1.3rem; color: var(--text2); cursor: pointer;" onclick="window.openProfileDrawer()" title="Profile"></i>
+            </div>
+        </header>
+        
+        <div id="drawer-overlay" class="drawer-overlay" onclick="window.closeProfileDrawer()"></div>
+        <div id="profile-drawer" class="profile-drawer">
+            <div class="drawer-header"><h3>Admin Profile</h3><i class="fas fa-times" onclick="window.closeProfileDrawer()"></i></div>
+            <div class="drawer-body">
+                <div class="drawer-avatar"><i class="fas fa-crown"></i></div>
+                <div class="drawer-name">Admin</div>
+                <div class="drawer-mobile">Main Administrator</div>
+                <div class="drawer-menu"><button class="btn btn-outline" onclick="window.openChangePassword()"><i class="fas fa-key"></i> Change Password</button></div>
+            </div>
+            <div class="drawer-footer"><button class="btn btn-danger" onclick="window.logout()"><i class="fas fa-sign-out-alt"></i> Log Out</button></div>
+        </div>
+
+        <main>
+            <div class="bismillah arabic-text text-center" style="margin-bottom: 24px; margin-top: 5px;">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
+            <div class="stats-grid">
+                <div class="stat-card" onclick="window.location.href='books/'">
+                    <div class="stat-icon" style="background:var(--glow); color:var(--accent);"><i class="fas fa-book"></i></div>
+                    <div class="stat-value skeleton" id="stats-ebooks-count"></div>
+                    <div class="stat-label">Total Ebooks</div>
+                </div>
+                <div class="stat-card" onclick="window.location.href='users/'">
+                    <div class="stat-icon" style="background:rgba(16, 185, 129, 0.15); color:var(--success);"><i class="fas fa-users"></i></div>
+                    <div class="stat-value skeleton" id="stats-users-count"></div>
+                    <div class="stat-label">Total Users</div>
+                </div>
+                <div class="stat-card" onclick="window.location.href='payments/'">
+                    <div class="stat-icon" style="background:rgba(245, 158, 11, 0.15); color:var(--amber);"><i class="fas fa-wallet"></i></div>
+                    <div class="stat-value skeleton" id="stats-purchases-count"></div>
+                    <div class="stat-label">Total Purchases</div>
+                </div>
+            </div>
+            
+            <div class="mt-2">
+                 <h3 style="margin-bottom: 16px;">Quick Actions</h3>
+                 <div class="quick-actions">
+                    <a href="new-ebook/" class="action-card"><i class="fas fa-plus-circle"></i> Add New Ebook</a>
+                    <a href="books/" class="action-card"><i class="fas fa-tasks"></i> Manage Books</a>
+                 </div>
+            </div>
+        </main>
+
+        <nav class="bottom-nav">
+            <a href="./" class="nav-item active"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a>
+            <a href="books/" class="nav-item"><i class="fas fa-book"></i><span>Books</span></a>
+            <a href="users/" class="nav-item"><i class="fas fa-users"></i><span>Users</span></a>
+            <a href="payments/" class="nav-item"><i class="fas fa-wallet"></i><span>Payments</span></a>
+            <a href="new-ebook/" class="nav-item add-btn"><i class="fas fa-plus"></i><span>Add</span></a>
+        </nav>
+    </div>
+
+    <script type="module" src="admin_script.js"></script>
+</body>
+</html>
