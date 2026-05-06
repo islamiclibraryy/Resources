@@ -80,10 +80,16 @@ onAuthStateChanged(auth, (user) => {
         if (path.endsWith('/admin/') || path.endsWith('/index.html') && !path.includes('/books/') && !path.includes('/users/') && !path.includes('/payments/') && !path.includes('/new-ebook/')) {
             fetchDashboardStatsBackground();
         } else if (path.includes('/books/')) {
+            // 🔥 BUG FIX: Authentication ke baad agar data nahi hai toh skeleton call karo
+            if (!localStorage.getItem("admin_cache_ebooks") && typeof window.renderEbooksSkeletons === "function") window.renderEbooksSkeletons();
             window.loadBooks();
         } else if (path.includes('/users/')) {
+            // 🔥 BUG FIX: Authentication ke baad agar data nahi hai toh skeleton call karo
+            if (!localStorage.getItem("admin_cache_users") && typeof window.renderUsersSkeletons === "function") window.renderUsersSkeletons();
             window.loadUsers();
         } else if (path.includes('/payments/')) {
+            // 🔥 BUG FIX: Authentication ke baad agar data nahi hai toh skeleton call karo
+            if (!localStorage.getItem("admin_cache_payments") && typeof window.renderPaymentsSkeletons === "function") window.renderPaymentsSkeletons();
             window.loadPayments();
         }
     } else {
@@ -110,14 +116,12 @@ async function fetchDashboardStatsBackground() {
         const freshStats = { ebooks: ebookCount.data().count, users: userCount.data().count, payments: payCount.data().count };
         const cachedStr = localStorage.getItem("admin_stats_cache");
         
-        // Agar change hua hai tabhi UI update karo
         if (cachedStr !== JSON.stringify(freshStats)) {
             localStorage.setItem("admin_stats_cache", JSON.stringify(freshStats));
             updateStatUI('stats-ebooks-count', freshStats.ebooks);
             updateStatUI('stats-users-count', freshStats.users);
             updateStatUI('stats-purchases-count', freshStats.payments);
         } else {
-            // Skeleton hatane ke liye (Agar direct aaya ho toh)
             updateStatUI('stats-ebooks-count', freshStats.ebooks);
             updateStatUI('stats-users-count', freshStats.users);
             updateStatUI('stats-purchases-count', freshStats.payments);
@@ -136,11 +140,16 @@ function updateStatUI(id, val) {
 window.loadBooks = async function() {
     const cacheKey = "admin_cache_ebooks";
     const cachedStr = localStorage.getItem(cacheKey);
+    
+    // 🔥 BUG FIX: Fetch hone se pehle ensure karo ki skeleton chal raha hai agar cache nahi hai
+    if (!cachedStr && typeof window.renderEbooksSkeletons === "function") {
+        window.renderEbooksSkeletons();
+    }
+
     try {
         const snapshot = await getDocs(collection(db, "ebooks"));
         const freshData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         
-        // Data Compare Karo - Agar alag hai tabhi Refresh Karo
         if (cachedStr !== JSON.stringify(freshData)) {
             window.ebooksData = freshData;
             localStorage.setItem(cacheKey, JSON.stringify(freshData));
@@ -217,6 +226,12 @@ window.handleEbookSubmit = async () => {
 window.loadUsers = async function() {
     const cacheKey = "admin_cache_users";
     const cachedStr = localStorage.getItem(cacheKey);
+    
+    // 🔥 BUG FIX: Ensure user skeleton loads if cache is empty
+    if (!cachedStr && typeof window.renderUsersSkeletons === "function") {
+        window.renderUsersSkeletons();
+    }
+
     try {
         const snapshot = await getDocs(query(collection(db, "users"), orderBy("createdAt", "desc")));
         const freshData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -262,6 +277,12 @@ window.handleUserUpdate = async function() {
 window.loadPayments = async function() {
     const cacheKey = "admin_cache_payments";
     const cachedStr = localStorage.getItem(cacheKey);
+    
+    // 🔥 BUG FIX: Ensure payments skeleton loads if cache is empty
+    if (!cachedStr && typeof window.renderPaymentsSkeletons === "function") {
+        window.renderPaymentsSkeletons();
+    }
+
     try {
         const snapshot = await getDocs(query(collection(db, "payments"), orderBy("createdAt", "desc")));
         const freshData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
