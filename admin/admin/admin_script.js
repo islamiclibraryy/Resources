@@ -1,5 +1,5 @@
 // === CONFIGURATION ===
-const API_URL = "https://script.google.com/macros/s/AKfycbwDjMUFBjVBfoJ_C7nLMtU0A7R55W-3S8hDQGcq3klgKKKom6wAS0uyNHqi5DSs5Mo/exec"; // Yahan par apna exact Web App URL daalein.
+const API_URL = "https://script.google.com/macros/s/AKfycbxCEiZaRqK2KKtcWGx0y9nMz5krOI9XeFnrS2ff_B5M0TU_dZFHYfKBPrys4eSBRJhx/exec"; // Yahan par apna exact Web App URL daalein.
 const ARABIC_PHRASES = ["سُبْحَانَ اللَّهِ", "الْحَمْدُ لِلَّهِ", "اللَّهُ أَكْبَرُ", "لَا إِلَٰهَ إِلَّا اللَّهُ", "مَا شَاءَ اللَّهُ", "بَارَكَ اللَّهُ فِيكَ"];
 
 // Global state variables
@@ -234,7 +234,7 @@ function forceFetchEbooks() { fetchEbooks(true).then(() => showToast("Ebooks syn
 function forceFetchUsers() { fetchUsers(true).then(() => showToast("Users synced!", "success")); }
 function forceFetchPayments() { fetchPayments(true).then(() => showToast("Payments synced!", "success")); }
 
-// === FORM HANDLING ===
+/// === FORM HANDLING ===
 function togglePriceFields() {
     const isFreeCheckbox = document.getElementById("eb_isfree");
     if (!isFreeCheckbox) return;
@@ -262,6 +262,7 @@ function handleEbookSubmit() {
         price: isFree ? "" : document.getElementById("eb_price").value,
         discount_price: isFree ? "" : document.getElementById("eb_discount").value,
         is_free: isFree,
+        language: document.getElementById("eb_language").value // ✅ YEH NAYI LINE ADD KI HAI
     };
 
     let action = ebookId ? `updateEbook&id=${ebookId}` : "addEbook";
@@ -282,6 +283,7 @@ function handleEbookSubmit() {
         }
     });
 }
+
 
 // Naya aur Sahi Code:
 function handlePaymentStatus(paymentId, status) {
