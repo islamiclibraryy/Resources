@@ -32,7 +32,7 @@
     <!-- ✅ SECURITY CHECK SCRIPT -->
     <script>
         if (!localStorage.getItem("islamic_user_id")) {
-            window.location.replace("../");
+            window.location.replace("../login/");
         }
     </script>
 
@@ -469,7 +469,7 @@
                 sessionStorage.setItem('open_reset_tab', 'true');
                 
                 // Ab index.html par jao, wo is message ko padh lega
-                window.location.href = 'index.html';
+                window.location.href = '../login/';
             };
             document.getElementById("confirm-modal").classList.remove("hidden");
         }
@@ -487,7 +487,7 @@
             localStorage.removeItem("islamic_user_id");
             localStorage.removeItem("islamic_user_name");
             localStorage.removeItem("islamic_user_mobile");
-            if(redirect) window.location.href = "../";
+            if(redirect) window.location.href = "../login/";
         }
 
         // ✅ SWIPE GESTURE LOGIC (Right Swipe -> Library)
