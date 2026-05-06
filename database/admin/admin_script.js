@@ -205,20 +205,37 @@ window.handleEbookSubmit = async () => {
     };
 
     try {
+        let newDocId = ebookId;
         if (ebookId) { 
             await updateDoc(doc(db, "ebooks", ebookId), payload); 
             window.showToast("Ebook Updated!"); 
         } else { 
-            await addDoc(collection(db, "ebooks"), payload); 
+            const docRef = await addDoc(collection(db, "ebooks"), payload); 
+            newDocId = docRef.id;
             window.showToast("Ebook Added!"); 
         }
-        localStorage.removeItem("admin_cache_ebooks");
+
+        // 🔥 FIX: Cache delete karne ki jagah cache mein hi data modify kar diya
+        const existingCache = localStorage.getItem("admin_cache_ebooks");
+        if (existingCache) {
+            let cacheArray = JSON.parse(existingCache);
+            if (ebookId) {
+                // Agar update kiya hai toh purane wale ko naye se replace karo
+                cacheArray = cacheArray.map(item => item.id === ebookId ? { id: ebookId, ...payload } : item);
+            } else {
+                // Agar nayi book add ki hai toh usko list mein sabse upar daal do
+                cacheArray.unshift({ id: newDocId, ...payload });
+            }
+            localStorage.setItem("admin_cache_ebooks", JSON.stringify(cacheArray));
+        }
+
         setTimeout(() => { sessionStorage.removeItem('edit_ebook_id'); window.location.href = '../books/'; }, 1000);
     } catch (e) {
         window.showToast("Error saving data", "error");
         submitBtn.disabled = false; submitBtn.innerHTML = originalText;
     }
 };
+
 
 // ==========================================
 // 👥 USERS MANAGEMENT LOGIC
