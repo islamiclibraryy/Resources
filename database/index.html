@@ -209,11 +209,11 @@
     <div id="loader" class="hidden"><div class="spinner"></div></div>
     <div id="toast-container"></div>
 
-    <div id="drawer-overlay" class="drawer-overlay" onclick="closeProfileDrawer()"></div>
+    <div id="drawer-overlay" class="drawer-overlay" onclick="window.closeProfileDrawer()"></div>
     <div id="profile-drawer" class="profile-drawer">
         <div class="drawer-header">
             <h3>My Profile</h3>
-            <i class="fas fa-times" onclick="closeProfileDrawer()"></i>
+            <i class="fas fa-times" onclick="window.closeProfileDrawer()"></i>
         </div>
         <div class="drawer-body">
             <div class="drawer-avatar"><i class="fas fa-user"></i></div>
@@ -221,11 +221,11 @@
             <div class="drawer-mobile" id="profile-mobile">+XX XXXXXXXXXX</div>
             
             <div class="drawer-menu">
-                <button class="btn btn-outline" onclick="openChangePassword()"><i class="fas fa-key"></i> Change Password</button>
+                <button class="btn btn-outline" onclick="window.openChangePassword()"><i class="fas fa-key"></i> Change Password</button>
             </div>
         </div>
         <div class="drawer-footer">
-            <button class="btn" style="background: rgba(244, 63, 94, 0.1); color: var(--danger); border: 1px solid rgba(244, 63, 94, 0.3); box-shadow: none;" onmouseover="this.style.background='var(--danger)'; this.style.color='#fff';" onmouseout="this.style.background='rgba(244, 63, 94, 0.1)'; this.style.color='var(--danger)';" onclick="showLogoutModal()"><i class="fas fa-sign-out-alt"></i> Log Out</button>
+            <button class="btn" style="background: rgba(244, 63, 94, 0.1); color: var(--danger); border: 1px solid rgba(244, 63, 94, 0.3); box-shadow: none;" onmouseover="this.style.background='var(--danger)'; this.style.color='#fff';" onmouseout="this.style.background='rgba(244, 63, 94, 0.1)'; this.style.color='var(--danger)';" onclick="window.showLogoutModal()"><i class="fas fa-sign-out-alt"></i> Log Out</button>
         </div>
     </div>
 
@@ -234,7 +234,7 @@
             <h3 class="modal-title" id="modal-title-text">Log Out</h3>
             <p class="modal-desc" id="modal-desc-text">Are you sure you want to log out of your account?</p>
             <div class="modal-actions">
-                <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+                <button class="btn btn-outline" onclick="window.closeModal()">Cancel</button>
                 <button class="btn" id="modal-action-btn">Yes</button>
             </div>
         </div>
@@ -251,8 +251,8 @@
                 </div>
             </div>
             <div class="flex align-center" style="gap: 20px;">
-                <i id="theme-toggle-icon" class="fas fa-moon" style="font-size: 1.2rem; color: var(--text2); cursor: pointer; transition: 0.3s;" onclick="toggleTheme()" title="Switch Theme"></i>
-                <i class="fas fa-user-circle" style="font-size: 1.3rem; color: var(--text2); cursor: pointer; transition: 0.3s;" onclick="openProfileDrawer()" title="Profile"></i>
+                <i id="theme-toggle-icon" class="fas fa-moon" style="font-size: 1.2rem; color: var(--text2); cursor: pointer; transition: 0.3s;" onclick="window.toggleTheme()" title="Switch Theme"></i>
+                <i class="fas fa-user-circle" style="font-size: 1.3rem; color: var(--text2); cursor: pointer; transition: 0.3s;" onclick="window.openProfileDrawer()" title="Profile"></i>
             </div>
         </header>
 
@@ -263,34 +263,34 @@
                 <div class="search-container">
                     <div class="search-input-wrapper">
                         <i class="fas fa-search"></i>
-                        <input type="text" id="search-bar" class="search-input" placeholder="Search for books..." oninput="handleSearch(this.value)" autocomplete="off">
-                        <i class="fas fa-times clear-search hidden" id="clear-search" onclick="clearSearch()" title="Clear"></i>
+                        <input type="text" id="search-bar" class="search-input" placeholder="Search for books..." oninput="window.handleSearch(this.value)" autocomplete="off">
+                        <i class="fas fa-times clear-search hidden" id="clear-search" onclick="window.clearSearch()" title="Clear"></i>
                     </div>
                     <div id="search-dropdown" class="search-dropdown"></div>
                 </div>
 
                 <div class="filters-wrapper">
                     
-                    <div class="custom-filter" id="price-dropdown-btn" onclick="toggleFilterMenu('price')">
+                    <div class="custom-filter" id="price-dropdown-btn" onclick="window.toggleFilterMenu('price')">
                         <span id="price-label">Price: All</span>
                         <i class="fas fa-chevron-down"></i>
                         <div class="filter-options" id="price-options">
-                            <div class="f-option selected" onclick="setPriceFilter('all', 'Price: All', event)">All Books</div>
-                            <div class="f-option" onclick="setPriceFilter('free', 'Free Books', event)">Free Books</div>
-                            <div class="f-option" onclick="setPriceFilter('premium', 'Premium', event)">Premium</div>
+                            <div class="f-option selected" onclick="window.setPriceFilter('all', 'Price: All', event)">All Books</div>
+                            <div class="f-option" onclick="window.setPriceFilter('free', 'Free Books', event)">Free Books</div>
+                            <div class="f-option" onclick="window.setPriceFilter('premium', 'Premium', event)">Premium</div>
                         </div>
                     </div>
 
-                    <div class="custom-filter" id="lang-dropdown-btn" onclick="toggleFilterMenu('lang')">
+                    <div class="custom-filter" id="lang-dropdown-btn" onclick="window.toggleFilterMenu('lang')">
                         <span id="lang-label">Lang: All</span>
                         <i class="fas fa-chevron-down"></i>
                         <div class="filter-options" id="lang-options">
-                            <div class="f-option selected" onclick="setLangFilter('all', 'Lang: All', event)">All Languages</div>
-                            <div class="f-option" onclick="setLangFilter('english', 'English', event)">English</div>
-                            <div class="f-option" onclick="setLangFilter('urdu', 'Urdu', event)">Urdu</div>
-                            <div class="f-option" onclick="setLangFilter('hindi', 'Hindi', event)">Hindi</div>
-                            <div class="f-option" onclick="setLangFilter('arabic', 'Arabic', event)">Arabic</div>
-                            <div class="f-option" onclick="setLangFilter('roman urdu / hindi', 'Roman Urdu', event)">Roman Urdu / Hindi</div>
+                            <div class="f-option selected" onclick="window.setLangFilter('all', 'Lang: All', event)">All Languages</div>
+                            <div class="f-option" onclick="window.setLangFilter('english', 'English', event)">English</div>
+                            <div class="f-option" onclick="window.setLangFilter('urdu', 'Urdu', event)">Urdu</div>
+                            <div class="f-option" onclick="window.setLangFilter('hindi', 'Hindi', event)">Hindi</div>
+                            <div class="f-option" onclick="window.setLangFilter('arabic', 'Arabic', event)">Arabic</div>
+                            <div class="f-option" onclick="window.setLangFilter('roman urdu / hindi', 'Roman Urdu', event)">Roman Urdu / Hindi</div>
                         </div>
                     </div>
 
@@ -301,7 +301,7 @@
                 <div id="ebook-grid" class="grid-container"></div>
                 
                 <div class="text-center mt-2" style="margin-bottom: 30px;">
-                    <button id="load-more-btn" class="btn btn-outline hidden" style="width: auto; margin: 0 auto; padding: 10px 30px;" onclick="loadMoreBooks()">Load More <i class="fas fa-chevron-down" style="margin-left: 6px;"></i></button>
+                    <button id="load-more-btn" class="btn btn-outline hidden" style="width: auto; margin: 0 auto; padding: 10px 30px;" onclick="window.loadMoreBooks()">Load More <i class="fas fa-chevron-down" style="margin-left: 6px;"></i></button>
                 </div>
             </div>
         </div>
@@ -315,19 +315,21 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
         import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
-        // 🛑 DUMMY KEYS - BHAIA YAHAN APNI ASLI FIREBASE KEYS PASTE KAR LENA 🛑
+        // 🛑 BHAIA YAHAN APNI ASLI FIREBASE KEYS ZAROOR PASTE KAR LENA 🛑
         const firebaseConfig = {
-    apiKey: "AIzaSyBhYLRH_0p7f4oRIZTDVf8bOb1bdRKPNe8",
-    authDomain: "islamic-library-3b1d4.firebaseapp.com",
-    projectId: "islamic-library-3b1d4",
-    storageBucket: "islamic-library-3b1d4.firebasestorage.app",
-    messagingSenderId: "139007174646",
-    appId: "1:139007174646:web:0139e6d5c6bf38c7e409d7"
-  };
+            apiKey: "AIzaSyBhYLRH_0p7f4oRIZTDVf8bOb1bdRKPNe8",
+            authDomain: "islamic-library-3b1d4.firebaseapp.com",
+            projectId: "islamic-library-3b1d4",
+            storageBucket: "islamic-library-3b1d4.firebasestorage.app",
+            messagingSenderId: "139007174646",
+            appId: "1:139007174646:web:0139e6d5c6bf38c7e409d7"
+        };
 
         const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
         const db = getFirestore(app);
 
         // ✅ STATE VARIABLES
@@ -337,7 +339,7 @@
         let currentPriceFilter = 'all';
         let currentLangFilter = 'all';
 
-        // ✅ GLOBAL UI FUNCTIONS (Attached to window so HTML can use them)
+        // ✅ GLOBAL UI FUNCTIONS
         window.initTheme = function() {
             const currentTheme = document.documentElement.getAttribute("data-theme");
             const icon = document.getElementById("theme-toggle-icon");
@@ -399,11 +401,20 @@
 
         window.executeLogout = function(redirect) {
             const userId = localStorage.getItem("islamic_user_id");
-            if(userId) localStorage.removeItem(`cache_payments_${userId}_data`);
+            if(userId) {
+                localStorage.removeItem(`cache_payments_${userId}_data`);
+                localStorage.removeItem(`cache_payments_${userId}_time`);
+            }
             localStorage.removeItem("islamic_user_id");
             localStorage.removeItem("islamic_user_name");
             localStorage.removeItem("islamic_user_mobile");
-            if(redirect) window.location.href = 'login/'; 
+            
+            // ✅ Asli Firebase Logout
+            signOut(auth).then(() => {
+                if(redirect) window.location.replace('login/'); 
+            }).catch(() => {
+                if(redirect) window.location.replace('login/');
+            });
         }
 
         window.showToast = function(msg, type = "success") {
@@ -415,14 +426,26 @@
             setTimeout(() => { toast.style.transform = "translateX(110%)"; toast.style.opacity = "0"; setTimeout(() => toast.remove(), 400); }, 3000);
         }
 
+        // ✅ SECURE INITIALIZATION
         document.addEventListener("DOMContentLoaded", () => {
             window.initTheme();
+            
+            // Fast Cache Check (Skeleton UI show karne ke liye bina lag ke)
             if (!localStorage.getItem("islamic_user_id")) {
-                window.location.href = 'login/';
+                window.location.replace('login/');
                 return;
             }
+            
             document.getElementById("app-views").classList.remove("hidden");
             loadHome();
+        });
+
+        // ✅ BACKGROUND FIREBASE SECURITY CHECK
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                // Agar user ka session sach mein nahi hai, toh turant bahar phek do
+                window.executeLogout(true);
+            }
         });
 
         function showSkeletons() {
