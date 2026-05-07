@@ -276,11 +276,8 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-        // 🔥 UPDATE 1: Yahan GoogleAuthProvider aur signInWithPopup add kiya hai
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
-
-        // 🔥 UPDATE 2: Yahan getDoc ko global import kiya hai Google Login ke check ke liye
-        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+        import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager, doc, setDoc, getDoc, enableIndexedDbPersistence } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
         // 🛑 DUMMY KEYS - APNI ASLI FIREBASE KEYS PASTE KAR LENA 🛑
         const firebaseConfig = {
@@ -294,7 +291,13 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        const db = getFirestore(app);
+        
+        // 🔥 MODERN CACHE SETUP: Isse warning khatam ho jayegi aur speed makkhan ho jayegi
+        const db = initializeFirestore(app, {
+          localCache: persistentLocalCache({
+            tabManager: persistentMultipleTabManager()
+          })
+        });
 
         // Global State for Modes
         window.currentAuthModes = { login: 'email', signup: 'email', reset: 'email' };
@@ -380,99 +383,84 @@
         }
 
         // 🔥 FINAL GOOGLE LOGIN (INSTANT BACK FIX) 🔥
-const googleProvider = new GoogleAuthProvider();
+        const googleProvider = new GoogleAuthProvider();
 
-window.loginWithGoogle = async function(btnId) {
-    const btn = document.getElementById(btnId);
-    if (!btn) return;
+        window.loginWithGoogle = async function(btnId) {
+            const btn = document.getElementById(btnId);
+            if (!btn) return;
 
-    // Button ki original shakal
-    const defaultHTML = `<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google"> <span>Continue with Google</span>`;
+            const defaultHTML = `<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google"> <span>Continue with Google</span>`;
 
-    // Click karte hi "Verifying User..." dikhao
-    btn.disabled = true;
-    btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span>Verifying User...</span>`;
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span>Verifying User...</span>`;
 
-    let isResolved = false; // Track karne ke liye ki result aaya ya nahi
+            let isResolved = false; 
 
-    // 🔥 TUMHARI LOGIC: Wapas aane par 2 second ka timer
-    const onUserReturn = () => {
-        setTimeout(() => {
-            // Agar 2 second baad bhi Firebase ne data nahi diya, toh zabardasti reset karo
-            if (!isResolved) {
-                isResolved = true; // Isko true kar do taaki baad mein error aaye toh ignore ho
-                btn.disabled = false;
-                btn.innerHTML = defaultHTML;
-                console.log("Firebase Timeout - Force Reset");
+            const onUserReturn = () => {
+                setTimeout(() => {
+                    if (!isResolved) {
+                        isResolved = true; 
+                        btn.disabled = false;
+                        btn.innerHTML = defaultHTML;
+                        console.log("Firebase Timeout - Force Reset");
+                    }
+                }, 2000); 
+
+                window.removeEventListener('focus', onUserReturn);
+                document.removeEventListener('visibilitychange', onUserReturn);
+            };
+
+            setTimeout(() => {
+                window.addEventListener('focus', onUserReturn);
+                document.addEventListener('visibilitychange', onUserReturn);
+            }, 100); 
+
+            try {
+                const result = await signInWithPopup(auth, googleProvider);
+                
+                if (isResolved) return; 
+                
+                isResolved = true; 
+
+                const user = result.user;
+                const userRef = doc(db, "users", user.uid);
+                
+                // SECURE CHECK: Name fetch karega bina zyada wait kiye
+                const userSnap = await getDoc(userRef);
+
+                if (!userSnap.exists()) {
+                    await setDoc(userRef, {
+                        uid: user.uid,
+                        name: user.displayName || "Google User",
+                        loginType: 'google',
+                        displayId: user.email,
+                        createdAt: new Date().toISOString()
+                    });
+                }
+
+                localStorage.setItem("islamic_user_id", user.uid);
+                localStorage.setItem("islamic_user_name", userSnap.exists() && userSnap.data().name ? userSnap.data().name : (user.displayName || "Google User"));
+                localStorage.setItem("islamic_user_mobile", user.email);
+
+                window.showToast("Google Login Successful!");
+                
+                // 🚀 FAST REDIRECT: 800ms se hata kar 150ms kar diya
+                setTimeout(() => {
+                    window.location.href = '../'; 
+                }, 150);
+
+            } catch (error) {
+                if (!isResolved) {
+                    isResolved = true;
+                    btn.disabled = false;
+                    btn.innerHTML = defaultHTML;
+                    
+                    if(error.code !== 'auth/popup-closed-by-user' && error.code !== 'auth/cancelled-popup-request' && error.code !== 'auth/internal-error') {
+                        window.showToast("Google Login Failed", "error");
+                    }
+                }
             }
-        }, 2000); // Exact 2 Second ka wait
-
-        // Event listener hata do taaki baar baar na chale
-        window.removeEventListener('focus', onUserReturn);
-        document.removeEventListener('visibilitychange', onUserReturn);
-    };
-
-    // 🔥 FIX: 1000ms ki jagah sirf 100ms kar diya!
-    // Ab tum click karke turant back karoge, toh bhi ye usko pakad lega.
-    setTimeout(() => {
-        window.addEventListener('focus', onUserReturn);
-        document.addEventListener('visibilitychange', onUserReturn);
-    }, 100); 
-
-    try {
-        const result = await signInWithPopup(auth, googleProvider);
-        
-        // Agar 2 second wale timer ne pehle hi reset kar diya hai, toh yahin ruk jao
-        if (isResolved) return; 
-        
-        isResolved = true; // Data mil gaya!
-
-        const user = result.user;
-        const userRef = doc(db, "users", user.uid);
-        const userSnap = await getDoc(userRef);
-
-        if (!userSnap.exists()) {
-            await setDoc(userRef, {
-                uid: user.uid,
-                name: user.displayName || "Google User",
-                loginType: 'google',
-                displayId: user.email,
-                createdAt: new Date().toISOString()
-            });
-        }
-
-        // LocalStorage Update
-        localStorage.setItem("islamic_user_id", user.uid);
-        localStorage.setItem("islamic_user_name", userSnap.exists() && userSnap.data().name ? userSnap.data().name : (user.displayName || "Google User"));
-        localStorage.setItem("islamic_user_mobile", user.email);
-
-        window.showToast("Google Login Successful!");
-        
-        setTimeout(() => {
-            window.location.href = '../'; 
-        }, 800);
-
-    } catch (error) {
-        // Agar 2 second wale timer ne pehle reset nahi kiya, toh yahan normal reset hoga
-        if (!isResolved) {
-            isResolved = true;
-            btn.disabled = false;
-            btn.innerHTML = defaultHTML;
-            
-            if(error.code !== 'auth/popup-closed-by-user' && error.code !== 'auth/cancelled-popup-request' && error.code !== 'auth/internal-error') {
-                window.showToast("Google Login Failed", "error");
-            }
-        }
-    }
-};
-
-
-
-
-
-
-
-
+        };
 
         // ✅ LOGIN (FIREBASE)
         document.getElementById("loginForm").addEventListener("submit", async (e) => {
@@ -496,6 +484,7 @@ window.loginWithGoogle = async function(btnId) {
                 const userCredential = await signInWithEmailAndPassword(auth, firebaseEmail, password);
                 const uid = userCredential.user.uid;
                 
+                // SECURE CHECK: Yahan naam laya jaayega
                 try {
                     const userDoc = await getDoc(doc(db, "users", uid));
                     if (userDoc.exists() && userDoc.data().name) localStorage.setItem("islamic_user_name", userDoc.data().name);
@@ -505,7 +494,9 @@ window.loginWithGoogle = async function(btnId) {
                 localStorage.setItem("islamic_user_mobile", inputValue); 
                 
                 window.showToast("Login Successful! Redirecting..."); 
-                setTimeout(() => { window.location.href = '../'; }, 800);
+                
+                // 🚀 FAST REDIRECT: 800ms se 150ms
+                setTimeout(() => { window.location.href = '../'; }, 150);
             } catch (error) {
                 let msg = "Login failed. Please try again.";
                 if (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential') msg = "Incorrect details or password.";
@@ -551,7 +542,9 @@ window.loginWithGoogle = async function(btnId) {
                 
                 window.startCooldown('signup-btn', 'cooldown_signup', 'Sign Up ✦');
                 window.showToast("Account Created! Redirecting..."); 
-                setTimeout(() => { window.location.href = '../'; }, 800);
+                
+                // 🚀 FAST REDIRECT: 800ms se 150ms
+                setTimeout(() => { window.location.href = '../'; }, 150);
             } catch (error) {
                 let msg = "Signup failed.";
                 if (error.code === 'auth/email-already-in-use') msg = "Account already exists! Please login.";
@@ -656,5 +649,6 @@ window.loginWithGoogle = async function(btnId) {
             window.checkActiveCooldowns();
         });
     </script>
+
 </body>
 </html>
