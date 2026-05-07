@@ -12,7 +12,6 @@ const firebaseConfig = {
     appId: "1:139007174646:web:0139e6d5c6bf38c7e409d7"
   };
 
-const AUTHORIZED_ADMIN_EMAIL = "admin@islamiclibrary.com"; 
 
 // Initialize Firebase SDK
 const app = initializeApp(firebaseConfig);
@@ -69,40 +68,60 @@ if (isAdminLocally && appView) {
 // ==========================================
 // 🛡️ AUTHENTICATION & SECURITY
 // ==========================================
-onAuthStateChanged(auth, (user) => {
-    if (user && user.email === AUTHORIZED_ADMIN_EMAIL) {
-        localStorage.setItem("islamic_admin_auth", "true");
-        if (loginView) loginView.classList.add('hidden');
-        if (appView) appView.classList.remove('hidden');
-        
-        // Background mein fresh data fetch karo
-        const path = window.location.pathname;
-        if (path.endsWith('/admin/') || path.endsWith('/index.html') && !path.includes('/books/') && !path.includes('/users/') && !path.includes('/payments/') && !path.includes('/new-ebook/')) {
-            fetchDashboardStatsBackground();
-        } else if (path.includes('/books/')) {
-            // 🔥 BUG FIX: Authentication ke baad agar data nahi hai toh skeleton call karo
-            if (!localStorage.getItem("admin_cache_ebooks") && typeof window.renderEbooksSkeletons === "function") window.renderEbooksSkeletons();
-            window.loadBooks();
-        } else if (path.includes('/users/')) {
-            // 🔥 BUG FIX: Authentication ke baad agar data nahi hai toh skeleton call karo
-            if (!localStorage.getItem("admin_cache_users") && typeof window.renderUsersSkeletons === "function") window.renderUsersSkeletons();
-            window.loadUsers();
-        } else if (path.includes('/payments/')) {
-            // 🔥 BUG FIX: Authentication ke baad agar data nahi hai toh skeleton call karo
-            if (!localStorage.getItem("admin_cache_payments") && typeof window.renderPaymentsSkeletons === "function") window.renderPaymentsSkeletons();
-            window.loadPayments();
+onAuthStateChanged(auth, async (user) => {
+    if (user) {
+        try {
+            const { doc, getDoc, getFirestore } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
+            const dbInstance = getFirestore();
+            const adminDoc = await getDoc(doc(dbInstance, "users", user.uid));
+            
+            if (adminDoc.exists() && adminDoc.data().role === 'admin') {
+                localStorage.setItem("islamic_admin_auth", "true");
+                
+                // Safe Email Saving
+                if (user.email) {
+                    localStorage.setItem("islamic_admin_email", user.email);
+                }
+
+                // Safe Name Saving
+                const databaseName = adminDoc.data().name || "Admin";
+                localStorage.setItem("islamic_admin_name", databaseName);
+                
+                if (loginView) loginView.classList.add('hidden');
+                if (appView) appView.classList.remove('hidden');
+                
+                const path = window.location.pathname;
+                if (path.includes('/books/')) window.loadBooks();
+                else if (path.includes('/users/')) window.loadUsers();
+                else if (path.includes('/payments/')) window.loadPayments();
+                else fetchDashboardStatsBackground();
+            } else {
+                const { signOut } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js");
+                await signOut(auth);
+            }
+        } catch (e) {
+            console.error("Auth Error:", e);
         }
     } else {
+        // Safai abhiyaan: Sab kuch remove karo
         localStorage.removeItem("islamic_admin_auth");
+        localStorage.removeItem("islamic_admin_name");
+        localStorage.removeItem("islamic_admin_email"); 
+        
         if (loginView) {
             loginView.classList.remove('hidden');
             if (appView) appView.classList.add('hidden');
         } else {
-            const isSubPage = window.location.pathname.includes('/books/') || window.location.pathname.includes('/users/') || window.location.pathname.includes('/payments/') || window.location.pathname.includes('/new-ebook/');
-            if (isSubPage) window.location.href = '../';
+            window.location.href = '../';
         }
     }
 });
+
+
+
+
+
+
 
 // ==========================================
 // 📊 DASHBOARD STATS LOGIC
@@ -363,18 +382,32 @@ window.handleAdminLogin = async () => {
     const email = document.getElementById("admin_email").value.trim();
     const pass = document.getElementById("admin_password").value;
     
-    if (email !== AUTHORIZED_ADMIN_EMAIL) { 
-        window.showToast("Invalid Admin Access!", "error"); 
-        btn.innerHTML = origText; btn.disabled = false; return; 
-    }
     try { 
-        await signInWithEmailAndPassword(auth, email, pass); 
-        window.showToast("Login Successful!"); 
+        // 1. Pehle Firebase se login check karo
+        const userCredential = await signInWithEmailAndPassword(auth, email, pass); 
+        const user = userCredential.user;
+
+        // 2. Success bolne se PEHLE check karo ki ye Admin hai ya nahi
+        const { doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
+        const adminDoc = await getDoc(doc(db, "users", user.uid));
+
+        if (adminDoc.exists() && adminDoc.data().role === 'admin') {
+            // Asli admin mil gaya! Naam save karo aur Success dikhao
+            localStorage.setItem("islamic_admin_name", adminDoc.data().name || "Admin");
+            window.showToast("Login Successful!"); 
+        } else {
+            // Agar normal user yahan aa gaya, toh bina popup ke turant signout karo
+            await signOut(auth);
+            throw new Error("Not an Admin");
+        }
     } catch (e) { 
-        window.showToast("Wrong Credentials!", "error"); 
-        btn.innerHTML = origText; btn.disabled = false; 
+        window.showToast("Wrong Credentials or Not an Admin!", "error"); 
+        btn.innerHTML = origText; 
+        btn.disabled = false; 
     }
 };
+
+
 
 window.logout = () => {
     window.closeProfileDrawer();
@@ -409,7 +442,28 @@ window.showConfirm = (title, message, onConfirm) => {
 window.closeConfirm = () => document.getElementById("confirm-overlay")?.classList.add("hidden");
 document.getElementById("confirm-yes-btn")?.addEventListener("click", () => { if (confirmCallback) confirmCallback(); window.closeConfirm(); });
 
-window.openProfileDrawer = () => { document.getElementById("drawer-overlay")?.classList.add("active"); document.getElementById("profile-drawer")?.classList.add("active"); };
+window.openProfileDrawer = function() {
+    const overlay = document.getElementById("drawer-overlay");
+    const drawer = document.getElementById("profile-drawer");
+    
+    if(overlay) overlay.classList.add("active");
+    if(drawer) drawer.classList.add("active");
+    document.body.style.overflow = 'hidden';
+
+    // Local storage se data uthao
+    let adminName = localStorage.getItem("islamic_admin_name");
+    let adminEmail = localStorage.getItem("islamic_admin_email");
+    
+    const nameEl = document.getElementById("profile-name");
+    const emailEl = document.getElementById("profile-email");
+    
+    // Agar data nahi milta toh "Administration" dikhao
+    if(nameEl) nameEl.innerText = adminName ? adminName : "Admin";
+    if(emailEl) emailEl.innerText = adminEmail ? adminEmail : "Administration"; 
+};
+
+
+
 window.closeProfileDrawer = () => { document.getElementById("drawer-overlay")?.classList.remove("active"); document.getElementById("profile-drawer")?.classList.remove("active"); };
 
 window.openChangePassword = () => { window.closeProfileDrawer(); document.getElementById('change-password-modal')?.classList.remove('hidden'); };
