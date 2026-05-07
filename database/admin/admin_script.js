@@ -149,6 +149,9 @@ window.loadBooks = async function() {
     try {
         const snapshot = await getDocs(collection(db, "ebooks"));
         const freshData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+// 🔥 YEH NAYI LINE ADD KARNI HAI 🔥
+        freshData.sort((a, b) => (a.sort_order || 999) - (b.sort_order || 999));
         
         if (cachedStr !== JSON.stringify(freshData)) {
             window.ebooksData = freshData;
@@ -191,6 +194,7 @@ window.handleEbookSubmit = async () => {
 
     const ebookId = document.getElementById("ebook_id").value;
     const isFree = document.getElementById("eb_isfree").checked;
+    const requestedOrder = Number(document.getElementById("eb_sort_order").value) || 1;
 
     const payload = {
         title: document.getElementById("eb_title").value,
@@ -201,40 +205,54 @@ window.handleEbookSubmit = async () => {
         discount_price: isFree ? 0 : Number(document.getElementById("eb_discount").value),
         is_free: isFree,
         language: document.getElementById("eb_language").value,
+        sort_order: requestedOrder, // Naya order yahan save hoga
         createdAt: new Date().toISOString()
     };
 
     try {
-        let newDocId = ebookId;
+        // 🔥 AUTO-SWAP LOGIC START 🔥
+        const snapshot = await getDocs(collection(db, "ebooks"));
+        const allBooks = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+        // Check karo ki us number par koi purani book toh nahi hai?
+        const conflictingBook = allBooks.find(b => b.sort_order === requestedOrder && b.id !== ebookId);
+
+        if (conflictingBook) {
+            let newOrderForConflict;
+            
+            if (ebookId) {
+                // Agar book Edit ho rahi hai: Purani book ko uski pehle wali jagah bhej do
+                const currentBookOldState = allBooks.find(b => b.id === ebookId);
+                newOrderForConflict = (currentBookOldState && currentBookOldState.sort_order) ? currentBookOldState.sort_order : (allBooks.length + 1);
+            } else {
+                // Agar Nayi book Add ho rahi hai: Purani book ko aakhiri mein bhej do
+                const maxOrder = allBooks.reduce((max, b) => Math.max(max, (b.sort_order || 0)), 0);
+                newOrderForConflict = maxOrder + 1;
+            }
+
+            // Database mein purani book ki position update kar do
+            await updateDoc(doc(db, "ebooks", conflictingBook.id), { sort_order: newOrderForConflict });
+        }
+        // 🔥 AUTO-SWAP LOGIC END 🔥
+
+        // Ab naye form ka data save karo
         if (ebookId) { 
             await updateDoc(doc(db, "ebooks", ebookId), payload); 
-            window.showToast("Ebook Updated!"); 
+            window.showToast("Ebook Updated & Position Swapped!"); 
         } else { 
-            const docRef = await addDoc(collection(db, "ebooks"), payload); 
-            newDocId = docRef.id;
-            window.showToast("Ebook Added!"); 
+            await addDoc(collection(db, "ebooks"), payload); 
+            window.showToast("Ebook Added at New Position!"); 
         }
-
-        // 🔥 FIX: Cache delete karne ki jagah cache mein hi data modify kar diya
-        const existingCache = localStorage.getItem("admin_cache_ebooks");
-        if (existingCache) {
-            let cacheArray = JSON.parse(existingCache);
-            if (ebookId) {
-                // Agar update kiya hai toh purane wale ko naye se replace karo
-                cacheArray = cacheArray.map(item => item.id === ebookId ? { id: ebookId, ...payload } : item);
-            } else {
-                // Agar nayi book add ki hai toh usko list mein sabse upar daal do
-                cacheArray.unshift({ id: newDocId, ...payload });
-            }
-            localStorage.setItem("admin_cache_ebooks", JSON.stringify(cacheArray));
-        }
-
-        setTimeout(() => { sessionStorage.removeItem('edit_ebook_id'); window.location.href = '../books/'; }, 1000);
+        
+        localStorage.removeItem("admin_cache_ebooks");
+        setTimeout(() => { sessionStorage.removeItem('edit_ebook_id'); window.location.href = '../books/'; }, 1500);
     } catch (e) {
+        console.error(e);
         window.showToast("Error saving data", "error");
         submitBtn.disabled = false; submitBtn.innerHTML = originalText;
     }
 };
+
 
 
 // ==========================================
