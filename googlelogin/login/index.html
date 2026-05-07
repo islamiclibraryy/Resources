@@ -1,4 +1,4 @@
-
+hlo
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
@@ -380,7 +380,7 @@
             return type === 'mobile' ? `${inputValue.trim()}@islamiclibrary.com` : inputValue.trim();
         }
 
-        // 🔥 FINAL CLEAN LOGIC: GOOGLE LOGIN 🔥
+        // 🔥 FINAL GOOGLE LOGIN (TUMHARI 2-SECOND LOGIC) 🔥
 const googleProvider = new GoogleAuthProvider();
 
 window.loginWithGoogle = async function(btnId) {
@@ -390,15 +390,42 @@ window.loginWithGoogle = async function(btnId) {
     // Button ki original shakal
     const defaultHTML = `<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google"> <span>Continue with Google</span>`;
 
-    // Step 1: Click karte hi spinner
+    // Click karte hi "Verifying User..." dikhao
     btn.disabled = true;
-    btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span>Connecting to Google...</span>`;
+    btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span>Verifying User...</span>`;
+
+    let isResolved = false; // Track karne ke liye ki result aaya ya nahi
+
+    // 🔥 TUMHARI LOGIC: Wapas aane par 2 second ka timer
+    const onUserReturn = () => {
+        setTimeout(() => {
+            // Agar 2 second baad bhi Firebase ne data nahi diya, toh zabardasti reset karo
+            if (!isResolved) {
+                isResolved = true; // Isko true kar do taaki baad mein error aaye toh ignore ho
+                btn.disabled = false;
+                btn.innerHTML = defaultHTML;
+                console.log("Firebase Timeout - Force Reset");
+            }
+        }, 2000); // Exact 2 Second ka wait
+
+        // Event listener hata do taaki baar baar na chale
+        window.removeEventListener('focus', onUserReturn);
+        document.removeEventListener('visibilitychange', onUserReturn);
+    };
+
+    // Popup khulne ke 1 second baad focus tracker chalu karo
+    setTimeout(() => {
+        window.addEventListener('focus', onUserReturn);
+        document.addEventListener('visibilitychange', onUserReturn);
+    }, 1000);
 
     try {
         const result = await signInWithPopup(auth, googleProvider);
-
-        // Step 2: Email select hote hi sidha Logging in
-        btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span>Logging in...</span>`;
+        
+        // Agar 2 second wale timer ne pehle hi reset kar diya hai, toh yahin ruk jao
+        if (isResolved) return; 
+        
+        isResolved = true; // Data mil gaya!
 
         const user = result.user;
         const userRef = doc(db, "users", user.uid);
@@ -426,16 +453,19 @@ window.loginWithGoogle = async function(btnId) {
         }, 800);
 
     } catch (error) {
-        // Step 3: Agar user back kar de ya error aaye, toh button ekdum normal!
-        btn.disabled = false;
-        btn.innerHTML = defaultHTML;
-        
-        // Faltu errors ko ignore karo
-        if(error.code !== 'auth/popup-closed-by-user' && error.code !== 'auth/cancelled-popup-request' && error.code !== 'auth/internal-error') {
-            window.showToast("Google Login Failed", "error");
+        // Agar 2 second wale timer ne pehle reset nahi kiya, toh yahan normal reset hoga
+        if (!isResolved) {
+            isResolved = true;
+            btn.disabled = false;
+            btn.innerHTML = defaultHTML;
+            
+            if(error.code !== 'auth/popup-closed-by-user' && error.code !== 'auth/cancelled-popup-request' && error.code !== 'auth/internal-error') {
+                window.showToast("Google Login Failed", "error");
+            }
         }
     }
 };
+
 
 
 
