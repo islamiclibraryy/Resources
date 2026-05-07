@@ -1,4 +1,4 @@
-
+ubu
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
@@ -380,31 +380,28 @@
             return type === 'mobile' ? `${inputValue.trim()}@islamiclibrary.com` : inputValue.trim();
         }
 
-        // 🔥 NEW MASTER LOGIC: GOOGLE LOGIN (POPUP + SPINNER + BACK-BUTTON FIX) 🔥
+        // 🔥 NEW MASTER LOGIC: GOOGLE LOGIN (UX PERFECTED) 🔥
 const googleProvider = new GoogleAuthProvider();
 
 window.loginWithGoogle = async function(btnId) {
     const btn = document.getElementById(btnId);
-    if (!btn) {
-        console.error("Button ID not found:", btnId);
-        return;
-    }
+    if (!btn) return;
 
-    // 🔥 FIX: Button ka original HTML fix kar diya, memory loose nahi hogi
+    // Button ka original design (Fixed variable)
     const defaultHTML = `<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google"> <span>Continue with Google</span>`;
 
-    // Click karte hi Spinner ghuma do aur button lock kar do
+    // Step 1: Click hote hi UI change
     btn.disabled = true;
-    btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span>Connecting to Google...</span>`;
+    btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span>Authenticating...</span>`;
 
     try {
+        // Yahan popup khulega aur wapas aane par token verify hoga (Isme 1-2 sec lagte hain)
         const result = await signInWithPopup(auth, googleProvider);
         const user = result.user;
 
-        // Account select hone ke baad text change
-        btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span>Verifying User...</span>`;
+        // Step 2: Google se pass hone ke baad, Database checking
+        btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span>Logging in...</span>`;
 
-        // Check karo naya user hai ya purana
         const userRef = doc(db, "users", user.uid);
         const userSnap = await getDoc(userRef);
 
@@ -430,18 +427,19 @@ window.loginWithGoogle = async function(btnId) {
         }, 800);
 
     } catch (error) {
-        console.error("Google Error:", error);
+        console.log("Google Login Cancelled/Failed:", error.code);
         
-        // 🔥 FIX: User ne back kiya ya fail hua, button wapas 100% normal ho jayega!
+        // 🔥 100% GUARANTEED RESET (Chahe user back kare ya net chala jaye)
         btn.disabled = false;
         btn.innerHTML = defaultHTML;
         
-        // Agar user ne khud popup kaata hai, toh error toast mat dikhao (Clean UI)
-        if(error.code !== 'auth/popup-closed-by-user' && error.code !== 'auth/cancelled-popup-request') {
+        // Faltu errors ko ignore karo (jaise popup khud band karna)
+        if(error.code !== 'auth/popup-closed-by-user' && error.code !== 'auth/cancelled-popup-request' && error.code !== 'auth/internal-error') {
             window.showToast("Google Login Failed", "error");
         }
     }
 };
+
 
 
 
