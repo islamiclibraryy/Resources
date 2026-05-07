@@ -587,6 +587,9 @@
             const loadMoreBtn = document.getElementById("load-more-btn");
             if (reset) grid.innerHTML = "";
 
+// 🔥 YEH NAYI LINE ADD KARNI HAI (Books ko number wise lagane ke liye) 🔥
+            ebooksData.sort((a, b) => (a.sort_order || 999) - (b.sort_order || 999));
+
             let filteredBooks = ebooksData.filter(eb => {
                 const isFree = String(eb.is_free) === "true";
                 let passPrice = true;
