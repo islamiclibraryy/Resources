@@ -316,7 +316,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
-        import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+        import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager, collection, getDocs, query, where, enableIndexedDbPersistence } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
         // 🛑 BHAIA YAHAN APNI ASLI FIREBASE KEYS ZAROOR PASTE KAR LENA 🛑
         const firebaseConfig = {
@@ -330,7 +330,14 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        const db = getFirestore(app);
+        // 🔥 MODERN CACHE SETUP: Isse warning khatam ho jayegi aur speed makkhan ho jayegi
+const db = initializeFirestore(app, {
+  localCache: persistentLocalCache({
+    tabManager: persistentMultipleTabManager()
+  })
+});
+
+
 
         // ✅ STATE VARIABLES
         let ebooksData = [];
@@ -486,44 +493,60 @@
 
         // ✅ FETCH FROM FIREBASE
         async function loadHome() {
-            const cachedDataStr = localStorage.getItem("cache_ebooks_data");
-            if (cachedDataStr) { 
-                try { 
-                    ebooksData = JSON.parse(cachedDataStr); 
-                    renderGrid(true); 
-                } catch (e) {} 
-            } else {
-                showSkeletons();
-            }
+    const cachedDataStr = localStorage.getItem("cache_ebooks_data");
+    const userId = localStorage.getItem("islamic_user_id");
 
-            try {
-                // Fetch Ebooks
-                const querySnapshot = await getDocs(collection(db, "ebooks"));
-                const freshEbooks = [];
-                querySnapshot.forEach((doc) => {
-                    freshEbooks.push({ id: doc.id, ...doc.data() });
-                });
+    // Pehle cache dikhao taaki user ko wait na lage
+    if (cachedDataStr) { 
+        try { 
+            ebooksData = JSON.parse(cachedDataStr); 
+            renderGrid(true); 
+        } catch (e) {} 
+    } else {
+        showSkeletons();
+    }
 
-                ebooksData = freshEbooks;
-                localStorage.setItem("cache_ebooks_data", JSON.stringify(freshEbooks));
-                renderGrid(true);
+    try {
+        // 🔥 STEP: PARALLEL FETCHING (Dono kaam ek saath shuru honge)
+        const ebooksPromise = getDocs(collection(db, "ebooks"));
+        let paymentsPromise = Promise.resolve(null); // Default empty
 
-                // Fetch User Payments
-                const userId = localStorage.getItem("islamic_user_id");
-                if (userId) {
-                    const q = query(collection(db, "payments"), where("user_id", "==", userId));
-                    const paySnapshot = await getDocs(q);
-                    const userPayments = [];
-                    paySnapshot.forEach((doc) => {
-                        userPayments.push({ id: doc.id, ...doc.data() });
-                    });
-                    localStorage.setItem(`cache_payments_${userId}_data`, JSON.stringify(userPayments));
-                }
-            } catch (error) {
-                console.error("Firebase error:", error);
-                if (!cachedDataStr) window.showToast("Network Error loading books", "error");
-            }
+        if (userId) {
+            const q = query(collection(db, "payments"), where("user_id", "==", userId));
+            paymentsPromise = getDocs(q);
         }
+
+        // Dono ka ek saath intezaar karo
+        const [querySnapshot, paySnapshot] = await Promise.all([ebooksPromise, paymentsPromise]);
+
+        // 1. Process Ebooks
+        const freshEbooks = [];
+        querySnapshot.forEach((doc) => {
+            freshEbooks.push({ id: doc.id, ...doc.data() });
+        });
+
+        // 🔥 YAHAN SORT KARO (Sirf ek baar)
+freshEbooks.sort((a, b) => (a.sort_order || 999) - (b.sort_order || 999));
+
+        ebooksData = freshEbooks;
+        localStorage.setItem("cache_ebooks_data", JSON.stringify(freshEbooks));
+        renderGrid(true);
+
+        // 2. Process Payments (Bina extra wait kiye)
+        if (paySnapshot) {
+            const userPayments = [];
+            paySnapshot.forEach((doc) => {
+                userPayments.push({ id: doc.id, ...doc.data() });
+            });
+            localStorage.setItem(`cache_payments_${userId}_data`, JSON.stringify(userPayments));
+        }
+
+    } catch (error) {
+        console.error("Firebase error:", error);
+        if (!cachedDataStr) window.showToast("Network Error loading books", "error");
+    }
+}
+
 
         // ✅ FILTER & RENDER LOGIC
         window.toggleFilterMenu = function(type) {
@@ -588,7 +611,7 @@
             if (reset) grid.innerHTML = "";
 
 // 🔥 YEH NAYI LINE ADD KARNI HAI (Books ko number wise lagane ke liye) 🔥
-            ebooksData.sort((a, b) => (a.sort_order || 999) - (b.sort_order || 999));
+            
 
             let filteredBooks = ebooksData.filter(eb => {
                 const isFree = String(eb.is_free) === "true";
