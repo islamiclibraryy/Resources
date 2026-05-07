@@ -1,4 +1,3 @@
-tausif
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
@@ -214,11 +213,11 @@ tausif
                     <button type="submit" class="btn" id="signup-btn" style="margin-top: 24px;">Sign Up ✦</button>
                 </form>
 
-                <div class="divider"><span>OR</span></div>
-<button type="button" id="google-login-btn" onclick="loginWithGoogle('google-login-btn')" class="google-btn">
+                <button type="button" id="google-signup-btn" onclick="loginWithGoogle('google-signup-btn')" class="google-btn">
     <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
     <span>Continue with Google</span>
 </button>
+
 
 
                 <div class="mt-2" style="margin-top: 20px;"><span class="link-text" onclick="switchAuth('login')"><i class="fas fa-arrow-left" style="margin-right: 6px;"></i> Back to Login</span></div>
@@ -379,17 +378,20 @@ tausif
             return type === 'mobile' ? `${inputValue.trim()}@islamiclibrary.com` : inputValue.trim();
         }
 
-        // 🔥 NEW MASTER LOGIC: GOOGLE LOGIN (POPUP + SPINNER) 🔥
+        // 🔥 NEW MASTER LOGIC: GOOGLE LOGIN (POPUP + SPINNER + BACK-BUTTON FIX) 🔥
 const googleProvider = new GoogleAuthProvider();
 
 window.loginWithGoogle = async function(btnId) {
     const btn = document.getElementById(btnId);
-    if (!btn) return;
+    if (!btn) {
+        console.error("Button ID not found:", btnId);
+        return;
+    }
 
-    // Button ka original design save kar lo taaki baad mein wapas la sakein
-    const originalContent = btn.innerHTML;
+    // 🔥 FIX: Button ka original HTML fix kar diya, memory loose nahi hogi
+    const defaultHTML = `<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google"> <span>Continue with Google</span>`;
 
-    // 🔥 UI CHANGE: Click karte hi Spinner ghuma do aur button lock kar do
+    // Click karte hi Spinner ghuma do aur button lock kar do
     btn.disabled = true;
     btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span>Connecting to Google...</span>`;
 
@@ -397,7 +399,7 @@ window.loginWithGoogle = async function(btnId) {
         const result = await signInWithPopup(auth, googleProvider);
         const user = result.user;
 
-        // Jab tak Firebase se check ho raha hai, text change kar do
+        // Account select hone ke baad text change
         btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span>Verifying User...</span>`;
 
         // Check karo naya user hai ya purana
@@ -428,15 +430,17 @@ window.loginWithGoogle = async function(btnId) {
     } catch (error) {
         console.error("Google Error:", error);
         
-        // Agar fail ho jaye ya user beech mein popup kaat de, toh button wapas normal kar do
+        // 🔥 FIX: User ne back kiya ya fail hua, button wapas 100% normal ho jayega!
         btn.disabled = false;
-        btn.innerHTML = originalContent;
+        btn.innerHTML = defaultHTML;
         
+        // Agar user ne khud popup kaata hai, toh error toast mat dikhao (Clean UI)
         if(error.code !== 'auth/popup-closed-by-user' && error.code !== 'auth/cancelled-popup-request') {
             window.showToast("Google Login Failed", "error");
         }
     }
 };
+
 
 
 
