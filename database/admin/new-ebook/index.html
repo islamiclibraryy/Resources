@@ -121,20 +121,32 @@
 </div>
 
 <script>
-    setTimeout(() => {
-        const ebookId = document.getElementById("ebook_id") ? document.getElementById("ebook_id").value : "";
-        if (!ebookId) { // Agar nayi book add ho rahi hai
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            const ebookId = document.getElementById("ebook_id") ? document.getElementById("ebook_id").value : "";
             const cache = localStorage.getItem("admin_cache_ebooks");
+            
             if (cache) {
                 const books = JSON.parse(cache);
-                const maxOrder = books.reduce((max, b) => Math.max(max, (b.sort_order || 0)), 0);
-                document.getElementById("eb_sort_order").value = maxOrder + 1; // Sabse aakhiri number + 1
-            } else {
+                
+                if (ebookId) { 
+                    // ✏️ EDIT MODE: Purani book ka asli number dhoondh kar fill karo
+                    const currentBook = books.find(b => b.id === ebookId);
+                    if (currentBook && currentBook.sort_order !== undefined) {
+                        document.getElementById("eb_sort_order").value = currentBook.sort_order;
+                    }
+                } else {
+                    // ➕ NEW EBOOK: Agla available number auto-fill karo
+                    const maxOrder = books.reduce((max, b) => Math.max(max, (b.sort_order || 0)), 0);
+                    document.getElementById("eb_sort_order").value = maxOrder + 1;
+                }
+            } else if (!ebookId) {
                 document.getElementById("eb_sort_order").value = 1;
             }
-        }
-    }, 800);
+        }, 1000); // Thoda delay taaki baaki fields pehle load ho jayein
+    });
 </script>
+
 
 
 
