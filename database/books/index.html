@@ -252,9 +252,9 @@
     </div>
 
     <script type="module">
-        // ✅ FIREBASE IMPORTS
+        // ✅ FIREBASE IMPORTS (Updated with Auth)
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-        import { getAuth } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
         import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
         // ✅ FIREBASE CONFIG
@@ -277,6 +277,11 @@
         let currentEbook = null;
         let apiLocks = {};
         const userId = localStorage.getItem("islamic_user_id");
+
+        // ✅ BACKGROUND FIREBASE SECURITY CHECK
+        onAuthStateChanged(auth, (user) => {
+            if (!user) { window.executeLogout(true); }
+        });
 
         // ✅ UI Functions attached to window for HTML handlers
         window.initTheme = function() {
@@ -307,9 +312,7 @@
             document.body.style.overflow = '';
         };
 
-        window.closeModal = function() { 
-            document.getElementById("confirm-modal").classList.add("hidden"); 
-        };
+        window.closeModal = function() { document.getElementById("confirm-modal").classList.add("hidden"); };
 
         window.showLogoutModal = function() {
             window.closeProfileDrawer();
@@ -341,7 +344,9 @@
         window.executeLogout = function(redirect) {
             if(userId) { localStorage.removeItem(`cache_payments_${userId}_data`); localStorage.removeItem(`cache_payments_${userId}_time`); }
             localStorage.removeItem("islamic_user_id"); localStorage.removeItem("islamic_user_name"); localStorage.removeItem("islamic_user_mobile");
-            if(redirect) window.location.href = "../login/";
+            
+            signOut(auth).then(() => { if(redirect) window.location.href = "../login/"; })
+                         .catch(() => { if(redirect) window.location.href = "../login/"; });
         };
 
         window.shareBook = function() {
@@ -380,17 +385,11 @@
             setTimeout(() => { toast.style.transform = "translateX(110%)"; toast.style.opacity = "0"; setTimeout(() => toast.remove(), 400); }, 3000);
         }
 
-        // ✅ REPLACED SWR WITH FIREBASE FETCH LOGIC
         async function fetchPaymentsFirebase(uid, cacheKey, onDataChange, showBlockingLoader = false) {
             const now = new Date().getTime();
             const cachedDataStr = localStorage.getItem(cacheKey + "_data");
             let hasCache = false;
-            
-            if (cachedDataStr) { 
-                hasCache = true; 
-                try { onDataChange(JSON.parse(cachedDataStr)); } catch (e) { hasCache = false; } 
-            }
-            
+            if (cachedDataStr) { hasCache = true; try { onDataChange(JSON.parse(cachedDataStr)); } catch (e) { hasCache = false; } }
             if (!hasCache && showBlockingLoader) showLoader();
             if (apiLocks[cacheKey]) return;
             apiLocks[cacheKey] = true;
@@ -405,12 +404,9 @@
                     localStorage.setItem(cacheKey + "_data", freshDataStr); 
                     localStorage.setItem(cacheKey + "_time", now.toString()); 
                     onDataChange(freshData); 
-                } else { 
-                    localStorage.setItem(cacheKey + "_time", now.toString()); 
-                }
+                } else { localStorage.setItem(cacheKey + "_time", now.toString()); }
             } catch (error) {
                 console.error("Firebase fetch error:", error);
-                if (!hasCache) showToast("Network Error", "error");
             } finally {
                 if (!hasCache && showBlockingLoader) hideLoader(); 
                 delete apiLocks[cacheKey];
@@ -432,7 +428,6 @@
                 userPayments = currentPayments;
 
                 renderDetail();
-                // ✅ Calling new Firebase fetch function
                 fetchPaymentsFirebase(userId, `cache_payments_${userId}`, (data) => {
                     if (Array.isArray(data)) { userPayments = data; renderDetail(); }
                 }, false);
@@ -443,7 +438,6 @@
 
         function renderDetail() {
             document.getElementById("action-footer").classList.remove("hidden");
-
             document.getElementById("det-thumb").src = currentEbook.thumbnail;
             document.getElementById("det-title").innerText = currentEbook.title;
             document.getElementById("det-desc").innerText = currentEbook.description;
@@ -488,11 +482,10 @@
                 footerPrice.innerHTML = `₹${currentEbook.discount_price || currentEbook.price}`;
                 actionBtn.innerHTML = `Buy Now <i class="fas fa-arrow-right" style="margin-left:6px;"></i>`;
                 actionBtn.style.background = "linear-gradient(135deg, #7c6af7, #9f3fbf)"; actionBtn.style.color = "#fff";
-                
-                // ✅ REDIRECT TO PAYMENTS.HTML
                 actionBtn.onclick = () => window.location.href = '../payments/';
             }
         }
     </script>
+
 </body>
 </html>
