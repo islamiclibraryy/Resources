@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Islamic Library by Shekh - Free & Paid Islamic eBooks</title>
+
+    <meta name="description" content="Islamic Library by Shekh – Download Islamic eBooks, Quran PDFs, and Hadith books. A free and premium Islamic digital library.">
+    <meta name="keywords" content="Islamic Library by Shekh, Islamic ebooks, Quran PDF, Hadith books">
+    <meta name="author" content="Islamic Library by Shekh">
+
+    <link rel="icon" type="image/png" sizes="32x32" href="hikmahlogo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="hikmahlogo.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="hikmahlogo.png">
+
+    <meta property="og:title" content="Islamic Library by Shekh">
+    <meta property="og:description" content="Free & Paid Islamic eBooks, Quran PDFs, Hadith books available.">
+    <meta property="og:image" content="https://mysite.github.io/Resources/hikmahlogo.png">
+    <meta property="og:url" content="https://mysite.github.io/Resources/">
+    <meta property="og:type" content="website">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('islamic_theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+
+    <style>
+        :root {
+            --bg: #0a0a0f; --bg2: #0f0f18; --bg3: #13131e;
+            --surface: #1a1a28; --surface2: #1f1f30; --surface3: #252538;
+            --border: rgba(255,255,255,0.07); --border2: rgba(255,255,255,0.12);
+            --text: #f0f0f8; --text2: #a8a8c0; --text3: #686888;
+            --accent: #7c6af7; --accent2: #9f91fa; --accent3: #c4bafe;
+            --glow: rgba(124,106,247,0.25); --glow2: rgba(124,106,247,0.1);
+            --danger: #f43f5e; --success: #10b981; --amber: #f59e0b;
+            --r: 12px; --r2: 16px; --r3: 20px;
+            --shadow: 0 4px 24px rgba(0,0,0,0.4); --shadow2: 0 8px 40px rgba(0,0,0,0.5);
+            --transition: 0.2s cubic-bezier(0.4,0,0.2,1);
+        }
+
+        [data-theme="light"] {
+            --bg: #f4f6f8; --bg2: #e9ecef; --bg3: #dee2e6;
+            --surface: #ffffff; --surface2: #f8f9fa; --surface3: #e9ecef;
+            --border: rgba(0,0,0,0.08); --border2: rgba(0,0,0,0.15);
+            --text: #1a1b1e; --text2: #495057; --text3: #868e96;
+            --accent: #6366f1; --accent2: #4f46e5; --accent3: #4338ca;
+            --glow: rgba(99,102,241,0.15); --glow2: rgba(99,102,241,0.08);
+            --shadow: 0 4px 20px rgba(0,0,0,0.06); --shadow2: 0 8px 30px rgba(0,0,0,0.1);
+        }
+        
+        [data-theme="light"] .blob { opacity: 0.5; }
+        [data-theme="light"] header, [data-theme="light"] .bottom-nav { background: rgba(255, 255, 255, 0.9); border-bottom-color: rgba(0,0,0,0.1); border-top-color: rgba(0,0,0,0.1); }
+        [data-theme="light"] .search-input { background: rgba(255, 255, 255, 0.8); }
+        [data-theme="light"] .search-dropdown { background: rgba(255, 255, 255, 0.95); }
+        [data-theme="light"] .profile-drawer { background: #fff; }
+
+        *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; min-height: 100vh; -webkit-tap-highlight-color: transparent; transition: background-color 0.3s ease, color 0.3s ease; }
+        
+        body::before { content:''; position:fixed; inset:0; pointer-events:none; z-index:9999; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E"); opacity:0.4; }
+
+        .hero-bg { position:fixed; inset:0; pointer-events:none; z-index:-2; background: radial-gradient(ellipse 80% 50% at 50% -10%,rgba(124,106,247,0.2) 0%,transparent 70%), radial-gradient(ellipse 50% 40% at 80% 60%,rgba(168,85,247,0.12) 0%,transparent 60%), radial-gradient(ellipse 40% 30% at 20% 70%,rgba(99,102,241,0.1) 0%,transparent 60%); }
+        .hero-grid { position:fixed; inset:0; pointer-events:none; z-index:-1; background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px); background-size:48px 48px; mask-image:radial-gradient(ellipse 100% 100% at 50% 50%,black 40%,transparent 100%); opacity:0.6; }
+        .blob { position:fixed; border-radius:50%; filter:blur(80px); pointer-events:none; animation:blobFloat 8s ease-in-out infinite; z-index:-1; }
+        .blob1 { width:400px; height:400px; background:rgba(124,106,247,0.18); top:-100px; left:-100px; animation-delay:0s; }
+        .blob2 { width:350px; height:350px; background:rgba(168,85,247,0.12); bottom:-80px; right:-80px; animation-delay:3s; }
+        .blob3 { width:250px; height:250px; background:rgba(99,102,241,0.1); top:40%; right:10%; animation-delay:5s; }
+
+        .arabic-text { font-family: 'Amiri', serif; }
+        .bismillah { font-family: 'Amiri', serif; color: var(--accent2); font-size: 26px; text-shadow: 0 0 12px var(--glow); animation: fadeUp .6s ease both; }
+        h1, h2, h3 { font-family: 'Syne', sans-serif; font-weight: 700; letter-spacing: -0.02em; color: var(--text); }
+        .hidden { display: none !important; } .flex { display: flex; } .align-center { align-items: center; } .justify-between { justify-content: space-between; } .text-center { text-align: center; } .mt-1 { margin-top: 10px; } .mt-2 { margin-top: 20px; } .mb-2 { margin-bottom: 20px; }
+
+        #loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10,10,15,0.85); backdrop-filter: blur(5px); z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .spinner { width: 50px; height: 50px; border: 4px solid var(--surface3); border-top: 4px solid var(--accent); border-radius: 50%; animation: spin 1s cubic-bezier(0.4,0,0.2,1) infinite; }
+        #toast-container { position: fixed; bottom: 85px; right: 28px; z-index: 9998; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
+        .toast { background: var(--surface); color: var(--text); padding: 12px 18px; border-radius: var(--r2); box-shadow: var(--shadow2); border: 1px solid var(--border2); animation: slideUp 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards; display: flex; align-items: center; gap: 10px; font-size: .85rem; font-weight: 500; }
+
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10,10,15,0.85); backdrop-filter: blur(5px); z-index: 99999; display: flex; justify-content: center; align-items: center; animation: fadeIn 0.3s ease; }
+        .modal-box { background: var(--surface); padding: 28px 24px; border-radius: var(--r3); width: 90%; max-width: 320px; text-align: center; border: 1px solid var(--border); box-shadow: var(--shadow2); animation: cardIn 0.4s ease both; }
+        .modal-title { font-size: 1.3rem; margin-bottom: 8px; color: var(--text); }
+        .modal-desc { font-size: 0.9rem; color: var(--text2); margin-bottom: 24px; }
+        .modal-actions { display: flex; gap: 12px; }
+        .modal-actions button { flex: 1; padding: 12px; font-size: 0.9rem; }
+        .btn-danger { background: rgba(244, 63, 94, 0.1); color: var(--danger); border: 1px solid rgba(244, 63, 94, 0.3); }
+        .btn-danger:hover { background: var(--danger); color: #fff; box-shadow: 0 4px 20px rgba(244, 63, 94, 0.4); }
+
+        .btn { background: linear-gradient(135deg, #7c6af7, #9f3fbf); color: #fff; border: none; padding: 14px 20px; border-radius: 99px; font-weight: 600; font-family: 'DM Sans', sans-serif; width: 100%; cursor: pointer; transition: var(--transition); font-size: 1rem; display: block; text-align: center; position: relative; overflow: hidden; box-shadow: 0 4px 20px rgba(124,106,247,0.4); }
+        .btn::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,0.15),transparent); opacity:0; transition:opacity var(--transition); }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(124,106,247,0.5); } .btn:hover::before { opacity: 1; } .btn:active { transform: translateY(0) scale(0.98); }
+        .btn-outline { background: transparent; color: var(--text2); border: 1px solid var(--border2); padding: 10px 20px; border-radius: 99px; font-weight: 500; font-size: .85rem; transition: var(--transition); cursor: pointer; }
+        .btn-outline:hover { border-color: var(--accent); color: var(--accent2); background: var(--glow2); }
+
+        header { 
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000; 
+            padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; 
+            background: rgba(10,10,15,0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
+            border-bottom: 1px solid var(--border); 
+            transition: background-color 0.3s ease, border-color 0.3s ease; 
+        }
+        .header-logo-container { display: flex; flex-direction: column; justify-content: center; }
+        .header-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.25rem; background: linear-gradient(135deg, var(--accent2), #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; letter-spacing: -0.02em; }
+        .header-sub { font-family: 'DM Mono', monospace; font-size: .7rem; font-weight: 500; color: var(--accent2); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 4px; }
+        
+        .main-content { padding: 90px 20px 90px; max-width: 1400px; margin: 0 auto; animation: fadeIn .5s ease both; transition: padding-top 0.3s ease; }
+
+        .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 10001; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; backdrop-filter: blur(3px); }
+        .drawer-overlay.active { opacity: 1; pointer-events: all; }
+        
+        .profile-drawer { position: fixed; top: 0; right: -320px; width: 300px; height: 100%; height: 100dvh; background: var(--surface); z-index: 10002; box-shadow: -5px 0 30px rgba(0,0,0,0.5); transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; }
+        .profile-drawer.active { right: 0; }
+        
+        .drawer-header { padding: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); flex-shrink: 0;}
+        .drawer-header h3 { margin: 0; font-size: 1.2rem; }
+        .drawer-header i { font-size: 1.2rem; color: var(--text2); cursor: pointer; padding: 5px; }
+        
+        .drawer-body { padding: 30px 20px; text-align: center; flex: 1; overflow-y: auto; }
+        .drawer-avatar { width: 80px; height: 80px; border-radius: 50%; background: var(--glow2); border: 2px solid var(--accent); color: var(--accent2); font-size: 2.5rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px auto; }
+        .drawer-name { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 700; margin-bottom: 4px; color: var(--text); }
+        .drawer-mobile { font-family: 'DM Mono', monospace; font-size: 0.9rem; color: var(--text2); margin-bottom: 30px; letter-spacing: 0.05em; }
+        
+        .drawer-menu .btn-outline { width: 100%; text-align: left; padding: 14px 20px; margin-bottom: 12px; display: flex; align-items: center; gap: 12px; font-size: 0.95rem; border-color: var(--border); }
+        .drawer-menu .btn-outline i { width: 20px; text-align: center; font-size: 1.1rem; }
+        
+        .drawer-footer { padding: 20px; border-top: 1px solid var(--border); flex-shrink: 0; padding-bottom: calc(20px + env(safe-area-inset-bottom)); }
+
+        .search-container { position: relative; margin-bottom: 16px; z-index: 900; }
+        .search-input-wrapper { position: relative; display: flex; align-items: center; }
+        .search-input-wrapper .fa-search { position: absolute; left: 18px; color: var(--text3); font-size: 1.1rem; pointer-events: none; }
+        .search-input-wrapper .fa-times { position: absolute; right: 18px; color: var(--text3); font-size: 1.2rem; cursor: pointer; padding: 5px; }
+        .search-input { width: 100%; background: var(--surface); color: var(--text); border: 1px solid var(--border2); padding: 14px 45px 14px 48px; border-radius: 99px; font-size: .95rem; transition: var(--transition); box-shadow: var(--shadow); }
+        .search-input:focus { border-color: var(--accent); outline: none; background: var(--surface2); box-shadow: 0 0 0 3px var(--glow2); }
+        .search-input::placeholder { color: var(--text3); }
+        
+        .search-dropdown { position: absolute; top: 100%; left: 0; right: 0; margin-top: 8px; background: var(--surface2); border: 1px solid var(--border); border-radius: var(--r2); box-shadow: var(--shadow2); max-height: 350px; overflow-y: auto; display: none; flex-direction: column; z-index: 1000; }
+        .search-dropdown.active { display: flex; }
+        .search-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--border2); cursor: pointer; transition: background var(--transition); }
+        .search-item:last-child { border-bottom: none; }
+        .search-item:hover { background: var(--surface3); }
+        .search-thumb { width: 45px; height: 45px; border-radius: 8px; object-fit: cover; background: var(--surface3); border: 1px solid var(--border); flex-shrink: 0; }
+        .search-info { flex: 1; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
+        .search-title { font-family: 'Syne', sans-serif; font-size: .95rem; font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; }
+        .search-desc { font-size: .75rem; color: var(--text3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        /* ✅ COMPACT DROPDOWN FILTER UI */
+        .filters-wrapper { display: flex; gap: 12px; margin-bottom: 24px; z-index: 800; position: relative; }
+        .custom-filter { position: relative; flex: 1; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; color: var(--text2); font-size: 0.85rem; font-weight: 600; box-shadow: var(--shadow); transition: var(--transition); user-select: none; }
+        .custom-filter:hover { border-color: var(--accent); color: var(--text); }
+        .custom-filter.active-filter { border-color: var(--accent); color: var(--accent2); background: var(--glow2); }
+        .custom-filter .fa-chevron-down { font-size: 0.75rem; transition: transform 0.3s ease; }
+        .custom-filter.open .fa-chevron-down { transform: rotate(180deg); }
+        
+        .filter-options { position: absolute; top: calc(100% + 8px); left: 0; right: 0; background: var(--surface2); border: 1px solid var(--border); border-radius: var(--r); box-shadow: var(--shadow2); opacity: 0; pointer-events: none; transform: translateY(-10px); transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); z-index: 1000; overflow: hidden; }
+        .custom-filter.open .filter-options { opacity: 1; pointer-events: all; transform: translateY(0); }
+        
+        .f-option { padding: 12px 16px; color: var(--text2); font-size: 0.85rem; transition: background 0.2s, color 0.2s; border-bottom: 1px solid var(--border); }
+        .f-option:last-child { border-bottom: none; }
+        .f-option:hover { background: var(--surface3); color: var(--text); }
+        .f-option.selected { background: var(--glow2); color: var(--accent2); font-weight: 700; border-left: 3px solid var(--accent); padding-left: 13px; }
+        
+        .empty-state { text-align: center; padding: 40px 20px; grid-column: 1 / -1; animation: fadeIn 0.5s ease; }
+        .empty-state i { font-size: 3rem; color: var(--border2); margin-bottom: 16px; display: block; }
+        .empty-state h4 { font-family: 'Syne', sans-serif; font-size: 1.2rem; color: var(--text); margin-bottom: 8px; }
+        .empty-state p { font-size: 0.9rem; color: var(--text2); }
+
+        .skeleton { background: linear-gradient(90deg, var(--surface3) 25%, var(--surface2) 50%, var(--surface3) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite linear; border-radius: 4px; }
+        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 20px; }
+        .book-card { background: var(--surface); border-radius: var(--r2); overflow: hidden; border: 1px solid var(--border); display: flex; flex-direction: column; cursor: pointer; box-shadow: var(--shadow); transition: all var(--transition); animation: cardIn .4s ease both; }
+        .book-card:hover { border-color: var(--border2); transform: translateY(-4px); box-shadow: var(--shadow2); }
+        .book-thumb { width: 100%; aspect-ratio: 1/1; object-fit: cover; background: var(--surface3); border-bottom: 1px solid var(--border); }
+        .book-info { padding: 16px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; gap: 8px; }
+        .book-title { font-family: 'Syne', sans-serif; font-size: .95rem; font-weight: 700; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .price-tag { font-family: 'DM Mono', monospace; font-size: .9rem; color: var(--accent2); font-weight: 700; }
+        .strike-price { font-size: .75rem; color: var(--text3); text-decoration: line-through; margin-left: 6px; font-weight: normal; }
+        .badge-free { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 99px; background: var(--glow2); border: 1px solid rgba(124,106,247,0.3); font-size: .75rem; font-weight: 600; color: var(--accent3); }
+
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 70px; background: rgba(10,10,15,0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--border); z-index: 999; transition: background-color 0.3s ease, border-color 0.3s ease; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text3); font-size: .75rem; font-weight: 500; gap: 6px; cursor: pointer; flex: 1; height: 100%; transition: all var(--transition); text-decoration: none; }
+        .nav-item i { font-size: 1.2rem; transition: all var(--transition); }
+        .nav-item.active { color: var(--accent2); }
+        .nav-item.active i { background: var(--glow2); padding: 8px; border-radius: 50%; box-shadow: 0 0 15px var(--glow); transform: translateY(-4px); color: var(--accent); }
+        .nav-item:hover:not(.active) { color: var(--text2); }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } } 
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } } 
+        @keyframes cardIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } } 
+        @keyframes slideUp { from { opacity: 0; transform: translateY(10px) scaleY(0.95); } to { opacity: 1; transform: translateY(0) scaleY(1); } } 
+        @keyframes spin { to { transform: rotate(360deg); } } 
+        @keyframes blobFloat { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(20px,-20px) scale(1.05)} 66%{transform:translate(-15px,15px) scale(0.97)} }
+    </style>
+</head>
+<body>
+
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="blob blob1"></div>
+    <div class="blob blob2"></div>
+    <div class="blob blob3"></div>
+
+    <div id="loader" class="hidden"><div class="spinner"></div></div>
+    <div id="toast-container"></div>
+
+    <div id="drawer-overlay" class="drawer-overlay" onclick="window.closeProfileDrawer()"></div>
+    <div id="profile-drawer" class="profile-drawer">
+        <div class="drawer-header">
+            <h3>My Profile</h3>
+            <i class="fas fa-times" onclick="window.closeProfileDrawer()"></i>
+        </div>
+        <div class="drawer-body">
+            <div class="drawer-avatar"><i class="fas fa-user"></i></div>
+            <div class="drawer-name" id="profile-name">Library User</div>
+            <div class="drawer-mobile" id="profile-mobile">+XX XXXXXXXXXX</div>
+            
+            <div class="drawer-menu">
+                <button class="btn btn-outline" onclick="window.openChangePassword()"><i class="fas fa-key"></i> Change Password</button>
+            </div>
+        </div>
+        <div class="drawer-footer">
+            <button class="btn" style="background: rgba(244, 63, 94, 0.1); color: var(--danger); border: 1px solid rgba(244, 63, 94, 0.3); box-shadow: none;" onmouseover="this.style.background='var(--danger)'; this.style.color='#fff';" onmouseout="this.style.background='rgba(244, 63, 94, 0.1)'; this.style.color='var(--danger)';" onclick="window.showLogoutModal()"><i class="fas fa-sign-out-alt"></i> Log Out</button>
+        </div>
+    </div>
+
+    <div id="confirm-modal" class="modal-overlay hidden">
+        <div class="modal-box">
+            <h3 class="modal-title" id="modal-title-text">Log Out</h3>
+            <p class="modal-desc" id="modal-desc-text">Are you sure you want to log out of your account?</p>
+            <div class="modal-actions">
+                <button class="btn btn-outline" onclick="window.closeModal()">Cancel</button>
+                <button class="btn" id="modal-action-btn">Yes</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="app-views" class="hidden">
+        
+        <header>
+            <div class="flex align-center" style="gap: 12px;">
+                <i class="fas fa-book-open" style="color: var(--accent2); font-size: 1.4rem; text-shadow: 0 0 10px var(--glow);"></i>
+                <div class="header-logo-container">
+                    <div class="header-logo">Islamic Library</div>
+                    <div class="header-sub">by Shekh</div>
+                </div>
+            </div>
+            <div class="flex align-center" style="gap: 20px;">
+                <i id="theme-toggle-icon" class="fas fa-moon" style="font-size: 1.2rem; color: var(--text2); cursor: pointer; transition: 0.3s;" onclick="window.toggleTheme()" title="Switch Theme"></i>
+                <i class="fas fa-user-circle" style="font-size: 1.3rem; color: var(--text2); cursor: pointer; transition: 0.3s;" onclick="window.openProfileDrawer()" title="Profile"></i>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <div id="page-home">
+                <div class="bismillah text-center" style="margin-top: 5px; margin-bottom: 24px;">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
+                
+                <div class="search-container">
+                    <div class="search-input-wrapper">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="search-bar" class="search-input" placeholder="Search for books..." oninput="window.handleSearch(this.value)" autocomplete="off">
+                        <i class="fas fa-times clear-search hidden" id="clear-search" onclick="window.clearSearch()" title="Clear"></i>
+                    </div>
+                    <div id="search-dropdown" class="search-dropdown"></div>
+                </div>
+
+                <div class="filters-wrapper">
+                    
+                    <div class="custom-filter" id="price-dropdown-btn" onclick="window.toggleFilterMenu('price')">
+                        <span id="price-label">Price: All</span>
+                        <i class="fas fa-chevron-down"></i>
+                        <div class="filter-options" id="price-options">
+                            <div class="f-option selected" onclick="window.setPriceFilter('all', 'Price: All', event)">All Books</div>
+                            <div class="f-option" onclick="window.setPriceFilter('free', 'Free Books', event)">Free Books</div>
+                            <div class="f-option" onclick="window.setPriceFilter('premium', 'Premium', event)">Premium</div>
+                        </div>
+                    </div>
+
+                    <div class="custom-filter" id="lang-dropdown-btn" onclick="window.toggleFilterMenu('lang')">
+                        <span id="lang-label">Lang: All</span>
+                        <i class="fas fa-chevron-down"></i>
+                        <div class="filter-options" id="lang-options">
+                            <div class="f-option selected" onclick="window.setLangFilter('all', 'Lang: All', event)">All Languages</div>
+                            <div class="f-option" onclick="window.setLangFilter('english', 'English', event)">English</div>
+                            <div class="f-option" onclick="window.setLangFilter('urdu', 'Urdu', event)">Urdu</div>
+                            <div class="f-option" onclick="window.setLangFilter('hindi', 'Hindi', event)">Hindi</div>
+                            <div class="f-option" onclick="window.setLangFilter('arabic', 'Arabic', event)">Arabic</div>
+                            <div class="f-option" onclick="window.setLangFilter('roman urdu / hindi', 'Roman Urdu', event)">Roman Urdu / Hindi</div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <h3 class="mb-2" style="font-size: 1.4rem;">Discover eBooks</h3>
+                
+                <div id="ebook-grid" class="grid-container"></div>
+                
+                <div class="text-center mt-2" style="margin-bottom: 30px;">
+                    <button id="load-more-btn" class="btn btn-outline hidden" style="width: auto; margin: 0 auto; padding: 10px 30px;" onclick="window.loadMoreBooks()">Load More <i class="fas fa-chevron-down" style="margin-left: 6px;"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div id="bottom-nav" class="bottom-nav">
+            <div class="nav-item active" onclick="window.location.href='./'"><i class="fas fa-home"></i><span>Home</span></div>
+            <div class="nav-item" onclick="window.location.href='library/'"><i class="fas fa-book-reader"></i><span>Library</span></div>
+            <a href="info/" class="nav-item"><i class="fas fa-info-circle"></i><span>Info</span></a>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+        import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+
+        // 🛑 BHAIA YAHAN APNI ASLI FIREBASE KEYS ZAROOR PASTE KAR LENA 🛑
+        const firebaseConfig = {
+            apiKey: "AIzaSyBhYLRH_0p7f4oRIZTDVf8bOb1bdRKPNe8",
+            authDomain: "islamic-library-3b1d4.firebaseapp.com",
+            projectId: "islamic-library-3b1d4",
+            storageBucket: "islamic-library-3b1d4.firebasestorage.app",
+            messagingSenderId: "139007174646",
+            appId: "1:139007174646:web:0139e6d5c6bf38c7e409d7"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // ✅ STATE VARIABLES
+        let ebooksData = [];
+        let currentPage = 1;
+        const itemsPerPage = 15;
+        let currentPriceFilter = 'all';
+        let currentLangFilter = 'all';
+
+        // ✅ GLOBAL UI FUNCTIONS
+        window.initTheme = function() {
+            const currentTheme = document.documentElement.getAttribute("data-theme");
+            const icon = document.getElementById("theme-toggle-icon");
+            if(icon) icon.className = currentTheme === "light" ? "fas fa-sun" : "fas fa-moon";
+        }
+
+        window.toggleTheme = function() {
+            const currentTheme = document.documentElement.getAttribute("data-theme");
+            const newTheme = currentTheme === "light" ? "dark" : "light";
+            document.documentElement.setAttribute("data-theme", newTheme);
+            localStorage.setItem("islamic_theme", newTheme);
+            window.initTheme();
+        }
+
+                window.openProfileDrawer = async function() {
+            // Drawer open karo
+            document.getElementById("drawer-overlay").classList.add("active");
+            document.getElementById("profile-drawer").classList.add("active");
+            document.body.style.overflow = 'hidden';
+
+            // Pehle browser ke cache se naam dikhao
+            let cachedName = localStorage.getItem("islamic_user_name");
+            document.getElementById("profile-name").innerText = cachedName || "Library User";
+            document.getElementById("profile-mobile").innerText = localStorage.getItem("islamic_user_mobile") || "Registered User";
+
+            // 🔥 FIX: Agar cache mein naam nahi hai, toh turant Firebase se fetch karke save aur update kar do
+            if (!cachedName) {
+                try {
+                    const { getFirestore, doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
+                    const dbInstance = getFirestore();
+                    const userDoc = await getDoc(doc(dbInstance, "users", localStorage.getItem("islamic_user_id")));
+                    
+                    if (userDoc.exists() && userDoc.data().name) {
+                        const realName = userDoc.data().name;
+                        localStorage.setItem("islamic_user_name", realName); // Aage ke liye save kar diya
+                        document.getElementById("profile-name").innerText = realName; // UI par update kar diya
+                    }
+                } catch(e) { console.log("Name fetch error", e); }
+            }
+        };
+
+
+        window.closeProfileDrawer = function() {
+            document.getElementById("drawer-overlay").classList.remove("active");
+            document.getElementById("profile-drawer").classList.remove("active");
+            document.body.style.overflow = '';
+        }
+
+        window.closeModal = function() {
+            document.getElementById("confirm-modal").classList.add("hidden");
+        }
+
+        window.showLogoutModal = function() {
+            window.closeProfileDrawer();
+            document.getElementById("modal-title-text").innerText = "Log Out";
+            document.getElementById("modal-desc-text").innerText = "Are you sure you want to log out of your account?";
+            const actionBtn = document.getElementById("modal-action-btn");
+            actionBtn.innerText = "Yes, Log Out";
+            actionBtn.onclick = window.confirmLogout;
+            document.getElementById("confirm-modal").classList.remove("hidden");
+        }
+
+        window.openChangePassword = function() {
+            window.closeProfileDrawer();
+            document.getElementById("modal-title-text").innerText = "Change Password";
+            document.getElementById("modal-desc-text").innerText = "You will be logged out securely to change your password. Continue?";
+            const actionBtn = document.getElementById("modal-action-btn");
+            actionBtn.innerText = "Yes, Continue";
+            actionBtn.onclick = () => {
+                window.closeModal();
+                window.executeLogout(false);
+                sessionStorage.setItem('open_reset_tab', 'true');
+                window.location.href = 'login/'; 
+            };
+            document.getElementById("confirm-modal").classList.remove("hidden");
+        }
+
+        window.confirmLogout = function() { window.executeLogout(true); }
+
+        window.executeLogout = function(redirect) {
+            const userId = localStorage.getItem("islamic_user_id");
+            if(userId) {
+                localStorage.removeItem(`cache_payments_${userId}_data`);
+                localStorage.removeItem(`cache_payments_${userId}_time`);
+            }
+            localStorage.removeItem("islamic_user_id");
+            localStorage.removeItem("islamic_user_name");
+            localStorage.removeItem("islamic_user_mobile");
+            
+            // ✅ Asli Firebase Logout
+            signOut(auth).then(() => {
+                if(redirect) window.location.replace('login/'); 
+            }).catch(() => {
+                if(redirect) window.location.replace('login/');
+            });
+        }
+
+        window.showToast = function(msg, type = "success") {
+            const container = document.getElementById("toast-container");
+            const toast = document.createElement("div");
+            toast.className = "toast";
+            toast.innerHTML = (type === "success" ? '<span style="font-size:1.1rem; color:var(--success)">✓</span>' : '<span style="font-size:1.1rem; color:var(--danger)">✕</span>') + ` <span>${msg}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => { toast.style.transform = "translateX(110%)"; toast.style.opacity = "0"; setTimeout(() => toast.remove(), 400); }, 3000);
+        }
+
+        // ✅ SECURE INITIALIZATION
+        document.addEventListener("DOMContentLoaded", () => {
+            window.initTheme();
+            
+            // Fast Cache Check (Skeleton UI show karne ke liye bina lag ke)
+            if (!localStorage.getItem("islamic_user_id")) {
+                window.location.replace('login/');
+                return;
+            }
+            
+            document.getElementById("app-views").classList.remove("hidden");
+            loadHome();
+        });
+
+        // ✅ BACKGROUND FIREBASE SECURITY CHECK
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                // Agar user ka session sach mein nahi hai, toh turant bahar phek do
+                window.executeLogout(true);
+            }
+        });
+
+        function showSkeletons() {
+            const grid = document.getElementById("ebook-grid");
+            grid.innerHTML = "";
+            for(let i=0; i<6; i++) {
+                grid.innerHTML += `
+                <div class="book-card" style="cursor: default;">
+                    <div class="skeleton" style="width: 100%; aspect-ratio: 1/1; border-radius: 0;"></div>
+                    <div class="book-info" style="gap: 12px; padding-bottom: 24px;">
+                        <div class="skeleton" style="height: 16px; width: 80%; border-radius: 4px;"></div>
+                        <div class="skeleton" style="height: 14px; width: 50%; border-radius: 4px;"></div>
+                    </div>
+                </div>`;
+            }
+            document.getElementById("load-more-btn").classList.add("hidden");
+        }
+
+        // ✅ FETCH FROM FIREBASE
+        async function loadHome() {
+            const cachedDataStr = localStorage.getItem("cache_ebooks_data");
+            if (cachedDataStr) { 
+                try { 
+                    ebooksData = JSON.parse(cachedDataStr); 
+                    renderGrid(true); 
+                } catch (e) {} 
+            } else {
+                showSkeletons();
+            }
+
+            try {
+                // Fetch Ebooks
+                const querySnapshot = await getDocs(collection(db, "ebooks"));
+                const freshEbooks = [];
+                querySnapshot.forEach((doc) => {
+                    freshEbooks.push({ id: doc.id, ...doc.data() });
+                });
+
+                ebooksData = freshEbooks;
+                localStorage.setItem("cache_ebooks_data", JSON.stringify(freshEbooks));
+                renderGrid(true);
+
+                // Fetch User Payments
+                const userId = localStorage.getItem("islamic_user_id");
+                if (userId) {
+                    const q = query(collection(db, "payments"), where("user_id", "==", userId));
+                    const paySnapshot = await getDocs(q);
+                    const userPayments = [];
+                    paySnapshot.forEach((doc) => {
+                        userPayments.push({ id: doc.id, ...doc.data() });
+                    });
+                    localStorage.setItem(`cache_payments_${userId}_data`, JSON.stringify(userPayments));
+                }
+            } catch (error) {
+                console.error("Firebase error:", error);
+                if (!cachedDataStr) window.showToast("Network Error loading books", "error");
+            }
+        }
+
+        // ✅ FILTER & RENDER LOGIC
+        window.toggleFilterMenu = function(type) {
+            const priceBtn = document.getElementById('price-dropdown-btn');
+            const langBtn = document.getElementById('lang-dropdown-btn');
+            
+            if (type === 'price') {
+                priceBtn.classList.toggle('open');
+                langBtn.classList.remove('open');
+            } else {
+                langBtn.classList.toggle('open');
+                priceBtn.classList.remove('open');
+            }
+        }
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.custom-filter')) {
+                document.getElementById('price-dropdown-btn').classList.remove('open');
+                document.getElementById('lang-dropdown-btn').classList.remove('open');
+            }
+            if (!e.target.closest('.search-container')) {
+                document.getElementById('search-dropdown').classList.remove('active');
+            }
+        });
+
+        window.setPriceFilter = function(value, label, event) {
+            event.stopPropagation();
+            currentPriceFilter = value;
+            document.getElementById('price-label').innerText = label;
+            
+            document.querySelectorAll('#price-options .f-option').forEach(el => el.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
+            
+            const btn = document.getElementById('price-dropdown-btn');
+            if(value !== 'all') btn.classList.add('active-filter');
+            else btn.classList.remove('active-filter');
+
+            window.toggleFilterMenu('price');
+            renderGrid(true);
+        }
+
+        window.setLangFilter = function(value, label, event) {
+            event.stopPropagation();
+            currentLangFilter = value;
+            document.getElementById('lang-label').innerText = label;
+            
+            document.querySelectorAll('#lang-options .f-option').forEach(el => el.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
+
+            const btn = document.getElementById('lang-dropdown-btn');
+            if(value !== 'all') btn.classList.add('active-filter');
+            else btn.classList.remove('active-filter');
+
+            window.toggleFilterMenu('lang');
+            renderGrid(true);
+        }
+
+        function renderGrid(reset = false) {
+            if (reset) currentPage = 1;
+            const grid = document.getElementById("ebook-grid");
+            const loadMoreBtn = document.getElementById("load-more-btn");
+            if (reset) grid.innerHTML = "";
+
+// 🔥 YEH NAYI LINE ADD KARNI HAI (Books ko number wise lagane ke liye) 🔥
+            ebooksData.sort((a, b) => (a.sort_order || 999) - (b.sort_order || 999));
+
+            let filteredBooks = ebooksData.filter(eb => {
+                const isFree = String(eb.is_free) === "true";
+                let passPrice = true;
+                if (currentPriceFilter === 'free') passPrice = isFree;
+                if (currentPriceFilter === 'premium') passPrice = !isFree;
+
+                let passLang = true;
+                if (currentLangFilter !== 'all') {
+                    const langData = eb.language || 'none';
+                    let bookLangs = [];
+                    if (Array.isArray(langData)) {
+                        bookLangs = langData.map(l => l.toLowerCase().trim());
+                    } else {
+                        bookLangs = String(langData).split(',').map(l => l.toLowerCase().trim());
+                    }
+                    passLang = bookLangs.includes(currentLangFilter.toLowerCase());
+                }
+
+                return passPrice && passLang;
+            });
+
+            if (filteredBooks.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-folder-open"></i>
+                        <h4>No books available</h4>
+                        <p>We couldn't find any books in this category right now.</p>
+                    </div>`;
+                loadMoreBtn.classList.add("hidden");
+                return; 
+            }
+
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const booksToShow = filteredBooks.slice(startIndex, endIndex);
+
+            booksToShow.forEach(eb => {
+                const isFree = String(eb.is_free) === "true";
+                let priceHTML = isFree ? `<span class="badge-free">✦ FREE</span>` : `₹${eb.discount_price || eb.price}`;
+                if(!isFree && eb.discount_price && eb.price > eb.discount_price) priceHTML += `<span class="strike-price">₹${eb.price}</span>`;
+
+                grid.innerHTML += `
+                <div class="book-card" onclick="window.openDetail('${eb.id}')">
+                    <img src="${eb.thumbnail}" class="book-thumb">
+                    <div class="book-info">
+                        <div class="book-title">${eb.title}</div>
+                        <div class="price-tag">${priceHTML}</div>
+                    </div>
+                </div>`;
+            });
+
+            loadMoreBtn.classList.toggle("hidden", filteredBooks.length <= endIndex);
+        }
+
+        window.loadMoreBooks = function() {
+            currentPage++;
+            renderGrid(false);
+        }
+
+        window.openDetail = function(id) {
+            const selectedBook = ebooksData.find(e => String(e.id) === String(id));
+            if(selectedBook) {
+                sessionStorage.setItem('selected_book_data', JSON.stringify(selectedBook));
+                window.location.href = 'books/';
+            }
+        }
+
+        window.clearSearch = function() {
+            document.getElementById("search-bar").value = "";
+            window.handleSearch("");
+        }
+
+        window.handleSearch = function(query) {
+            const dropdown = document.getElementById("search-dropdown");
+            const clearBtn = document.getElementById("clear-search");
+            
+            if (!query.trim()) {
+                dropdown.classList.remove("active");
+                clearBtn.classList.add("hidden");
+                return;
+            }
+
+            clearBtn.classList.remove("hidden");
+            const q = query.toLowerCase().trim();
+            const searchTerms = q.split(/\s+/); 
+
+            const results = ebooksData.filter(eb => {
+                const title = eb.title.toLowerCase();
+                const desc = eb.description ? eb.description.toLowerCase() : "";
+                return searchTerms.every(term => title.includes(term) || desc.includes(term));
+            });
+            
+            dropdown.innerHTML = "";
+            if (results.length > 0) {
+                dropdown.classList.add("active");
+                results.slice(0, 6).forEach(eb => {
+                    dropdown.innerHTML += `
+                        <div class="search-item" onclick="window.openDetail('${eb.id}')">
+                            <img src="${eb.thumbnail}" class="search-thumb">
+                            <div class="search-info">
+                                <div class="search-title">${eb.title}</div>
+                                <div class="search-desc">${eb.description || ''}</div>
+                            </div>
+                        </div>`;
+                });
+            } else {
+                dropdown.classList.remove("active");
+            }
+        }
+    </script>
+</body>
+</html>
