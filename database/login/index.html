@@ -100,10 +100,34 @@
         .auth-card { background: var(--surface); padding: 32px 28px; border-radius: var(--r3); width: 100%; max-width: 400px; box-shadow: var(--shadow); border: 1px solid var(--border); text-align: center; animation: cardIn .5s ease both; transition: var(--transition); }
         .auth-card:hover { border-color: var(--border2); }
 
-        /* ✅ NEW: TOGGLE BUTTON STYLES */
+        /* TOGGLE BUTTON STYLES */
         .auth-toggle { display: flex; background: var(--surface3); border-radius: var(--r); margin-bottom: 20px; padding: 4px; border: 1px solid var(--border2); }
         .auth-toggle button { flex: 1; padding: 10px; border: none; background: transparent; color: var(--text2); font-weight: 600; border-radius: calc(var(--r) - 4px); cursor: pointer; transition: 0.3s; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; }
         .auth-toggle button.active { background: var(--accent); color: #fff; box-shadow: var(--shadow); }
+
+        /* Support Badge for Auth Cards */
+        .auth-card { position: relative; }
+        .help-badge { position: absolute; top: 15px; right: 15px; background: var(--glow2); color: var(--accent2); border: 1px solid var(--border); padding: 6px 12px; border-radius: 99px; font-size: 0.67rem; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 6px; transition: var(--transition); z-index: 10; }
+        .help-badge:hover { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: 0 4px 15px var(--glow); transform: translateY(-2px); }
+
+        /* 🔥 FIX: PERFECT GRAY DISABLED BUTTON (Grayscale Filter) */
+        .btn:disabled, #signup-btn:disabled, #reset-btn:disabled {
+            filter: grayscale(100%) opacity(0.6) !important;
+            cursor: not-allowed !important;
+            pointer-events: none !important;
+            box-shadow: none !important;
+            transform: none !important;
+        }
+
+        /* 🔥 NEW: GOOGLE BUTTON CSS */
+        .divider { display: flex; align-items: center; text-align: center; margin: 20px 0; color: var(--text3); font-size: 0.85rem; font-weight: 600; }
+        .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid var(--border2); }
+        .divider::before { margin-right: .5em; } .divider::after { margin-left: .5em; }
+        
+        .google-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 12px; background: #fff; border: 1px solid #dadce0; border-radius: 99px; color: #3c4043; font-size: 15px; font-weight: 600; cursor: pointer; transition: 0.3s; font-family: 'DM Sans', sans-serif; }
+        .google-btn:hover { background: #f8f9fa; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transform: translateY(-2px); }
+        .google-btn:active { transform: translateY(0); }
+        .google-btn img { width: 22px; }
 
         /* ===== ANIMATIONS ===== */
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } } 
@@ -112,53 +136,12 @@
         @keyframes slideUp { from { opacity: 0; transform: translateY(10px) scaleY(0.95); } to { opacity: 1; transform: translateY(0) scaleY(1); } } 
         @keyframes spin { to { transform: rotate(360deg); } } 
         @keyframes blobFloat { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(20px,-20px) scale(1.05)} 66%{transform:translate(-15px,15px) scale(0.97)} }
-
-        /* Support Badge for Auth Cards */
-.auth-card {
-    position: relative; /* Yeh zaroori hai badge ko card ke andar corner mein rakhne ke liye */
+        .google-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    background-color: #f8f9fa;
+    pointer-events: none;
 }
-
-.help-badge {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background: var(--glow2);
-    color: var(--accent2);
-    border: 1px solid var(--border);
-    padding: 6px 12px;
-    border-radius: 99px;
-    font-size: 0.67rem;
-    font-weight: 600;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    transition: var(--transition);
-    z-index: 10;
-}
-
-.help-badge:hover {
-    background: var(--accent);
-    color: #fff;
-    border-color: var(--accent);
-    box-shadow: 0 4px 15px var(--glow);
-    transform: translateY(-2px);
-}
-
-/* Cooldown Button Strict State */
-/* 🔥 Direct ID Targeting for Disabled State */
-#signup-btn:disabled, #reset-btn:disabled {
-    background: #6c757d !important; /* Solid Gray Color */
-    background-image: none !important; /* Agar koi gradient hoga toh usko hata dega */
-    color: #cfcfcf !important; /* Dull Text Color */
-    cursor: not-allowed !important;
-    pointer-events: none !important; /* Click ekdum block */
-    box-shadow: none !important;
-    transform: none !important;
-    border: none !important;
-}
-
-
 
     </style>
 </head>
@@ -176,10 +159,7 @@
     <div id="auth-views">
         <div id="login-view" class="auth-container">
             <div class="auth-card">
-                <a href="support/" class="help-badge" title="Need Help?">
-                <i class="fas fa-headset"></i> Help
-                </a>
-
+                <a href="support/" class="help-badge" title="Need Help?"><i class="fas fa-headset"></i> Help</a>
                 <div class="bismillah" style="margin-bottom: 16px;">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
                 <h2 style="margin-bottom: 6px;">Welcome Back</h2>
                 <p style="color: var(--text2); font-size: .85rem; margin-bottom: 20px;">Sign in to access your Islamic library</p>
@@ -197,7 +177,15 @@
                     <div class="form-group"><label>Password</label><input type="password" id="login-pass" placeholder="Enter your password" required></div>
                     <button type="submit" class="btn" id="login-btn" style="margin-top: 24px;">Login ✦</button>
                 </form>
-                <div class="mt-2 flex justify-between align-center">
+
+                <div class="divider"><span>OR</span></div>
+<button type="button" id="google-login-btn" onclick="loginWithGoogle('google-login-btn')" class="google-btn">
+    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+    <span>Continue with Google</span>
+</button>
+
+
+                <div class="mt-2 flex justify-between align-center" style="margin-top: 20px;">
                     <span class="link-text" onclick="switchAuth('reset')">Forgot Password?</span>
                     <span class="link-text" onclick="switchAuth('signup')">Create Account</span>
                 </div>
@@ -206,10 +194,7 @@
 
         <div id="signup-view" class="auth-container hidden">
             <div class="auth-card">
-                <a href="support/" class="help-badge" title="Need Help?">
-                <i class="fas fa-headset"></i> Help
-                </a>
-
+                <a href="support/" class="help-badge" title="Need Help?"><i class="fas fa-headset"></i> Help</a>
                 <h2 style="margin-bottom: 6px;">Create Account</h2>
                 <p style="color: var(--text2); font-size: .85rem; margin-bottom: 20px;">Join our Islamic eBook community</p>
                 
@@ -227,15 +212,22 @@
                     <div class="form-group"><label>Password</label><input type="password" id="reg-pass" placeholder="Create a strong password" required></div>
                     <button type="submit" class="btn" id="signup-btn" style="margin-top: 24px;">Sign Up ✦</button>
                 </form>
-                <div class="mt-2"><span class="link-text" onclick="switchAuth('login')"><i class="fas fa-arrow-left" style="margin-right: 6px;"></i> Back to Login</span></div>
+
+                <div class="divider"><span>OR</span></div>
+<button type="button" id="google-signup-btn" onclick="loginWithGoogle('google-signup-btn')" class="google-btn">
+    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+    <span>Continue with Google</span>
+</button>
+
+
+
+                <div class="mt-2" style="margin-top: 20px;"><span class="link-text" onclick="switchAuth('login')"><i class="fas fa-arrow-left" style="margin-right: 6px;"></i> Back to Login</span></div>
             </div>
         </div>
 
         <div id="reset-view" class="auth-container hidden">
             <div class="auth-card">
-                <a href="support/" class="help-badge" title="Need Help?">
-                <i class="fas fa-headset"></i> Help
-                </a>
+                <a href="support/" class="help-badge" title="Need Help?"><i class="fas fa-headset"></i> Help</a>
                 <h2 style="margin-bottom: 6px;">Reset Password</h2>
                 <p style="color: var(--text2); font-size: .85rem; margin-bottom: 20px;">Get a reset link via email</p>
                 
@@ -245,90 +237,70 @@
                 </div>
 
                 <form id="resetForm">
-    <div class="form-group">
-        <label id="reset-label">Email Address</label>
-        
-        <input type="email" id="reset-input" placeholder="Enter your email" required>
-
-        <div id="mobile-reset-warning" class="hidden" style="background: rgba(255, 193, 7, 0.1); border: 1px solid rgba(255, 193, 7, 0.2); border-radius: 8px; padding: 15px; margin-top: 10px; text-align: center;">
-            <p style="color: #ffc107; font-size: 0.85rem; margin-bottom: 12px; line-height: 1.4;">
-                <i class="fas fa-exclamation-triangle"></i> Password reset for mobile accounts is not available automatically.
-            </p>
-            <a href="support/" class="btn" style="display: inline-block; padding: 8px 15px; font-size: 0.8rem; text-decoration: none; background: var(--primary); color: white; border-radius: 5px;">
-                Contact Support to Reset
-            </a>
-        </div>
-    </div>
-    
-    <button type="submit" class="btn" id="reset-btn" style="margin-top: 24px;">Send Reset Link ✦</button>
-</form>
+                    <div class="form-group">
+                        <label id="reset-label">Email Address</label>
+                        <input type="email" id="reset-input" placeholder="Enter your email" required>
+                        <div id="mobile-reset-warning" class="hidden" style="background: rgba(255, 193, 7, 0.1); border: 1px solid rgba(255, 193, 7, 0.2); border-radius: 8px; padding: 15px; margin-top: 10px; text-align: center;">
+                            <p style="color: #ffc107; font-size: 0.85rem; margin-bottom: 12px; line-height: 1.4;">
+                                <i class="fas fa-exclamation-triangle"></i> Password reset for mobile accounts is not available automatically.
+                            </p>
+                            <a href="support/" class="btn" style="display: inline-block; padding: 8px 15px; font-size: 0.8rem; text-decoration: none; background: var(--primary); color: white; border-radius: 5px;">
+                                Contact Support
+                            </a>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn" id="reset-btn" style="margin-top: 24px;">Send Reset Link ✦</button>
+                </form>
 
                 <div class="mt-2"><span class="link-text" onclick="switchAuth('login')"><i class="fas fa-arrow-left" style="margin-right: 6px;"></i> Back to Login</span></div>
             </div>
         </div>
     </div>
 
-<div id="reset-success-modal" class="modal-overlay hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: flex; justify-content: center; align-items: center; z-index: 9999; padding: 20px;">
-    <div class="auth-card" style="text-align: center; max-width: 360px; border: 1px solid rgba(124, 77, 255, 0.3); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
-        <div style="font-size: 40px; color: var(--primary); margin-bottom: 20px;">
-            <i class="fas fa-envelope-open-text"></i>
-        </div>
-        
-        <h2 style="margin-bottom: 8px; font-size: 1.5rem;">Check Your Email</h2>
-        
-        <p style="color: var(--text1); font-size: 0.9rem; line-height: 1.6; margin-bottom: 20px;">
-            A password reset link has been sent to your email address. Please follow the instructions to reset your password.
-        </p>
-
-        <div style="background: rgba(255, 193, 7, 0.05); border: 1px solid rgba(255, 193, 7, 0.2); border-radius: 8px; padding: 12px; margin-bottom: 25px;">
-            <p style="color: #ffc107; font-size: 0.8rem; margin: 0; line-height: 1.4;">
-                <i class="fas fa-info-circle"></i> <b>Note:</b> If you don't see the email in your Inbox, please check your <b>Spam folder</b>.
-            </p>
-        </div>
-
-        <div style="display: flex; flex-direction: column; gap: 15px;">
-            <button onclick="closeResetSuccess()" class="btn" style="padding: 12px; font-weight: 600;">Back to Login</button>
-            
-            <a href="support/" style="color: var(--text2); text-decoration: none; font-size: 0.85rem; transition: 0.3s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text2)'">
-                Didn't receive a link? <span style="color: var(--primary); font-weight: 600;">Contact Support</span>
-            </a>
+    <div id="reset-success-modal" class="modal-overlay hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: flex; justify-content: center; align-items: center; z-index: 9999; padding: 20px;">
+        <div class="auth-card" style="text-align: center; max-width: 360px; border: 1px solid rgba(124, 77, 255, 0.3); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+            <div style="font-size: 40px; color: var(--primary); margin-bottom: 20px;"><i class="fas fa-envelope-open-text"></i></div>
+            <h2 style="margin-bottom: 8px; font-size: 1.5rem;">Check Your Email</h2>
+            <p style="color: var(--text1); font-size: 0.9rem; line-height: 1.6; margin-bottom: 20px;">A password reset link has been sent to your email address. Please follow the instructions to reset your password.</p>
+            <div style="background: rgba(255, 193, 7, 0.05); border: 1px solid rgba(255, 193, 7, 0.2); border-radius: 8px; padding: 12px; margin-bottom: 25px;">
+                <p style="color: #ffc107; font-size: 0.8rem; margin: 0; line-height: 1.4;"><i class="fas fa-info-circle"></i> <b>Note:</b> If you don't see the email in your Inbox, please check your <b>Spam folder</b>.</p>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                <button onclick="closeResetSuccess()" class="btn" style="padding: 12px; font-weight: 600;">Back to Login</button>
+                <a href="support/" style="color: var(--text2); text-decoration: none; font-size: 0.85rem; transition: 0.3s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text2)'">
+                    Didn't receive a link? <span style="color: var(--primary); font-weight: 600;">Contact Support</span>
+                </a>
+            </div>
         </div>
     </div>
-</div>
-
-
-        </div>
-    </div>
-</div>
-
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
-        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+        import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager, doc, setDoc, getDoc, enableIndexedDbPersistence } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
-        // 🛑 DUMMY KEYS - BHAIA YAHAN APNI ASLI FIREBASE KEYS PASTE KAR LENA 🛑
+        // 🛑 DUMMY KEYS - APNI ASLI FIREBASE KEYS PASTE KAR LENA 🛑
         const firebaseConfig = {
-    apiKey: "AIzaSyBhYLRH_0p7f4oRIZTDVf8bOb1bdRKPNe8",
-    authDomain: "islamic-library-3b1d4.firebaseapp.com",
-    projectId: "islamic-library-3b1d4",
-    storageBucket: "islamic-library-3b1d4.firebasestorage.app",
-    messagingSenderId: "139007174646",
-    appId: "1:139007174646:web:0139e6d5c6bf38c7e409d7"
-  };
-
+            apiKey: "AIzaSyBhYLRH_0p7f4oRIZTDVf8bOb1bdRKPNe8",
+            authDomain: "islamic-library-3b1d4.firebaseapp.com",
+            projectId: "islamic-library-3b1d4",
+            storageBucket: "islamic-library-3b1d4.firebasestorage.app",
+            messagingSenderId: "139007174646",
+            appId: "1:139007174646:web:0139e6d5c6bf38c7e409d7"
+        };
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        const db = getFirestore(app);
+        
+        // 🔥 MODERN CACHE SETUP: Isse warning khatam ho jayegi aur speed makkhan ho jayegi
+        const db = initializeFirestore(app, {
+          localCache: persistentLocalCache({
+            tabManager: persistentMultipleTabManager()
+          })
+        });
 
         // Global State for Modes
-        window.currentAuthModes = {
-    login: 'email',
-    signup: 'email',
-    reset: 'email'
-};
-
+        window.currentAuthModes = { login: 'email', signup: 'email', reset: 'email' };
 
         document.addEventListener("DOMContentLoaded", () => {
             if (localStorage.getItem("islamic_user_id")) {
@@ -369,410 +341,314 @@
             document.getElementById(`${view}-view`).classList.remove("hidden");
         }
 
-        // Toggle UI Logic - Fixed for Keyboard Issues
-window.setAuthType = function(formType, authType) {
-    window.currentAuthModes[formType] = authType;
-    
-    document.getElementById(`${formType}-toggle-mobile`).classList.toggle('active', authType === 'mobile');
-    document.getElementById(`${formType}-toggle-email`).classList.toggle('active', authType === 'email');
-    
-    const label = document.getElementById(`${formType}-label`);
-    const inputId = formType === 'signup' ? 'reg-input' : `${formType}-input`;
-    const input = document.getElementById(inputId);
-    const resetBtn = document.getElementById('reset-btn');
-    const mobileWarning = document.getElementById('mobile-reset-warning');
+        // Toggle UI Logic
+        window.setAuthType = function(formType, authType) {
+            window.currentAuthModes[formType] = authType;
+            document.getElementById(`${formType}-toggle-mobile`).classList.toggle('active', authType === 'mobile');
+            document.getElementById(`${formType}-toggle-email`).classList.toggle('active', authType === 'email');
+            
+            const label = document.getElementById(`${formType}-label`);
+            const inputId = formType === 'signup' ? 'reg-input' : `${formType}-input`;
+            const input = document.getElementById(inputId);
+            const resetBtn = document.getElementById('reset-btn');
+            const mobileWarning = document.getElementById('mobile-reset-warning');
 
-    if (input) {
-        // Reset page ke liye special logic
-        if (formType === 'reset') {
-            if (authType === 'mobile') {
-                // Mobile select kiya toh sab chhupa do, warning dikhao
-                input.classList.add('hidden');
-                label.classList.add('hidden');
-                if(resetBtn) resetBtn.classList.add('hidden');
-                if(mobileWarning) mobileWarning.classList.remove('hidden');
-            } else {
-                // Email select kiya toh normal dikhao
-                input.classList.remove('hidden');
-                label.classList.remove('hidden');
-                if(resetBtn) resetBtn.classList.remove('hidden');
-                if(mobileWarning) mobileWarning.classList.add('hidden');
-                
-                label.innerText = "Email Address";
-                input.placeholder = "Enter your email";
-                input.type = "email";
-                input.setAttribute("inputmode", "email");
+            if (input) {
+                if (formType === 'reset') {
+                    if (authType === 'mobile') {
+                        input.classList.add('hidden'); label.classList.add('hidden');
+                        if(resetBtn) resetBtn.classList.add('hidden');
+                        if(mobileWarning) mobileWarning.classList.remove('hidden');
+                    } else {
+                        input.classList.remove('hidden'); label.classList.remove('hidden');
+                        if(resetBtn) resetBtn.classList.remove('hidden');
+                        if(mobileWarning) mobileWarning.classList.add('hidden');
+                        label.innerText = "Email Address"; input.placeholder = "Enter your email";
+                        input.type = "email"; input.setAttribute("inputmode", "email");
+                    }
+                } else {
+                    if(authType === 'mobile') {
+                        label.innerText = "Mobile Number"; input.placeholder = "Enter your number";
+                        input.type = "tel"; input.setAttribute("inputmode", "tel");
+                    } else {
+                        label.innerText = "Email Address"; input.placeholder = "Enter your email";
+                        input.type = "email"; input.setAttribute("inputmode", "email");
+                    }
+                }
             }
-        } else {
-            // Login aur Signup ke liye purana normal logic
-            if(authType === 'mobile') {
-                label.innerText = "Mobile Number";
-                input.placeholder = "Enter your number";
-                input.type = "tel";
-                input.setAttribute("inputmode", "tel");
-            } else {
-                label.innerText = "Email Address";
-                input.placeholder = "Enter your email";
-                input.type = "email";
-                input.setAttribute("inputmode", "email");
-            }
-        }
-    }
-};
+        };
 
-
-
-
-        // Helper to format email securely
         function getFirebaseEmail(inputValue, type) {
             return type === 'mobile' ? `${inputValue.trim()}@islamiclibrary.com` : inputValue.trim();
         }
 
-                // ✅ LOGIN (FIREBASE)
-        document.getElementById("loginForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    
-    // Sabse pehle input nikal lo aur extra space hata do
-    const inputValue = document.getElementById("login-input").value.trim();
-    const password = document.getElementById("login-pass").value.trim();
+        // 🔥 FINAL GOOGLE LOGIN (INSTANT BACK FIX) 🔥
+        const googleProvider = new GoogleAuthProvider();
 
-    // 🔥 FRONTEND DATA VALIDATION (The Bouncer for Login) 🔥
-    
-    // Check 1: Mobile ya Email format checking
-    if (window.currentAuthModes.login === 'mobile') {
-        const mobileRegex = /^[0-9]{10}$/; // Exact 10 digits
-        if (!mobileRegex.test(inputValue)) {
-            window.showToast("Please enter a valid 10-digit mobile number.", "error");
-            return; // Code yahi ruk jayega
-        }
-    } else {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Valid Email
-        if (!emailRegex.test(inputValue)) {
-            window.showToast("Please enter a valid email address.", "error");
-            return;
-        }
-    }
+        window.loginWithGoogle = async function(btnId) {
+            const btn = document.getElementById(btnId);
+            if (!btn) return;
 
-    // Check 2: Password
-    if (password.length < 6) {
-        window.showToast("Password must be at least 6 characters.", "error");
-        return;
-    }
+            const defaultHTML = `<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google"> <span>Continue with Google</span>`;
 
-    // Validation pass ho gayi, ab button disable karo aur processing shuru karo
-    const btn = document.getElementById("login-btn");
-    btn.disabled = true;
-    btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i>`;
-    
-    const firebaseEmail = getFirebaseEmail(inputValue, window.currentAuthModes.login);
-    
-    try {
-        const userCredential = await signInWithEmailAndPassword(auth, firebaseEmail, password);
-        const uid = userCredential.user.uid;
-        
-        // 🔥 FIX: Firebase database se user ka naam nikal kar browser mein save karo
-        try {
-            const { getFirestore, doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
-            const dbInstance = getFirestore();
-            const userDoc = await getDoc(doc(dbInstance, "users", uid));
-            if (userDoc.exists() && userDoc.data().name) {
-                localStorage.setItem("islamic_user_name", userDoc.data().name);
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span>Verifying User...</span>`;
+
+            let isResolved = false; 
+
+            const onUserReturn = () => {
+                setTimeout(() => {
+                    if (!isResolved) {
+                        isResolved = true; 
+                        btn.disabled = false;
+                        btn.innerHTML = defaultHTML;
+                        console.log("Firebase Timeout - Force Reset");
+                    }
+                }, 2000); 
+
+                window.removeEventListener('focus', onUserReturn);
+                document.removeEventListener('visibilitychange', onUserReturn);
+            };
+
+            setTimeout(() => {
+                window.addEventListener('focus', onUserReturn);
+                document.addEventListener('visibilitychange', onUserReturn);
+            }, 100); 
+
+            try {
+                const result = await signInWithPopup(auth, googleProvider);
+                
+                if (isResolved) return; 
+                
+                isResolved = true; 
+
+                const user = result.user;
+                const userRef = doc(db, "users", user.uid);
+                
+                // SECURE CHECK: Name fetch karega bina zyada wait kiye
+                const userSnap = await getDoc(userRef);
+
+                if (!userSnap.exists()) {
+                    await setDoc(userRef, {
+                        uid: user.uid,
+                        name: user.displayName || "Google User",
+                        loginType: 'google',
+                        displayId: user.email,
+                        createdAt: new Date().toISOString()
+                    });
+                }
+
+                localStorage.setItem("islamic_user_id", user.uid);
+                localStorage.setItem("islamic_user_name", userSnap.exists() && userSnap.data().name ? userSnap.data().name : (user.displayName || "Google User"));
+                localStorage.setItem("islamic_user_mobile", user.email);
+
+                window.showToast("Google Login Successful!");
+                
+                // 🚀 FAST REDIRECT: 800ms se hata kar 150ms kar diya
+                setTimeout(() => {
+                    window.location.href = '../'; 
+                }, 150);
+
+            } catch (error) {
+                if (!isResolved) {
+                    isResolved = true;
+                    btn.disabled = false;
+                    btn.innerHTML = defaultHTML;
+                    
+                    if(error.code !== 'auth/popup-closed-by-user' && error.code !== 'auth/cancelled-popup-request' && error.code !== 'auth/internal-error') {
+                        window.showToast("Google Login Failed", "error");
+                    }
+                }
             }
-        } catch(err) { console.log("Name fetch error on login"); }
+        };
 
-        localStorage.setItem("islamic_user_id", uid); 
-        localStorage.setItem("islamic_user_mobile", inputValue); 
-        
-        window.showToast("Login Successful! Redirecting..."); 
-        setTimeout(() => { window.location.href = '../'; }, 800);
-    } catch (error) {
-        let msg = "Login failed. Please try again.";
-        if (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential') msg = "Incorrect details or password.";
-        window.showToast(msg, "error");
-        
-        btn.disabled = false;
-        btn.innerHTML = `Login ✦`;
-    }
-});
+        // ✅ LOGIN (FIREBASE)
+        document.getElementById("loginForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const inputValue = document.getElementById("login-input").value.trim();
+            const password = document.getElementById("login-pass").value.trim();
 
+            if (window.currentAuthModes.login === 'mobile') {
+                if (!/^[0-9]{10}$/.test(inputValue)) return window.showToast("Please enter a valid 10-digit mobile number.", "error");
+            } else {
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputValue)) return window.showToast("Please enter a valid email address.", "error");
+            }
+            if (password.length < 6) return window.showToast("Password must be at least 6 characters.", "error");
 
+            const btn = document.getElementById("login-btn");
+            btn.disabled = true; btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i>`;
+            
+            const firebaseEmail = getFirebaseEmail(inputValue, window.currentAuthModes.login);
+            
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, firebaseEmail, password);
+                const uid = userCredential.user.uid;
+                
+                // SECURE CHECK: Yahan naam laya jaayega
+                try {
+                    const userDoc = await getDoc(doc(db, "users", uid));
+                    if (userDoc.exists() && userDoc.data().name) localStorage.setItem("islamic_user_name", userDoc.data().name);
+                } catch(err) { console.log("Name fetch error on login"); }
 
-        // ✅ SIGNUP SUBMIT (FIREBASE)
-// ✅ SIGNUP SUBMIT (FIREBASE) + DATA VALIDATION
-document.getElementById("signupForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    // 1. Sabse pehle input ki values nikal lo (trim space hata dega)
-    const nameVal = document.getElementById("reg-name").value.trim();
-    const inputVal = document.getElementById("reg-input").value.trim();
-    const passVal = document.getElementById("reg-pass").value.trim();
-
-    // 🔥 FRONTEND DATA VALIDATION (The Bouncer) 🔥
-    
-    // Check 1: Name (Sirf Alphabets aur Space, Min 3 characters)
-    const nameRegex = /^[A-Za-z\s]{3,50}$/;
-    if (!nameRegex.test(nameVal)) {
-        window.showToast("Name should only contain alphabets (Min 3 letters).", "error");
-        return; // Code yahi ruk jayega
-    }
-
-    // Check 2: Mobile ya Email ki checking (Mode ke hisaab se)
-    if (window.currentAuthModes.signup === 'mobile') {
-        const mobileRegex = /^[0-9]{10}$/; // Exact 10 digits
-        if (!mobileRegex.test(inputVal)) {
-            window.showToast("Please enter a valid 10-digit mobile number.", "error");
-            return;
-        }
-    } else {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Valid Email Check
-        if (!emailRegex.test(inputVal)) {
-            window.showToast("Please enter a valid email address.", "error");
-            return;
-        }
-    }
-
-    // Check 3: Password (Min 6 Characters)
-    if (passVal.length < 6) {
-        window.showToast("Password must be at least 6 characters long.", "error");
-        return;
-    }
-
-    // 🔥 DOUBLE LOCK TIMER (Spam Control)
-    if (localStorage.getItem('cooldown_signup')) {
-        window.showToast("Please wait for the timer to finish.", "error");
-        return; 
-    }
-
-    // Agar sab data ekdum CLEAN hai, toh processing shuru karo
-    const btn = document.getElementById("signup-btn");
-    btn.disabled = true;
-    btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i>`;
-
-    const firebaseEmail = getFirebaseEmail(inputVal, window.currentAuthModes.signup);
-
-    try {
-        const userCredential = await createUserWithEmailAndPassword(auth, firebaseEmail, passVal);
-        const user = userCredential.user;
-
-        // Save extra info in Firestore DB
-        await setDoc(doc(db, "users", user.uid), {
-            uid: user.uid,
-            name: nameVal, // Clean name database mein jayega
-            loginType: window.currentAuthModes.signup,
-            displayId: inputVal, // Clean ID database mein jayegi
-            createdAt: new Date().toISOString()
+                localStorage.setItem("islamic_user_id", uid); 
+                localStorage.setItem("islamic_user_mobile", inputValue); 
+                
+                window.showToast("Login Successful! Redirecting..."); 
+                
+                // 🚀 FAST REDIRECT: 800ms se 150ms
+                setTimeout(() => { window.location.href = '../'; }, 150);
+            } catch (error) {
+                let msg = "Login failed. Please try again.";
+                if (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential') msg = "Incorrect details or password.";
+                window.showToast(msg, "error");
+                btn.disabled = false; btn.innerHTML = `Login ✦`;
+            }
         });
 
-        localStorage.setItem("islamic_user_id", user.uid); 
-        localStorage.setItem("islamic_user_name", nameVal); 
-        localStorage.setItem("islamic_user_mobile", inputVal); 
-        
-        window.startCooldown('signup-btn', 'cooldown_signup', 'Sign Up ✦');
+        // ✅ SIGNUP SUBMIT (FIREBASE)
+        document.getElementById("signupForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const nameVal = document.getElementById("reg-name").value.trim();
+            const inputVal = document.getElementById("reg-input").value.trim();
+            const passVal = document.getElementById("reg-pass").value.trim();
 
-        window.showToast("Account Created! Redirecting..."); 
-        setTimeout(() => { window.location.href = '../'; }, 800);
-        
-    } catch (error) {
-        let msg = "Signup failed.";
-        if (error.code === 'auth/email-already-in-use') msg = "Account already exists! Please login.";
-        window.showToast(msg, "error");
-        
-        btn.disabled = false;
-        btn.innerHTML = `Sign Up ✦`;
-    }
-});
-
-
-// ✅ RESET SUBMIT (FIREBASE) + DATA VALIDATION
-document.getElementById("resetForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    
-    const inputVal = document.getElementById("reset-input").value.trim();
-
-    // 🔥 FRONTEND VALIDATION
-    if (window.currentAuthModes.reset === 'mobile') {
-        const mobileRegex = /^[0-9]{10}$/;
-        if (!mobileRegex.test(inputVal)) {
-            window.showToast("Please enter a valid 10-digit mobile number.", "error");
-            return;
-        }
-    } else {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(inputVal)) {
-            window.showToast("Please enter a valid email address.", "error");
-            return;
-        }
-    }
-
-    // 🔥 DOUBLE LOCK TIMER (Spam Control)
-    if (localStorage.getItem('cooldown_reset')) {
-        window.showToast("Please wait for the timer to finish.", "error");
-        return; 
-    }
-
-    const btn = document.getElementById("reset-btn");
-    btn.disabled = true;
-    btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i>`;
-
-    const firebaseEmail = getFirebaseEmail(inputVal, window.currentAuthModes.reset);
-
-    try {
-        await sendPasswordResetEmail(auth, firebaseEmail);
-        
-        window.showToast("Link sent! Please check your email.");
-        document.getElementById('reset-success-modal').classList.remove('hidden');
-        
-        window.startCooldown('reset-btn', 'cooldown_reset', 'Send Reset Link ✦');
-        
-    } catch (error) {
-        let msg = "Failed to send reset link.";
-        if (error.code === 'auth/user-not-found') msg = "Account not found.";
-        if (window.currentAuthModes.reset === 'mobile') msg = "Reset only works with real Email IDs.";
-        
-        window.showToast(msg, "error");
-        
-        btn.disabled = false;
-        btn.innerHTML = `Send Reset Link ✦`;
-    }
-});
-
-
-
-
-// 🔥 Popup band karke login par bhejne ka function
-window.closeResetSuccess = function() {
-    document.getElementById('reset-success-modal').classList.add('hidden');
-    window.switchAuth('login');
-};
-
-// Page load hote hi teeno forms ko email mode par set karne ke liye
-document.addEventListener("DOMContentLoaded", () => {
-    setAuthType('login', 'email');
-    setAuthType('signup', 'email');
-    setAuthType('reset', 'email');
-});
-
-// 🔥 Master Cooldown Timer Function
-window.startCooldown = function(btnId, storageKey, defaultText) {
-    const btn = document.getElementById(btnId);
-    if (!btn) return;
-    
-    // Time save karo taaki refresh karne par yaad rahe
-    localStorage.setItem(storageKey, Date.now());
-    
-    btn.disabled = true;
-    let timeLeft = 60; // 60 seconds ka timer
-    
-    const timer = setInterval(() => {
-        timeLeft--;
-        btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Wait ${timeLeft}s`;
-        
-        if (timeLeft <= 0) {
-            clearInterval(timer);
-            btn.disabled = false;
-            btn.innerHTML = defaultText; // Wapas purana text laao
-            localStorage.removeItem(storageKey);
-        }
-    }, 1000);
-};
-
-// 🔥 1. Cooldown Start karne ka function
-window.startCooldown = function(btnId, storageKey, defaultText) {
-    const btn = document.getElementById(btnId);
-    if (!btn) return;
-    
-    // Abhi ka time save karo
-    localStorage.setItem(storageKey, Date.now());
-    
-    btn.disabled = true;
-    let timeLeft = 60; // 60 seconds
-    
-    const timer = setInterval(() => {
-        timeLeft--;
-        btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Wait ${timeLeft}s`;
-        
-        if (timeLeft <= 0) {
-            clearInterval(timer);
-            btn.disabled = false;
-            btn.innerHTML = defaultText;
-            localStorage.removeItem(storageKey);
-        }
-    }, 1000);
-};
-
-// 🔥 2. Page Refresh par check karne wala function
-// 🔥 1. Cooldown Start karne ka function (FLASH FIX)
-window.startCooldown = function(btnId, storageKey, defaultText) {
-    const btn = document.getElementById(btnId);
-    if (!btn) return;
-    
-    localStorage.setItem(storageKey, Date.now());
-    btn.disabled = true;
-    let timeLeft = 60;
-    
-    // 🔥 FIX: 1 second ka wait kiye bina turant text change karo!
-    btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Wait ${timeLeft}s`;
-    
-    const timer = setInterval(() => {
-        timeLeft--;
-        if (timeLeft <= 0) {
-            clearInterval(timer);
-            btn.disabled = false;
-            btn.innerHTML = defaultText;
-            localStorage.removeItem(storageKey);
-        } else {
-            // Har second text update karo
-            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Wait ${timeLeft}s`;
-        }
-    }, 1000);
-};
-
-// 🔥 2. Page Refresh par check karne wala function (FLASH FIX)
-window.checkActiveCooldowns = function() {
-    const config = [
-        { key: 'cooldown_signup', btnId: 'signup-btn', text: 'Sign Up ✦' },
-        { key: 'cooldown_reset', btnId: 'reset-btn', text: 'Send Reset Link ✦' }
-    ];
-
-    config.forEach(item => {
-        const lastTime = localStorage.getItem(item.key);
-        if (lastTime) {
-            const elapsed = Math.floor((Date.now() - parseInt(lastTime)) / 1000);
+            if (!/^[A-Za-z\s]{3,50}$/.test(nameVal)) return window.showToast("Name should only contain alphabets (Min 3 letters).", "error");
             
-            if (elapsed < 60) {
-                const btn = document.getElementById(item.btnId);
-                if (btn) {
-                    btn.disabled = true;
-                    let timeLeft = 60 - elapsed;
-                    
-                    // 🔥 FIX: Refresh hote hi turant timer dikhao, purana text nahi
-                    btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Wait ${timeLeft}s`;
-                    
-                    const timer = setInterval(() => {
-                        timeLeft--;
-                        if (timeLeft <= 0) {
-                            clearInterval(timer);
-                            btn.disabled = false;
-                            btn.innerHTML = item.text;
-                            localStorage.removeItem(item.key);
-                        } else {
-                            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Wait ${timeLeft}s`;
-                        }
-                    }, 1000);
-                }
+            if (window.currentAuthModes.signup === 'mobile') {
+                if (!/^[0-9]{10}$/.test(inputVal)) return window.showToast("Please enter a valid 10-digit mobile number.", "error");
             } else {
-                localStorage.removeItem(item.key);
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputVal)) return window.showToast("Please enter a valid email address.", "error");
             }
-        }
-    });
-};
 
-document.addEventListener("DOMContentLoaded", () => {
-    window.checkActiveCooldowns();
-});
+            if (passVal.length < 6) return window.showToast("Password must be at least 6 characters long.", "error");
+            if (localStorage.getItem('cooldown_signup')) return window.showToast("Please wait for the timer to finish.", "error");
 
+            const btn = document.getElementById("signup-btn");
+            btn.disabled = true; btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i>`;
 
+            const firebaseEmail = getFirebaseEmail(inputVal, window.currentAuthModes.signup);
 
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, firebaseEmail, passVal);
+                const user = userCredential.user;
+
+                await setDoc(doc(db, "users", user.uid), {
+                    uid: user.uid, name: nameVal, loginType: window.currentAuthModes.signup, displayId: inputVal, createdAt: new Date().toISOString()
+                });
+
+                localStorage.setItem("islamic_user_id", user.uid); 
+                localStorage.setItem("islamic_user_name", nameVal); 
+                localStorage.setItem("islamic_user_mobile", inputVal); 
+                
+                window.startCooldown('signup-btn', 'cooldown_signup', 'Sign Up ✦');
+                window.showToast("Account Created! Redirecting..."); 
+                
+                // 🚀 FAST REDIRECT: 800ms se 150ms
+                setTimeout(() => { window.location.href = '../'; }, 150);
+            } catch (error) {
+                let msg = "Signup failed.";
+                if (error.code === 'auth/email-already-in-use') msg = "Account already exists! Please login.";
+                window.showToast(msg, "error");
+                btn.disabled = false; btn.innerHTML = `Sign Up ✦`;
+            }
+        });
+
+        // ✅ RESET SUBMIT (FIREBASE)
+        document.getElementById("resetForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const inputVal = document.getElementById("reset-input").value.trim();
+
+            if (window.currentAuthModes.reset === 'mobile') {
+                if (!/^[0-9]{10}$/.test(inputVal)) return window.showToast("Please enter a valid 10-digit mobile number.", "error");
+            } else {
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputVal)) return window.showToast("Please enter a valid email address.", "error");
+            }
+
+            if (localStorage.getItem('cooldown_reset')) return window.showToast("Please wait for the timer to finish.", "error");
+
+            const btn = document.getElementById("reset-btn");
+            btn.disabled = true; btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i>`;
+
+            const firebaseEmail = getFirebaseEmail(inputVal, window.currentAuthModes.reset);
+
+            try {
+                await sendPasswordResetEmail(auth, firebaseEmail);
+                window.showToast("Link sent! Please check your email.");
+                document.getElementById('reset-success-modal').classList.remove('hidden');
+                window.startCooldown('reset-btn', 'cooldown_reset', 'Send Reset Link ✦');
+            } catch (error) {
+                let msg = "Failed to send reset link.";
+                if (error.code === 'auth/user-not-found') msg = "Account not found.";
+                if (window.currentAuthModes.reset === 'mobile') msg = "Reset only works with real Email IDs.";
+                window.showToast(msg, "error");
+                btn.disabled = false; btn.innerHTML = `Send Reset Link ✦`;
+            }
+        });
+
+        window.closeResetSuccess = function() {
+            document.getElementById('reset-success-modal').classList.add('hidden');
+            window.switchAuth('login');
+        };
+
+        document.addEventListener("DOMContentLoaded", () => {
+            setAuthType('login', 'email');
+            setAuthType('signup', 'email');
+            setAuthType('reset', 'email');
+        });
+
+        window.startCooldown = function(btnId, storageKey, defaultText) {
+            const btn = document.getElementById(btnId);
+            if (!btn) return;
+            localStorage.setItem(storageKey, Date.now());
+            btn.disabled = true;
+            let timeLeft = 60;
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Wait ${timeLeft}s`;
+            
+            const timer = setInterval(() => {
+                timeLeft--;
+                if (timeLeft <= 0) {
+                    clearInterval(timer); btn.disabled = false; btn.innerHTML = defaultText; localStorage.removeItem(storageKey);
+                } else {
+                    btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Wait ${timeLeft}s`;
+                }
+            }, 1000);
+        };
+
+        window.checkActiveCooldowns = function() {
+            const config = [
+                { key: 'cooldown_signup', btnId: 'signup-btn', text: 'Sign Up ✦' },
+                { key: 'cooldown_reset', btnId: 'reset-btn', text: 'Send Reset Link ✦' }
+            ];
+            config.forEach(item => {
+                const lastTime = localStorage.getItem(item.key);
+                if (lastTime) {
+                    const elapsed = Math.floor((Date.now() - parseInt(lastTime)) / 1000);
+                    if (elapsed < 60) {
+                        const btn = document.getElementById(item.btnId);
+                        if (btn) {
+                            btn.disabled = true;
+                            let timeLeft = 60 - elapsed;
+                            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Wait ${timeLeft}s`;
+                            const timer = setInterval(() => {
+                                timeLeft--;
+                                if (timeLeft <= 0) {
+                                    clearInterval(timer); btn.disabled = false; btn.innerHTML = item.text; localStorage.removeItem(item.key);
+                                } else {
+                                    btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Wait ${timeLeft}s`;
+                                }
+                            }, 1000);
+                        }
+                    } else {
+                        localStorage.removeItem(item.key);
+                    }
+                }
+            });
+        };
+
+        document.addEventListener("DOMContentLoaded", () => {
+            window.checkActiveCooldowns();
+        });
     </script>
+
 </body>
 </html>
