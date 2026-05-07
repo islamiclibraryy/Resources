@@ -114,6 +114,30 @@
                     </div>
                     <input type="hidden" id="eb_language" required>
                 </div>
+   
+                        <div class="form-group" style="margin-top: 16px; margin-bottom: 16px;">
+    <label>Book Position (Number)</label>
+    <input type="number" id="eb_sort_order" placeholder="E.g. 1, 2, 3..." required>
+</div>
+
+<script>
+    setTimeout(() => {
+        const ebookId = document.getElementById("ebook_id") ? document.getElementById("ebook_id").value : "";
+        if (!ebookId) { // Agar nayi book add ho rahi hai
+            const cache = localStorage.getItem("admin_cache_ebooks");
+            if (cache) {
+                const books = JSON.parse(cache);
+                const maxOrder = books.reduce((max, b) => Math.max(max, (b.sort_order || 0)), 0);
+                document.getElementById("eb_sort_order").value = maxOrder + 1; // Sabse aakhiri number + 1
+            } else {
+                document.getElementById("eb_sort_order").value = 1;
+            }
+        }
+    }, 800);
+</script>
+
+
+
 
                 <div class="flex align-center justify-between mt-1" style="margin-bottom: 16px; padding: 12px; background: var(--surface3); border-radius: var(--r); border: 1px solid var(--border2);">
                     <label style="margin:0; font-size:.9rem; color:var(--text); text-transform:none; font-weight:600;">Is this Ebook FREE?</label>
