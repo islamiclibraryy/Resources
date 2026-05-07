@@ -1,3 +1,4 @@
+tausif
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
@@ -136,6 +137,13 @@
         @keyframes slideUp { from { opacity: 0; transform: translateY(10px) scaleY(0.95); } to { opacity: 1; transform: translateY(0) scaleY(1); } } 
         @keyframes spin { to { transform: rotate(360deg); } } 
         @keyframes blobFloat { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(20px,-20px) scale(1.05)} 66%{transform:translate(-15px,15px) scale(0.97)} }
+        .google-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    background-color: #f8f9fa;
+    pointer-events: none;
+}
+
     </style>
 </head>
 <body>
@@ -172,10 +180,11 @@
                 </form>
 
                 <div class="divider"><span>OR</span></div>
-                <button type="button" onclick="loginWithGoogle()" class="google-btn">
-                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
-                    <span>Continue with Google</span>
-                </button>
+<button type="button" id="google-login-btn" onclick="loginWithGoogle('google-login-btn')" class="google-btn">
+    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+    <span>Continue with Google</span>
+</button>
+
 
                 <div class="mt-2 flex justify-between align-center" style="margin-top: 20px;">
                     <span class="link-text" onclick="switchAuth('reset')">Forgot Password?</span>
@@ -206,10 +215,11 @@
                 </form>
 
                 <div class="divider"><span>OR</span></div>
-                <button type="button" onclick="loginWithGoogle()" class="google-btn">
-                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
-                    <span>Continue with Google</span>
-                </button>
+<button type="button" id="google-login-btn" onclick="loginWithGoogle('google-login-btn')" class="google-btn">
+    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+    <span>Continue with Google</span>
+</button>
+
 
                 <div class="mt-2" style="margin-top: 20px;"><span class="link-text" onclick="switchAuth('login')"><i class="fas fa-arrow-left" style="margin-right: 6px;"></i> Back to Login</span></div>
             </div>
@@ -267,7 +277,8 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
         // 🔥 UPDATE 1: Yahan GoogleAuthProvider aur signInWithPopup add kiya hai
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, GoogleAuthProvider, signInWithRedirect, getRedirectResult } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+
         // 🔥 UPDATE 2: Yahan getDoc ko global import kiya hai Google Login ke check ke liye
         import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
@@ -368,22 +379,27 @@
             return type === 'mobile' ? `${inputValue.trim()}@islamiclibrary.com` : inputValue.trim();
         }
 
-        // 🔥 NEW MASTER LOGIC: GOOGLE LOGIN 🔥
-        // 🔥 NEW MASTER LOGIC: GOOGLE LOGIN (MOBILE SAFE) 🔥
+        // 🔥 NEW MASTER LOGIC: GOOGLE LOGIN (POPUP + SPINNER) 🔥
 const googleProvider = new GoogleAuthProvider();
 
-// 1. Button dabane par ab popup nahi, redirect hoga
-window.loginWithGoogle = function() {
-    window.showToast("Redirecting to Google...");
-    signInWithRedirect(auth, googleProvider);
-};
+window.loginWithGoogle = async function(btnId) {
+    const btn = document.getElementById(btnId);
+    if (!btn) return;
 
-// 2. Page reload hone par ye code Google ka data "Catch" karega
-getRedirectResult(auth).then(async (result) => {
-    if (result) {
-        // Google se data mil gaya!
+    // Button ka original design save kar lo taaki baad mein wapas la sakein
+    const originalContent = btn.innerHTML;
+
+    // 🔥 UI CHANGE: Click karte hi Spinner ghuma do aur button lock kar do
+    btn.disabled = true;
+    btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span>Connecting to Google...</span>`;
+
+    try {
+        const result = await signInWithPopup(auth, googleProvider);
         const user = result.user;
-        
+
+        // Jab tak Firebase se check ho raha hai, text change kar do
+        btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span>Verifying User...</span>`;
+
         // Check karo naya user hai ya purana
         const userRef = doc(db, "users", user.uid);
         const userSnap = await getDoc(userRef);
@@ -398,21 +414,30 @@ getRedirectResult(auth).then(async (result) => {
             });
         }
 
-        // Browser mein data save karo (Ab page refresh ka darr nahi)
+        // LocalStorage Update karo
         localStorage.setItem("islamic_user_id", user.uid);
         localStorage.setItem("islamic_user_name", userSnap.exists() && userSnap.data().name ? userSnap.data().name : (user.displayName || "Google User"));
         localStorage.setItem("islamic_user_mobile", user.email);
 
         window.showToast("Google Login Successful!");
         
-        setTimeout(() => { 
-            window.location.href = '../'; // Home page par bhej do
+        setTimeout(() => {
+            window.location.href = '../'; 
         }, 800);
+
+    } catch (error) {
+        console.error("Google Error:", error);
+        
+        // Agar fail ho jaye ya user beech mein popup kaat de, toh button wapas normal kar do
+        btn.disabled = false;
+        btn.innerHTML = originalContent;
+        
+        if(error.code !== 'auth/popup-closed-by-user' && error.code !== 'auth/cancelled-popup-request') {
+            window.showToast("Google Login Failed", "error");
+        }
     }
-}).catch((error) => {
-    console.error("Google Login Error:", error);
-    window.showToast("Google Login Failed", "error");
-});
+};
+
 
 
         // ✅ LOGIN (FIREBASE)
