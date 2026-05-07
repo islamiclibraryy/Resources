@@ -267,7 +267,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
         // 🔥 UPDATE 1: Yahan GoogleAuthProvider aur signInWithPopup add kiya hai
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, GoogleAuthProvider, signInWithRedirect, getRedirectResult } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
         // 🔥 UPDATE 2: Yahan getDoc ko global import kiya hai Google Login ke check ke liye
         import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
@@ -369,47 +369,51 @@
         }
 
         // 🔥 NEW MASTER LOGIC: GOOGLE LOGIN 🔥
-        const googleProvider = new GoogleAuthProvider();
+        // 🔥 NEW MASTER LOGIC: GOOGLE LOGIN (MOBILE SAFE) 🔥
+const googleProvider = new GoogleAuthProvider();
 
-        window.loginWithGoogle = async function() {
-            try {
-                const result = await signInWithPopup(auth, googleProvider);
-                const user = result.user;
+// 1. Button dabane par ab popup nahi, redirect hoga
+window.loginWithGoogle = function() {
+    window.showToast("Redirecting to Google...");
+    signInWithRedirect(auth, googleProvider);
+};
 
-                // Check karo database mein user hai ya nahi
-                const userRef = doc(db, "users", user.uid);
-                const userSnap = await getDoc(userRef);
+// 2. Page reload hone par ye code Google ka data "Catch" karega
+getRedirectResult(auth).then(async (result) => {
+    if (result) {
+        // Google se data mil gaya!
+        const user = result.user;
+        
+        // Check karo naya user hai ya purana
+        const userRef = doc(db, "users", user.uid);
+        const userSnap = await getDoc(userRef);
 
-                // Agar naya user hai, toh database mein data daalo
-                if (!userSnap.exists()) {
-                    await setDoc(userRef, {
-                        uid: user.uid,
-                        name: user.displayName || "Google User",
-                        loginType: 'google',
-                        displayId: user.email,
-                        createdAt: new Date().toISOString()
-                    });
-                }
+        if (!userSnap.exists()) {
+            await setDoc(userRef, {
+                uid: user.uid,
+                name: user.displayName || "Google User",
+                loginType: 'google',
+                displayId: user.email,
+                createdAt: new Date().toISOString()
+            });
+        }
 
-                // LocalStorage Update karo (Sidebar mein naam dikhane ke liye)
-                localStorage.setItem("islamic_user_id", user.uid);
-                localStorage.setItem("islamic_user_name", userSnap.exists() && userSnap.data().name ? userSnap.data().name : (user.displayName || "Google User"));
-                localStorage.setItem("islamic_user_mobile", user.email); 
+        // Browser mein data save karo (Ab page refresh ka darr nahi)
+        localStorage.setItem("islamic_user_id", user.uid);
+        localStorage.setItem("islamic_user_name", userSnap.exists() && userSnap.data().name ? userSnap.data().name : (user.displayName || "Google User"));
+        localStorage.setItem("islamic_user_mobile", user.email);
 
-                window.showToast("Logged in with Google!");
-                
-                setTimeout(() => {
-                    window.location.href = '../'; 
-                }, 800);
+        window.showToast("Google Login Successful!");
+        
+        setTimeout(() => { 
+            window.location.href = '../'; // Home page par bhej do
+        }, 800);
+    }
+}).catch((error) => {
+    console.error("Google Login Error:", error);
+    window.showToast("Google Login Failed", "error");
+});
 
-            } catch (error) {
-                console.error(error);
-                // Agar user ne khud popup cancel kiya hai, toh error mat dikhao
-                if(error.code !== 'auth/popup-closed-by-user' && error.code !== 'auth/cancelled-popup-request') {
-                    window.showToast("Google Login Failed", "error");
-                }
-            }
-        };
 
         // ✅ LOGIN (FIREBASE)
         document.getElementById("loginForm").addEventListener("submit", async (e) => {
