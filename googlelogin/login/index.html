@@ -1,4 +1,4 @@
-ubu
+
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
@@ -380,28 +380,51 @@ ubu
             return type === 'mobile' ? `${inputValue.trim()}@islamiclibrary.com` : inputValue.trim();
         }
 
-        // 🔥 NEW MASTER LOGIC: GOOGLE LOGIN (UX PERFECTED) 🔥
+        // 🔥 NEW MASTER LOGIC: GOOGLE LOGIN (ULTIMATE MOBILE FIX) 🔥
 const googleProvider = new GoogleAuthProvider();
 
 window.loginWithGoogle = async function(btnId) {
     const btn = document.getElementById(btnId);
     if (!btn) return;
 
-    // Button ka original design (Fixed variable)
     const defaultHTML = `<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google"> <span>Continue with Google</span>`;
 
-    // Step 1: Click hote hi UI change
+    // Click hote hi tumhara pasandida text
     btn.disabled = true;
-    btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span>Authenticating...</span>`;
+    btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span>Connecting to Google...</span>`;
+
+    let isResolved = false; // Isse hum track karenge ki Firebase ne jawab diya ya nahi
+
+    // 🔥 MAGIC TRICK: Window Focus Listener
+    const onWindowFocus = () => {
+        if (!isResolved) {
+            // Jaise hi screen wapas aaye, turant text badlo (Flash khatam!)
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span>Verifying User...</span>`;
+            
+            // Agar Firebase hang ho gaya (Cancel karne par), toh 3.5 sec baad zabardasti saaf kar do
+            setTimeout(() => {
+                if (!isResolved) {
+                    btn.disabled = false;
+                    btn.innerHTML = defaultHTML;
+                }
+            }, 3500);
+        }
+        window.removeEventListener('focus', onWindowFocus);
+    };
+
+    // Popup khulne ke 1 second baad is trick ko on kar do
+    setTimeout(() => {
+        window.addEventListener('focus', onWindowFocus);
+    }, 1000);
 
     try {
-        // Yahan popup khulega aur wapas aane par token verify hoga (Isme 1-2 sec lagte hain)
         const result = await signInWithPopup(auth, googleProvider);
-        const user = result.user;
+        isResolved = true; // Firebase ne success de diya
 
-        // Step 2: Google se pass hone ke baad, Database checking
+        // Ab logging in dikhao
         btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span>Logging in...</span>`;
 
+        const user = result.user;
         const userRef = doc(db, "users", user.uid);
         const userSnap = await getDoc(userRef);
 
@@ -427,18 +450,18 @@ window.loginWithGoogle = async function(btnId) {
         }, 800);
 
     } catch (error) {
-        console.log("Google Login Cancelled/Failed:", error.code);
+        isResolved = true; // Firebase ne error de diya, yani hang nahi hua
         
-        // 🔥 100% GUARANTEED RESET (Chahe user back kare ya net chala jaye)
+        // Button ko turant normal karo
         btn.disabled = false;
         btn.innerHTML = defaultHTML;
         
-        // Faltu errors ko ignore karo (jaise popup khud band karna)
         if(error.code !== 'auth/popup-closed-by-user' && error.code !== 'auth/cancelled-popup-request' && error.code !== 'auth/internal-error') {
             window.showToast("Google Login Failed", "error");
         }
     }
 };
+
 
 
 
