@@ -303,13 +303,33 @@
             window.initTheme();
         };
 
-        window.openProfileDrawer = function() {
-            document.getElementById("profile-name").innerText = localStorage.getItem("islamic_user_name") || "Library User";
-            document.getElementById("profile-mobile").innerText = localStorage.getItem("islamic_user_mobile") || "Registered User";
+                window.openProfileDrawer = async function() {
+            // Drawer open karo
             document.getElementById("drawer-overlay").classList.add("active");
             document.getElementById("profile-drawer").classList.add("active");
-            document.body.style.overflow = 'hidden'; 
+            document.body.style.overflow = 'hidden';
+
+            // Pehle browser ke cache se naam dikhao
+            let cachedName = localStorage.getItem("islamic_user_name");
+            document.getElementById("profile-name").innerText = cachedName || "Library User";
+            document.getElementById("profile-mobile").innerText = localStorage.getItem("islamic_user_mobile") || "Registered User";
+
+            // 🔥 FIX: Agar cache mein naam nahi hai, toh turant Firebase se fetch karke save aur update kar do
+            if (!cachedName) {
+                try {
+                    const { getFirestore, doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
+                    const dbInstance = getFirestore();
+                    const userDoc = await getDoc(doc(dbInstance, "users", localStorage.getItem("islamic_user_id")));
+                    
+                    if (userDoc.exists() && userDoc.data().name) {
+                        const realName = userDoc.data().name;
+                        localStorage.setItem("islamic_user_name", realName); // Aage ke liye save kar diya
+                        document.getElementById("profile-name").innerText = realName; // UI par update kar diya
+                    }
+                } catch(e) { console.log("Name fetch error", e); }
+            }
         };
+
         
         window.closeProfileDrawer = function() {
             document.getElementById("drawer-overlay").classList.remove("active");
