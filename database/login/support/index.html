@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Support - Islamic Library by Shekh</title>
+
+    <link rel="icon" type="image/png" sizes="32x32" href="../../hikmahlogo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('islamic_theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+
+    <style>
+        /* ===== CSS VARIABLES ===== */
+        :root {
+            --bg: #0a0a0f; --bg2: #0f0f18; --bg3: #13131e;
+            --surface: #1a1a28; --surface2: #1f1f30; --surface3: #252538;
+            --border: rgba(255,255,255,0.07); --border2: rgba(255,255,255,0.12);
+            --text: #f0f0f8; --text2: #a8a8c0; --text3: #686888;
+            --accent: #7c6af7; --accent2: #9f91fa; --accent3: #c4bafe;
+            --glow: rgba(124,106,247,0.25); --glow2: rgba(124,106,247,0.1);
+            --danger: #f43f5e; --success: #10b981; --amber: #f59e0b;
+            --r: 12px; --r2: 16px; --r3: 20px;
+            --shadow: 0 4px 24px rgba(0,0,0,0.4); 
+            --transition: 0.2s cubic-bezier(0.4,0,0.2,1);
+            --ig-gradient: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+        }
+
+        /* ===== LIGHT MODE VARIABLES ===== */
+        [data-theme="light"] {
+            --bg: #f4f6f8; --bg2: #e9ecef; --bg3: #dee2e6;
+            --surface: #ffffff; --surface2: #f8f9fa; --surface3: #e9ecef;
+            --border: rgba(0,0,0,0.08); --border2: rgba(0,0,0,0.15);
+            --text: #1a1b1e; --text2: #495057; --text3: #868e96;
+            --accent: #6366f1; --accent2: #4f46e5; --accent3: #4338ca;
+            --glow: rgba(99,102,241,0.15); --glow2: rgba(99,102,241,0.08);
+            --shadow: 0 4px 20px rgba(0,0,0,0.06); 
+        }
+        
+        [data-theme="light"] .blob { opacity: 0.5; }
+        [data-theme="light"] header, [data-theme="light"] .stepper-wrap, [data-theme="light"] .bottom-nav { background: rgba(255, 255, 255, 0.9); border-bottom-color: rgba(0,0,0,0.1); border-top-color: rgba(0,0,0,0.1); }
+        [data-theme="light"] .profile-drawer { background: #fff; }
+
+        /* ===== GLOBAL STYLES ===== */
+        *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body { 
+            font-family: 'DM Sans', sans-serif; 
+            background: var(--bg); color: var(--text); 
+            line-height: 1.6; overflow-x: hidden; min-height: 100vh;
+            -webkit-tap-highlight-color: transparent;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* ===== NOISE OVERLAY & BLOBS ===== */
+        body::before {
+            content:''; position:fixed; inset:0; pointer-events:none; z-index:9999;
+            background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+            opacity:0.4;
+        }
+        .hero-bg { position:fixed; inset:0; pointer-events:none; z-index:-2; background: radial-gradient(ellipse 80% 50% at 50% -10%,rgba(124,106,247,0.2) 0%,transparent 70%); }
+        .hero-grid { position:fixed; inset:0; pointer-events:none; z-index:-1; background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px); background-size:48px 48px; opacity:0.6; }
+
+        /* ===== TYPOGRAPHY & UTILS ===== */
+        .bismillah { font-family: 'Amiri', serif; color: var(--accent2); font-size: 26px; text-shadow: 0 0 12px var(--glow); text-align: center; margin: 10px 0 24px; animation: fadeUp .6s ease both; }
+        h1, h2, h3 { font-family: 'Syne', sans-serif; font-weight: 700; color: var(--text); margin-bottom: 12px; }
+        p { color: var(--text2); font-size: .95rem; margin-bottom: 16px; line-height: 1.7; }
+        ul { margin-bottom: 16px; padding-left: 20px; color: var(--text2); font-size: .95rem; }
+        ul li { margin-bottom: 8px; }
+        ul li strong { color: var(--text); font-family: 'Syne', sans-serif; }
+        .flex { display: flex; } 
+        .align-center { align-items: center; } 
+
+        /* ✅ HEADER (Exact match with info page) */
+        header { 
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000; 
+            padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; 
+            background: rgba(10,10,15,0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
+            border-bottom: 1px solid var(--border); 
+            transition: background-color 0.3s ease, border-color 0.3s ease; 
+        }
+        .header-logo-container { display: flex; flex-direction: column; justify-content: center; }
+        .header-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.25rem; background: linear-gradient(135deg, var(--accent2), #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; letter-spacing: -0.02em; }
+        .header-sub { font-family: 'DM Mono', monospace; font-size: .7rem; font-weight: 500; color: var(--accent2); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 4px; }
+
+        /* ✅ SCROLLABLE TABS (Fixed Margin and Top) */
+        .stepper-wrap {
+            position: sticky; top: 68px; z-index: 900;
+            background: rgba(10,10,15,0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border); padding: 12px 20px;
+            margin-top: 68px; transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        .stepper { display: flex; align-items: center; gap: 12px; overflow-x: auto; scrollbar-width: none; }
+        .stepper::-webkit-scrollbar { display: none; }
+        .step-item {
+            display: inline-flex; align-items: center; gap: 8px; flex-shrink: 0;
+            padding: 8px 16px; border-radius: 99px; cursor: pointer; transition: all var(--transition);
+            background: var(--surface2); border: 1px solid var(--border2);
+            color: var(--text2); font-size: .85rem; font-weight: 600;
+        }
+        .step-item i { font-size: 1rem; }
+        .step-item.active { border-color: var(--accent); color: var(--accent2); background: var(--glow2); box-shadow: 0 0 15px var(--glow2); }
+
+        /* ===== MAIN CONTENT AREA ===== */
+        .main-content { padding: 24px 20px 90px; max-width: 800px; margin: 0 auto; }
+        .tab-content { display: none; animation: fadeUp .5s ease both; }
+        .tab-content.active { display: block; }
+        .content-card { background: var(--surface); border-radius: var(--r2); padding: 24px; margin-bottom: 24px; box-shadow: var(--shadow); border: 1px solid var(--border); }
+        .support-badge { display: inline-block; background: var(--glow2); color: var(--accent2); font-size: 0.75rem; padding: 6px 16px; border-radius: 99px; border: 1px solid var(--border); margin-bottom: 20px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; text-align: center; margin-left: auto; margin-right: auto; display: table;}
+
+        /* ===== INSTAGRAM 3D CARD ===== */
+        .ig-card {
+            background: var(--surface2); border-radius: var(--r3); padding: 30px 20px;
+            text-align: center; border: 1px solid var(--border2); position: relative; overflow: hidden;
+            box-shadow: var(--shadow); transition: all var(--transition); margin-bottom: 20px;
+        }
+        .ig-icon-wrap {
+            width: 80px; height: 80px; margin: 0 auto 16px; border-radius: 24px;
+            background: var(--ig-gradient); display: flex; align-items: center; justify-content: center;
+            font-size: 2.5rem; color: #fff; box-shadow: 0 10px 30px rgba(204, 35, 102, 0.4);
+        }
+        .btn-ig {
+            display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+            background: var(--ig-gradient); color: #fff; text-decoration: none;
+            padding: 14px 32px; border-radius: 99px; font-weight: 700; font-family: 'DM Sans', sans-serif;
+            font-size: 1rem; width: 100%; box-shadow: 0 4px 15px rgba(204, 35, 102, 0.3); border: none;
+        }
+
+        /* ✅ DRAWER (SIDEBAR) EXACT MATCH */
+        .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 10001; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; backdrop-filter: blur(3px); }
+        .drawer-overlay.active { opacity: 1; pointer-events: all; }
+        .profile-drawer { position: fixed; top: 0; right: -320px; width: 300px; height: 100%; height: 100dvh; background: var(--surface); z-index: 10002; box-shadow: -5px 0 30px rgba(0,0,0,0.5); transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; }
+        .profile-drawer.active { right: 0; }
+        .drawer-header { padding: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); flex-shrink: 0;}
+        .drawer-body { padding: 30px 20px; text-align: center; flex: 1; overflow-y: auto; }
+        .drawer-avatar { width: 80px; height: 80px; border-radius: 50%; background: var(--glow2); border: 2px solid var(--accent); color: var(--accent2); font-size: 2.5rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px auto; }
+        .drawer-footer { padding: 20px; border-top: 1px solid var(--border); flex-shrink: 0; }
+        .btn-outline { background: transparent; color: var(--text2); border: 1px solid var(--border2); padding: 12px 20px; border-radius: 99px; font-weight: 500; font-size: .95rem; width: 100%; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
+
+        /* ===== BOTTOM NAV ===== */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 70px; background: rgba(10,10,15,0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--border); z-index: 999; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text3); font-size: .75rem; font-weight: 500; gap: 6px; cursor: pointer; flex: 1; height: 100%; transition: all var(--transition); text-decoration: none; }
+        .nav-item i { font-size: 1.2rem; transition: all var(--transition); }
+        .nav-item.active { color: var(--accent2); }
+        .nav-item.active i { background: var(--glow2); padding: 8px; border-radius: 50%; box-shadow: 0 0 15px var(--glow); transform: translateY(-4px); color: var(--accent); }
+
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+    </style>
+</head>
+<body>
+
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+
+    <div id="drawer-overlay" class="drawer-overlay" onclick="window.closeDrawer()"></div>
+    <div id="profile-drawer" class="profile-drawer">
+        <div class="drawer-header">
+            <h3 style="margin: 0; font-size: 1.2rem;">Support Menu</h3>
+            <i class="fas fa-times" onclick="window.closeDrawer()" style="font-size: 1.2rem; color: var(--text2); cursor: pointer; padding: 5px;"></i>
+        </div>
+        <div class="drawer-body">
+            <div class="drawer-avatar"><i class="fas fa-headset"></i></div>
+            <h3 style="font-family: 'Syne', sans-serif; font-size: 1.3rem; margin-bottom: 4px;">Need Help?</h3>
+            <p style="font-family: 'DM Mono', monospace; font-size: 0.85rem; color: var(--text2); margin-bottom: 30px;">Support Center</p>
+        </div>
+        <div class="drawer-footer">
+            <button class="btn-outline" onclick="window.location.href='../'" style="border-color: var(--accent); color: var(--accent2);">
+                <i class="fas fa-arrow-left"></i> Return to Login
+            </button>
+        </div>
+    </div>
+
+    <header>
+        <div class="flex align-center" style="gap: 12px;">
+            <i class="fas fa-book-open" style="color: var(--accent2); font-size: 1.4rem; text-shadow: 0 0 10px var(--glow);"></i>
+            <div class="header-logo-container">
+                <div class="header-logo">Islamic Library</div>
+                <div class="header-sub">by Shekh</div>
+            </div>
+        </div>
+        <div class="flex align-center" style="gap: 20px;">
+            <i id="theme-toggle-icon" class="fas fa-moon" style="font-size: 1.2rem; color: var(--text2); cursor: pointer; transition: 0.3s;" onclick="window.toggleTheme()"></i>
+            <i class="fas fa-user-circle" style="font-size: 1.3rem; color: var(--text2); cursor: pointer; transition: 0.3s;" onclick="window.openDrawer()"></i>
+        </div>
+    </header>
+
+    <div class="stepper-wrap">
+        <div class="stepper">
+            <div class="step-item active" id="tab-btn-login" onclick="window.openTab('login', this)">
+                <i class="fas fa-sign-in-alt"></i> Login Help
+            </div>
+            <div class="step-item" id="tab-btn-signup" onclick="window.openTab('signup', this)">
+                <i class="fas fa-user-plus"></i> Signup Help
+            </div>
+            <div class="step-item" id="tab-btn-reset" onclick="window.openTab('reset', this)">
+                <i class="fas fa-key"></i> Password Reset
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <span class="support-badge">Help & Support Center</span>
+        <div class="bismillah">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
+
+        <div id="tab-login" class="tab-content active">
+            <div class="content-card">
+                <h3>Trouble Logging In?</h3>
+                <p>If you are unable to access your account, please do not panic. Simply ensure the following points to successfully log in:</p>
+                <ul>
+                    <li><strong>Check your Credentials:</strong> Ensure you are entering the exact Mobile Number or Email Address you used during registration.</li>
+                    <li><strong>No Extra Spaces:</strong> Make sure there are no blank spaces before or after your email or password. This is a very common mistake.</li>
+                    <li><strong>Correct Input Mode:</strong> Use the "Email" option for email IDs, and the "Mobile" option if you registered using a phone number. Ensure the correct option is highlighted blue.</li>
+                </ul>
+            </div>
+            <div class="ig-card">
+                <div class="ig-icon-wrap"><i class="fab fa-instagram"></i></div>
+                <h3>Still Need Help?</h3>
+                <p>If you're still unable to login after checking the above steps, send us a direct message on Instagram. We will check our database and help you regain access.</p>
+                <a href="https://www.instagram.com/islamiclibraryy?igsh=MTJkOGtyMnBnYjZtZw==" target="_blank" class="btn-ig">
+                    <i class="fab fa-instagram"></i> Message Support
+                </a>
+            </div>
+        </div>
+
+        <div id="tab-signup" class="tab-content">
+            <div class="content-card">
+                <h3>Creating an Account</h3>
+                <p>Joining the Islamic Library is completely free and takes only a few seconds. Here are a few things to keep in mind:</p>
+                <ul>
+                    <li><strong>Choose a Method:</strong> You can sign up using either a valid Email Address or your Mobile Number. We recommend using an email for better security and easy password resets.</li>
+                    <li><strong>Strong Password:</strong> Create a password that you can easily remember but is hard for others to guess.</li>
+                    <li><strong>Account Exists?</strong> If you see an "Account already in use" error, it means you have already registered. Try logging in or resetting your password instead of signing up again.</li>
+                </ul>
+            </div>
+            <div class="ig-card">
+                <div class="ig-icon-wrap"><i class="fab fa-instagram"></i></div>
+                <h3>Need Assistance?</h3>
+                <p>Facing errors while creating a new account? Take a screenshot of the error and share it with us on Instagram.</p>
+                <a href="https://www.instagram.com/islamiclibraryy?igsh=MTJkOGtyMnBnYjZtZw==" target="_blank" class="btn-ig">
+                    <i class="fab fa-instagram"></i> Contact Us
+                </a>
+            </div>
+        </div>
+
+        <div id="tab-reset" class="tab-content">
+            <div class="content-card">
+                <h3>Resetting Your Password</h3>
+                <p>Forgot your password? Don't worry, here is how you can recover your account based on how you registered:</p>
+                
+                <h3 style="font-size: 1.1rem; color: var(--accent3); margin-top: 20px;">If you registered with an Email:</h3>
+                <p>Simply enter your email on the Reset Password page. A secure link will be sent to your inbox. <br>
+                <span style="color: var(--accent2); font-size: 0.85rem;">Note: If you don't see the email, please check your <b>Spam or Junk folder</b>.</span></p>
+
+                <h3 style="font-size: 1.1rem; color: var(--accent3); margin-top: 20px;">If you registered with a Mobile Number:</h3>
+                <div style="background: rgba(255, 193, 7, 0.1); border: 1px solid rgba(255, 193, 7, 0.2); padding: 15px; border-radius: 12px; margin-top: 10px;">
+                    <p style="margin: 0; color: #ffc107; font-size: 0.9rem;"><i class="fas fa-exclamation-triangle"></i> <b>Action Required:</b> Because mobile accounts are not linked to an email address, the system cannot automatically send you a reset link. You will need to contact our support team to manually reset your password.</p>
+                </div>
+            </div>
+            <div class="ig-card">
+                <div class="ig-icon-wrap"><i class="fab fa-instagram"></i></div>
+                <h3>Manual Password Reset</h3>
+                <p>If you used a Mobile Number, or if the email reset link isn't working, message us your registered details and we'll reset it for you.</p>
+                <a href="https://www.instagram.com/islamiclibraryy?igsh=MTJkOGtyMnBnYjZtZw==" target="_blank" class="btn-ig">
+                    <i class="fab fa-instagram"></i> Request Password Reset
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div id="bottom-nav" class="bottom-nav">
+        <div class="nav-item active" id="nav-login" onclick="window.openTab('login', document.getElementById('tab-btn-login'))">
+            <i class="fas fa-sign-in-alt"></i><span>Login</span>
+        </div>
+        <div class="nav-item" id="nav-signup" onclick="window.openTab('signup', document.getElementById('tab-btn-signup'))">
+            <i class="fas fa-user-plus"></i><span>Signup</span>
+        </div>
+        <div class="nav-item" id="nav-reset" onclick="window.openTab('reset', document.getElementById('tab-btn-reset'))">
+            <i class="fas fa-key"></i><span>Reset</span>
+        </div>
+    </div>
+
+    <script>
+        // ✅ THEME LOGIC
+        window.initTheme = function() {
+            const currentTheme = document.documentElement.getAttribute("data-theme");
+            const icon = document.getElementById("theme-toggle-icon");
+            if(icon) {
+                icon.className = currentTheme === "light" ? "fas fa-sun" : "fas fa-moon";
+            }
+        };
+
+        window.toggleTheme = function() {
+            const currentTheme = document.documentElement.getAttribute("data-theme");
+            const newTheme = currentTheme === "light" ? "dark" : "light";
+            document.documentElement.setAttribute("data-theme", newTheme);
+            localStorage.setItem("islamic_theme", newTheme);
+            window.initTheme();
+        };
+
+        // ✅ DRAWER LOGIC
+        window.openDrawer = () => {
+            document.getElementById('drawer-overlay').classList.add('active');
+            document.getElementById('profile-drawer').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        };
+        window.closeDrawer = () => {
+            document.getElementById('drawer-overlay').classList.remove('active');
+            document.getElementById('profile-drawer').classList.remove('active');
+            document.body.style.overflow = '';
+        };
+
+        // ✅ TAB LOGIC
+        window.openTab = function(tabId, element) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.step-item').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-item').forEach(nav => {
+                nav.classList.remove('active');
+            });
+
+            // Activate Top Tab
+            element.classList.add('active');
+            document.getElementById('tab-' + tabId).classList.add('active');
+            
+            // Activate Bottom Nav
+            const navId = 'nav-' + tabId;
+            if(document.getElementById(navId)) {
+                document.getElementById(navId).classList.add('active');
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        document.addEventListener("DOMContentLoaded", () => {
+            window.initTheme();
+        });
+    </script>
+</body>
+</html>
