@@ -152,31 +152,40 @@
         .nav-item.active i { background: var(--glow2); padding: 8px; border-radius: 50%; box-shadow: 0 0 15px var(--glow); transform: translateY(-4px); color: var(--accent); }
 
         @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
-        /* 🔥 RESPONSIVE HEADER FIX 🔥 */
+        /* 🔥 AUTO-ADJUSTING RESPONSIVE HEADER 🔥 */
+
+.header-logo-container {
+    /* Ye text ko poori jagah lene dega, par icons ko bahar nahi dhakelega */
+    flex: 1; 
+    min-width: 0;
+    margin-right: 15px;
+}
 
 .header-logo {
-    /* Ye text ko toot kar 2 line mein aane se rokega */
-    white-space: nowrap !important; 
-    /* Screen chhote hone par font khud thoda chhota ho jayega (Min 1rem, Max 1.25rem) */
-    font-size: clamp(1.05rem, 5vw, 1.25rem) !important; 
+    /* Text hamesha ek line mein rahega */
+    white-space: nowrap; 
+    
+    /* Screen ke hisaab se font size khud adjust hoga (Minimum 1rem, Maximum 1.25rem) */
+    font-size: clamp(1rem, 4.5vw, 1.25rem); 
+    
+    /* Agar screen behad hi choti ho jaye, toh layout todne ke bajaye '...' laga dega (e.g. Islamic Lib...) */
+    overflow: hidden;
+    text-overflow: ellipsis; 
 }
 
-/* Chhote screens (400px ya usse kam width wale phones) ke liye special rules */
-@media screen and (max-width: 400px) {
+.header-sub {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Bas choti screen par side ki padding halki si kam karenge taaki text ko zyada jagah mile */
+@media screen and (max-width: 480px) {
     header { 
-        /* Header ki andar ki space (padding) thodi kam ki hai taaki logo fit aaye */
-        padding: 12px 16px !important; 
-    }
-    
-    .header-sub {
-        font-size: 0.65rem !important; /* 'BY SHEKH' ko thoda adjust kiya */
-    }
-    
-    .main-content {
-        /* Bismillah text ya Help button par overlap hatane ke liye top se jagah badhai hai */
-        padding-top: 100px !important; 
+        padding: 14px 16px; 
     }
 }
+
 
     </style>
 </head>
@@ -380,3 +389,5 @@
     </script>
 </body>
 </html>
+
+hello dost
