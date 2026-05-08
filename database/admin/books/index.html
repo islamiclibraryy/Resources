@@ -23,6 +23,13 @@
     <style>
         .modal-overlay { transition: opacity 0.3s ease, visibility 0.3s ease; opacity: 1; visibility: visible; }
         .modal-overlay.hidden { display: flex !important; opacity: 0; visibility: hidden; pointer-events: none; }
+        
+        /* 🔥 Nayi CSS Search aur Filter ke liye 🔥 */
+        .filter-container { display: flex; gap: 10px; margin-bottom: 20px; }
+        .search-wrapper { position: relative; flex: 1; }
+        .search-wrapper i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text2); }
+        .search-input { width: 100%; padding: 12px 15px 12px 40px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-size: 0.95rem; }
+        .filter-select { padding: 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-size: 0.95rem; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -79,10 +86,23 @@
         </div>
 
         <main>
-            <div class="flex justify-between align-center" style="margin-bottom: 24px;">
+            <div class="flex justify-between align-center" style="margin-bottom: 15px;">
                 <h3 style="font-size: 1.2rem;">All Ebooks</h3>
                 <button class="action-btn-sm" id="refresh-ebooks-btn" onclick="window.forceFetchEbooks()" title="Refresh Ebooks"><i class="fas fa-sync-alt"></i></button>
             </div>
+
+            <div class="filter-container">
+                <div class="search-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="book-search-input" class="search-input" placeholder="Search title or description..." onkeyup="window.filterBooks()">
+                </div>
+                <select id="book-type-filter" class="filter-select" onchange="window.filterBooks()">
+                    <option value="all">All Books</option>
+                    <option value="free">Free</option>
+                    <option value="premium">Premium</option>
+                </select>
+            </div>
+
             <div id="ebooks-list"></div>
         </main>
 
@@ -131,16 +151,20 @@
             container.innerHTML = ""; // Clear skeletons
             data.forEach(eb => {
                 const isFree = String(eb.is_free).toLowerCase() === "true";
+                // Data-type attribute add kiya gaya hai filtering ke liye
+                const bookType = isFree ? "free" : "premium";
+                
                 const badge = isFree 
                     ? `<span class="badge badge-free">✦ FREE</span>` 
                     : `<span class="badge badge-price">₹${eb.discount_price || eb.price}</span>`;
                 
+                // 🔥 FIX: Classes added for filtering logic
                 container.innerHTML += `
-                <div class="card">
+                <div class="card book-card-item" data-type="${bookType}">
                     <img src="${eb.thumbnail || ''}" class="ebook-thumb">
                     <div class="card-details">
-                        <div class="card-title">${eb.title || 'Untitled'}</div>
-                        <div class="card-sub">${(eb.description || '').substring(0, 40)}...</div>
+                        <div class="card-title book-title-field">${eb.title || 'Untitled'}</div>
+                        <div class="card-sub book-desc-field">${(eb.description || '').substring(0, 40)}...</div>
                         <div>${badge}</div>
                     </div>
                     <div class="flex" style="flex-direction:column; justify-content:center; gap: 8px;">
@@ -151,7 +175,33 @@
             });
         }
 
-        // EDIT REDIRECT (Delete is now in admin_script.js)
+        // 🔥 NAYA FILTER & SEARCH LOGIC 🔥
+        window.filterBooks = function() {
+            const query = document.getElementById('book-search-input').value.toLowerCase();
+            const filterType = document.getElementById('book-type-filter').value;
+            const cards = document.querySelectorAll('.book-card-item');
+            
+            cards.forEach(card => {
+                const title = card.querySelector('.book-title-field').innerText.toLowerCase();
+                const desc = card.querySelector('.book-desc-field').innerText.toLowerCase();
+                const type = card.getAttribute('data-type');
+                
+                // 1. Check Search Match
+                const matchesSearch = title.includes(query) || desc.includes(query);
+                
+                // 2. Check Dropdown Match
+                const matchesFilter = filterType === 'all' || type === filterType;
+                
+                // 3. Show only if BOTH conditions are met
+                if(matchesSearch && matchesFilter) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // EDIT REDIRECT
         window.editEbook = function(id) {
             sessionStorage.setItem('edit_ebook_id', id);
             window.location.href = '../new-ebook/';
