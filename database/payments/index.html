@@ -153,9 +153,37 @@
         .nav-item:hover:not(.active) { color: var(--text2); }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } } @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } } @keyframes cardIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } } @keyframes spin { to { transform: rotate(360deg); } }
+/* Custom Dark Input for Password Box */
+.custom-dark-input {
+    width: 100%; padding: 14px 15px; margin-top: 8px; border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.15); background: rgba(255, 255, 255, 0.05);
+    color: #ffffff; font-size: 1rem; outline: none; transition: all 0.3s ease; font-family: inherit;
+}
+.custom-dark-input::placeholder { color: rgba(255, 255, 255, 0.4); }
+.custom-dark-input:focus { border-color: #a855f7; background: rgba(255, 255, 255, 0.1); box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2); }
+
+/* Original Toast Styling */
+#toast-container { position: fixed; bottom: 85px; right: 28px; z-index: 999999 !important; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
+.toast { background: var(--surface); color: var(--text); padding: 12px 18px; border-radius: var(--r2); box-shadow: var(--shadow2); border: 1px solid var(--border2); animation: slideUp 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards; display: flex; align-items: center; gap: 10px; font-size: .85rem; font-weight: 500; }
+
     </style>
 </head>
 <body>
+<div id="change-password-modal" class="modal-overlay hidden">
+    <div class="modal-box" style="text-align:left;">
+        <h3 style="margin-bottom: 20px;">Change Password</h3>
+        <form id="changePasswordForm" onsubmit="event.preventDefault(); window.executeChangePassword();">
+            <div class="form-group">
+                <label style="color: var(--text); font-weight: 500;">New Password</label>
+                <input type="password" id="user_new_password" class="custom-dark-input" required minlength="6" placeholder="Enter new strong password">
+            </div>
+            <div class="modal-actions" style="margin-top:24px;">
+                <button type="button" class="btn btn-outline" onclick="window.closeChangePasswordModal()">Cancel</button>
+                <button type="submit" class="btn" id="update-pass-btn">Update Password</button>
+            </div>
+        </form>
+    </div>
+</div>
 
     <div class="hero-bg"></div>
     <div class="hero-grid"></div>
@@ -355,26 +383,82 @@ const db = initializeFirestore(app, {
             document.getElementById("confirm-modal").classList.remove("hidden");
         };
         
-        window.openChangePassword = function() {
-            window.closeProfileDrawer();
-            document.getElementById("modal-title-text").innerText = "Change Password";
-            document.getElementById("modal-desc-text").innerText = "You will be logged out securely to change your password. Continue?";
-            const actionBtn = document.getElementById("modal-action-btn");
-            actionBtn.innerText = "Yes, Continue";
-            actionBtn.onclick = () => {
-                window.closeModal();
-                window.executeLogout(false); 
-                sessionStorage.setItem('open_reset_tab', 'true');
-                window.location.href = '../login/';
-            };
-            document.getElementById("confirm-modal").classList.remove("hidden");
+        // 🔥 Modal Open/Close Logic
+window.openChangePassword = function() {
+    window.closeProfileDrawer();
+    document.getElementById("change-password-modal").classList.remove("hidden");
+    document.getElementById("user_new_password").value = ""; 
+}
+
+window.closeChangePasswordModal = function() {
+    document.getElementById("change-password-modal").classList.add("hidden");
+}
+
+// 🔥 Original Toast Function
+window.showToast = function(msg, type = "success") {
+    const container = document.getElementById("toast-container");
+    if (!container) return;
+    const toast = document.createElement("div");
+    toast.className = "toast";
+    toast.innerHTML = (type === "success" ? '<span style="font-size:1.1rem; color:var(--success)">✓</span>' : '<span style="font-size:1.1rem; color:var(--danger)">✕</span>') + ` <span>${msg}</span>`;
+    container.appendChild(toast);
+    setTimeout(() => { toast.style.transform = "translateX(110%)"; toast.style.opacity = "0"; setTimeout(() => toast.remove(), 400); }, 3000);
+}
+
+// 🔥 Original Password Update Logic
+window.executeChangePassword = async function() {
+    const newPass = document.getElementById("user_new_password").value.trim();
+    const btn = document.getElementById("update-pass-btn");
+
+    if (newPass.length < 6) {
+        window.showToast("Password must be at least 6 characters!", "error");
+        return;
+    }
+
+    const { getAuth, updatePassword } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js");
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    if (!user) {
+        window.showToast("Session expired. Please login again.", "error");
+        return;
+    }
+
+    try {
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
+        btn.disabled = true;
+
+        await updatePassword(user, newPass);
+        
+        window.showToast("Password updated successfully!", "success");
+        window.closeChangePasswordModal();
+
+    } catch (error) {
+        console.error("Password Update Error:", error);
+        
+        if (error.code === 'auth/requires-recent-login') {
+            window.showToast("Security alert: Please logout and login again to change your password.", "error");
+        } else {
+            window.showToast("Error: " + error.message, "error");
+        }
+    } finally {
+        btn.innerHTML = 'Update Password';
+        btn.disabled = false;
+    }
+}
+
+        window.confirmLogout = function() {
+            window.executeLogout(true);
         };
-        
-        window.confirmLogout = function() { window.executeLogout(true); };
-        
+
         window.executeLogout = function(redirect) {
-            if(userId) { localStorage.removeItem(`cache_payments_${userId}_data`); localStorage.removeItem(`cache_payments_${userId}_time`); }
-            localStorage.removeItem("islamic_user_id"); localStorage.removeItem("islamic_user_name"); localStorage.removeItem("islamic_user_mobile");
+            if(userId) { 
+                localStorage.removeItem(`cache_payments_${userId}_data`); 
+                localStorage.removeItem(`cache_payments_${userId}_time`); 
+            }
+            localStorage.removeItem("islamic_user_id");
+            localStorage.removeItem("islamic_user_name");
+            localStorage.removeItem("islamic_user_mobile");
             
             signOut(auth).then(() => { if(redirect) window.location.href = "../login/"; })
                          .catch(() => { if(redirect) window.location.href = "../login/"; });
