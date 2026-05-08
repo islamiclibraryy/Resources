@@ -17,6 +17,13 @@
     <style>
         .modal-overlay { transition: opacity 0.3s ease, visibility 0.3s ease; opacity: 1; visibility: visible; }
         .modal-overlay.hidden { display: flex !important; opacity: 0; visibility: hidden; pointer-events: none; }
+        
+        /* 🔥 Nayi CSS Copy Buttons aur Search Bar ke liye 🔥 */
+        .copy-icon { cursor: pointer; color: var(--accent2); margin-left: 8px; font-size: 0.9rem; transition: 0.2s; }
+        .copy-icon:hover { color: white; transform: scale(1.1); }
+        .search-container { position: relative; margin-bottom: 20px; }
+        .search-container i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text2); }
+        .search-input { width: 100%; padding: 12px 15px 12px 40px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-size: 0.95rem; }
     </style>
 </head>
 <body>
@@ -73,10 +80,16 @@
         </div>
 
         <main>
-            <div class="flex justify-between align-center" style="margin-bottom: 24px;">
+            <div class="flex justify-between align-center" style="margin-bottom: 15px;">
                 <h3 style="font-size: 1.2rem;">All Payments</h3>
                 <button class="action-btn-sm" id="refresh-payments-btn" onclick="window.forceFetchPayments()" title="Refresh Payments"><i class="fas fa-sync-alt"></i></button>
             </div>
+
+            <div class="search-container">
+                <i class="fas fa-search"></i>
+                <input type="text" id="payment-search-input" class="search-input" placeholder="Search by Txn ID or User ID..." onkeyup="window.filterPayments()">
+            </div>
+
             <div id="payments-list"></div>
         </main>
 
@@ -145,18 +158,74 @@
                 }
                 actionButtons += `</div>`;
 
+                // 🔥 FIX: Added classes for searching and Delete/Copy buttons
                 container.innerHTML += `
-                <div class="card" style="flex-direction:column; gap:6px; cursor: default;">
+                <div class="card payment-card-item" style="flex-direction:column; gap:6px; cursor: default;">
                     <div class="flex justify-between align-center">
-                        <div class="card-title" style="margin:0; font-family:'DM Mono', monospace; font-size:1.05rem;">Txn: ${pay.txn_id}</div>
+                        <div class="card-title txn-field" style="margin:0; font-family:'DM Mono', monospace; font-size:1.05rem; display:flex; align-items:center;">
+                            <span>Txn: ${pay.txn_id}</span>
+                            <i class="fas fa-copy copy-icon" onclick="window.copyToClipboard('${pay.txn_id}')" title="Copy Txn ID"></i>
+                        </div>
                         <span class="badge ${badgeClass}">${statusText}</span>
                     </div>
-                    <div class="card-sub" style="margin:0;"><strong>User ID:</strong> ${pay.user_id}</div>
-                    <div class="card-sub" style="margin:0;"><strong>Ebook ID:</strong> ${pay.ebook_id}</div>
+                    <div class="card-sub user-field" style="margin:0; display:flex; align-items:center;">
+                        <strong>User ID:</strong> <span style="margin-left:4px;">${pay.user_id}</span>
+                        <i class="fas fa-copy copy-icon" onclick="window.copyToClipboard('${pay.user_id}')" title="Copy User ID"></i>
+                    </div>
+                    <div class="card-sub" style="margin:0; display:flex; align-items:center;">
+                        <strong>Ebook ID:</strong> <span style="margin-left:4px;">${pay.ebook_id}</span>
+                        <i class="fas fa-copy copy-icon" onclick="window.copyToClipboard('${pay.ebook_id}')" title="Copy Ebook ID"></i>
+                    </div>
                     ${actionButtons}
+                    
+                    <div style="margin-top: 5px; width: 100%;">
+                        <button class="btn btn-outline" style="width: 100%; padding: 8px; font-size:0.8rem; border-color:var(--danger); color:var(--danger); border-radius:10px;" onclick="window.initiatePaymentDelete('${pay.id}')">
+                            <i class="fas fa-trash-alt"></i> Delete Payment
+                        </button>
+                    </div>
                 </div>`;
             });
+        }
+
+        // 🔥 CHHOTI JS FUNCTIONS (Copy aur Search ke liye) 🔥
+        window.filterPayments = function() {
+            const query = document.getElementById('payment-search-input').value.toLowerCase();
+            const cards = document.querySelectorAll('.payment-card-item');
+            
+            cards.forEach(card => {
+                const txn = card.querySelector('.txn-field').innerText.toLowerCase();
+                const user = card.querySelector('.user-field').innerText.toLowerCase();
+                
+                if(txn.includes(query) || user.includes(query)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        window.copyToClipboard = function(text) {
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text).then(() => window.showToast("Copied!", "success"))
+                .catch(() => window.showToast("Failed to copy", "error"));
+            } else {
+                let textArea = document.createElement("textarea");
+                textArea.value = text;
+                textArea.style.position = "fixed"; 
+                textArea.style.left = "-999999px"; 
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    window.showToast("Copied!", "success");
+                } catch (err) {
+                    window.showToast("Failed to copy", "error");
+                }
+                textArea.remove();
+            }
         }
     </script>
 </body>
 </html>
+,
