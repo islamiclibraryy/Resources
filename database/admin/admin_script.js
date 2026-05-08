@@ -1,6 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, updatePassword } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
-import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager, collection, getDocs, doc, updateDoc, deleteDoc, addDoc, getCountFromServer, query, orderBy } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, updatePassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+
+import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager, collection, getDocs, doc, updateDoc, deleteDoc, addDoc, getCountFromServer, query, where, orderBy, increment, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
 // 🛑 1. FIREBASE CONFIGURATION
 const firebaseConfig = {
@@ -498,3 +499,199 @@ window.initTheme = () => {
 };
 
 window.initTheme();
+
+// ==========================================
+// 🔥 USERS PAGE LOGIC (EDIT, DELETE, RESET)
+// ==========================================
+
+// 1. Edit User Logic (Sirf Naam Update hoga)
+window.handleUserUpdate = async () => {
+    const id = document.getElementById("edit_user_id").value;
+    const newName = document.getElementById("edit_user_name").value.trim();
+    const btn = document.getElementById("update-user-btn");
+
+    if (!id || !newName) return;
+
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
+    btn.disabled = true;
+
+    try {
+        await updateDoc(doc(db, "users", id), { name: newName });
+        
+        // Cache update karo taaki turant UI me dikhe
+        const userIndex = window.usersData.findIndex(u => u.id === id);
+        if (userIndex > -1) {
+            window.usersData[userIndex].name = newName;
+            window.renderUsers(window.usersData);
+        }
+        
+        window.showToast("User Name Updated!", "success");
+        window.closeEditUserModal();
+    } catch (error) {
+        console.error("Edit User Error:", error);
+        window.showToast("Update Failed", "error");
+    } finally {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+    }
+};
+
+// 2. Delete User Logic (Firestore se delete aur Stats me -1)
+window.initiateUserDelete = function(id) {
+    window.showConfirm("Delete User Data", "Are you sure? This deletes user data from the database. Note: You must also delete their account from Firebase Auth Console manually.", async () => {
+        try {
+            window.showToast("Deleting user...", "info");
+            
+            // Database se user document udao
+            await deleteDoc(doc(db, "users", id));
+
+            // 🔥 ASLI JADU: Metadata Stats me -1 karo
+            try {
+                const statsRef = doc(db, "metadata", "stats");
+                await updateDoc(statsRef, { total_users: increment(-1) });
+            } catch (err) { console.log("Stats update error"); }
+
+            window.showToast("User Deleted Successfully!", "success");
+            
+            // UI aur Cache se hatao
+            window.usersData = window.usersData.filter(u => u.id !== id);
+            window.renderUsers(window.usersData);
+            window.closeConfirm();
+
+        } catch (error) {
+            console.error("Delete User Error:", error);
+            window.showToast("Failed to delete user", "error");
+        }
+    });
+};
+
+// ==========================================
+// 🔥 SECONDARY APP FOR PASSWORD RESET
+// ==========================================
+// ⚠️ YAHAN APNA ASLI FIREBASE CONFIG DAALNA MAT BHOOLNA
+// 🔥 Use the same config as the main app
+const adminFirebaseConfig = firebaseConfig;
+
+let secondaryAuth;
+try {
+    // Check if app already exists to avoid errors on refresh
+    const secondaryApp = initializeApp(adminFirebaseConfig, "SecondaryAppForAdmin");
+    secondaryAuth = getAuth(secondaryApp);
+} catch (e) {
+    console.log("Secondary app already initialized or error", e);
+}
+
+
+// 3. Reset Password & Email Logic
+window.executeAccountReset = async () => {
+    const oldUid = document.getElementById("reset_old_uid").value.trim();
+    const newIdInput = document.getElementById("reset_new_id").value.trim();
+    const newPass = document.getElementById("reset_new_pass").value.trim();
+    const btn = document.getElementById("reset-submit-btn");
+
+    // Strictly mandatory fields
+    if (!oldUid || !newPass) {
+        window.showToast("Old UID and New Password are strictly required!", "error");
+        return;
+    }
+
+    try {
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+        btn.disabled = true;
+        
+        // Find old user in Firestore
+        const oldUserSnap = await getDoc(doc(db, "users", oldUid));
+        if (!oldUserSnap.exists()) {
+            window.showToast("Old UID not found in database!", "error");
+            btn.innerHTML = 'Reset Data';
+            btn.disabled = false;
+            return;
+        }
+
+        const userData = oldUserSnap.data();
+
+        // If New ID is empty, keep the old one from database
+        const finalId = newIdInput || userData.displayId || userData.email || userData.mobile;
+
+        // Pattern for mobile users: add the @islamiclibrary.com domain
+        let finalEmail = finalId;
+        if (!finalId.includes("@")) {
+            finalEmail = finalId + "@islamiclibrary.com"; 
+        }
+
+        // 1. Create new Firebase Auth Account
+        const userCred = await createUserWithEmailAndPassword(secondaryAuth, finalEmail, newPass);
+        const newUid = userCred.user.uid;
+
+        // 2. Migrate User Document in Firestore
+        userData.uid = newUid; 
+        userData.displayId = finalId; 
+        
+        await setDoc(doc(db, "users", newUid), userData);
+        await deleteDoc(doc(db, "users", oldUid)); 
+
+        // 3. Migrate Payments to New UID
+        const q = query(collection(db, "payments"), where("user_id", "==", oldUid));
+        const querySnapshot = await getDocs(q);
+        
+        const updatePromises = [];
+        querySnapshot.forEach((paymentDoc) => {
+            updatePromises.push(updateDoc(doc(db, "payments", paymentDoc.id), { user_id: newUid }));
+        });
+        await Promise.all(updatePromises);
+
+        window.showToast("Account migrated successfully!", "success");
+        window.closeResetModal();
+        
+        // Refresh the users list in UI
+        if(window.forceFetchUsers) window.forceFetchUsers();
+
+    } catch (error) {
+        console.error("Migration Error:", error);
+        if (error.code === 'auth/email-already-in-use') {
+            window.showToast("ID already registered, or old account not deleted from Console.", "error");
+        } else {
+            window.showToast("Error: " + error.message, "error");
+        }
+    } finally {
+        btn.innerHTML = 'Reset Data';
+        btn.disabled = false;
+    }
+};
+
+// 🔥 DELETE PAYMENT LOGIC (Firestore + Metadata Update)
+window.initiatePaymentDelete = function(id) {
+    window.showConfirm("Delete Payment Record", "Are you sure? This will permanently remove this payment record from the database.", async () => {
+        try {
+            window.showToast("Deleting payment...", "info");
+            
+            // 1. Delete payment document from Firestore
+            await deleteDoc(doc(db, "payments", id));
+
+            // 2. 🔥 METADATA UPDATE: Decrement total_payments by 1
+            try {
+                const statsRef = doc(db, "metadata", "stats");
+                await updateDoc(statsRef, { 
+                    total_payments: increment(-1) 
+                });
+            } catch (err) { 
+                console.log("Metadata update failed but payment was deleted."); 
+            }
+
+            window.showToast("Payment record deleted successfully!", "success");
+            
+            // 3. UI Update: Remove from current list
+            if (window.paymentsData) {
+                window.paymentsData = window.paymentsData.filter(p => p.id !== id);
+                window.renderPayments(window.paymentsData);
+            }
+            
+            window.closeConfirm();
+
+        } catch (error) {
+            console.error("Delete Error:", error);
+            window.showToast("Failed to delete payment record", "error");
+        }
+    });
+};
