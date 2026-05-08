@@ -525,9 +525,6 @@ const db = initializeFirestore(app, {
             freshEbooks.push({ id: doc.id, ...doc.data() });
         });
 
-        // 🔥 YAHAN SORT KARO (Sirf ek baar)
-freshEbooks.sort((a, b) => (a.sort_order || 999) - (b.sort_order || 999));
-
         ebooksData = freshEbooks;
         localStorage.setItem("cache_ebooks_data", JSON.stringify(freshEbooks));
         renderGrid(true);
@@ -611,7 +608,7 @@ freshEbooks.sort((a, b) => (a.sort_order || 999) - (b.sort_order || 999));
             if (reset) grid.innerHTML = "";
 
 // 🔥 YEH NAYI LINE ADD KARNI HAI (Books ko number wise lagane ke liye) 🔥
-            
+            ebooksData.sort((a, b) => (a.sort_order || 999) - (b.sort_order || 999));
 
             let filteredBooks = ebooksData.filter(eb => {
                 const isFree = String(eb.is_free) === "true";
