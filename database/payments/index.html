@@ -262,7 +262,7 @@
         // ✅ FIREBASE IMPORTS (Updated with Auth)
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
-        import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+        import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager, collection, addDoc, doc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
         // ✅ FIREBASE CONFIG
         const firebaseConfig = {
@@ -429,46 +429,57 @@ const db = initializeFirestore(app, {
         };
 
         document.getElementById("paymentForm").addEventListener("submit", async (e) => {
-            e.preventDefault();
-            
-            const submitBtn = document.getElementById("submit-btn");
-            const originalText = submitBtn.innerHTML;
-            
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
-            submitBtn.disabled = true;
+    e.preventDefault();
+    
+    const submitBtn = document.getElementById("submit-btn");
+    const originalText = submitBtn.innerHTML;
+    
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+    submitBtn.disabled = true;
 
-            const payload = { 
-                user_id: userId, 
-                ebook_id: currentEbook.id, 
-                txn_id: document.getElementById("pay-txn").value, 
-                amount: currentEbook.discount_price || currentEbook.price,
-                status: "pending",
-                createdAt: new Date().toISOString()
-            };
+    const payload = { 
+        user_id: userId, 
+        ebook_id: currentEbook.id, 
+        txn_id: document.getElementById("pay-txn").value, 
+        amount: currentEbook.discount_price || currentEbook.price,
+        status: "pending",
+        createdAt: new Date().toISOString()
+    };
 
-            try {
-                await addDoc(collection(db, "payments"), payload);
-                
-                let currentPayments = [];
-                const cachedPayments = localStorage.getItem(`cache_payments_${userId}_data`);
-                if (cachedPayments) { try { currentPayments = JSON.parse(cachedPayments); } catch(err){} }
-                
-                currentPayments.push(payload);
-                localStorage.setItem(`cache_payments_${userId}_data`, JSON.stringify(currentPayments));
-                localStorage.setItem(`cache_payments_${userId}_time`, Date.now().toString());
+    try {
+        await addDoc(collection(db, "payments"), payload);
+        
+        // 🔥 ASLI JADU: Payment save hote hi stats me +1 kar do
+        try {
+            const statsRef = doc(db, "metadata", "stats");
+            await updateDoc(statsRef, {
+                total_payments: increment(1)
+            });
+        } catch (statError) {
+            console.error("Stats update fail ho gaya:", statError);
+        }
+        
+        let currentPayments = [];
+        const cachedPayments = localStorage.getItem(`cache_payments_${userId}_data`);
+        if (cachedPayments) { try { currentPayments = JSON.parse(cachedPayments); } catch(err){} }
+        
+        currentPayments.push(payload);
+        localStorage.setItem(`cache_payments_${userId}_data`, JSON.stringify(currentPayments));
+        localStorage.setItem(`cache_payments_${userId}_time`, Date.now().toString());
 
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
 
-                document.getElementById('success-modal').classList.remove('hidden');
+        document.getElementById('success-modal').classList.remove('hidden');
 
-            } catch (error) {
-                console.error("Error submitting payment:", error);
-                window.showToast("Failed to submit payment. Try again.", "error");
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-            }
-        });
+    } catch (error) {
+        console.error("Error submitting payment:", error);
+        window.showToast("Failed to submit payment. Try again.", "error");
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+    }
+});
+
     </script>
 
 </body>
