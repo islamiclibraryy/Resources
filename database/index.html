@@ -196,10 +196,47 @@
         @keyframes slideUp { from { opacity: 0; transform: translateY(10px) scaleY(0.95); } to { opacity: 1; transform: translateY(0) scaleY(1); } } 
         @keyframes spin { to { transform: rotate(360deg); } } 
         @keyframes blobFloat { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(20px,-20px) scale(1.05)} 66%{transform:translate(-15px,15px) scale(0.97)} }
+       
+    /* Nayi CSS sirf is password box ke liye */
+    .custom-dark-input {
+        width: 100%;
+        padding: 14px 15px;
+        margin-top: 8px;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        background: rgba(255, 255, 255, 0.05); /* Subtle dark transparent background */
+        color: #ffffff;
+        font-size: 1rem;
+        outline: none;
+        transition: all 0.3s ease;
+        font-family: inherit;
+    }
+    .custom-dark-input::placeholder {
+        color: rgba(255, 255, 255, 0.4); /* Placeholder text color */
+    }
+    .custom-dark-input:focus {
+        border-color: #a855f7; /* Tumhare Update button se match karta hua Purple glow */
+        background: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2);
     </style>
 </head>
 <body>
 
+    <div id="change-password-modal" class="modal-overlay hidden">
+    <div class="modal-box" style="text-align:left;">
+        <h3 style="margin-bottom: 20px;">Change Password</h3>
+        <form id="changePasswordForm" onsubmit="event.preventDefault(); window.executeChangePassword();">
+            <div class="form-group">
+                <label style="color: var(--text); font-weight: 500;">New Password</label>
+                <input type="password" id="user_new_password" class="custom-dark-input" required minlength="6" placeholder="Enter new strong password">
+            </div>
+            <div class="modal-actions" style="margin-top:24px;">
+                <button type="button" class="btn btn-outline" onclick="window.closeChangePasswordModal()">Cancel</button>
+                <button type="submit" class="btn" id="update-pass-btn">Update Password</button>
+            </div>
+        </form>
+    </div>
+</div>
     <div class="hero-bg"></div>
     <div class="hero-grid"></div>
     <div class="blob blob1"></div>
@@ -207,7 +244,7 @@
     <div class="blob blob3"></div>
 
     <div id="loader" class="hidden"><div class="spinner"></div></div>
-    <div id="toast-container"></div>
+    
 
     <div id="drawer-overlay" class="drawer-overlay" onclick="window.closeProfileDrawer()"></div>
     <div id="profile-drawer" class="profile-drawer">
@@ -313,6 +350,9 @@
         </div>
     </div>
 
+<div id="toast-container" style="z-index: 999999 !important;"></div>
+
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
@@ -409,20 +449,62 @@ const db = initializeFirestore(app, {
             document.getElementById("confirm-modal").classList.remove("hidden");
         }
 
-        window.openChangePassword = function() {
-            window.closeProfileDrawer();
-            document.getElementById("modal-title-text").innerText = "Change Password";
-            document.getElementById("modal-desc-text").innerText = "You will be logged out securely to change your password. Continue?";
-            const actionBtn = document.getElementById("modal-action-btn");
-            actionBtn.innerText = "Yes, Continue";
-            actionBtn.onclick = () => {
-                window.closeModal();
-                window.executeLogout(false);
-                sessionStorage.setItem('open_reset_tab', 'true');
-                window.location.href = 'login/'; 
-            };
-            document.getElementById("confirm-modal").classList.remove("hidden");
+        // 🔥 MODAL OPEN & CLOSE LOGIC
+window.openChangePassword = function() {
+    window.closeProfileDrawer();
+    document.getElementById("change-password-modal").classList.remove("hidden");
+    document.getElementById("user_new_password").value = ""; // Box ko clean karne ke liye
+}
+
+window.closeChangePasswordModal = function() {
+    document.getElementById("change-password-modal").classList.add("hidden");
+}
+
+// 🔥 ASLI FIREBASE PASSWORD UPDATE LOGIC
+window.executeChangePassword = async function() {
+    const newPass = document.getElementById("user_new_password").value.trim();
+    const btn = document.getElementById("update-pass-btn");
+
+    if (newPass.length < 6) {
+        window.showToast("Password must be at least 6 characters!", "error");
+        return;
+    }
+
+    // Firebase Auth se current user nikalo
+    const { getAuth, updatePassword } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js");
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    if (!user) {
+        window.showToast("Session expired. Please login again.", "error");
+        return;
+    }
+
+    try {
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
+        btn.disabled = true;
+
+        // Password update command
+        await updatePassword(user, newPass);
+        
+        window.showToast("Password updated successfully!", "success");
+        window.closeChangePasswordModal();
+
+    } catch (error) {
+        console.error("Password Update Error:", error);
+        
+        // Agar user ne bohot time se login kiya hua hai toh ye error aayega
+        if (error.code === 'auth/requires-recent-login') {
+            window.showToast("Security alert: Please logout and login again to change your password.", "error");
+        } else {
+            window.showToast("Error: " + error.message, "error");
         }
+    } finally {
+        btn.innerHTML = 'Update Password';
+        btn.disabled = false;
+    }
+}
+
 
         window.confirmLogout = function() { window.executeLogout(true); }
 
