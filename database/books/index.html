@@ -239,6 +239,22 @@
         font-size: 0.95rem !important; /* Halka sa adjust hoga taki button ko jagah mile */
     }
 }
+/* 🔥 RESTORE GREEN COLOR FOR 'OWNED' STATUS 🔥 */
+
+/* Agar tumhare code mein 'Owned' text kisi span ya div mein hai 
+   jis par tumne pehle se koi class lagayi hai, toh uska naam yahan use karo.
+   Nahi toh ye universal rule kaam karega: */
+
+.action-footer .status-success, 
+.action-footer [style*="color: var(--success)"] {
+    color: var(--success) !important;
+    font-weight: 700 !important;
+}
+
+/* Ek safe side ke liye ye bhi daal do taaki responsive fix color na chhede */
+.action-footer > .owned-text {
+    color: var(--success) !important;
+}
 
     </style>
 </head>
@@ -642,9 +658,12 @@ window.executeChangePassword = async function() {
 
             actionBtn.className = "btn"; actionBtn.disabled = false; actionBtn.style.background = ""; actionBtn.style.color = ""; actionBtn.style.boxShadow = "";
 
-            if (ownedBook) {
+                        if (ownedBook) {
                 if (ownedBook.status.toLowerCase() === "approved") {
-                    footerPrice.innerHTML = "Owned";
+                    
+                    // 🔥 BAS IS LINE MEIN JADOO KIYA HAI 🔥
+                    footerPrice.innerHTML = `<span style="color: var(--success) !important; font-weight: 700;">Owned</span>`;
+                    
                     actionBtn.innerHTML = `<i class="fas fa-download"></i> Download`;
                     actionBtn.onclick = () => window.open(currentEbook.pdf_link, "_blank");
                     actionBtn.style.background = "var(--success)"; actionBtn.style.boxShadow = "0 4px 20px rgba(16,185,129,0.3)"; actionBtn.style.color = "#fff";
@@ -663,6 +682,7 @@ window.executeChangePassword = async function() {
                 actionBtn.style.background = "linear-gradient(135deg, #7c6af7, #9f3fbf)"; actionBtn.style.color = "#fff";
                 actionBtn.onclick = () => window.location.href = '../payments/';
             }
+
         }
     </script>
 
