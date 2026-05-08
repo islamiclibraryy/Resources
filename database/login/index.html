@@ -142,57 +142,57 @@
     background-color: #f8f9fa;
     pointer-events: none;
 }
-/* 🔥 LOGIN / SIGNUP CARD RESPONSIVE SCALING FIX (UPDATED) 🔥 */
+/* 🔥 LOGIN / SIGNUP CARD RESPONSIVE SCALING FIX (FINAL) 🔥 */
 
 @media screen and (max-width: 400px) {
-    /* 1. Main Card ko lamba hone se rokna */
+    /* 1. Main Card ki padding adjust ki, par chaudai (width) natural rakhi */
     .auth-card {
-        padding: 20px 16px 24px !important; /* Upar-niche ki padding kam kardi */
-        max-width: 95% !important; 
+        padding: 20px 16px 24px !important; 
     }
 
-    /* 2. 🔥 HEADINGS WAPAS CENTER MEIN 🔥 (Pichli galti theek kar di) */
+    /* 2. Headings wapas Center mein */
     .auth-card h1, .auth-card h2, .auth-card h3 {
         font-size: 1.3rem !important; 
-        margin-right: 0 !important; /* Ab text ekdum Center mein rahega */
+        margin-right: 0 !important; 
         text-align: center !important;
     }
 
     /* 3. Bismillah ko Help button se bachana */
     .bismillah {
-        font-size: 22px !important; /* Bismillah ko thoda sa adjust kiya */
-        margin-top: 5px !important; /* Upar se thodi jagah di */
+        font-size: 22px !important; 
+        margin-top: 5px !important; 
         margin-bottom: 15px !important; 
     }
 
-    /* 4. Asli Help Badge ko ekdum kone mein adjust karna */
+    /* 4. Help Badge ko ekdum kone mein set karna */
     .help-badge {
-        transform: scale(0.75); /* Button aur chhota kiya taaki overlap na ho */
+        transform: scale(0.75); 
         top: 8px !important;
         right: 8px !important;
     }
 
-    /* 5. CARD KI LAMBAI KAM KARNA (Gaps kam karke) */
+    /* 5. Gaps kam karke Card ki lambai choti karna */
     .form-group {
-        margin-bottom: 12px !important; /* Inputs ke beech ka gap kam kiya */
+        margin-bottom: 12px !important; 
     }
     .auth-toggle {
-        margin-bottom: 16px !important; /* Mobile/Email button ke niche ka gap */
+        margin-bottom: 16px !important; 
     }
     .divider {
-        margin: 15px 0 !important; /* 'OR' ke upar-niche ka gap kam kiya */
+        margin: 15px 0 !important; 
     }
 
-    /* 6. Inputs aur Buttons ko patla karna */
-    .form-group input {
+    /* 6. Inputs aur Buttons ka size screen ke hisaab se set karna */
+    .form-group input, .custom-dark-input {
         padding: 10px 12px !important; 
         font-size: 0.9rem !important; 
     }
     .auth-card .btn, .auth-card .google-btn {
-        padding: 10px 16px !important; /* Buttons ki unchai (height) kam kardi */
+        padding: 10px 16px !important; 
         font-size: 0.9rem !important;
     }
 }
+
 
 
     </style>
