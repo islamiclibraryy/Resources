@@ -253,9 +253,10 @@
                 If your status doesn't change after 2 hours, please contact our support.
             </p>
             <div class="modal-actions">
-                <button class="btn btn-outline" onclick="window.location.href='../info/'">Contact Support</button>
-                <button class="btn" style="background: var(--success); box-shadow: 0 4px 15px rgba(16,185,129,0.3);" onclick="window.location.href='../library/'">Continue</button>
-            </div>
+    <button class="btn btn-outline" onclick="window.location.replace('../info/')">Contact Support</button>
+    <button class="btn" style="background: var(--success); box-shadow: 0 4px 15px rgba(16,185,129,0.3);" onclick="window.location.replace('../library/')">Continue</button>
+</div>
+
         </div>
     </div>
 
@@ -500,32 +501,54 @@ window.executeChangePassword = async function() {
         });
 
                 function initPaymentPage() {
-            const bookDataStr = sessionStorage.getItem("selected_book_data");
-            if(bookDataStr) {
-                currentEbook = JSON.parse(bookDataStr);
-                const amt = currentEbook.discount_price || currentEbook.price;
-                
-                // 🔥 NAYA DYNAMIC QR LOGIC 🔥
-                // Book ka naam nikalna (Agar title nahi mila toh 'Islamic Ebook' likha aayega)
-                const bookName = currentEbook.title || currentEbook.name || "Islamic Ebook";
-                const PAYEE_NAME = "Islamic Library by Shekh";
-                const transactionNote = `${bookName} Book Purchasing`;
-                
-                // Smart UPI Link jisme Amount aur Message auto-fill hoga
-                const upiLink = `upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${amt}&tn=${encodeURIComponent(transactionNote)}&cu=INR`;
-                
-                // Dynamic QR Code URL generate karna
-                const dynamicQR_URL = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&margin=10&data=${encodeURIComponent(upiLink)}`;
+    const bookDataStr = sessionStorage.getItem("selected_book_data");
+    if(bookDataStr) {
+        currentEbook = JSON.parse(bookDataStr);
 
-                // UI Update karna
-                document.getElementById("pay-amt").innerText = `₹${amt}`;
-                document.getElementById("pay-upi").innerText = UPI_ID;
-                document.getElementById("pay-qr").src = dynamicQR_URL; // Yahan naya QR set ho jayega
-                document.getElementById("paymentForm").reset();
-            } else {
-                window.location.replace("../");
-            }
+        // 🔥 LAYER 1 (BACK BUTTON BLOCK): Agar pehle se payment pending/approved hai, toh page khulne hi mat do!
+        const cachedPayments = localStorage.getItem(`cache_payments_${userId}_data`);
+        if (cachedPayments) {
+            try {
+                const payments = JSON.parse(cachedPayments);
+                const alreadySubmitted = payments.find(p => 
+                    String(p.ebook_id) === String(currentEbook.id) && 
+                    p.status.toLowerCase() !== "rejected"
+                );
+                
+                if(alreadySubmitted) {
+                    // Toast dikhao aur history mita kar Library bhej do
+                    window.showToast("Your request is already submitted!", "error");
+                    setTimeout(() => {
+                        window.location.replace("../library/"); // Replace se Back button kaam nahi karega
+                    }, 1000);
+                    return; // Code aage nahi jayega
+                }
+            } catch(e) {}
         }
+
+        const amt = currentEbook.discount_price || currentEbook.price;
+        
+        // Book ka naam nikalna
+        const bookName = currentEbook.title || currentEbook.name || "Islamic Ebook";
+        const PAYEE_NAME = "Islamic Library by Shekh";
+        const transactionNote = `${bookName} Book Purchasing`;
+        
+        // Smart UPI Link
+        const upiLink = `upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${amt}&tn=${encodeURIComponent(transactionNote)}&cu=INR`;
+        
+        // Dynamic QR Code URL
+        const dynamicQR_URL = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&margin=10&data=${encodeURIComponent(upiLink)}`;
+
+        // UI Update karna
+        document.getElementById("pay-amt").innerText = `₹${amt}`;
+        document.getElementById("pay-upi").innerText = UPI_ID;
+        document.getElementById("pay-qr").src = dynamicQR_URL;
+        document.getElementById("paymentForm").reset();
+    } else {
+        window.location.replace("../");
+    }
+}
+
 
 
         window.copyUPI = function() { 
@@ -554,6 +577,24 @@ window.executeChangePassword = async function() {
     
     const submitBtn = document.getElementById("submit-btn");
     const originalText = submitBtn.innerHTML;
+
+    // 🔥 LAYER 2 (DOUBLE CLICK BLOCK): Jaldi se local cache check karo
+    let currentPayments = [];
+    const cachedPayments = localStorage.getItem(`cache_payments_${userId}_data`);
+    if (cachedPayments) { 
+        try { currentPayments = JSON.parse(cachedPayments); } catch(err){} 
+    }
+    
+    const isAlreadyPaid = currentPayments.find(p => 
+        String(p.ebook_id) === String(currentEbook.id) && 
+        p.status.toLowerCase() !== "rejected"
+    );
+
+    if (isAlreadyPaid) {
+        window.showToast("You have already submitted this request!", "error");
+        setTimeout(() => window.location.replace("../library/"), 1500);
+        return; // Yahi se wapas bhej do, Firebase tak mat jane do
+    }
     
     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
     submitBtn.disabled = true;
@@ -570,7 +611,7 @@ window.executeChangePassword = async function() {
     try {
         await addDoc(collection(db, "payments"), payload);
         
-        // 🔥 ASLI JADU: Payment save hote hi stats me +1 kar do
+        // Stats Update
         try {
             const statsRef = doc(db, "metadata", "stats");
             await updateDoc(statsRef, {
@@ -580,10 +621,7 @@ window.executeChangePassword = async function() {
             console.error("Stats update fail ho gaya:", statError);
         }
         
-        let currentPayments = [];
-        const cachedPayments = localStorage.getItem(`cache_payments_${userId}_data`);
-        if (cachedPayments) { try { currentPayments = JSON.parse(cachedPayments); } catch(err){} }
-        
+        // Cache mein naya payment add karna (Taaki upar wala block turant kaam kare)
         currentPayments.push(payload);
         localStorage.setItem(`cache_payments_${userId}_data`, JSON.stringify(currentPayments));
         localStorage.setItem(`cache_payments_${userId}_time`, Date.now().toString());
@@ -600,6 +638,7 @@ window.executeChangePassword = async function() {
         submitBtn.disabled = false;
     }
 });
+
 
     </script>
 
