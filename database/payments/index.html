@@ -312,9 +312,8 @@ const db = initializeFirestore(app, {
 });
 
 
-        const UPI_ID = "yourname@upi"; 
-        const UPI_QR_URL = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=${UPI_ID}&pn=Store`; 
-        
+        const UPI_ID = "yourname@upi"; // Yahan apni asli UPI ID zaroor daal lena
+
         let currentEbook = null;
         const userId = localStorage.getItem("islamic_user_id");
 
@@ -477,19 +476,34 @@ window.executeChangePassword = async function() {
             initPaymentPage();
         });
 
-        function initPaymentPage() {
+                function initPaymentPage() {
             const bookDataStr = sessionStorage.getItem("selected_book_data");
             if(bookDataStr) {
                 currentEbook = JSON.parse(bookDataStr);
                 const amt = currentEbook.discount_price || currentEbook.price;
+                
+                // 🔥 NAYA DYNAMIC QR LOGIC 🔥
+                // Book ka naam nikalna (Agar title nahi mila toh 'Islamic Ebook' likha aayega)
+                const bookName = currentEbook.title || currentEbook.name || "Islamic Ebook";
+                const PAYEE_NAME = "Islamic Library by Shekh";
+                const transactionNote = `${bookName} Book Purchasing`;
+                
+                // Smart UPI Link jisme Amount aur Message auto-fill hoga
+                const upiLink = `upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${amt}&tn=${encodeURIComponent(transactionNote)}&cu=INR`;
+                
+                // Dynamic QR Code URL generate karna
+                const dynamicQR_URL = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&margin=10&data=${encodeURIComponent(upiLink)}`;
+
+                // UI Update karna
                 document.getElementById("pay-amt").innerText = `₹${amt}`;
                 document.getElementById("pay-upi").innerText = UPI_ID;
-                document.getElementById("pay-qr").src = UPI_QR_URL;
+                document.getElementById("pay-qr").src = dynamicQR_URL; // Yahan naya QR set ho jayega
                 document.getElementById("paymentForm").reset();
             } else {
                 window.location.replace("../");
             }
         }
+
 
         window.copyUPI = function() { 
             if (navigator.clipboard && window.isSecureContext) {
