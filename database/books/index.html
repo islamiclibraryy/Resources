@@ -118,10 +118,33 @@
             transition: background-color 0.3s ease, border-color 0.3s ease; 
             transform: translateZ(0); 
         }
-        .header-logo-container { display: flex; flex-direction: column; justify-content: center; }
-        .header-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.25rem; background: linear-gradient(135deg, var(--accent2), #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; letter-spacing: -0.02em; }
-        .header-sub { font-family: 'DM Mono', monospace; font-size: .7rem; font-weight: 500; color: var(--accent2); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 4px; }
+        .header-logo-container { display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
         
+        .header-logo { 
+            font-family: 'Syne', sans-serif; 
+            font-weight: 800; 
+            /* Font apne aap screen ke hisaab se set hoga */
+            font-size: clamp(1rem, 5vw, 1.25rem); 
+            background: linear-gradient(135deg, var(--accent2), #c084fc); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+            line-height: 1; 
+            letter-spacing: -0.02em; 
+            /* Text 2 line mein nahi tootega */
+            white-space: nowrap; 
+        }
+        
+        .header-sub { 
+            font-family: 'DM Mono', monospace; 
+            font-size: .7rem; 
+            font-weight: 500; 
+            color: var(--accent2); 
+            text-transform: uppercase; 
+            letter-spacing: 0.1em; 
+            margin-top: 4px; 
+            white-space: nowrap; 
+        }
+
         .main-content { padding: 90px 20px 90px; max-width: 1400px; margin: 0 auto; animation: fadeIn .5s ease both; }
         
         /* ✅ PROFILE DRAWER UI (BUG FIXED: SCROLL & HEIGHT) */
