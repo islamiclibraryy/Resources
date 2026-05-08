@@ -103,11 +103,37 @@
         .skeleton { background: linear-gradient(90deg, var(--surface3) 25%, var(--surface2) 50%, var(--surface3) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite linear; border-radius: 4px; }
         @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
 
-        .btn { background: linear-gradient(135deg, #7c6af7, #9f3fbf); color: #fff; border: none; padding: 14px 20px; border-radius: 99px; font-weight: 600; font-family: 'DM Sans', sans-serif; width: 100%; cursor: pointer; transition: var(--transition); font-size: 1rem; display: block; text-align: center; position: relative; overflow: hidden; box-shadow: 0 4px 20px rgba(124,106,247,0.4); }
-        .btn::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,0.15),transparent); opacity:0; transition:opacity var(--transition); }
-        .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(124,106,247,0.5); } .btn:hover::before { opacity: 1; } .btn:active { transform: translateY(0) scale(0.98); }
-        .btn-outline { background: transparent; color: var(--text2); border: 1px solid var(--border2); padding: 10px 20px; border-radius: 99px; font-weight: 500; font-size: .85rem; transition: var(--transition); cursor: pointer; box-shadow: none; }
-        .btn-outline:hover { border-color: var(--accent); color: var(--accent2); background: var(--glow2); }
+/* 🔥 UPDATED .btn CLASS 🔥 */
+.btn { 
+    background: linear-gradient(135deg, #7c6af7, #9f3fbf); 
+    color: #fff; 
+    border: none; 
+    padding: 14px 20px; 
+    border-radius: 99px; 
+    font-weight: 600; 
+    font-family: 'DM Sans', sans-serif; 
+    width: 100%; 
+    cursor: pointer; 
+    transition: var(--transition); 
+    font-size: 1rem; 
+    
+    /* 🔥 YAHAN JADOO HAI (Icon aur Text hamesha ek line me rahenge) 🔥 */
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    gap: 8px; 
+    white-space: nowrap; 
+    
+    position: relative; 
+    overflow: hidden; 
+    box-shadow: 0 4px 20px rgba(124,106,247,0.4); 
+}
+
+/* Ye purana wala hi hai, isko chhedne ki zaroorat nahi bas as it is rakhna */
+.btn::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,0.15),transparent); opacity:0; transition:opacity var(--transition); }
+.btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(124,106,247,0.5); } 
+.btn:hover::before { opacity: 1; } 
+.btn:active { transform: translateY(0) scale(0.98); }
 
         /* ✅ FIXED HEADER - EXACT MATCH */
         header { 
