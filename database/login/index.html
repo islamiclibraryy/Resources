@@ -277,7 +277,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
-        import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager, doc, setDoc, getDoc, enableIndexedDbPersistence } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+        import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager, doc, setDoc, getDoc, enableIndexedDbPersistence, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
         // 🛑 DUMMY KEYS - APNI ASLI FIREBASE KEYS PASTE KAR LENA 🛑
         const firebaseConfig = {
@@ -428,15 +428,24 @@
                 // SECURE CHECK: Name fetch karega bina zyada wait kiye
                 const userSnap = await getDoc(userRef);
 
-                if (!userSnap.exists()) {
-                    await setDoc(userRef, {
-                        uid: user.uid,
-                        name: user.displayName || "Google User",
-                        loginType: 'google',
-                        displayId: user.email,
-                        createdAt: new Date().toISOString()
-                    });
-                }
+if (!userSnap.exists()) {
+    // Naya user document banao
+    await setDoc(userRef, {
+        uid: user.uid,
+        name: user.displayName || "Google User",
+        loginType: 'google',
+        displayId: user.email,
+        createdAt: new Date().toISOString()
+    });
+
+    // 🔥 ASLI JADU: Naya Google User aate hi stats me +1 kar do
+    try {
+        await updateDoc(doc(db, "metadata", "stats"), {
+            total_users: increment(1)
+        });
+    } catch (err) { console.log("Stats update error"); }
+}
+
 
                 localStorage.setItem("islamic_user_id", user.uid);
                 localStorage.setItem("islamic_user_name", userSnap.exists() && userSnap.data().name ? userSnap.data().name : (user.displayName || "Google User"));
@@ -529,12 +538,25 @@
             const firebaseEmail = getFirebaseEmail(inputVal, window.currentAuthModes.signup);
 
             try {
-                const userCredential = await createUserWithEmailAndPassword(auth, firebaseEmail, passVal);
-                const user = userCredential.user;
+    const userCredential = await createUserWithEmailAndPassword(auth, firebaseEmail, passVal);
+    const user = userCredential.user;
 
-                await setDoc(doc(db, "users", user.uid), {
-                    uid: user.uid, name: nameVal, loginType: window.currentAuthModes.signup, displayId: inputVal, createdAt: new Date().toISOString()
-                });
+    // User document save karo
+    await setDoc(doc(db, "users", user.uid), {
+        uid: user.uid, 
+        name: nameVal, 
+        loginType: window.currentAuthModes.signup, 
+        displayId: inputVal, 
+        createdAt: new Date().toISOString()
+    });
+
+    // 🔥 ASLI JADU: Naya Email/Mobile user bante hi stats me +1 kar do
+    try {
+        await updateDoc(doc(db, "metadata", "stats"), {
+            total_users: increment(1)
+        });
+    } catch (err) { console.log("Stats update error"); }
+
 
                 localStorage.setItem("islamic_user_id", user.uid); 
                 localStorage.setItem("islamic_user_name", nameVal); 
