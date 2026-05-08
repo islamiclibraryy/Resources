@@ -152,6 +152,32 @@
         .nav-item.active i { background: var(--glow2); padding: 8px; border-radius: 50%; box-shadow: 0 0 15px var(--glow); transform: translateY(-4px); color: var(--accent); }
 
         @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+        /* 🔥 RESPONSIVE HEADER FIX 🔥 */
+
+.header-logo {
+    /* Ye text ko toot kar 2 line mein aane se rokega */
+    white-space: nowrap !important; 
+    /* Screen chhote hone par font khud thoda chhota ho jayega (Min 1rem, Max 1.25rem) */
+    font-size: clamp(1.05rem, 5vw, 1.25rem) !important; 
+}
+
+/* Chhote screens (400px ya usse kam width wale phones) ke liye special rules */
+@media screen and (max-width: 400px) {
+    header { 
+        /* Header ki andar ki space (padding) thodi kam ki hai taaki logo fit aaye */
+        padding: 12px 16px !important; 
+    }
+    
+    .header-sub {
+        font-size: 0.65rem !important; /* 'BY SHEKH' ko thoda adjust kiya */
+    }
+    
+    .main-content {
+        /* Bismillah text ya Help button par overlap hatane ke liye top se jagah badhai hai */
+        padding-top: 100px !important; 
+    }
+}
+
     </style>
 </head>
 <body>
