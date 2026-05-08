@@ -86,9 +86,33 @@
             border-bottom: 1px solid var(--border); 
             transition: background-color 0.3s ease, border-color 0.3s ease; 
         }
-        .header-logo-container { display: flex; flex-direction: column; justify-content: center; }
-        .header-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.25rem; background: linear-gradient(135deg, var(--accent2), #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; letter-spacing: -0.02em; }
-        .header-sub { font-family: 'DM Mono', monospace; font-size: .7rem; font-weight: 500; color: var(--accent2); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 4px; }
+        .header-logo-container { display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
+        
+        .header-logo { 
+            font-family: 'Syne', sans-serif; 
+            font-weight: 800; 
+            /* 🔥 MAGIC: Font apne aap screen ke hisaab se set hoga (Min 1rem, Max 1.25rem) 🔥 */
+            font-size: clamp(1rem, 5vw, 1.25rem); 
+            background: linear-gradient(135deg, var(--accent2), #c084fc); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+            line-height: 1; 
+            letter-spacing: -0.02em; 
+            /* Text 2 line mein nahi tootega */
+            white-space: nowrap; 
+        }
+        
+        .header-sub { 
+            font-family: 'DM Mono', monospace; 
+            font-size: .7rem; 
+            font-weight: 500; 
+            color: var(--accent2); 
+            text-transform: uppercase; 
+            letter-spacing: 0.1em; 
+            margin-top: 4px; 
+            white-space: nowrap; 
+        }
+
 
         /* ✅ SCROLLABLE TABS (Fixed Margin and Top) */
         .stepper-wrap {
@@ -152,40 +176,7 @@
         .nav-item.active i { background: var(--glow2); padding: 8px; border-radius: 50%; box-shadow: 0 0 15px var(--glow); transform: translateY(-4px); color: var(--accent); }
 
         @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
-        /* 🔥 AUTO-ADJUSTING RESPONSIVE HEADER 🔥 */
-
-.header-logo-container {
-    /* Ye text ko poori jagah lene dega, par icons ko bahar nahi dhakelega */
-    flex: 1; 
-    min-width: 0;
-    margin-right: 15px;
-}
-
-.header-logo {
-    /* Text hamesha ek line mein rahega */
-    white-space: nowrap; 
-    
-    /* Screen ke hisaab se font size khud adjust hoga (Minimum 1rem, Maximum 1.25rem) */
-    font-size: clamp(1rem, 4.5vw, 1.25rem); 
-    
-    /* Agar screen behad hi choti ho jaye, toh layout todne ke bajaye '...' laga dega (e.g. Islamic Lib...) */
-    overflow: hidden;
-    text-overflow: ellipsis; 
-}
-
-.header-sub {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-/* Bas choti screen par side ki padding halki si kam karenge taaki text ko zyada jagah mile */
-@media screen and (max-width: 480px) {
-    header { 
-        padding: 14px 16px; 
-    }
-}
-
+        
 
     </style>
 </head>
