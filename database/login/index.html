@@ -142,46 +142,58 @@
     background-color: #f8f9fa;
     pointer-events: none;
 }
-/* 🔥 LOGIN / SIGNUP CARD RESPONSIVE SCALING FIX 🔥 */
+/* 🔥 LOGIN / SIGNUP CARD RESPONSIVE SCALING FIX (UPDATED) 🔥 */
 
 @media screen and (max-width: 400px) {
-    /* 1. Main Card ko adjust karna */
+    /* 1. Main Card ko lamba hone se rokna */
     .auth-card {
-        padding: 24px 16px !important; 
-        max-width: 95% !important; /* Screen ke kinaron se thoda gap rakhne ke liye */
+        padding: 20px 16px 24px !important; /* Upar-niche ki padding kam kardi */
+        max-width: 95% !important; 
     }
 
-    /* 2. 'Create Account' Text ko Help Badge se bachana */
+    /* 2. 🔥 HEADINGS WAPAS CENTER MEIN 🔥 (Pichli galti theek kar di) */
     .auth-card h1, .auth-card h2, .auth-card h3 {
-        font-size: 1.4rem !important; 
-        margin-right: 60px !important; 
+        font-size: 1.3rem !important; 
+        margin-right: 0 !important; /* Ab text ekdum Center mein rahega */
+        text-align: center !important;
     }
 
-    /* 3. Inputs (Email, Password boxes) ki height set karna */
+    /* 3. Bismillah ko Help button se bachana */
+    .bismillah {
+        font-size: 22px !important; /* Bismillah ko thoda sa adjust kiya */
+        margin-top: 5px !important; /* Upar se thodi jagah di */
+        margin-bottom: 15px !important; 
+    }
+
+    /* 4. Asli Help Badge ko ekdum kone mein adjust karna */
+    .help-badge {
+        transform: scale(0.75); /* Button aur chhota kiya taaki overlap na ho */
+        top: 8px !important;
+        right: 8px !important;
+    }
+
+    /* 5. CARD KI LAMBAI KAM KARNA (Gaps kam karke) */
+    .form-group {
+        margin-bottom: 12px !important; /* Inputs ke beech ka gap kam kiya */
+    }
+    .auth-toggle {
+        margin-bottom: 16px !important; /* Mobile/Email button ke niche ka gap */
+    }
+    .divider {
+        margin: 15px 0 !important; /* 'OR' ke upar-niche ka gap kam kiya */
+    }
+
+    /* 6. Inputs aur Buttons ko patla karna */
     .form-group input {
-        padding: 10px 14px !important; 
+        padding: 10px 12px !important; 
         font-size: 0.9rem !important; 
     }
-
-    /* 4. Labels (Jaise FULL NAME) */
-    .form-group label {
-        font-size: 0.75rem !important;
-        margin-bottom: 2px !important;
-    }
-
-    /* 5. Dono Buttons (Sign Up & Google) ko perfectly scale karna */
     .auth-card .btn, .auth-card .google-btn {
-        padding: 12px 16px !important;
-        font-size: 0.95rem !important;
-    }
-
-    /* 6. Asli Help Badge ko resize aur shift karna */
-    .help-badge {
-        transform: scale(0.85); 
-        top: 15px !important;
-        right: 15px !important;
+        padding: 10px 16px !important; /* Buttons ki unchai (height) kam kardi */
+        font-size: 0.9rem !important;
     }
 }
+
 
     </style>
 </head>
