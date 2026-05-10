@@ -576,99 +576,62 @@
             return type === 'mobile' ? `${inputValue.trim()}@islamiclibrary.com` : inputValue.trim();
         }
 
-// 1. Provider Setup
+// Provider Setup
 const googleProvider = new GoogleAuthProvider();
 
-// 2. LOGIN BUTTON FUNCTION (Sirf Google par bhejega)
-window.loginWithGoogle = function(btnId) {
+// LOGIN BUTTON FUNCTION (Clean Popup Method)
+window.loginWithGoogle = async function(btnId) {
     const btn = document.getElementById(btnId);
     if (!btn) return;
 
-    // Yaad rakho ki humne redirect shuru kiya hai
-    sessionStorage.setItem('pending_google_login', 'true');
-
     btn.disabled = true;
-    btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span>Redirecting...</span>`;
+    btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span>Verifying...</span>`;
 
-    signInWithRedirect(auth, googleProvider).catch((error) => {
-        alert("Redirect Error: " + error.message);
-        resetGoogleBtn(btnId);
-        sessionStorage.removeItem('pending_google_login');
-    });
-};
+    try {
+        // Seedha Popup Call - Browser ise khud handle karega
+        const result = await signInWithPopup(auth, googleProvider);
+        
+        // Jese hi user select karke popup band karega, code yahan se aage badhega
+        const user = result.user;
+        const userRef = doc(db, "users", user.uid);
+        const userSnap = await getDoc(userRef);
 
-// 3. RESET BUTTON
-function resetGoogleBtn(btnId = 'google-login-btn') {
-    const btn = document.getElementById(btnId);
-    if (btn) {
+        if (!userSnap.exists()) {
+            await setDoc(userRef, {
+                uid: user.uid,
+                name: user.displayName || "Google User",
+                loginType: 'google',
+                displayId: user.email,
+                createdAt: new Date().toISOString()
+            });
+
+            try {
+                await updateDoc(doc(db, "metadata", "stats"), { total_users: increment(1) });
+            } catch(e) {}
+        }
+
+        localStorage.setItem("islamic_user_id", user.uid);
+        localStorage.setItem("islamic_user_name", userSnap.exists() && userSnap.data().name ? userSnap.data().name : (user.displayName || "Google User"));
+        localStorage.setItem("islamic_user_mobile", user.email);
+
+        window.showToast("Google Login Successful!");
+        
+        setTimeout(() => { window.location.href = '../'; }, 200);
+
+    } catch (error) {
+        console.error("Popup Error: ", error);
+        
+        // Agar galti se popup band kar diya ya cancel kiya toh wapas normal kar do
         btn.disabled = false;
         btn.innerHTML = `<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google"> <span>Continue with Google</span>`;
-    }
-}
-
-// 4. REDIRECT RESULT CHECKER (Dhyan se dekho)
-document.addEventListener('DOMContentLoaded', async () => {
-    const btnId = 'google-login-btn';
-    
-    // Check karo kya hum login karke wapas aaye hain?
-    if (sessionStorage.getItem('pending_google_login') === 'true') {
-        const btn = document.getElementById(btnId);
-        if (btn) {
-            btn.disabled = true;
-            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span>Verifying...</span>`;
-        }
-
-        try {
-            // Firebase se pucho result
-            const result = await getRedirectResult(auth);
-            
-            if (result && result.user) {
-                alert("Success! User mil gaya: " + result.user.email);
-                
-                const user = result.user;
-                const userRef = doc(db, "users", user.uid);
-                const userSnap = await getDoc(userRef);
-
-                if (!userSnap.exists()) {
-                    await setDoc(userRef, {
-                        uid: user.uid,
-                        name: user.displayName || "Google User",
-                        loginType: 'google',
-                        displayId: user.email,
-                        createdAt: new Date().toISOString()
-                    });
-                    try {
-                        await updateDoc(doc(db, "metadata", "stats"), { total_users: increment(1) });
-                    } catch(e) {}
-                }
-
-                localStorage.setItem("islamic_user_id", user.uid);
-                localStorage.setItem("islamic_user_name", userSnap.exists() ? userSnap.data().name : (user.displayName || "Google User"));
-                localStorage.setItem("islamic_user_mobile", user.email);
-
-                sessionStorage.removeItem('pending_google_login'); // Kaam khatam, flag hatao
-                window.location.href = '../'; 
-            } else {
-                // Agar bina select kiye back aaye ya data nahi mila
-                alert("Login Canceled: No user data found.");
-                resetGoogleBtn(btnId);
-                sessionStorage.removeItem('pending_google_login');
-            }
-        } catch (error) {
-            alert("Verification Error: " + error.code);
-            resetGoogleBtn(btnId);
-            sessionStorage.removeItem('pending_google_login');
+        
+        // Sirf asli errors ka toast dikhao
+        if (error.code !== 'auth/popup-closed-by-user' && error.code !== 'auth/cancelled-popup-request') {
+            window.showToast("Login Failed. Try again.", "error");
         }
     }
-});
+};
 
-// Security: Agar user back button daba kar aaye
-window.addEventListener('pageshow', (event) => {
-    // Agar page cache se load ho raha hai (back button) toh reset karo
-    if (event.persisted) {
-        resetGoogleBtn('google-login-btn');
-    }
-});
 
 
 
