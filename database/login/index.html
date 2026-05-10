@@ -578,41 +578,41 @@
 
 // Provider Setup
 const googleProvider = new GoogleAuthProvider();
-// LOGIN BUTTON FUNCTION (Ghost Timer Fix)
+let googleAuthTimeout = null; // Ek simple timer variable
+
+// LOGIN BUTTON FUNCTION (Ekdum Simple aur Clean)
 window.loginWithGoogle = async function(btnId) {
     const btn = document.getElementById(btnId);
     if (!btn) return;
 
     const defaultHTML = `<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google"> <span>Continue with Google</span>`;
     
-    // 🧹 1. PURANE "GHOST TIMERS" KO DELETE KARO (Yeh sabse zaroori step hai)
-    if (window.googleAuthTimer) clearTimeout(window.googleAuthTimer);
-    if (window.googleAuthFocusHandler) {
-        window.removeEventListener('focus', window.googleAuthFocusHandler);
-    }
+    // 🧹 1. NAYE CLICK PAR SAB KUCH CLEAR KARO
+    if (googleAuthTimeout) clearTimeout(googleAuthTimeout);
+    window.removeEventListener('focus', window.handleGoogleFocus);
 
-    // 2. BUTTON KO VERIFYING MEIN DAALO
+    // 2. BUTTON KO VERIFYING MEIN DALO
     btn.disabled = true;
     btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span>Verifying...</span>`;
 
-    // 3. NAYA 2 SECOND WALA TIMER BANAO
-    window.googleAuthFocusHandler = () => {
-        window.googleAuthTimer = setTimeout(() => {
+    // 3. 2 SECOND WALA TIMER LAGA DO
+    window.handleGoogleFocus = () => {
+        googleAuthTimeout = setTimeout(() => {
             if (btn.disabled) {
                 btn.disabled = false;
                 btn.innerHTML = defaultHTML;
             }
-        }, 2000); // 👈 Tera 2 second ka timing
-        window.removeEventListener('focus', window.googleAuthFocusHandler);
+        }, 2000);
+        window.removeEventListener('focus', window.handleGoogleFocus);
     };
-    window.addEventListener('focus', window.googleAuthFocusHandler);
+    window.addEventListener('focus', window.handleGoogleFocus);
 
     try {
         const result = await signInWithPopup(auth, googleProvider);
         
-        // 🎉 SUCCESS MILITY HI TIMER ROK DO
-        if (window.googleAuthTimer) clearTimeout(window.googleAuthTimer);
-        window.removeEventListener('focus', window.googleAuthFocusHandler);
+        // 🎉 SUCCESS MILITY HI TIMER CLEAR KARO
+        if (googleAuthTimeout) clearTimeout(googleAuthTimeout);
+        window.removeEventListener('focus', window.handleGoogleFocus);
 
         const user = result.user;
         const userRef = doc(db, "users", user.uid);
@@ -637,23 +637,27 @@ window.loginWithGoogle = async function(btnId) {
         localStorage.setItem("islamic_user_mobile", user.email);
 
         window.showToast("Google Login Successful!");
-        
         setTimeout(() => { window.location.href = '../'; }, 200);
 
     } catch (error) {
-        // ❌ ERROR AATE HI TIMER ROK DO AUR BUTTON NORMAL KARO
-        if (window.googleAuthTimer) clearTimeout(window.googleAuthTimer);
-        window.removeEventListener('focus', window.googleAuthFocusHandler);
+        // 🚀 THE MAGIC LINE: Agar user ne dobara click kiya hai, toh is purane error ko IGNORE kar do!
+        if (error.code === 'auth/cancelled-popup-request') {
+            return; // Yahan se seedha bahar, button ko haath nahi lagayega
+        }
+
+        // ❌ NORMAL ERROR (Back aana ya Net band hona)
+        if (googleAuthTimeout) clearTimeout(googleAuthTimeout);
+        window.removeEventListener('focus', window.handleGoogleFocus);
         
         btn.disabled = false;
         btn.innerHTML = defaultHTML;
 
-        if (error.code !== 'auth/popup-closed-by-user' && error.code !== 'auth/cancelled-popup-request') {
+        // Sirf asli problem par toast dikhao
+        if (error.code !== 'auth/popup-closed-by-user') {
             window.showToast("Login Failed. Try again.", "error");
         }
     }
 };
-
 
 
         // ✅ LOGIN (FIREBASE)
