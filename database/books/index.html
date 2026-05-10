@@ -67,6 +67,15 @@
         [data-theme="light"] header, [data-theme="light"] .action-footer { background: rgba(255, 255, 255, 0.9); border-bottom-color: rgba(0,0,0,0.1); border-top-color: rgba(0,0,0,0.1); }
         [data-theme="light"] .bottom-nav { background: rgba(255, 255, 255, 0.9); border-top-color: rgba(0,0,0,0.1); }
         [data-theme="light"] .profile-drawer { background: #fff; }
+        /* 🔥 LIGHT MODE PASSWORD INPUT FIX 🔥 */
+        [data-theme="light"] .custom-dark-input {
+            background: var(--surface2) !important; /* Halka gray background */
+            color: var(--text) !important;          /* Dark text color */
+            border-color: var(--border2) !important;
+        }
+        [data-theme="light"] .custom-dark-input::placeholder {
+            color: var(--text3) !important;         /* Dark placeholder */
+        }
 
         *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; font-size: 16px; }
@@ -205,6 +214,12 @@
         .share-btn:hover { border-color: var(--accent); color: var(--accent2); background: var(--glow2); transform: scale(1.05); }
         
         .detail-thumb { width: 100%; max-width: 250px; aspect-ratio: 1/1; border-radius: var(--r3); object-fit: cover; margin: 0 auto 24px auto; display: block; border: 1px solid var(--border); box-shadow: var(--shadow); animation: cardIn .5s ease both; }
+/* Ye line normal CSS mein dalo taki mobile par bhi dikhe */
+.detail-thumb {
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4) !important;
+    border: 1px solid rgba(255,255,255,0.1) !important; /* Halka sa border taki shadow aur khul kar aaye */
+}
+
         .action-footer { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(10,10,15,0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); padding: 16px 24px; border-top: 1px solid var(--border); z-index: 1000; display: flex; justify-content: space-between; align-items: center; transition: background-color 0.3s ease, border-color 0.3s ease; white-space: nowrap; gap: 12px; }
 
         .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 70px; background: rgba(10,10,15,0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--border); z-index: 999; transition: background-color 0.3s ease, border-color 0.3s ease; }
@@ -238,8 +253,156 @@
     .action-footer > *:first-child {
         font-size: 0.95rem !important; /* Halka sa adjust hoga taki button ko jagah mile */
     }
-}
+}        /* 🔥 BOOK DETAILS TITLE - RESPONSIVE & CONSISTENT 🔥 */
+        #det-title {
+            /* 1. Alignment & Natural Flow */
+            text-align: left !important;
+            white-space: normal !important;
+            word-break: break-word !important;
+            overflow-wrap: break-word !important;
+            line-height: 1.35 !important;
+            margin-bottom: 12px !important;
+            
+            /* 2. Consistent Sizing (Screen ke hisaab se, Title ki length se farq nahi padega) */
+            /* Minimum 1.15rem, Preferred 5vw (5% of screen width), Max 1.8rem */
+            font-size: clamp(1.15rem, 5vw, 1.8rem) !important; 
+            
+            /* 3. Appearance */
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            color: var(--text);
+        }
 
+        /* 🔥 DESKTOP VIEW FIX (BOOK DETAILS) - FINAL PERFECTED 🔥 */
+        @media screen and (min-width: 768px) {
+            
+            /* 1. Header/Nav alignment fix */
+            header { padding: 20px 10% !important; }
+            .header-logo { font-size: 1.6rem !important; }
+            .fa-moon, .fa-user-circle { font-size: 1.6rem !important; margin-left: 20px !important; }
+
+            .bottom-nav { padding: 0 10% !important; height: 80px !important; }
+
+            /* 2. Action Footer alignment - Download button profile icon ki seedh mein */
+            #action-footer {
+                padding-left: 10% !important;
+                padding-right: 10% !important;
+                background: rgba(10,10,15,0.95) !important;
+                backdrop-filter: blur(20px) !important;
+            }
+
+            /* 3. Main content area */
+            .main-content {
+                max-width: 900px !important;
+                margin: 0 auto !important;
+                padding-top: 100px !important; 
+            }
+
+            /* 4. 🔥 IMAGE SIZE FIX (Max-width ko hataya) 🔥 */
+            #det-thumb {
+                display: block !important;
+                margin: 0 auto 40px auto !important; 
+                width: 500px !important;      /* Ab ye sach mein bada hoga */
+                max-width: none !important;    /* Purani 250px wali limit khatam */
+                height: auto !important;
+                border-radius: 24px !important;
+                box-shadow: 0 25px 60px rgba(0,0,0,0.6) !important;
+            }
+
+            /* 5. 🔥 Title & Tag: Left side par shift 🔥 */
+            #det-title { 
+                max-width: 800px !important;
+                margin: 0 0 15px 0 !important; /* margin-left 0 kiya taki ekdum left me jaye */
+                font-size: 2.4rem !important; 
+                text-align: left !important; 
+            }
+            
+            #det-price-box { 
+                max-width: 800px !important;
+                margin: 0 0 25px 0 !important; /* margin-left 0 kiya */
+                display: flex !important; 
+                justify-content: flex-start !important; 
+            }
+
+            #det-arabic-phrase { 
+                font-size: 36px !important; 
+                text-align: center !important; /* Arabic phrase center me hi pyara lagta hai */
+                margin-bottom: 35px !important; 
+            }
+            
+            #det-desc { 
+                max-width: 850px !important;
+                margin: 0 0 !important; /* Isko bhi left shift kiya */
+                font-size: 1.15rem !important; 
+                line-height: 1.9 !important; 
+                text-align: left !important;
+                padding-bottom: 130px !important; 
+            }
+            /* 🍞 TOAST NOTIFICATIONS DESKTOP FIX 🍞 */
+            #toast-container {
+                bottom: 50px !important; 
+                right: 50px !important; /* PC par right kone mein aaram se set hoga */
+            }
+            .toast {
+                padding: 18px 24px !important;
+                font-size: 1.15rem !important; /* Text padhne layak bada kiya */
+                border-radius: 16px !important;
+                gap: 16px !important;
+                min-width: 320px !important; /* PC par thoda lamba toast acha lagta hai */
+                box-shadow: 0 15px 35px rgba(0,0,0,0.5) !important; /* Premium Shadow */
+            }
+            .toast i { 
+                font-size: 1.5rem !important; /* Error/Success wala Icon bhi bada hoga */
+            }
+            /* 🚀 ALL MODALS DESKTOP FIX (Logout, Change Password) 🚀 */
+            .modal-box {
+                max-width: 480px !important; /* Modals ab choude aur premium lagenge */
+                padding: 40px !important;
+                border-radius: 24px !important;
+            }
+            
+            /* Modal Heading aur Text ko bada karna */
+            .modal-title, #change-password-modal h3 {
+                font-size: 1.8rem !important;
+                margin-bottom: 15px !important;
+            }
+            .modal-desc {
+                font-size: 1.1rem !important;
+                line-height: 1.6 !important;
+                margin-bottom: 30px !important;
+            }
+            
+            /* Modal Buttons ko PC ke hisaab se clickable banana */
+            .modal-actions {
+                gap: 20px !important;
+            }
+            .modal-actions button {
+                padding: 14px !important;
+                font-size: 1.1rem !important;
+                border-radius: 14px !important;
+            }
+            
+            /* 🔥 Change Password Input Box PC Size 🔥 */
+            #change-password-modal .form-group label {
+                font-size: 1.1rem !important;
+                margin-bottom: 10px !important;
+            }
+            .custom-dark-input {
+                padding: 16px 20px !important;
+                font-size: 1.1rem !important;
+                border-radius: 14px !important;
+            }
+            /* 🔥 LIGHT MODE DESKTOP FOOTER FIX 🔥 */
+            [data-theme="light"] #action-footer {
+                background: rgba(255, 255, 255, 0.9) !important; /* Safed background */
+                border-top: 1px solid rgba(0,0,0,0.1) !important; /* Halka gray border */
+            }
+            
+            [data-theme="light"] #action-footer .price-tag {
+                color: var(--accent2) !important; /* Price tag ka color dark theme jaisa na reh jaye */
+            }
+
+        }
 
     </style>
 </head>
