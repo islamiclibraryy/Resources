@@ -177,6 +177,71 @@
 
         @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
         
+                    /* 🔥 DESKTOP VIEW FIX (PREMIUM LOOK) 🔥 */
+        @media screen and (min-width: 768px) {
+            /* 1. Main dabbe ko thoda chauda karna aur upar se jagah dena */
+            .main-content { 
+                max-width: 900px !important; 
+                padding-top: 40px !important; 
+            }
+
+            /* 2. Card ke andar ki jagah (padding) badhana */
+            .content-card { 
+                padding: 40px 50px !important; 
+            }
+            .ig-card { 
+                padding: 50px 40px !important; 
+                max-width: 600px !important; 
+                margin: 0 auto !important; 
+            }
+
+            /* 3. Headings aur Bismillah ko bada karna */
+            .content-card h3, .ig-card h3 { 
+                font-size: 1.6rem !important; 
+                margin-bottom: 16px !important; 
+            }
+            .bismillah { 
+                font-size: 36px !important; 
+                margin-bottom: 30px !important; 
+            }
+
+            /* 4. Text (Paragraph) ko padhne laayak (readable) banana */
+            .content-card p, .content-card ul, .ig-card p { 
+                font-size: 1.1rem !important; 
+                line-height: 1.8 !important; 
+            }
+
+            /* 5. Stepper (Tabs) ko left ki jagah Center mein set karna */
+            .stepper { 
+                justify-content: center !important; 
+            }
+            .step-item { 
+                padding: 10px 24px !important; 
+                font-size: 1rem !important; 
+            }              /* 🔥 HEADER, FOOTER & STEPPER DESKTOP FIX 🔥 */
+        @media screen and (min-width: 768px) {
+            
+            /* 1. Header and Footer spacing */
+            header {
+                padding: 20px 10% !important; 
+            }
+            .bottom-nav {
+                padding: 0 10% !important;
+                height: 80px !important;
+            }
+
+            /* 2. PC ke hisaab se text aur icons bade kar diye */
+            .header-logo { font-size: 1.6rem !important; }
+            .fa-moon, .fa-user-circle { font-size: 1.6rem !important; margin-left: 20px !important; }
+            .nav-item i { font-size: 1.4rem !important; }
+            .nav-item span { font-size: 0.9rem !important; }
+
+            /* 3. 🔥 FIX: Bada Header hone ki wajah se Stepper ko niche khiskaya 🔥 */
+            .stepper-wrap {
+                top: 85px !important;        /* Naye header ki height ke hisaab se */
+                margin-top: 85px !important; /* Naye header ki height ke hisaab se */
+            }
+        }
 
     </style>
 </head>
@@ -380,5 +445,3 @@
     </script>
 </body>
 </html>
-
-hello dost
