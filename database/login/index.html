@@ -56,16 +56,16 @@
             --glow: rgba(99,102,241,0.15); --glow2: rgba(99,102,241,0.08);
             --shadow: 0 4px 20px rgba(0,0,0,0.06); --shadow2: 0 8px 30px rgba(0,0,0,0.1);
         }
-        
         [data-theme="light"] .blob { opacity: 0.5; }
 
         /* ===== GLOBAL STYLES ===== */
         *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; font-size: 16px; }
-        body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; min-height: 100vh; -webkit-tap-highlight-color: transparent; transition: background-color 0.3s ease, color 0.3s ease; }
+        
+        /* 🔥 FIX 1: LAYOUT FOUNDATION */
+        body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column; -webkit-tap-highlight-color: transparent; transition: background-color 0.3s ease, color 0.3s ease; }
         
         body::before { content:''; position:fixed; inset:0; pointer-events:none; z-index:9999; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E"); opacity:0.4; }
-
         .hero-bg { position:fixed; inset:0; pointer-events:none; z-index:-2; background: radial-gradient(ellipse 80% 50% at 50% -10%,rgba(124,106,247,0.2) 0%,transparent 70%), radial-gradient(ellipse 50% 40% at 80% 60%,rgba(168,85,247,0.12) 0%,transparent 60%), radial-gradient(ellipse 40% 30% at 20% 70%,rgba(99,102,241,0.1) 0%,transparent 60%); }
         .hero-grid { position:fixed; inset:0; pointer-events:none; z-index:-1; background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px); background-size:48px 48px; mask-image:radial-gradient(ellipse 100% 100% at 50% 50%,black 40%,transparent 100%); opacity:0.6; }
         .blob { position:fixed; border-radius:50%; filter:blur(80px); pointer-events:none; animation:blobFloat 8s ease-in-out infinite; z-index:-1; }
@@ -81,7 +81,7 @@
         /* ===== LOADER & TOAST ===== */
         #loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10,10,15,0.85); backdrop-filter: blur(5px); z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center; }
         .spinner { width: 50px; height: 50px; border: 4px solid var(--surface3); border-top: 4px solid var(--accent); border-radius: 50%; animation: spin 1s cubic-bezier(0.4,0,0.2,1) infinite; }
-        #toast-container { position: fixed; bottom: 30px; right: 28px; z-index: 9998; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
+        #toast-container { position: fixed; bottom: 30px; right: 28px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
         .toast { background: var(--surface); color: var(--text); padding: 12px 18px; border-radius: var(--r2); box-shadow: var(--shadow2); border: 1px solid var(--border2); animation: slideUp 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards; display: flex; align-items: center; gap: 10px; font-size: .85rem; font-weight: 500; }
 
         /* ===== FORMS & BUTTONS ===== */
@@ -89,45 +89,84 @@
         .form-group label { display: block; margin-bottom: 6px; font-size: .78rem; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.06em; }
         .form-group input { width: 100%; background: var(--surface2); color: var(--text); border: 1px solid var(--border2); padding: 12px 16px; border-radius: var(--r); font-size: .92rem; transition: var(--transition); }
         .form-group input:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px var(--glow2); }
-        .btn { background: linear-gradient(135deg, #7c6af7, #9f3fbf); color: #fff; border: none; padding: 14px 20px; border-radius: 99px; font-weight: 600; font-family: 'DM Sans', sans-serif; width: 100%; cursor: pointer; transition: var(--transition); font-size: 1rem; display: block; text-align: center; position: relative; overflow: hidden; box-shadow: 0 4px 20px rgba(124,106,247,0.4); }
+        
+        .btn { background: linear-gradient(135deg, #7c6af7, #9f3fbf); color: #fff; border: none; padding: 14px 20px; border-radius: 99px; font-weight: 600; font-family: 'DM Sans', sans-serif; width: 100%; cursor: pointer; transition: var(--transition); font-size: 1rem; display: block; text-align: center; position: relative; overflow: hidden; box-shadow: 0 4px 15px rgba(124,106,247,0.3) !important; }
         .btn::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,0.15),transparent); opacity:0; transition:opacity var(--transition); }
-        .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(124,106,247,0.5); } .btn:hover::before { opacity: 1; } .btn:active { transform: translateY(0) scale(0.98); }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(124,106,247,0.5) !important; } .btn:hover::before { opacity: 1; } .btn:active { transform: translateY(0) scale(0.98); }
+        
         .link-text { color: var(--accent2); font-size: .85rem; cursor: pointer; padding: 10px; display: inline-block; font-weight: 500; transition: var(--transition); }
         .link-text:hover { color: var(--accent3); text-shadow: 0 0 10px var(--glow); }
+        .btn:disabled, #signup-btn:disabled, #reset-btn:disabled { filter: grayscale(100%) opacity(0.6) !important; cursor: not-allowed !important; pointer-events: none !important; box-shadow: none !important; transform: none !important; }
 
-        /* ===== VIEWS & STRUCTURE ===== */
-        .auth-container { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; animation: fadeUp .6s ease both; }
-        .auth-card { background: var(--surface); padding: 32px 28px; border-radius: var(--r3); width: 100%; max-width: 400px; box-shadow: var(--shadow); border: 1px solid var(--border); text-align: center; animation: cardIn .5s ease both; transition: var(--transition); }
-        .auth-card:hover { border-color: var(--border2); }
-
-        /* TOGGLE BUTTON STYLES */
-        .auth-toggle { display: flex; background: var(--surface3); border-radius: var(--r); margin-bottom: 20px; padding: 4px; border: 1px solid var(--border2); }
-        .auth-toggle button { flex: 1; padding: 10px; border: none; background: transparent; color: var(--text2); font-weight: 600; border-radius: calc(var(--r) - 4px); cursor: pointer; transition: 0.3s; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; }
-        .auth-toggle button.active { background: var(--accent); color: #fff; box-shadow: var(--shadow); }
-
-        /* Support Badge for Auth Cards */
-        .auth-card { position: relative; }
-        .help-badge { position: absolute; top: 15px; right: 15px; background: var(--glow2); color: var(--accent2); border: 1px solid var(--border); padding: 6px 12px; border-radius: 99px; font-size: 0.67rem; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 6px; transition: var(--transition); z-index: 10; }
-        .help-badge:hover { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: 0 4px 15px var(--glow); transform: translateY(-2px); }
-
-        /* 🔥 FIX: PERFECT GRAY DISABLED BUTTON (Grayscale Filter) */
-        .btn:disabled, #signup-btn:disabled, #reset-btn:disabled {
-            filter: grayscale(100%) opacity(0.6) !important;
-            cursor: not-allowed !important;
-            pointer-events: none !important;
-            box-shadow: none !important;
-            transform: none !important;
-        }
-
-        /* 🔥 NEW: GOOGLE BUTTON CSS */
+        /* ===== GOOGLE BUTTON & DIVIDER ===== */
         .divider { display: flex; align-items: center; text-align: center; margin: 20px 0; color: var(--text3); font-size: 0.85rem; font-weight: 600; }
         .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid var(--border2); }
         .divider::before { margin-right: .5em; } .divider::after { margin-left: .5em; }
         
-        .google-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 12px; background: #fff; border: 1px solid #dadce0; border-radius: 99px; color: #3c4043; font-size: 15px; font-weight: 600; cursor: pointer; transition: 0.3s; font-family: 'DM Sans', sans-serif; }
+        .google-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 12px; background: #fff; border: none !important; border-radius: 99px; color: #3c4043; font-size: 15px; font-weight: 600; cursor: pointer; transition: 0.3s; font-family: 'DM Sans', sans-serif; box-shadow: 0 4px 12px rgba(0,0,0,0.2) !important; }
         .google-btn:hover { background: #f8f9fa; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transform: translateY(-2px); }
         .google-btn:active { transform: translateY(0); }
         .google-btn img { width: 22px; }
+        .google-btn:disabled { opacity: 0.7; cursor: not-allowed; background-color: #f8f9fa; pointer-events: none; }
+        [data-theme="light"] .google-btn { box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important; border: 1px solid rgba(0,0,0,0.1) !important; }
+
+        /* ===== VIEWS & STRUCTURE ===== */
+        #auth-views { flex: 1; display: flex; flex-direction: column; width: 100%; }
+        .auth-container { display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; min-height: calc(100vh - 60px) !important; padding: 80px 20px 20px !important; animation: fadeUp .6s ease both; }
+        .auth-card { background: var(--surface); padding: 32px 28px; border-radius: var(--r3); width: 100%; max-width: 400px; box-shadow: var(--shadow); border: 1px solid var(--border); text-align: center; animation: cardIn .5s ease both; transition: var(--transition); position: relative; }
+        .auth-card:hover { border-color: var(--border2); }
+        
+        .help-badge { position: absolute; top: 15px; right: 15px; background: var(--glow2); color: var(--accent2); border: 1px solid var(--border); padding: 6px 12px; border-radius: 99px; font-size: 0.67rem; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 6px; transition: var(--transition); z-index: 10; }
+        .help-badge:hover { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: 0 4px 15px var(--glow); transform: translateY(-2px); }
+
+        /* ===== 3 INITIAL GATEWAY BUTTONS ===== */
+        #initial-options-view .btn { box-shadow: none !important; }
+        #initial-options-view .btn::before { display: none !important; }
+        #initial-options-view .btn:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.2) !important; }
+        #initial-options-view .btn-outline { transition: 0.3s; }
+        #initial-options-view .btn-outline:hover { border-color: var(--accent) !important; background: var(--surface3) !important; transform: translateY(-2px); }
+
+        /* ===== TEXT & BACK ICON ===== */
+        .legal-text { font-size: 0.72rem !important; color: var(--text3) !important; margin-top: 35px !important; text-align: center !important; line-height: 1.5 !important; }
+        .legal-text a { color: var(--text3) !important; text-decoration: underline !important; text-underline-offset: 3px !important; transition: 0.3s; }
+        .legal-text a:hover { color: var(--text) !important; }
+        .back-icon { position: absolute; top: 25px; left: 20px; font-size: 1.2rem; color: var(--text3); cursor: pointer; transition: 0.3s; z-index: 10; }
+        .back-icon:hover { color: var(--accent); transform: translateX(-3px); }
+
+        /* ===== 🚨 PERFECT COMPACT FOOTER 🚨 ===== */
+        .auth-footer { 
+            width: 100%; margin-top: auto; 
+            padding: 12px 20px !important; /* Footer patla kar diya */
+            border-top: 1px solid var(--border); text-align: center; 
+            background: transparent; z-index: 100; flex-shrink: 0;
+        }
+        .footer-content { display: flex; flex-direction: column; gap: 6px !important; align-items: center; justify-content: center; margin: 0; }
+        .footer-content span { color: var(--text3); font-size: 0.75rem; }
+        .footer-links { display: flex; gap: 12px; align-items: center; font-size: 0.75rem; }
+        /* Footer Dandi/Underline */
+        .footer-links a { color: var(--text3) !important; text-decoration: underline !important; text-underline-offset: 3px !important; transition: 0.3s; }
+        .footer-links a:hover { color: var(--text) !important; }
+        .sep { opacity: 0.3; color: var(--text3); }
+
+        /* ===== DRAWER / SIDEBAR ===== */
+        .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 10001; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; backdrop-filter: blur(3px); }
+        .drawer-overlay.active { opacity: 1; pointer-events: all; }
+        .profile-drawer { position: fixed; top: 0; right: -320px; width: 300px; height: 100vh; background: var(--surface); z-index: 10002; box-shadow: -5px 0 30px rgba(0,0,0,0.5); transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; }
+        .profile-drawer.active { right: 0; }
+        .drawer-header { padding: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
+        .drawer-body { padding: 30px 20px; text-align: center; flex: 1; overflow-y: auto; }
+        .drawer-avatar { width: 80px; height: 80px; border-radius: 50%; background: var(--glow2); border: 2px solid var(--accent); color: var(--accent2); font-size: 2.5rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px auto; }
+        .drawer-name { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 700; margin-bottom: 4px; color: var(--text); }
+        .drawer-mobile { font-family: 'DM Mono', monospace; font-size: 0.9rem; color: var(--text2); margin-bottom: 30px; letter-spacing: 0.05em; }
+        .drawer-menu .btn-outline { width: 100%; text-align: left; padding: 14px 20px; margin-bottom: 12px; display: flex; align-items: center; gap: 12px; font-size: 0.95rem; border-color: var(--border); background: transparent; color: var(--text); border-radius: var(--r); }
+
+        /* ===== HEADER MATCH ===== */
+        header { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; background: rgba(10,10,15,0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); transition: background-color 0.3s ease, border-color 0.3s ease; }
+        .header-logo-container { display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
+        .header-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(1rem, 5vw, 1.25rem); background: linear-gradient(135deg, var(--accent2), #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; letter-spacing: -0.02em; white-space: nowrap; }
+        .header-sub { font-family: 'DM Mono', monospace; font-size: .7rem; font-weight: 500; color: var(--accent2); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 4px; white-space: nowrap; }
+        [data-theme="light"] header { background: rgba(255, 255, 255, 0.95) !important; border-bottom: 1px solid rgba(0,0,0,0.1) !important; }
+        [data-theme="light"] .header-logo { background: linear-gradient(135deg, var(--accent2), var(--accent)) !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important; }
 
         /* ===== ANIMATIONS ===== */
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } } 
@@ -136,64 +175,56 @@
         @keyframes slideUp { from { opacity: 0; transform: translateY(10px) scaleY(0.95); } to { opacity: 1; transform: translateY(0) scaleY(1); } } 
         @keyframes spin { to { transform: rotate(360deg); } } 
         @keyframes blobFloat { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(20px,-20px) scale(1.05)} 66%{transform:translate(-15px,15px) scale(0.97)} }
-        .google-btn:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
-    background-color: #f8f9fa;
-    pointer-events: none;
-}
-/* 🔥 LOGIN / SIGNUP CARD RESPONSIVE SCALING FIX (FINAL) 🔥 */
 
-@media screen and (max-width: 400px) {
-    /* 1. Main Card ki padding adjust ki, par chaudai (width) natural rakhi */
-    .auth-card {
-        padding: 20px 16px 24px !important; 
-    }
+        /* ===== DESKTOP VIEW & EXACT ICONS MATCH ===== */
+        @media screen and (min-width: 768px) {
+            header { padding: 20px 10% !important; }
+            .header-logo { font-size: 1.6rem !important; }
+            .fa-moon, .fa-user-circle { font-size: 1.6rem !important; margin-left: 20px !important; }
+            
+            /* 🏰 CARD KO BADA AUR CHAUDA KIYA (PRO MAX LEVEL) */
+            .auth-card { max-width: 700px !important; padding: 70px 65px !important; border-radius: 32px !important; box-shadow: 0 40px 80px rgba(0,0,0,0.5) !important; }
+            
+            /* 📝 TEXT AUR HEADING BADI KI */
+            .bismillah { font-size: 38px !important; margin-bottom: 28px !important; }
+            .auth-card h2 { font-size: 2.5rem !important; margin-bottom: 14px !important; }
+            .auth-card p { font-size: 1.2rem !important; margin-bottom: 40px !important; }
+            
+            /* ⌨️ INPUT BOXES AUR LABELS BADE KIYE */
+            .form-group { margin-bottom: 28px !important; }
+            .form-group label { font-size: 1rem !important; margin-bottom: 12px !important; }
+            .form-group input { padding: 20px 24px !important; font-size: 1.2rem !important; border-radius: 18px !important; }
+            
+            /* 🔘 BUTTONS KO LUMBAY AUR CHAUDE KIYE */
+            .btn { padding: 20px 24px !important; font-size: 1.3rem !important; }
+            .google-btn { padding: 18px !important; font-size: 1.25rem !important; }
+            .google-btn img { width: 32px !important; } 
+            .divider { font-size: 1.1rem !important; margin: 35px 0 !important; }
+            
+            /* ℹ️ HELP BADGE AUR LEGAL TEXT */
+            .help-badge { font-size: 1rem !important; padding: 12px 20px !important; top: 30px !important; right: 30px !important; }
+            .legal-text { font-size: 0.95rem !important; margin-top: 50px !important; }
 
-    /* 2. Headings wapas Center mein */
-    .auth-card h1, .auth-card h2, .auth-card h3 {
-        font-size: 1.3rem !important; 
-        margin-right: 0 !important; 
-        text-align: center !important;
-    }
-
-    /* 3. Bismillah ko Help button se bachana */
-    .bismillah {
-        font-size: 22px !important; 
-        margin-top: 5px !important; 
-        margin-bottom: 15px !important; 
-    }
-
-    /* 4. Help Badge ko ekdum kone mein set karna */
-    .help-badge {
-        transform: scale(0.75); 
-        top: 8px !important;
-        right: 8px !important;
-    }
-
-    /* 5. Gaps kam karke Card ki lambai choti karna */
-    .form-group {
-        margin-bottom: 12px !important; 
-    }
-    .auth-toggle {
-        margin-bottom: 16px !important; 
-    }
-    .divider {
-        margin: 15px 0 !important; 
-    }
-
-    /* 6. Inputs aur Buttons ka size screen ke hisaab se set karna */
-    .form-group input, .custom-dark-input {
-        padding: 10px 12px !important; 
-        font-size: 0.9rem !important; 
-    }
-    .auth-card .btn, .auth-card .google-btn {
-        padding: 10px 16px !important; 
-        font-size: 0.9rem !important;
-    }
-}
-
-
+            .auth-footer { padding: 25px 10% !important; }
+            .footer-content { flex-direction: row !important; justify-content: space-between !important; max-width: 1400px; margin: 0 auto !important; }
+            .footer-content span, .footer-links { font-size: 1.05rem !important; }
+            /* 🍞 TOAST NOTIFICATIONS DESKTOP FIX 🍞 */
+            #toast-container {
+                bottom: 50px !important; 
+                right: 50px !important; /* PC par right kone mein aaram se set hoga */
+            }
+            .toast {
+                padding: 18px 24px !important;
+                font-size: 1.15rem !important; /* Text padhne layak bada kiya */
+                border-radius: 16px !important;
+                gap: 16px !important;
+                min-width: 320px !important; /* PC par thoda lamba toast acha lagta hai */
+                box-shadow: 0 15px 35px rgba(0,0,0,0.5) !important; /* Premium Shadow */
+            }
+            .toast i { 
+                font-size: 1.5rem !important; /* Error/Success wala Icon bhi bada hoga */
+            }
+        }
 
     </style>
 </head>
@@ -206,106 +237,148 @@
     <div class="blob blob3"></div>
 
     <div id="loader" class="hidden"><div class="spinner"></div></div>
-    <div id="toast-container"></div>
+
+
+<div id="drawer-overlay" class="drawer-overlay" onclick="window.closeProfileDrawer()"></div>
+<div id="profile-drawer" class="profile-drawer">
+    <div class="drawer-header">
+        <h3>Menu</h3>
+        <i class="fas fa-times" onclick="window.closeProfileDrawer()"></i>
+    </div>
+    <div class="drawer-body">
+        <div class="drawer-avatar"><i class="fas fa-user-shield"></i></div>
+        <div class="drawer-name">Guest User</div>
+        <div class="drawer-mobile">Login to access Your Library</div>
+        
+        <div class="drawer-menu">
+            <button class="btn btn-outline" onclick="window.location.href='../info/'"><i class="fas fa-info-circle"></i> About Us</button>
+            <button class="btn btn-outline" onclick="window.location.href='../info/privacy/'"><i class="fas fa-user-secret"></i> Privacy Policy</button>
+            <button class="btn btn-outline" onclick="window.location.href='support/'"><i class="fas fa-question-circle"></i> Login Help</button>
+        </div>
+    </div>
+</div>
+
+<header>
+    <div class="flex align-center" style="gap: 12px;">
+        <i class="fas fa-book-open" style="color: var(--accent2); font-size: 1.4rem; text-shadow: 0 0 10px var(--glow);"></i>
+        <div class="header-logo-container">
+            <div class="header-logo">Islamic Library</div>
+            <div class="header-sub">by Shekh</div>
+        </div>
+    </div>
+    <div class="flex align-center" style="gap: 20px;">
+        <i id="theme-toggle-icon" class="fas fa-moon" style="font-size: 1.2rem; color: var(--text2); cursor: pointer;" onclick="window.toggleTheme()"></i>
+        <i class="fas fa-user-circle" style="font-size: 1.3rem; color: var(--text2); cursor: pointer;" onclick="window.openProfileDrawer()"></i>
+    </div>
+</header>
 
     <div id="auth-views">
-        <div id="login-view" class="auth-container">
-            <div class="auth-card">
-                <a href="support/" class="help-badge" title="Need Help?"><i class="fas fa-headset"></i> Help</a>
-                <div class="bismillah" style="margin-bottom: 16px;">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
-                <h2 style="margin-bottom: 6px;">Welcome Back</h2>
-                <p style="color: var(--text2); font-size: .85rem; margin-bottom: 20px;">Sign in to access your Islamic library</p>
+    <div id="initial-options-view" class="auth-container">
+        <div class="auth-card">
+            <a href="support/" class="help-badge" title="Need Help?"><i class="fas fa-headset"></i> Help</a>
+            <div class="bismillah" style="margin-bottom: 16px;">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
+            <h2 style="margin-bottom: 6px;">Welcome to Library</h2>
+            <p style="color: var(--text2); font-size: .85rem; margin-bottom: 24px;">Choose how you want to continue</p>
+            
+            <div style="display: flex; flex-direction: column; gap: 14px;">
+                <button class="btn btn-outline" style="background: var(--surface2); color: var(--text); border: 1px solid var(--border); box-shadow: none;" onclick="goToAuth('email')">
+                    <i class="fas fa-envelope" style="color: var(--accent2); font-size: 1.1rem;"></i> Continue with Email
+                </button>
                 
-                <div class="auth-toggle">
-                    <button type="button" id="login-toggle-mobile" onclick="setAuthType('login', 'mobile')">Mobile</button>
-                    <button type="button" class="active" id="login-toggle-email" onclick="setAuthType('login', 'email')">Email</button>
-                </div>
+                <button class="btn btn-outline" style="background: var(--surface2); color: var(--text); border: 1px solid var(--border); box-shadow: none;" onclick="goToAuth('mobile')">
+                    <i class="fas fa-phone-alt" style="color: #10b981; font-size: 1.1rem;"></i> Continue with Mobile
+                </button>
+                
+                <button type="button" id="google-login-btn" onclick="loginWithGoogle('google-login-btn')" class="google-btn">
+                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+                    <span>Continue with Google</span>
+                </button>
+            </div>
 
-                <form id="loginForm">
-                    <div class="form-group">
-                        <label id="login-label">Mobile Number</label>
-                        <input type="tel" id="login-input" placeholder="Enter your number" required>
-                    </div>
-                    <div class="form-group"><label>Password</label><input type="password" id="login-pass" placeholder="Enter your password" required></div>
-                    <button type="submit" class="btn" id="login-btn" style="margin-top: 24px;">Login ✦</button>
-                </form>
-
-                <div class="divider"><span>OR</span></div>
-<button type="button" id="google-login-btn" onclick="loginWithGoogle('google-login-btn')" class="google-btn">
-    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
-    <span>Continue with Google</span>
-</button>
-
-
-                <div class="mt-2 flex justify-between align-center" style="margin-top: 20px;">
-                    <span class="link-text" onclick="switchAuth('reset')">Forgot Password?</span>
-                    <span class="link-text" onclick="switchAuth('signup')">Create Account</span>
-                </div>
+            <div class="legal-text">
+                By continuing, you agree to our <a href="../info/terms/">Terms of Service</a> and <a href="../info/privacy/">Privacy Policy</a>.
             </div>
         </div>
+    </div>
 
-        <div id="signup-view" class="auth-container hidden">
-            <div class="auth-card">
-                <a href="support/" class="help-badge" title="Need Help?"><i class="fas fa-headset"></i> Help</a>
-                <h2 style="margin-bottom: 6px;">Create Account</h2>
-                <p style="color: var(--text2); font-size: .85rem; margin-bottom: 20px;">Join our Islamic eBook community</p>
+    <div id="login-view" class="auth-container hidden">
+        <div class="auth-card" style="position: relative;">
+            <i class="fas fa-arrow-left back-icon" onclick="goBackToInitial()"></i> <a href="support/" class="help-badge" title="Need Help?"><i class="fas fa-headset"></i> Help</a>
+            
+            <h2 style="margin-bottom: 6px; margin-top: 15px;">Login</h2>
+            <p style="color: var(--text2); font-size: .85rem; margin-bottom: 24px;">Sign in to access your library</p>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label id="login-label">Email Address</label>
+                    <input type="text" id="login-input" placeholder="Enter your details" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="login-pass" placeholder="Enter your password" required>
+                </div>
                 
-                <div class="auth-toggle">
-                    <button type="button" id="signup-toggle-mobile" onclick="setAuthType('signup', 'mobile')">Mobile</button>
-                    <button type="button" class="active" id="signup-toggle-email" onclick="setAuthType('signup', 'email')">Email</button>
+                <div style="text-align: right; margin-top: -10px; margin-bottom: 20px;">
+                    <span class="link-text" style="padding: 0; font-size: 0.8rem;" onclick="switchAuth('reset')">Forgot Password?</span>
                 </div>
 
-                <form id="signupForm">
-                    <div class="form-group"><label>Full Name</label><input type="text" id="reg-name" placeholder="e.g. Abdullah" required></div>
-                    <div class="form-group">
-                        <label id="signup-label">Mobile Number</label>
-                        <input type="tel" id="reg-input" placeholder="Enter your number" required>
-                    </div>
-                    <div class="form-group"><label>Password</label><input type="password" id="reg-pass" placeholder="Create a strong password" required></div>
-                    <button type="submit" class="btn" id="signup-btn" style="margin-top: 24px;">Sign Up ✦</button>
-                </form>
+                <button type="submit" class="btn" id="login-btn">Login ✦</button>
+            </form>
 
-                <div class="divider"><span>OR</span></div>
-<button type="button" id="google-signup-btn" onclick="loginWithGoogle('google-signup-btn')" class="google-btn">
-    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
-    <span>Continue with Google</span>
-</button>
-
-
-
-                <div class="mt-2" style="margin-top: 20px;"><span class="link-text" onclick="switchAuth('login')"><i class="fas fa-arrow-left" style="margin-right: 6px;"></i> Back to Login</span></div>
+            <div style="margin-top: 24px; font-size: 0.85rem; color: var(--text2);">
+                Don't have an account? <span class="link-text" style="padding: 0; font-weight: 700;" onclick="switchAuth('signup')">Sign Up</span>
             </div>
         </div>
+    </div>
 
-        <div id="reset-view" class="auth-container hidden">
-            <div class="auth-card">
-                <a href="support/" class="help-badge" title="Need Help?"><i class="fas fa-headset"></i> Help</a>
-                <h2 style="margin-bottom: 6px;">Reset Password</h2>
-                <p style="color: var(--text2); font-size: .85rem; margin-bottom: 20px;">Get a reset link via email</p>
-                
-                <div class="auth-toggle">
-                    <button type="button" id="reset-toggle-mobile" onclick="setAuthType('reset', 'mobile')">Mobile</button>
-                    <button type="button" class="active" id="reset-toggle-email" onclick="setAuthType('reset', 'email')">Email</button>
+    <div id="signup-view" class="auth-container hidden">
+        <div class="auth-card" style="position: relative;">
+            <i class="fas fa-arrow-left back-icon" onclick="goBackToInitial()"></i> <a href="support/" class="help-badge" title="Need Help?"><i class="fas fa-headset"></i> Help</a>
+            
+            <h2 style="margin-bottom: 6px; margin-top: 15px;">Create Account</h2>
+            <p style="color: var(--text2); font-size: .85rem; margin-bottom: 24px;">Join our Islamic eBook community</p>
+
+            <form id="signupForm">
+                <div class="form-group"><label>Full Name</label><input type="text" id="reg-name" placeholder="e.g. Abdullah" required></div>
+                <div class="form-group">
+                    <label id="signup-label">Email Address</label>
+                    <input type="text" id="reg-input" placeholder="Enter your details" required>
                 </div>
+                <div class="form-group"><label>Password</label><input type="password" id="reg-pass" placeholder="Create a strong password" required></div>
+                <button type="submit" class="btn" id="signup-btn" style="margin-top: 24px;">Sign Up ✦</button>
+            </form>
 
-                <form id="resetForm">
-                    <div class="form-group">
-                        <label id="reset-label">Email Address</label>
-                        <input type="email" id="reset-input" placeholder="Enter your email" required>
-                        <div id="mobile-reset-warning" class="hidden" style="background: rgba(255, 193, 7, 0.1); border: 1px solid rgba(255, 193, 7, 0.2); border-radius: 8px; padding: 15px; margin-top: 10px; text-align: center;">
-                            <p style="color: #ffc107; font-size: 0.85rem; margin-bottom: 12px; line-height: 1.4;">
-                                <i class="fas fa-exclamation-triangle"></i> Password reset for mobile accounts is not available automatically.
-                            </p>
-                            <a href="support/" class="btn" style="display: inline-block; padding: 8px 15px; font-size: 0.8rem; text-decoration: none; background: var(--primary); color: white; border-radius: 5px;">
-                                Contact Support
-                            </a>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn" id="reset-btn" style="margin-top: 24px;">Send Reset Link ✦</button>
-                </form>
-
-                <div class="mt-2"><span class="link-text" onclick="switchAuth('login')"><i class="fas fa-arrow-left" style="margin-right: 6px;"></i> Back to Login</span></div>
+            <div style="margin-top: 24px; font-size: 0.85rem; color: var(--text2);">
+                Already have an account? <span class="link-text" style="padding: 0; font-weight: 700;" onclick="switchAuth('login')">Login</span>
             </div>
+        </div>
+    </div>
+
+    <div id="reset-view" class="auth-container hidden">
+        <div class="auth-card" style="position: relative;">
+            <i class="fas fa-arrow-left back-icon" onclick="switchAuth('login')"></i>
+            <a href="support/" class="help-badge" title="Need Help?"><i class="fas fa-headset"></i> Help</a>
+            
+            <h2 style="margin-bottom: 6px; margin-top: 15px;">Reset Password</h2>
+            <p id="reset-desc" style="color: var(--text2); font-size: .85rem; margin-bottom: 24px;">Get a reset link via email</p>
+
+                        <form id="resetForm">
+                <div class="form-group">
+                    <label id="reset-label">Email Address</label>
+                    <input type="email" id="reset-input" placeholder="Enter your email" required>
+                    
+                    <div id="mobile-reset-warning" class="hidden" style="background: rgba(255, 193, 7, 0.1); border: 1px solid rgba(255, 193, 7, 0.2); border-radius: 8px; padding: 15px; margin-top: 10px; text-align: center;">
+                        <p style="color: #ffc107; font-size: 0.85rem; margin-bottom: 12px; line-height: 1.4;">
+                            <i class="fas fa-exclamation-triangle"></i> You cannot change a mobile account password from here. Please Contact Support.
+                        </p>
+                        <a href="support/" class="btn" style="display: inline-block; padding: 10px 20px; font-size: 0.85rem; text-decoration: none; color: white; border-radius: 99px;">
+                            Contact Support
+                        </a>
+                    </div>
+                </div>
+                <button type="submit" class="btn" id="reset-btn" style="margin-top: 24px;">Send Reset Link ✦</button>
+            </form>
+
         </div>
     </div>
 
@@ -325,6 +398,21 @@
             </div>
         </div>
     </div>
+
+<div id="auth-views">
+    </div>
+
+<footer class="auth-footer">
+    <div class="footer-content">
+        <span>&copy; 2026 <b>Islamic Library by Shekh</b></span>
+        <div class="footer-links">
+            <a href="support/">Support</a>
+            <span class="sep">|</span>
+            <a href="../info/privacy/">Privacy</a>
+        </div>
+    </div>
+</footer>
+    <div id="toast-container"></div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
@@ -354,6 +442,21 @@
         // Global State for Modes
         window.currentAuthModes = { login: 'email', signup: 'email', reset: 'email' };
 
+        // 1. Initial 3-button screen se Login par jaane ke liye
+        window.goToAuth = function(type) {
+            document.getElementById('initial-options-view').classList.add('hidden');
+            document.getElementById('login-view').classList.remove('hidden');
+            if (typeof window.setAuthType === 'function') window.setAuthType('login', type); 
+        };
+
+        // 2. ⬅️ Back Button dabane par wapas Initial Screen par aane ke liye
+        window.goBackToInitial = function() {
+            document.getElementById('login-view').classList.add('hidden');
+            document.getElementById('signup-view').classList.add('hidden');
+            document.getElementById('reset-view').classList.add('hidden');
+            document.getElementById('initial-options-view').classList.remove('hidden');
+        };
+
         document.addEventListener("DOMContentLoaded", () => {
             if (localStorage.getItem("islamic_user_id")) {
                 window.location.href = '../';
@@ -363,7 +466,8 @@
                 sessionStorage.removeItem('open_reset_tab');
                 window.switchAuth('reset');
             } else {
-                window.switchAuth('login');
+                // 🔥 FIX: Page load hote hi login form nahi, seedha 3-button screen khulegi
+                window.goBackToInitial(); 
             }
         });
 
@@ -377,6 +481,9 @@
         }
 
         window.switchAuth = function(view) {
+            const initialView = document.getElementById('initial-options-view');
+            if(initialView) initialView.classList.add('hidden');
+
             document.getElementById("loginForm").reset();
             document.getElementById("signupForm").reset();
             document.getElementById("resetForm").reset();
@@ -388,16 +495,25 @@
             document.getElementById('reset-btn').disabled = false;
             document.getElementById('reset-btn').innerHTML = 'Send Reset Link ✦';
 
+            // 🔥 FIX: Jo mode (mobile/email) gateway pe select hua tha, usko aage pass karo
+            const currentMode = window.currentAuthModes['login'] || 'email';
+            if (typeof window.setAuthType === 'function') {
+                window.setAuthType(view, currentMode);
+            }
+
             document.getElementById("auth-views").classList.remove("hidden");
-            document.querySelectorAll(".auth-container").forEach(el => el.classList.add("hidden"));
+            document.querySelectorAll(".auth-container").forEach(el => {
+                if(el.id !== 'initial-options-view') el.classList.add("hidden");
+            });
             document.getElementById(`${view}-view`).classList.remove("hidden");
         }
+
 
         // Toggle UI Logic
         window.setAuthType = function(formType, authType) {
             window.currentAuthModes[formType] = authType;
-            document.getElementById(`${formType}-toggle-mobile`).classList.toggle('active', authType === 'mobile');
-            document.getElementById(`${formType}-toggle-email`).classList.toggle('active', authType === 'email');
+            
+            // 🔥 YAHAN SE WOH DONO ERROR WALI 'classList.toggle' LINES HATA DI HAIN 🔥
             
             const label = document.getElementById(`${formType}-label`);
             const inputId = formType === 'signup' ? 'reg-input' : `${formType}-input`;
@@ -406,19 +522,28 @@
             const mobileWarning = document.getElementById('mobile-reset-warning');
 
             if (input) {
+                                // Reset page ka description text pakadne ke liye
+                const desc = document.getElementById('reset-desc'); 
+
                 if (formType === 'reset') {
                     if (authType === 'mobile') {
                         input.classList.add('hidden'); label.classList.add('hidden');
                         if(resetBtn) resetBtn.classList.add('hidden');
                         if(mobileWarning) mobileWarning.classList.remove('hidden');
+                        // NAYA: Text change karega mobile ke liye
+                        if(desc) desc.innerText = "Mobile Account Password"; 
                     } else {
                         input.classList.remove('hidden'); label.classList.remove('hidden');
                         if(resetBtn) resetBtn.classList.remove('hidden');
                         if(mobileWarning) mobileWarning.classList.add('hidden');
+                        // NAYA: Text wapas email wala karega
+                        if(desc) desc.innerText = "Get a reset link via email"; 
+                        
                         label.innerText = "Email Address"; input.placeholder = "Enter your email";
                         input.type = "email"; input.setAttribute("inputmode", "email");
                     }
                 } else {
+                    // YAHAN MERI GALTI THI JO MAINE UDA DIYA THA, AB WAPAS AA GAYA HAI
                     if(authType === 'mobile') {
                         label.innerText = "Mobile Number"; input.placeholder = "Enter your number";
                         input.type = "tel"; input.setAttribute("inputmode", "tel");
@@ -427,12 +552,14 @@
                         input.type = "email"; input.setAttribute("inputmode", "email");
                     }
                 }
+
             }
         };
 
         function getFirebaseEmail(inputValue, type) {
             return type === 'mobile' ? `${inputValue.trim()}@islamiclibrary.com` : inputValue.trim();
         }
+
 
         // 🔥 FINAL GOOGLE LOGIN (INSTANT BACK FIX) 🔥
         const googleProvider = new GoogleAuthProvider();
@@ -722,6 +849,40 @@ if (!userSnap.exists()) {
         document.addEventListener("DOMContentLoaded", () => {
             window.checkActiveCooldowns();
         });
+// Drawer Functions
+window.openProfileDrawer = function() {
+    document.getElementById('profile-drawer').classList.add('active');
+    document.getElementById('drawer-overlay').classList.add('active');
+};
+
+window.closeProfileDrawer = function() {
+    document.getElementById('profile-drawer').classList.remove('active');
+    document.getElementById('drawer-overlay').classList.remove('active');
+};
+
+// Theme Toggle Logic (Perfectly synced with other pages)
+window.toggleTheme = function() {
+    const root = document.documentElement; // <html> target karega
+    const icon = document.getElementById('theme-toggle-icon');
+    const newTheme = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    
+    root.setAttribute('data-theme', newTheme);
+    localStorage.setItem('islamic_theme', newTheme); // Same key as support page
+    
+    // Icon update
+    if(icon) icon.className = newTheme === 'light' ? 'fas fa-sun' : 'fas fa-moon';
+};
+
+// Initialize Theme on Load
+document.addEventListener('DOMContentLoaded', () => {
+    const savedTheme = localStorage.getItem('islamic_theme') || 'dark'; // Same key check
+    document.documentElement.setAttribute('data-theme', savedTheme); // <html> par lagayega
+    
+    const icon = document.getElementById('theme-toggle-icon');
+    if (icon) icon.className = savedTheme === 'light' ? 'fas fa-sun' : 'fas fa-moon';
+});
+
+
     </script>
 
 </body>
