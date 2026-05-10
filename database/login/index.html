@@ -432,7 +432,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult} from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
         import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager, doc, setDoc, getDoc, enableIndexedDbPersistence, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
         // 🛑 DUMMY KEYS - APNI ASLI FIREBASE KEYS PASTE KAR LENA 🛑
@@ -577,94 +577,68 @@
         }
 
 
-        // 🔥 FINAL GOOGLE LOGIN (INSTANT BACK FIX) 🔥
-        const googleProvider = new GoogleAuthProvider();
+// 1. LOGIN BUTTON FUNCTION (Sirf Google par bhejega)
+window.loginWithGoogle = function(btnId) {
+    const btn = document.getElementById(btnId);
+    if (!btn) return;
 
-        window.loginWithGoogle = async function(btnId) {
-            const btn = document.getElementById(btnId);
-            if (!btn) return;
+    btn.disabled = true;
+    btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span>Redirecting...</span>`;
 
-            const defaultHTML = `<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google"> <span>Continue with Google</span>`;
-
-            btn.disabled = true;
-            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span>Verifying User...</span>`;
-
-            let isResolved = false; 
-
-            const onUserReturn = () => {
-                setTimeout(() => {
-                    if (!isResolved) {
-                        isResolved = true; 
-                        btn.disabled = false;
-                        btn.innerHTML = defaultHTML;
-                        console.log("Firebase Timeout - Force Reset");
-                    }
-                }, 2000); 
-
-                window.removeEventListener('focus', onUserReturn);
-                document.removeEventListener('visibilitychange', onUserReturn);
-            };
-
-            setTimeout(() => {
-                window.addEventListener('focus', onUserReturn);
-                document.addEventListener('visibilitychange', onUserReturn);
-            }, 100); 
-
-            try {
-                const result = await signInWithPopup(auth, googleProvider);
-                
-                if (isResolved) return; 
-                
-                isResolved = true; 
-
-                const user = result.user;
-                const userRef = doc(db, "users", user.uid);
-                
-                // SECURE CHECK: Name fetch karega bina zyada wait kiye
-                const userSnap = await getDoc(userRef);
-
-if (!userSnap.exists()) {
-    // Naya user document banao
-    await setDoc(userRef, {
-        uid: user.uid,
-        name: user.displayName || "Google User",
-        loginType: 'google',
-        displayId: user.email,
-        createdAt: new Date().toISOString()
+    signInWithRedirect(auth, googleProvider).catch((error) => {
+        btn.disabled = false;
+        btn.innerHTML = `<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google"> <span>Continue with Google</span>`;
+        window.showToast("Redirect failed", "error");
     });
+};
 
-    // 🔥 ASLI JADU: Naya Google User aate hi stats me +1 kar do
+// 2. REDIRECT CHECKER (Wapas aane par automatically chalega)
+// Isko kisi function ke andar MAT dalna, ye seedha script mein rahega
+document.addEventListener('DOMContentLoaded', async () => {
     try {
-        await updateDoc(doc(db, "metadata", "stats"), {
-            total_users: increment(1)
-        });
-    } catch (err) { console.log("Stats update error"); }
-}
+        const result = await getRedirectResult(auth);
+        
+        if (result) {
+            // User wapas aaya hai, ab database process karo
+            const user = result.user;
+            const userRef = doc(db, "users", user.uid);
+            const userSnap = await getDoc(userRef);
 
+            if (!userSnap.exists()) {
+                await setDoc(userRef, {
+                    uid: user.uid,
+                    name: user.displayName || "Google User",
+                    loginType: 'google',
+                    displayId: user.email,
+                    createdAt: new Date().toISOString()
+                });
 
-                localStorage.setItem("islamic_user_id", user.uid);
-                localStorage.setItem("islamic_user_name", userSnap.exists() && userSnap.data().name ? userSnap.data().name : (user.displayName || "Google User"));
-                localStorage.setItem("islamic_user_mobile", user.email);
-
-                window.showToast("Google Login Successful!");
-                
-                // 🚀 FAST REDIRECT: 800ms se hata kar 150ms kar diya
-                setTimeout(() => {
-                    window.location.href = '../'; 
-                }, 150);
-
-            } catch (error) {
-                if (!isResolved) {
-                    isResolved = true;
-                    btn.disabled = false;
-                    btn.innerHTML = defaultHTML;
-                    
-                    if(error.code !== 'auth/popup-closed-by-user' && error.code !== 'auth/cancelled-popup-request' && error.code !== 'auth/internal-error') {
-                        window.showToast("Google Login Failed", "error");
-                    }
-                }
+                try {
+                    await updateDoc(doc(db, "metadata", "stats"), {
+                        total_users: increment(1)
+                    });
+                } catch (err) { console.log("Stats update error"); }
             }
-        };
+
+            localStorage.setItem("islamic_user_id", user.uid);
+            localStorage.setItem("islamic_user_name", userSnap.exists() && userSnap.data().name ? userSnap.data().name : (user.displayName || "Google User"));
+            localStorage.setItem("islamic_user_mobile", user.email);
+
+            window.showToast("Google Login Successful!");
+            
+            setTimeout(() => {
+                window.location.href = '../'; 
+            }, 150);
+        }
+    } catch (error) {
+        console.error("Redirect Error:", error);
+        // Agar error 'auth/internal-error' ya 'auth/popup-closed' hai to toast mat dikhao
+        if(error.code !== 'auth/internal-error') {
+            window.showToast("Login verification failed", "error");
+        }
+    }
+});
+
 
         // ✅ LOGIN (FIREBASE)
         document.getElementById("loginForm").addEventListener("submit", async (e) => {
