@@ -59,6 +59,15 @@
         [data-theme="light"] .search-input { background: rgba(255, 255, 255, 0.8); }
         [data-theme="light"] .search-dropdown { background: rgba(255, 255, 255, 0.95); }
         [data-theme="light"] .profile-drawer { background: #fff; }
+        /* 🔥 LIGHT MODE PASSWORD INPUT FIX 🔥 */
+        [data-theme="light"] .custom-dark-input {
+            background: var(--surface2) !important; /* Halka gray background */
+            color: var(--text) !important;          /* Dark text color */
+            border-color: var(--border2) !important;
+        }
+        [data-theme="light"] .custom-dark-input::placeholder {
+            color: var(--text3) !important;         /* Dark placeholder */
+        }
 
         *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; font-size: 16px; }
@@ -241,6 +250,121 @@
         border-color: #a855f7; /* Tumhare Update button se match karta hua Purple glow */
         background: rgba(255, 255, 255, 0.1);
         box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2);
+
+}
+                /* 🔥 DESKTOP VIEW FIX (HOME PAGE) - ALIGNED WITH INFO PAGES 🔥 */
+        @media screen and (min-width: 768px) {
+            
+            /* 1. Header aur Footer ko Info pages se match karna */
+            header {
+                padding: 20px 10% !important; 
+            }
+            .bottom-nav {
+                padding: 0 10% !important;
+                height: 80px !important;
+            }
+
+            .header-logo { font-size: 1.6rem !important; }
+            .fa-moon, .fa-user-circle { font-size: 1.6rem !important; margin-left: 20px !important; }
+            .nav-item i { font-size: 1.4rem !important; }
+            .nav-item span { font-size: 0.9rem !important; }
+
+            /* 2. Main Content Area ko Center aur 900px pe limit karna */
+            .main-content {
+                max-width: 900px !important;
+                margin: 0 auto !important;
+                padding-top: 100px !important; /* Header ki vajah se thoda aur niche kiya */
+            }
+
+            /* 3. Search Bar aur Filters ko thoda chouda aur attractive banana */
+            .search-container {
+                max-width: 600px !important; /* PC pe search bar thoda lamba acha lagta hai */
+                margin: 0 auto 20px auto !important; 
+            }
+            .search-input {
+                font-size: 1.1rem !important;
+                padding: 16px 20px 16px 50px !important; /* Bada Search Bar */
+            }
+            
+            /* Filters ko bada karna aur Center mein lana */
+            .filters-wrapper {
+                justify-content: center !important;
+                gap: 20px !important;
+                margin-bottom: 40px !important;
+            }
+            .custom-filter {
+                width: 250px !important; /* PC pe Dropdown chaude aache lagte hain */
+                padding: 14px 20px !important;
+                font-size: 1rem !important;
+            }
+
+            /* 4. 🔥 Books Grid: PC par Books Premium dikhengi 🔥 */
+            .grid-container {
+                display: grid !important;
+                /* Badi screen par 1 line mein sirf 3 ya max 4 books taaki sizes aache aayen */
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important;
+                gap: 24px !important; /* Books ke beech mein khali jagah (gap) */
+            }
+
+            /* Bismillah text resize for PC */
+            .bismillah { font-size: 36px !important; margin-bottom: 30px !important; }
+            /* 🚀 ALL MODALS DESKTOP FIX (Logout, Change Password) 🚀 */
+            .modal-box {
+                max-width: 480px !important; /* Modals ab choude aur premium lagenge */
+                padding: 40px !important;
+                border-radius: 24px !important;
+            }
+            
+            /* Modal Heading aur Text ko bada karna */
+            .modal-title, #change-password-modal h3 {
+                font-size: 1.8rem !important;
+                margin-bottom: 15px !important;
+            }
+            .modal-desc {
+                font-size: 1.1rem !important;
+                line-height: 1.6 !important;
+                margin-bottom: 30px !important;
+            }
+            
+            /* Modal Buttons ko PC ke hisaab se clickable banana */
+            .modal-actions {
+                gap: 20px !important;
+            }
+            .modal-actions button {
+                padding: 14px !important;
+                font-size: 1.1rem !important;
+                border-radius: 14px !important;
+            }
+            
+            /* 🔥 Change Password Input Box PC Size 🔥 */
+            #change-password-modal .form-group label {
+                font-size: 1.1rem !important;
+                margin-bottom: 10px !important;
+            }
+            .custom-dark-input {
+                padding: 16px 20px !important;
+                font-size: 1.1rem !important;
+                border-radius: 14px !important;
+            }
+            /* 🍞 TOAST NOTIFICATIONS DESKTOP FIX 🍞 */
+            #toast-container {
+                bottom: 50px !important; 
+                right: 50px !important; /* PC par right kone mein aaram se set hoga */
+            }
+            .toast {
+                padding: 18px 24px !important;
+                font-size: 1.15rem !important; /* Text padhne layak bada kiya */
+                border-radius: 16px !important;
+                gap: 16px !important;
+                min-width: 320px !important; /* PC par thoda lamba toast acha lagta hai */
+                box-shadow: 0 15px 35px rgba(0,0,0,0.5) !important; /* Premium Shadow */
+            }
+            .toast i { 
+                font-size: 1.5rem !important; /* Error/Success wala Icon bhi bada hoga */
+            }
+
+        }
+
     </style>
 </head>
 <body>
