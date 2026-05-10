@@ -576,46 +576,63 @@
             return type === 'mobile' ? `${inputValue.trim()}@islamiclibrary.com` : inputValue.trim();
         }
 
+// 1. Google Provider Setup
 const googleProvider = new GoogleAuthProvider();
-// 1. LOGIN BUTTON FUNCTION (Sirf Google par bhejega)
+
+// 2. LOGIN BUTTON FUNCTION
 window.loginWithGoogle = function(btnId) {
     const btn = document.getElementById(btnId);
     if (!btn) return;
 
+    // Button ko "Redirecting..." state mein daalo
     btn.disabled = true;
     btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span>Redirecting...</span>`;
 
+    // 💡 TRICK: Agar user 5 second mein Google par nahi gaya (ya back aa gaya), 
+    // toh button wapas normal kar do.
+    setTimeout(() => {
+        if (btn.disabled && btn.innerText.includes("Redirecting")) {
+            resetGoogleBtn(btnId);
+        }
+    }, 5000);
+
     signInWithRedirect(auth, googleProvider).catch((error) => {
-        btn.disabled = false;
-        btn.innerHTML = `<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google"> <span>Continue with Google</span>`;
-        window.showToast("Redirect failed", "error");
+        console.error("Redirect Trigger Error:", error);
+        resetGoogleBtn(btnId);
+        window.showToast("Connection Error", "error");
     });
 };
 
-// 2. REDIRECT CHECKER (Wapas aane par automatically chalega)
-// Isko kisi function ke andar MAT dalna, ye seedha script mein rahega
-// ==========================================
-// 🚀 THE ULTIMATE REDIRECT CHECKER (Mobile + PC)
-// ==========================================
+// 3. BUTTON RESET FUNCTION (Common use ke liye)
+function resetGoogleBtn(btnId = 'google-login-btn') {
+    const btn = document.getElementById(btnId);
+    if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = `<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google"> <span>Continue with Google</span>`;
+    }
+}
+
+// 4. REDIRECT RESULT CHECKER (Duniya ka sabse zaroori hissa)
 document.addEventListener('DOMContentLoaded', async () => {
-    console.log("Checking for Google Redirect Result..."); // Debugging ke liye
+    const btnId = 'google-login-btn'; // Apne button ki ID check kar lena yahan
+    const btn = document.getElementById(btnId);
 
     try {
-        // Firebase ko thoda time dete hain initialize hone ka
+        // Page load hote hi button ko "Verifying..." dikhao thodi der
+        if (btn) {
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span>Verifying User...</span>`;
+        }
+
         const result = await getRedirectResult(auth);
         
         if (result) {
-            console.log("User detected from Redirect!", result.user);
-            window.showToast("Verifying Google Account...");
-
+            // 🎉 USER MIL GAYA!
             const user = result.user;
             const userRef = doc(db, "users", user.uid);
-            
-            // Database se check karo
             const userSnap = await getDoc(userRef);
 
             if (!userSnap.exists()) {
-                console.log("Creating new user document...");
                 await setDoc(userRef, {
                     uid: user.uid,
                     name: user.displayName || "Google User",
@@ -624,36 +641,40 @@ document.addEventListener('DOMContentLoaded', async () => {
                     createdAt: new Date().toISOString()
                 });
 
-                // Stats Update
                 try {
                     await updateDoc(doc(db, "metadata", "stats"), {
                         total_users: increment(1)
                     });
-                } catch (err) { console.log("Stats error ignored"); }
+                } catch (err) { console.log("Stats error"); }
             }
 
-            // LocalStorage set karo (Synched with other pages)
             localStorage.setItem("islamic_user_id", user.uid);
-            localStorage.setItem("islamic_user_name", userSnap.exists() && userSnap.data().name ? userSnap.data().name : (user.displayName || "Google User"));
+            localStorage.setItem("islamic_user_name", userSnap.exists() ? userSnap.data().name : (user.displayName || "Google User"));
             localStorage.setItem("islamic_user_mobile", user.email);
-            localStorage.setItem("islamic_theme", localStorage.getItem("islamic_theme") || "dark");
 
-            window.showToast("Login Successful! Redirecting...");
-            
-            setTimeout(() => {
-                window.location.href = '../'; 
-            }, 500); // Thoda zyada time diya taaki data save ho jaye
+            window.showToast("Login Successful!");
+            setTimeout(() => { window.location.href = '../'; }, 200);
         } else {
-            console.log("No redirect result found (Normal Page Load)");
+            // ❌ KOI DATA NAHI MILA (Ya user ne cancel kiya)
+            console.log("No data from Google. Resetting UI.");
+            resetGoogleBtn(btnId);
         }
     } catch (error) {
-        console.error("Redirect Final Error:", error);
-        // Agar error code 'auth/credential-already-in-use' jaisa kuch ho
+        console.error("Redirect Process Error:", error);
+        resetGoogleBtn(btnId);
+        // Sirf bade errors par toast dikhao
         if (error.code !== 'auth/internal-error') {
-            window.showToast("Verification failed. Try again.", "error");
+            window.showToast("Login Failed or Cancelled", "error");
         }
     }
 });
+
+// 5. SECURITY: Agar user tab switch karke wapas aaye, button reset kar do
+window.addEventListener('focus', () => {
+    // Agar button "Redirecting" par atka hai 3 second se zyada, toh reset
+    setTimeout(() => resetGoogleBtn('google-login-btn'), 1000);
+});
+
 
 
 
