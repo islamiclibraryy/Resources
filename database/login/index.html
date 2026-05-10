@@ -869,13 +869,13 @@ if (!userSnap.exists()) {
 window.openProfileDrawer = function() {
     document.getElementById('profile-drawer').classList.add('active');
     document.getElementById('drawer-overlay').classList.add('active');
+document.body.style.overflow = 'hidden';
 };
 
 window.closeProfileDrawer = function() {
     document.getElementById('profile-drawer').classList.remove('active');
     document.getElementById('drawer-overlay').classList.remove('active');
-document.body.style.overflow = 'hidden';
-
+document.body.style.overflow = ''; 
 };
 
 // Theme Toggle Logic (Perfectly synced with other pages)
