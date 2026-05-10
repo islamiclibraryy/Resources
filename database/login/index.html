@@ -594,17 +594,28 @@ window.loginWithGoogle = function(btnId) {
 
 // 2. REDIRECT CHECKER (Wapas aane par automatically chalega)
 // Isko kisi function ke andar MAT dalna, ye seedha script mein rahega
+// ==========================================
+// 🚀 THE ULTIMATE REDIRECT CHECKER (Mobile + PC)
+// ==========================================
 document.addEventListener('DOMContentLoaded', async () => {
+    console.log("Checking for Google Redirect Result..."); // Debugging ke liye
+
     try {
+        // Firebase ko thoda time dete hain initialize hone ka
         const result = await getRedirectResult(auth);
         
         if (result) {
-            // User wapas aaya hai, ab database process karo
+            console.log("User detected from Redirect!", result.user);
+            window.showToast("Verifying Google Account...");
+
             const user = result.user;
             const userRef = doc(db, "users", user.uid);
+            
+            // Database se check karo
             const userSnap = await getDoc(userRef);
 
             if (!userSnap.exists()) {
+                console.log("Creating new user document...");
                 await setDoc(userRef, {
                     uid: user.uid,
                     name: user.displayName || "Google User",
@@ -613,31 +624,37 @@ document.addEventListener('DOMContentLoaded', async () => {
                     createdAt: new Date().toISOString()
                 });
 
+                // Stats Update
                 try {
                     await updateDoc(doc(db, "metadata", "stats"), {
                         total_users: increment(1)
                     });
-                } catch (err) { console.log("Stats update error"); }
+                } catch (err) { console.log("Stats error ignored"); }
             }
 
+            // LocalStorage set karo (Synched with other pages)
             localStorage.setItem("islamic_user_id", user.uid);
             localStorage.setItem("islamic_user_name", userSnap.exists() && userSnap.data().name ? userSnap.data().name : (user.displayName || "Google User"));
             localStorage.setItem("islamic_user_mobile", user.email);
+            localStorage.setItem("islamic_theme", localStorage.getItem("islamic_theme") || "dark");
 
-            window.showToast("Google Login Successful!");
+            window.showToast("Login Successful! Redirecting...");
             
             setTimeout(() => {
                 window.location.href = '../'; 
-            }, 150);
+            }, 500); // Thoda zyada time diya taaki data save ho jaye
+        } else {
+            console.log("No redirect result found (Normal Page Load)");
         }
     } catch (error) {
-        console.error("Redirect Error:", error);
-        // Agar error 'auth/internal-error' ya 'auth/popup-closed' hai to toast mat dikhao
-        if(error.code !== 'auth/internal-error') {
-            window.showToast("Login verification failed", "error");
+        console.error("Redirect Final Error:", error);
+        // Agar error code 'auth/credential-already-in-use' jaisa kuch ho
+        if (error.code !== 'auth/internal-error') {
+            window.showToast("Verification failed. Try again.", "error");
         }
     }
 });
+
 
 
         // ✅ LOGIN (FIREBASE)
