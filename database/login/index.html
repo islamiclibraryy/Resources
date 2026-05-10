@@ -576,34 +576,28 @@
             return type === 'mobile' ? `${inputValue.trim()}@islamiclibrary.com` : inputValue.trim();
         }
 
-// 1. Google Provider Setup
+// 1. Provider Setup
 const googleProvider = new GoogleAuthProvider();
 
-// 2. LOGIN BUTTON FUNCTION
+// 2. LOGIN BUTTON FUNCTION (Sirf Google par bhejega)
 window.loginWithGoogle = function(btnId) {
     const btn = document.getElementById(btnId);
     if (!btn) return;
 
-    // Button ko "Redirecting..." state mein daalo
+    // Yaad rakho ki humne redirect shuru kiya hai
+    sessionStorage.setItem('pending_google_login', 'true');
+
     btn.disabled = true;
     btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span>Redirecting...</span>`;
 
-    // 💡 TRICK: Agar user 5 second mein Google par nahi gaya (ya back aa gaya), 
-    // toh button wapas normal kar do.
-    setTimeout(() => {
-        if (btn.disabled && btn.innerText.includes("Redirecting")) {
-            resetGoogleBtn(btnId);
-        }
-    }, 5000);
-
     signInWithRedirect(auth, googleProvider).catch((error) => {
-        console.error("Redirect Trigger Error:", error);
+        alert("Redirect Error: " + error.message);
         resetGoogleBtn(btnId);
-        window.showToast("Connection Error", "error");
+        sessionStorage.removeItem('pending_google_login');
     });
 };
 
-// 3. BUTTON RESET FUNCTION (Common use ke liye)
+// 3. RESET BUTTON
 function resetGoogleBtn(btnId = 'google-login-btn') {
     const btn = document.getElementById(btnId);
     if (btn) {
@@ -612,68 +606,70 @@ function resetGoogleBtn(btnId = 'google-login-btn') {
     }
 }
 
-// 4. REDIRECT RESULT CHECKER (Duniya ka sabse zaroori hissa)
+// 4. REDIRECT RESULT CHECKER (Dhyan se dekho)
 document.addEventListener('DOMContentLoaded', async () => {
-    const btnId = 'google-login-btn'; // Apne button ki ID check kar lena yahan
-    const btn = document.getElementById(btnId);
-
-    try {
-        // Page load hote hi button ko "Verifying..." dikhao thodi der
+    const btnId = 'google-login-btn';
+    
+    // Check karo kya hum login karke wapas aaye hain?
+    if (sessionStorage.getItem('pending_google_login') === 'true') {
+        const btn = document.getElementById(btnId);
         if (btn) {
             btn.disabled = true;
-            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span>Verifying User...</span>`;
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span>Verifying...</span>`;
         }
 
-        const result = await getRedirectResult(auth);
-        
-        if (result) {
-            // 🎉 USER MIL GAYA!
-            const user = result.user;
-            const userRef = doc(db, "users", user.uid);
-            const userSnap = await getDoc(userRef);
+        try {
+            // Firebase se pucho result
+            const result = await getRedirectResult(auth);
+            
+            if (result && result.user) {
+                alert("Success! User mil gaya: " + result.user.email);
+                
+                const user = result.user;
+                const userRef = doc(db, "users", user.uid);
+                const userSnap = await getDoc(userRef);
 
-            if (!userSnap.exists()) {
-                await setDoc(userRef, {
-                    uid: user.uid,
-                    name: user.displayName || "Google User",
-                    loginType: 'google',
-                    displayId: user.email,
-                    createdAt: new Date().toISOString()
-                });
-
-                try {
-                    await updateDoc(doc(db, "metadata", "stats"), {
-                        total_users: increment(1)
+                if (!userSnap.exists()) {
+                    await setDoc(userRef, {
+                        uid: user.uid,
+                        name: user.displayName || "Google User",
+                        loginType: 'google',
+                        displayId: user.email,
+                        createdAt: new Date().toISOString()
                     });
-                } catch (err) { console.log("Stats error"); }
+                    try {
+                        await updateDoc(doc(db, "metadata", "stats"), { total_users: increment(1) });
+                    } catch(e) {}
+                }
+
+                localStorage.setItem("islamic_user_id", user.uid);
+                localStorage.setItem("islamic_user_name", userSnap.exists() ? userSnap.data().name : (user.displayName || "Google User"));
+                localStorage.setItem("islamic_user_mobile", user.email);
+
+                sessionStorage.removeItem('pending_google_login'); // Kaam khatam, flag hatao
+                window.location.href = '../'; 
+            } else {
+                // Agar bina select kiye back aaye ya data nahi mila
+                alert("Login Canceled: No user data found.");
+                resetGoogleBtn(btnId);
+                sessionStorage.removeItem('pending_google_login');
             }
-
-            localStorage.setItem("islamic_user_id", user.uid);
-            localStorage.setItem("islamic_user_name", userSnap.exists() ? userSnap.data().name : (user.displayName || "Google User"));
-            localStorage.setItem("islamic_user_mobile", user.email);
-
-            window.showToast("Login Successful!");
-            setTimeout(() => { window.location.href = '../'; }, 200);
-        } else {
-            // ❌ KOI DATA NAHI MILA (Ya user ne cancel kiya)
-            console.log("No data from Google. Resetting UI.");
+        } catch (error) {
+            alert("Verification Error: " + error.code);
             resetGoogleBtn(btnId);
-        }
-    } catch (error) {
-        console.error("Redirect Process Error:", error);
-        resetGoogleBtn(btnId);
-        // Sirf bade errors par toast dikhao
-        if (error.code !== 'auth/internal-error') {
-            window.showToast("Login Failed or Cancelled", "error");
+            sessionStorage.removeItem('pending_google_login');
         }
     }
 });
 
-// 5. SECURITY: Agar user tab switch karke wapas aaye, button reset kar do
-window.addEventListener('focus', () => {
-    // Agar button "Redirecting" par atka hai 3 second se zyada, toh reset
-    setTimeout(() => resetGoogleBtn('google-login-btn'), 1000);
+// Security: Agar user back button daba kar aaye
+window.addEventListener('pageshow', (event) => {
+    // Agar page cache se load ho raha hai (back button) toh reset karo
+    if (event.persisted) {
+        resetGoogleBtn('google-login-btn');
+    }
 });
+
 
 
 
