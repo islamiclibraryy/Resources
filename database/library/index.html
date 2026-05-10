@@ -66,6 +66,15 @@
         [data-theme="light"] .blob { opacity: 0.5; }
         [data-theme="light"] header, [data-theme="light"] .bottom-nav { background: rgba(255, 255, 255, 0.9); border-bottom-color: rgba(0,0,0,0.1); border-top-color: rgba(0,0,0,0.1); }
         [data-theme="light"] .profile-drawer { background: #fff; }
+        /* 🔥 LIGHT MODE PASSWORD INPUT FIX 🔥 */
+        [data-theme="light"] .custom-dark-input {
+            background: var(--surface2) !important; /* Halka gray background */
+            color: var(--text) !important;          /* Dark text color */
+            border-color: var(--border2) !important;
+        }
+        [data-theme="light"] .custom-dark-input::placeholder {
+            color: var(--text3) !important;         /* Dark placeholder */
+        }
 
         /* ===== GLOBAL STYLES ===== */
         *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -194,6 +203,116 @@
 /* Original Toast Styling */
 #toast-container { position: fixed; bottom: 85px; right: 28px; z-index: 999999 !important; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
 .toast { background: var(--surface); color: var(--text); padding: 12px 18px; border-radius: var(--r2); box-shadow: var(--shadow2); border: 1px solid var(--border2); animation: slideUp 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards; display: flex; align-items: center; gap: 10px; font-size: .85rem; font-weight: 500; }
+        /* 🔥 DESKTOP VIEW FIX (LIBRARY PAGE) - ALIGNED WITH OTHERS 🔥 */
+        @media screen and (min-width: 768px) {
+            
+            /* 1. Header aur Footer ko Info/Home pages se match karna */
+            header {
+                padding: 20px 10% !important; 
+            }
+            .bottom-nav {
+                padding: 0 10% !important;
+                height: 80px !important;
+            }
+
+            .header-logo { font-size: 1.6rem !important; }
+            .fa-moon, .fa-user-circle { font-size: 1.6rem !important; margin-left: 20px !important; }
+            .nav-item i { font-size: 1.4rem !important; }
+            .nav-item span { font-size: 0.9rem !important; }
+
+            /* 2. Main Content Area ko Center aur 900px pe limit karna */
+            .main-content {
+                max-width: 900px !important;
+                margin: 0 auto !important;
+                padding-top: 100px !important; /* Naye bade header ko jagah dene ke liye */
+            }
+
+            /* 3. Heading ko thoda bada karna PC ke liye */
+            #page-library h3 {
+                font-size: 1.6rem !important;
+                margin-bottom: 24px !important;
+            }
+                     /* 4. 🔥 Library Cards ko Premium aur Bada Banana 🔥 */
+            
+            /* Card ka size aur gap badhana */
+            #library-list > div {
+                padding: 20px 24px !important;  /* Box ko thoda lamba/khula banayega */
+                border-radius: 16px !important;
+                margin-bottom: 20px !important;
+                gap: 24px !important; /* Image aur text ke beech khuli jagah */
+            }
+
+            /* Thumbnail Image ko bada karna */
+            #library-list img {
+                width: 80px !important;  /* Image ki chaudai */
+                height: 80px !important; /* Image ki lambaai */
+                border-radius: 12px !important;
+            }
+
+            /* Text aur Status ko thoda bada karna PC ke liye */
+            #library-list h4, #library-list .book-title { 
+                font-size: 1.25rem !important; 
+                margin-bottom: 6px !important;
+            }
+            #library-list p, #library-list span { 
+                font-size: 0.95rem !important; 
+            }
+            /* 🚀 ALL MODALS DESKTOP FIX (Logout, Change Password) 🚀 */
+            .modal-box {
+                max-width: 480px !important; /* Modals ab choude aur premium lagenge */
+                padding: 40px !important;
+                border-radius: 24px !important;
+            }
+            
+            /* Modal Heading aur Text ko bada karna */
+            .modal-title, #change-password-modal h3 {
+                font-size: 1.8rem !important;
+                margin-bottom: 15px !important;
+            }
+            .modal-desc {
+                font-size: 1.1rem !important;
+                line-height: 1.6 !important;
+                margin-bottom: 30px !important;
+            }
+            
+            /* Modal Buttons ko PC ke hisaab se clickable banana */
+            .modal-actions {
+                gap: 20px !important;
+            }
+            .modal-actions button {
+                padding: 14px !important;
+                font-size: 1.1rem !important;
+                border-radius: 14px !important;
+            }
+            
+            /* 🔥 Change Password Input Box PC Size 🔥 */
+            #change-password-modal .form-group label {
+                font-size: 1.1rem !important;
+                margin-bottom: 10px !important;
+            }
+            .custom-dark-input {
+                padding: 16px 20px !important;
+                font-size: 1.1rem !important;
+                border-radius: 14px !important;
+            }
+            /* 🍞 TOAST NOTIFICATIONS DESKTOP FIX 🍞 */
+            #toast-container {
+                bottom: 50px !important; 
+                right: 50px !important; /* PC par right kone mein aaram se set hoga */
+            }
+            .toast {
+                padding: 18px 24px !important;
+                font-size: 1.15rem !important; /* Text padhne layak bada kiya */
+                border-radius: 16px !important;
+                gap: 16px !important;
+                min-width: 320px !important; /* PC par thoda lamba toast acha lagta hai */
+                box-shadow: 0 15px 35px rgba(0,0,0,0.5) !important; /* Premium Shadow */
+            }
+            .toast i { 
+                font-size: 1.5rem !important; /* Error/Success wala Icon bhi bada hoga */
+            }
+
+        }
 
       </style>
 </head>
