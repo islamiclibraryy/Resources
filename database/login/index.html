@@ -113,7 +113,7 @@
         /* ===== VIEWS & STRUCTURE ===== */
         #auth-views { flex: 1; display: flex; flex-direction: column; width: 100%; }
         .auth-container { display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; min-height: calc(100vh - 60px) !important; padding: 80px 20px 20px !important; animation: fadeUp .6s ease both; }
-        .auth-card { background: var(--surface); padding: 32px 28px; border-radius: var(--r3); width: 100%; max-width: 400px; box-shadow: var(--shadow); border: 1px solid var(--border); text-align: center; animation: cardIn .5s ease both; transition: var(--transition); position: relative; }
+        .auth-card { background: var(--surface); padding: 32px 28px; border-radius: var(--r3); width: 100%; max-width: 400px; box-shadow: 0 2px 10px rgba(0,0,0,0.5); border: 1px solid var(--border); text-align: center; animation: cardIn .5s ease both; transition: var(--transition); position: relative; }
         .auth-card:hover { border-color: var(--border2); }
         
         .help-badge { position: absolute; top: 15px; right: 15px; background: var(--glow2); color: var(--accent2); border: 1px solid var(--border); padding: 6px 12px; border-radius: 99px; font-size: 0.67rem; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 6px; transition: var(--transition); z-index: 10; }
@@ -133,13 +133,29 @@
         .back-icon { position: absolute; top: 25px; left: 20px; font-size: 1.2rem; color: var(--text3); cursor: pointer; transition: 0.3s; z-index: 10; }
         .back-icon:hover { color: var(--accent); transform: translateX(-3px); }
 
-        /* ===== 🚨 PERFECT COMPACT FOOTER 🚨 ===== */
+        /* ===== 🚨 FIXED APP-STYLE FOOTER 🚨 ===== */
         .auth-footer { 
-            width: 100%; margin-top: auto; 
-            padding: 12px 20px !important; /* Footer patla kar diya */
-            border-top: 1px solid var(--border); text-align: center; 
-            background: transparent; z-index: 100; flex-shrink: 0;
+            position: fixed !important; /* 👈 Yeh footer ko hamesha screen par lock rakhega */
+            bottom: 0 !important;       /* 👈 Ekdum niche chipka dega */
+            left: 0 !important; 
+            right: 0 !important;
+            width: 100% !important; 
+            padding: 12px 20px !important; 
+            border-top: 1px solid var(--border); 
+            text-align: center; 
+            
+            /* Header jaisa premium glass look diya hai taaki card scroll karne par mix na ho */
+            background: rgba(10,10,15,0.8) !important; 
+            backdrop-filter: blur(20px) !important; 
+            -webkit-backdrop-filter: blur(20px) !important;
+            z-index: 1000 !important; 
         }
+        
+        /* Light theme ke liye bhi same header jaisa effect */
+        [data-theme="light"] .auth-footer {
+            background: rgba(255, 255, 255, 0.95) !important;
+        }
+
         .footer-content { display: flex; flex-direction: column; gap: 6px !important; align-items: center; justify-content: center; margin: 0; }
         .footer-content span { color: var(--text3); font-size: 0.75rem; }
         .footer-links { display: flex; gap: 12px; align-items: center; font-size: 0.75rem; }
@@ -183,7 +199,7 @@
             .fa-moon, .fa-user-circle { font-size: 1.6rem !important; margin-left: 20px !important; }
             
             /* 🏰 CARD KO BADA AUR CHAUDA KIYA (PRO MAX LEVEL) */
-            .auth-card { max-width: 700px !important; padding: 70px 65px !important; border-radius: 32px !important; box-shadow: 0 40px 80px rgba(0,0,0,0.5) !important; }
+            .auth-card { max-width: 700px !important; padding: 70px 65px !important; border-radius: 32px !important; box-shadow: 0 2px 20px rgba(0,0,0,0.5) !important; }
             
             /* 📝 TEXT AUR HEADING BADI KI */
             .bismillah { font-size: 38px !important; margin-bottom: 28px !important; }
