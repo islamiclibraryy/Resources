@@ -578,34 +578,41 @@
 
 // Provider Setup
 const googleProvider = new GoogleAuthProvider();
-// LOGIN BUTTON FUNCTION (Clean, Fast & Conflict-Free)
+// LOGIN BUTTON FUNCTION (Ghost Timer Fix)
 window.loginWithGoogle = async function(btnId) {
     const btn = document.getElementById(btnId);
     if (!btn) return;
 
     const defaultHTML = `<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google"> <span>Continue with Google</span>`;
     
+    // 🧹 1. PURANE "GHOST TIMERS" KO DELETE KARO (Yeh sabse zaroori step hai)
+    if (window.googleAuthTimer) clearTimeout(window.googleAuthTimer);
+    if (window.googleAuthFocusHandler) {
+        window.removeEventListener('focus', window.googleAuthFocusHandler);
+    }
+
+    // 2. BUTTON KO VERIFYING MEIN DAALO
     btn.disabled = true;
     btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span>Verifying...</span>`;
 
-    // 🚀 THE SNAPPY FALLBACK TIMER
-    // Jab user screen par wapas aaye, toh 1.5 second se zyada wait mat karo
-    const onUserReturn = () => {
-        setTimeout(() => {
+    // 3. NAYA 2 SECOND WALA TIMER BANAO
+    window.googleAuthFocusHandler = () => {
+        window.googleAuthTimer = setTimeout(() => {
             if (btn.disabled) {
                 btn.disabled = false;
                 btn.innerHTML = defaultHTML;
             }
-        }, 2000); // 👈 Timer ko tight kar diya hai (1.5 seconds)
-        window.removeEventListener('focus', onUserReturn);
+        }, 2000); // 👈 Tera 2 second ka timing
+        window.removeEventListener('focus', window.googleAuthFocusHandler);
     };
-    window.addEventListener('focus', onUserReturn);
+    window.addEventListener('focus', window.googleAuthFocusHandler);
 
     try {
         const result = await signInWithPopup(auth, googleProvider);
         
-        // Agar successfully login ho gaya, toh fallback timer ko rok do
-        window.removeEventListener('focus', onUserReturn); 
+        // 🎉 SUCCESS MILITY HI TIMER ROK DO
+        if (window.googleAuthTimer) clearTimeout(window.googleAuthTimer);
+        window.removeEventListener('focus', window.googleAuthFocusHandler);
 
         const user = result.user;
         const userRef = doc(db, "users", user.uid);
@@ -634,17 +641,19 @@ window.loginWithGoogle = async function(btnId) {
         setTimeout(() => { window.location.href = '../'; }, 200);
 
     } catch (error) {
-        // 🚀 INSTANT RESET: Firebase se error aate hi turant normal karo
-        window.removeEventListener('focus', onUserReturn); 
+        // ❌ ERROR AATE HI TIMER ROK DO AUR BUTTON NORMAL KARO
+        if (window.googleAuthTimer) clearTimeout(window.googleAuthTimer);
+        window.removeEventListener('focus', window.googleAuthFocusHandler);
+        
         btn.disabled = false;
         btn.innerHTML = defaultHTML;
 
-        // Sirf asli error (jaise network issue) par toast dikhao
         if (error.code !== 'auth/popup-closed-by-user' && error.code !== 'auth/cancelled-popup-request') {
             window.showToast("Login Failed. Try again.", "error");
         }
     }
 };
+
 
 
         // ✅ LOGIN (FIREBASE)
