@@ -586,6 +586,17 @@ window.loginWithGoogle = async function(btnId) {
 
     btn.disabled = true;
     btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span>Verifying...</span>`;
+    // FAST RESET TRICK: Jaise hi user wapas screen par aaye, 2 second mein button normal kar do
+    const onUserReturn = () => {
+        setTimeout(() => {
+            if (btn.disabled) {
+                btn.disabled = false;
+                btn.innerHTML = `<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google"> <span>Continue with Google</span>`;
+            }
+        }, 2000); // 👈 2000 matlab 2 second. Isko apne hisaab se kam-zyada kar sakte ho.
+        window.removeEventListener('focus', onUserReturn);
+    };
+    window.addEventListener('focus', onUserReturn);
 
     try {
         // Seedha Popup Call - Browser ise khud handle karega
