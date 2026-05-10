@@ -578,31 +578,35 @@
 
 // Provider Setup
 const googleProvider = new GoogleAuthProvider();
-
-// LOGIN BUTTON FUNCTION (Clean Popup Method)
+// LOGIN BUTTON FUNCTION (Clean, Fast & Conflict-Free)
 window.loginWithGoogle = async function(btnId) {
     const btn = document.getElementById(btnId);
     if (!btn) return;
 
+    const defaultHTML = `<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google"> <span>Continue with Google</span>`;
+    
     btn.disabled = true;
     btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span>Verifying...</span>`;
-    // FAST RESET TRICK: Jaise hi user wapas screen par aaye, 2 second mein button normal kar do
+
+    // 🚀 THE SNAPPY FALLBACK TIMER
+    // Jab user screen par wapas aaye, toh 1.5 second se zyada wait mat karo
     const onUserReturn = () => {
         setTimeout(() => {
             if (btn.disabled) {
                 btn.disabled = false;
-                btn.innerHTML = `<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google"> <span>Continue with Google</span>`;
+                btn.innerHTML = defaultHTML;
             }
-        }, 2000); // 👈 2000 matlab 2 second. Isko apne hisaab se kam-zyada kar sakte ho.
+        }, 2000); // 👈 Timer ko tight kar diya hai (1.5 seconds)
         window.removeEventListener('focus', onUserReturn);
     };
     window.addEventListener('focus', onUserReturn);
 
     try {
-        // Seedha Popup Call - Browser ise khud handle karega
         const result = await signInWithPopup(auth, googleProvider);
         
-        // Jese hi user select karke popup band karega, code yahan se aage badhega
+        // Agar successfully login ho gaya, toh fallback timer ko rok do
+        window.removeEventListener('focus', onUserReturn); 
+
         const user = result.user;
         const userRef = doc(db, "users", user.uid);
         const userSnap = await getDoc(userRef);
@@ -630,22 +634,17 @@ window.loginWithGoogle = async function(btnId) {
         setTimeout(() => { window.location.href = '../'; }, 200);
 
     } catch (error) {
-        console.error("Popup Error: ", error);
-        
-        // Agar galti se popup band kar diya ya cancel kiya toh wapas normal kar do
+        // 🚀 INSTANT RESET: Firebase se error aate hi turant normal karo
+        window.removeEventListener('focus', onUserReturn); 
         btn.disabled = false;
-        btn.innerHTML = `<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google"> <span>Continue with Google</span>`;
-        
-        // Sirf asli errors ka toast dikhao
+        btn.innerHTML = defaultHTML;
+
+        // Sirf asli error (jaise network issue) par toast dikhao
         if (error.code !== 'auth/popup-closed-by-user' && error.code !== 'auth/cancelled-popup-request') {
             window.showToast("Login Failed. Try again.", "error");
         }
     }
 };
-
-
-
-
 
 
         // ✅ LOGIN (FIREBASE)
