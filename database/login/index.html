@@ -576,7 +576,7 @@
             return type === 'mobile' ? `${inputValue.trim()}@islamiclibrary.com` : inputValue.trim();
         }
 
-
+const googleProvider = new GoogleAuthProvider();
 // 1. LOGIN BUTTON FUNCTION (Sirf Google par bhejega)
 window.loginWithGoogle = function(btnId) {
     const btn = document.getElementById(btnId);
