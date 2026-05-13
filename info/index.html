@@ -3,33 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Book Details - Islamic Library by Shekh</title>
+    <title>About Us - Islamic Library by Shekh</title>
 
-    <meta name="description" content="Islamic Library by Shekh – Download Islamic eBooks, Quran PDFs, and Hadith books. A free and premium Islamic digital library.">
-    <meta name="keywords" content="Islamic Library by Shekh, Islamic ebooks, Quran PDF, Hadith books">
-    <meta name="author" content="Islamic Library by Shekh">
-
+    <meta name="description" content="About Islamic Library by Shekh.">
     <link rel="icon" type="image/png" sizes="32x32" href="../hikmahlogo.png">
     <link rel="icon" type="image/png" sizes="16x16" href="../hikmahlogo.png">
     <link rel="apple-touch-icon" sizes="180x180" href="../hikmahlogo.png">
 
-    <meta property="og:title" content="Islamic Library by Shekh">
-    <meta property="og:description" content="Free & Paid Islamic eBooks, Quran PDFs, Hadith books available.">
-    <meta property="og:image" content="https://mysite.github.io/Resources/hikmahlogo.png">
-    <meta property="og:url" content="https://mysite.github.io/Resources/">
-    <meta property="og:type" content="website">
-
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <script>
-        if (!localStorage.getItem("islamic_user_id") || !sessionStorage.getItem("selected_book_data")) {
-            window.location.replace("../login/");
-        }
-    </script>
-
     <script>
         (function() {
             const savedTheme = localStorage.getItem('islamic_theme') || 'dark';
@@ -38,36 +22,47 @@
     </script>
 
     <style>
-        /* ===== CSS VARIABLES (DARK MODE DEFAULT) ===== */
-        :root {
-            --bg: #0a0a0f; --bg2: #0f0f18; --bg3: #13131e;
-            --surface: #1a1a28; --surface2: #1f1f30; --surface3: #252538;
-            --border: rgba(255,255,255,0.07); --border2: rgba(255,255,255,0.12);
-            --text: #f0f0f8; --text2: #a8a8c0; --text3: #686888;
-            --accent: #7c6af7; --accent2: #9f91fa; --accent3: #c4bafe;
-            --glow: rgba(124,106,247,0.25); --glow2: rgba(124,106,247,0.1);
-            --danger: #f43f5e; --success: #10b981; --amber: #f59e0b;
-            --r: 12px; --r2: 16px; --r3: 20px;
-            --shadow: 0 4px 24px rgba(0,0,0,0.4); --shadow2: 0 8px 40px rgba(0,0,0,0.5);
-            --transition: 0.2s cubic-bezier(0.4,0,0.2,1);
-        }
-
-        /* ===== LIGHT MODE VARIABLES ===== */
-        [data-theme="light"] {
-            --bg: #f4f6f8; --bg2: #e9ecef; --bg3: #dee2e6;
-            --surface: #ffffff; --surface2: #f8f9fa; --surface3: #e9ecef;
-            --border: rgba(0,0,0,0.08); --border2: rgba(0,0,0,0.15);
-            --text: #1a1b1e; --text2: #495057; --text3: #868e96;
-            --accent: #6366f1; --accent2: #4f46e5; --accent3: #4338ca;
-            --glow: rgba(99,102,241,0.15); --glow2: rgba(99,102,241,0.08);
-            --shadow: 0 4px 20px rgba(0,0,0,0.06); --shadow2: 0 8px 30px rgba(0,0,0,0.1);
-        }
-        
-        [data-theme="light"] .blob { opacity: 0.5; }
-        [data-theme="light"] header, [data-theme="light"] .action-footer { background: rgba(255, 255, 255, 0.9); border-bottom-color: rgba(0,0,0,0.1); border-top-color: rgba(0,0,0,0.1); }
-        [data-theme="light"] .bottom-nav { background: rgba(255, 255, 255, 0.9); border-top-color: rgba(0,0,0,0.1); }
-        [data-theme="light"] .profile-drawer { background: #fff; }
-        /* 🔥 LIGHT MODE PASSWORD INPUT FIX 🔥 */
+        /* CSS Wahi Puraani Hai, Kuch Nahi Badla */
+        :root { --bg: #0a0a0f; --bg2: #0f0f18; --bg3: #13131e; --surface: #1a1a28; --surface2: #1f1f30; --surface3: #252538; --border: rgba(255,255,255,0.07); --border2: rgba(255,255,255,0.12); --text: #f0f0f8; --text2: #a8a8c0; --text3: #686888; --accent: #7c6af7; --accent2: #9f91fa; --accent3: #c4bafe; --glow: rgba(124,106,247,0.25); --glow2: rgba(124,106,247,0.1); --danger: #f43f5e; --success: #10b981; --amber: #f59e0b; --r: 12px; --r2: 16px; --r3: 20px; --shadow: 0 4px 24px rgba(0,0,0,0.4); --shadow2: 0 8px 40px rgba(0,0,0,0.5); --transition: 0.2s cubic-bezier(0.4,0,0.2,1); --ig-gradient: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
+        [data-theme="light"] { --bg: #f4f6f8; --bg2: #e9ecef; --bg3: #dee2e6; --surface: #ffffff; --surface2: #f8f9fa; --surface3: #e9ecef; --border: rgba(0,0,0,0.08); --border2: rgba(0,0,0,0.15); --text: #1a1b1e; --text2: #495057; --text3: #868e96; --accent: #6366f1; --accent2: #4f46e5; --accent3: #4338ca; --glow: rgba(99,102,241,0.15); --glow2: rgba(99,102,241,0.08); --shadow: 0 4px 20px rgba(0,0,0,0.06); --shadow2: 0 8px 30px rgba(0,0,0,0.1); }
+        [data-theme="light"] .blob { opacity: 0.5; } [data-theme="light"] header, [data-theme="light"] .stepper-wrap, [data-theme="light"] .bottom-nav { background: rgba(255, 255, 255, 0.9); border-bottom-color: rgba(0,0,0,0.1); border-top-color: rgba(0,0,0,0.1); } [data-theme="light"] .profile-drawer { background: #fff; }
+        *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; min-height: 100vh; -webkit-tap-highlight-color: transparent; transition: background-color 0.3s ease, color 0.3s ease; }
+        body::before { content:''; position:fixed; inset:0; pointer-events:none; z-index:9999; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E"); opacity:0.4; }
+        .hero-bg { position:fixed; inset:0; pointer-events:none; z-index:-2; background: radial-gradient(ellipse 80% 50% at 50% -10%,rgba(124,106,247,0.2) 0%,transparent 70%), radial-gradient(ellipse 50% 40% at 80% 60%,rgba(168,85,247,0.12) 0%,transparent 60%), radial-gradient(ellipse 40% 30% at 20% 70%,rgba(99,102,241,0.1) 0%,transparent 60%); }
+        .hero-grid { position:fixed; inset:0; pointer-events:none; z-index:-1; background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px); background-size:48px 48px; mask-image:radial-gradient(ellipse 100% 100% at 50% 50%,black 40%,transparent 100%); opacity:0.6; }
+        .blob { position:fixed; border-radius:50%; filter:blur(80px); pointer-events:none; animation:blobFloat 8s ease-in-out infinite; z-index:-1; }
+        .blob1 { width:400px; height:400px; background:rgba(124,106,247,0.18); top:-100px; left:-100px; animation-delay:0s; }
+        .blob2 { width:350px; height:350px; background:rgba(168,85,247,0.12); bottom:-80px; right:-80px; animation-delay:3s; }
+        .arabic-text { font-family: 'Amiri', serif; } .bismillah { font-family: 'Amiri', serif; color: var(--accent2); font-size: 26px; text-shadow: 0 0 12px var(--glow); text-align: center; margin: 10px 0 24px; animation: fadeUp .6s ease both; }
+        h1, h2, h3 { font-family: 'Syne', sans-serif; font-weight: 700; color: var(--text); margin-bottom: 12px; } p { color: var(--text2); font-size: .95rem; margin-bottom: 16px; line-height: 1.7; } ul { margin-bottom: 16px; padding-left: 20px; color: var(--text2); font-size: .95rem; } ul li { margin-bottom: 8px; } ul li strong { color: var(--text); font-family: 'Syne', sans-serif; }
+        .flex { display: flex; } .align-center { align-items: center; } .justify-between { justify-content: space-between; } .text-center { text-align: center; } .hidden { display: none !important; }
+        .btn { background: linear-gradient(135deg, #7c6af7, #9f3fbf); color: #fff; border: none; padding: 14px 20px; border-radius: 99px; font-weight: 600; font-family: 'DM Sans', sans-serif; width: 100%; cursor: pointer; transition: var(--transition); font-size: 1rem; display: block; text-align: center; position: relative; overflow: hidden; box-shadow: 0 4px 20px rgba(124,106,247,0.4); }
+        .btn::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,0.15),transparent); opacity:0; transition:opacity var(--transition); } .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(124,106,247,0.5); } .btn:hover::before { opacity: 1; } .btn:active { transform: translateY(0) scale(0.98); }
+        .btn-outline { background: transparent; color: var(--text2); border: 1px solid var(--border2); padding: 10px 20px; border-radius: 99px; font-weight: 500; font-size: .85rem; transition: var(--transition); cursor: pointer; box-shadow: none; } .btn-outline:hover { border-color: var(--accent); color: var(--accent2); background: var(--glow2); }
+        #confirm-modal { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10,10,15,0.85); backdrop-filter: blur(5px); z-index: 99999; display: flex; justify-content: center; align-items: center; animation: fadeIn 0.3s ease; }
+        .modal-box { background: var(--surface); padding: 28px 24px; border-radius: var(--r3); width: 90%; max-width: 320px; text-align: center; border: 1px solid var(--border); box-shadow: var(--shadow2); animation: cardIn 0.4s ease both; } .modal-title { font-size: 1.3rem; margin-bottom: 8px; color: var(--text); } .modal-desc { font-size: 0.9rem; color: var(--text2); margin-bottom: 24px; line-height: 1.5; } .modal-actions { display: flex; gap: 12px; } .modal-actions button { flex: 1; padding: 12px; font-size: 0.9rem; }
+        header { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; background: rgba(10,10,15,0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); transition: background-color 0.3s ease, border-color 0.3s ease; transform: translateZ(0); }
+        .header-logo-container { display: flex; flex-direction: column; justify-content: center; overflow: hidden; } .header-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(1rem, 5vw, 1.25rem); background: linear-gradient(135deg, var(--accent2), #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; letter-spacing: -0.02em; white-space: nowrap; } .header-sub { font-family: 'DM Mono', monospace; font-size: .7rem; font-weight: 500; color: var(--accent2); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 4px; white-space: nowrap; }
+        .stepper-wrap { position: sticky; top: 68px; z-index: 900; background: rgba(10,10,15,0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 12px 20px; margin-top: 68px; transition: background-color 0.3s ease, border-color 0.3s ease; }
+        .stepper { display: flex; align-items: center; gap: 12px; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; } .stepper::-webkit-scrollbar { display: none; }
+        .step-item { display: inline-flex; align-items: center; gap: 8px; flex-shrink: 0; padding: 8px 16px; border-radius: 99px; cursor: pointer; transition: all var(--transition); background: var(--surface2); border: 1px solid var(--border2); color: var(--text2); font-size: .85rem; font-weight: 600; } .step-item i { font-size: 1rem; } .step-item:hover { border-color: var(--border); color: var(--text); } .step-item.active { border-color: var(--accent); color: var(--accent2); background: var(--glow2); box-shadow: 0 0 15px var(--glow2); }
+        .main-content { padding: 24px 20px 90px; max-width: 800px; margin: 0 auto; animation: fadeUp .5s ease both; }
+        .content-card { background: var(--surface); border-radius: var(--r2); padding: 24px; box-shadow: var(--shadow); border: 1px solid var(--border); }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 70px; background: rgba(10,10,15,0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--border); z-index: 999; transition: background-color 0.3s ease, border-color 0.3s ease; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text3); font-size: .75rem; font-weight: 500; gap: 6px; cursor: pointer; flex: 1; height: 100%; transition: all var(--transition); text-decoration: none; } .nav-item i { font-size: 1.2rem; transition: all var(--transition); } .nav-item.active { color: var(--accent2); } .nav-item.active i { background: var(--glow2); padding: 8px; border-radius: 50%; box-shadow: 0 0 15px var(--glow); transform: translateY(-4px); color: var(--accent); } .nav-item:hover:not(.active) { color: var(--text2); }
+        .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 10001; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; backdrop-filter: blur(3px); } .drawer-overlay.active { opacity: 1; pointer-events: all; }
+        .profile-drawer { position: fixed; top: 0; right: -320px; width: 300px; height: 100%; height: 100dvh; background: var(--surface); z-index: 10002; box-shadow: -5px 0 30px rgba(0,0,0,0.5); transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; } .profile-drawer.active { right: 0; }
+        .drawer-header { padding: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); flex-shrink: 0;} .drawer-header h3 { margin: 0; font-size: 1.2rem; } .drawer-header i { font-size: 1.2rem; color: var(--text2); cursor: pointer; padding: 5px; }
+        .drawer-body { padding: 30px 20px; text-align: center; flex: 1; overflow-y: auto; } .drawer-avatar { width: 80px; height: 80px; border-radius: 50%; background: var(--glow2); border: 2px solid var(--accent); color: var(--accent2); font-size: 2.5rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px auto; }
+        .drawer-name { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 700; margin-bottom: 4px; color: var(--text); } .drawer-mobile { font-family: 'DM Mono', monospace; font-size: 0.9rem; color: var(--text2); margin-bottom: 30px; letter-spacing: 0.05em; }
+        .drawer-menu .btn-outline { width: 100%; text-align: left; padding: 14px 20px; margin-bottom: 12px; display: flex; align-items: center; gap: 12px; font-size: 0.95rem; border-color: var(--border); } .drawer-menu .btn-outline i { width: 20px; text-align: center; font-size: 1.1rem; }
+        .drawer-footer { padding: 20px; border-top: 1px solid var(--border); flex-shrink: 0; padding-bottom: calc(20px + env(safe-area-inset-bottom)); }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } } @keyframes cardIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } } @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } } @keyframes blobFloat { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(20px,-20px) scale(1.05)} 66%{transform:translate(-15px,15px) scale(0.97)} }
+        .custom-dark-input { width: 100%; padding: 14px 15px; margin-top: 8px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.15); background: rgba(255, 255, 255, 0.05); color: #ffffff; font-size: 1rem; outline: none; transition: all 0.3s ease; font-family: inherit; } .custom-dark-input::placeholder { color: rgba(255, 255, 255, 0.4); } .custom-dark-input:focus { border-color: #a855f7; background: rgba(255, 255, 255, 0.1); box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2); }
+        #toast-container { position: fixed; bottom: 85px; right: 28px; z-index: 999999 !important; display: flex; flex-direction: column; gap: 10px; pointer-events: none; } .toast { background: var(--surface); color: var(--text); padding: 12px 18px; border-radius: var(--r2); box-shadow: var(--shadow2); border: 1px solid var(--border2); animation: slideUp 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards; display: flex; align-items: center; gap: 10px; font-size: .85rem; font-weight: 500; }
+            /* 🔥 LIGHT MODE PASSWORD INPUT FIX 🔥 */
         [data-theme="light"] .custom-dark-input {
             background: var(--surface2) !important; /* Halka gray background */
             color: var(--text) !important;          /* Dark text color */
@@ -77,283 +72,71 @@
             color: var(--text3) !important;         /* Dark placeholder */
         }
 
-        *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
-        html { scroll-behavior: smooth; font-size: 16px; }
-        body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; min-height: 100vh; -webkit-tap-highlight-color: transparent; transition: background-color 0.3s ease, color 0.3s ease; }
-        
-        body::before { content:''; position:fixed; inset:0; pointer-events:none; z-index:9999; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E"); opacity:0.4; }
+                    /* 🔥 DESKTOP VIEW FIX (PREMIUM LOOK) 🔥 */
+        @media screen and (min-width: 768px) {
+            /* 1. Main dabbe ko thoda chauda karna aur upar se jagah dena */
+            .main-content { 
+                max-width: 900px !important; 
+                padding-top: 40px !important; 
+            }
 
-        .hero-bg { position:fixed; inset:0; pointer-events:none; z-index:-2; background: radial-gradient(ellipse 80% 50% at 50% -10%,rgba(124,106,247,0.2) 0%,transparent 70%), radial-gradient(ellipse 50% 40% at 80% 60%,rgba(168,85,247,0.12) 0%,transparent 60%), radial-gradient(ellipse 40% 30% at 20% 70%,rgba(99,102,241,0.1) 0%,transparent 60%); }
-        .hero-grid { position:fixed; inset:0; pointer-events:none; z-index:-1; background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px); background-size:48px 48px; mask-image:radial-gradient(ellipse 100% 100% at 50% 50%,black 40%,transparent 100%); opacity:0.6; }
-        .blob { position:fixed; border-radius:50%; filter:blur(80px); pointer-events:none; animation:blobFloat 8s ease-in-out infinite; z-index:-1; }
-        .blob1 { width:400px; height:400px; background:rgba(124,106,247,0.18); top:-100px; left:-100px; animation-delay:0s; }
-        .blob2 { width:350px; height:350px; background:rgba(168,85,247,0.12); bottom:-80px; right:-80px; animation-delay:3s; }
-        .blob3 { width:250px; height:250px; background:rgba(99,102,241,0.1); top:40%; right:10%; animation-delay:5s; }
+            /* 2. Card ke andar ki jagah (padding) badhana */
+            .content-card { 
+                padding: 40px 50px !important; 
+            }
+            .ig-card { 
+                padding: 50px 40px !important; 
+                max-width: 600px !important; 
+                margin: 0 auto !important; 
+            }
 
-        .arabic-text { font-family: 'Amiri', serif; }
-        h1, h2, h3 { font-family: 'Syne', sans-serif; font-weight: 700; letter-spacing: -0.02em; color: var(--text); }
-        .hidden { display: none !important; } .flex { display: flex; } .align-center { align-items: center; } .text-center { text-align: center; } .mt-1 { margin-top: 10px; } .mt-2 { margin-top: 20px; } .mb-2 { margin-bottom: 20px; }
+            /* 3. Headings aur Bismillah ko bada karna */
+            .content-card h3, .ig-card h3 { 
+                font-size: 1.6rem !important; 
+                margin-bottom: 16px !important; 
+            }
+            .bismillah { 
+                font-size: 36px !important; 
+                margin-bottom: 30px !important; 
+            }
 
-        #loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10,10,15,0.85); backdrop-filter: blur(5px); z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-        .spinner { width: 50px; height: 50px; border: 4px solid var(--surface3); border-top: 4px solid var(--accent); border-radius: 50%; animation: spin 1s cubic-bezier(0.4,0,0.2,1) infinite; }
-        #toast-container { position: fixed; bottom: 85px; right: 28px; z-index: 9998; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
-        .toast { background: var(--surface); color: var(--text); padding: 12px 18px; border-radius: var(--r2); box-shadow: var(--shadow2); border: 1px solid var(--border2); animation: slideUp 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards; display: flex; align-items: center; gap: 10px; font-size: .85rem; font-weight: 500; }
+            /* 4. Text (Paragraph) ko padhne laayak (readable) banana */
+            .content-card p, .content-card ul, .ig-card p { 
+                font-size: 1.1rem !important; 
+                line-height: 1.8 !important; 
+            }
 
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10,10,15,0.85); backdrop-filter: blur(5px); z-index: 99999; display: flex; justify-content: center; align-items: center; animation: fadeIn 0.3s ease; }
-        .modal-box { background: var(--surface); padding: 28px 24px; border-radius: var(--r3); width: 90%; max-width: 320px; text-align: center; border: 1px solid var(--border); box-shadow: var(--shadow2); animation: cardIn 0.4s ease both; }
-        .modal-title { font-size: 1.3rem; margin-bottom: 8px; color: var(--text); }
-        .modal-desc { font-size: 0.9rem; color: var(--text2); margin-bottom: 24px; line-height: 1.5; }
-        .modal-actions { display: flex; gap: 12px; }
-        .modal-actions button { flex: 1; padding: 12px; font-size: 0.9rem; }
-        .btn-danger { background: rgba(244, 63, 94, 0.1); color: var(--danger); border: 1px solid rgba(244, 63, 94, 0.3); }
-        .btn-danger:hover { background: var(--danger); color: #fff; box-shadow: 0 4px 20px rgba(244, 63, 94, 0.4); }
-
-        /* ===== SKELETON LOADERS ===== */
-        .skeleton { background: linear-gradient(90deg, var(--surface3) 25%, var(--surface2) 50%, var(--surface3) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite linear; border-radius: 4px; }
-        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
-
-/* 🔥 UPDATED .btn CLASS 🔥 */
-.btn { 
-    background: linear-gradient(135deg, #7c6af7, #9f3fbf); 
-    color: #fff; 
-    border: none; 
-    padding: 14px 20px; 
-    border-radius: 99px; 
-    font-weight: 600; 
-    font-family: 'DM Sans', sans-serif; 
-    width: 100%; 
-    cursor: pointer; 
-    transition: var(--transition); 
-    font-size: 1rem; 
-    
-    /* 🔥 YAHAN JADOO HAI (Icon aur Text hamesha ek line me rahenge) 🔥 */
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
-    gap: 8px; 
-    white-space: nowrap; 
-    
-    position: relative; 
-    overflow: hidden; 
-    box-shadow: 0 4px 20px rgba(124,106,247,0.4); 
-}
-
-/* Ye purana wala hi hai, isko chhedne ki zaroorat nahi bas as it is rakhna */
-.btn::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,0.15),transparent); opacity:0; transition:opacity var(--transition); }
-.btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(124,106,247,0.5); } 
-.btn:hover::before { opacity: 1; } 
-.btn:active { transform: translateY(0) scale(0.98); }
-
-        /* ✅ FIXED HEADER - EXACT MATCH */
-        header { 
-            position: fixed; top: 0; left: 0; right: 0; z-index: 1000; 
-            padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; 
-            background: rgba(10,10,15,0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
-            border-bottom: 1px solid var(--border); 
-            transition: background-color 0.3s ease, border-color 0.3s ease; 
-            transform: translateZ(0); 
-        }
-        .header-logo-container { display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
-        
-        .header-logo { 
-            font-family: 'Syne', sans-serif; 
-            font-weight: 800; 
-            /* Font apne aap screen ke hisaab se set hoga */
-            font-size: clamp(1rem, 5vw, 1.25rem); 
-            background: linear-gradient(135deg, var(--accent2), #c084fc); 
-            -webkit-background-clip: text; 
-            -webkit-text-fill-color: transparent; 
-            line-height: 1; 
-            letter-spacing: -0.02em; 
-            /* Text 2 line mein nahi tootega */
-            white-space: nowrap; 
-        }
-        
-        .header-sub { 
-            font-family: 'DM Mono', monospace; 
-            font-size: .7rem; 
-            font-weight: 500; 
-            color: var(--accent2); 
-            text-transform: uppercase; 
-            letter-spacing: 0.1em; 
-            margin-top: 4px; 
-            white-space: nowrap; 
-        }
-
-        .main-content { padding: 90px 20px 90px; max-width: 1400px; margin: 0 auto; animation: fadeIn .5s ease both; }
-        
-        /* ✅ PROFILE DRAWER UI (BUG FIXED: SCROLL & HEIGHT) */
-        .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 10001; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; backdrop-filter: blur(3px); }
-        .drawer-overlay.active { opacity: 1; pointer-events: all; }
-        
-        .profile-drawer { position: fixed; top: 0; right: -320px; width: 300px; height: 100%; height: 100dvh; background: var(--surface); z-index: 10002; box-shadow: -5px 0 30px rgba(0,0,0,0.5); transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; }
-        .profile-drawer.active { right: 0; }
-        
-        .drawer-header { padding: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); flex-shrink: 0;}
-        .drawer-header h3 { margin: 0; font-size: 1.2rem; }
-        .drawer-header i { font-size: 1.2rem; color: var(--text2); cursor: pointer; padding: 5px; }
-        
-        .drawer-body { padding: 30px 20px; text-align: center; flex: 1; overflow-y: auto; }
-        .drawer-avatar { width: 80px; height: 80px; border-radius: 50%; background: var(--glow2); border: 2px solid var(--accent); color: var(--accent2); font-size: 2.5rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px auto; }
-        .drawer-name { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 700; margin-bottom: 4px; color: var(--text); }
-        .drawer-mobile { font-family: 'DM Mono', monospace; font-size: 0.9rem; color: var(--text2); margin-bottom: 30px; letter-spacing: 0.05em; }
-        
-        .drawer-menu .btn-outline { width: 100%; text-align: left; padding: 14px 20px; margin-bottom: 12px; display: flex; align-items: center; gap: 12px; font-size: 0.95rem; border-color: var(--border); }
-        .drawer-menu .btn-outline i { width: 20px; text-align: center; font-size: 1.1rem; }
-        
-        .drawer-footer { padding: 20px; border-top: 1px solid var(--border); flex-shrink: 0; padding-bottom: calc(20px + env(safe-area-inset-bottom)); }
-
-        .price-tag { font-family: 'DM Mono', monospace; font-size: .9rem; color: var(--accent2); font-weight: 700; }
-        .strike-price { font-size: .75rem; color: var(--text3); text-decoration: line-through; margin-left: 6px; font-weight: normal; }
-        .badge-free { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 99px; background: var(--glow2); border: 1px solid rgba(124,106,247,0.3); font-size: .75rem; font-weight: 600; color: var(--accent3); }
-        
-        /* Details UI */
-        .detail-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
-        .back-btn, .share-btn { background: var(--surface2); color: var(--text); border: 1px solid var(--border2); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; cursor: pointer; transition: all var(--transition); }
-        .back-btn:hover { border-color: var(--accent); color: var(--accent2); background: var(--glow2); transform: rotate(-5deg) scale(1.05); }
-        .share-btn:hover { border-color: var(--accent); color: var(--accent2); background: var(--glow2); transform: scale(1.05); }
-        
-        .detail-thumb { width: 100%; max-width: 250px; aspect-ratio: 1/1; border-radius: var(--r3); object-fit: cover; margin: 0 auto 24px auto; display: block; border: 1px solid var(--border); box-shadow: var(--shadow); animation: cardIn .5s ease both; }
-/* Ye line normal CSS mein dalo taki mobile par bhi dikhe */
-.detail-thumb {
-    box-shadow: 0 10px 30px rgba(0,0,0,0.4) !important;
-    border: 1px solid rgba(255,255,255,0.1) !important; /* Halka sa border taki shadow aur khul kar aaye */
-}
-
-        .action-footer { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(10,10,15,0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); padding: 16px 24px; border-top: 1px solid var(--border); z-index: 1000; display: flex; justify-content: space-between; align-items: center; transition: background-color 0.3s ease, border-color 0.3s ease; white-space: nowrap; gap: 12px; }
-
-        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 70px; background: rgba(10,10,15,0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--border); z-index: 999; transition: background-color 0.3s ease, border-color 0.3s ease; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text3); font-size: .75rem; font-weight: 500; gap: 6px; cursor: pointer; flex: 1; height: 100%; transition: all var(--transition); text-decoration: none; }
-        .nav-item i { font-size: 1.2rem; transition: all var(--transition); }
-        .nav-item.active { color: var(--accent2); }
-        .nav-item.active i { background: var(--glow2); padding: 8px; border-radius: 50%; box-shadow: 0 0 15px var(--glow); transform: translateY(-4px); color: var(--accent); }
-        .nav-item:hover:not(.active) { color: var(--text2); }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } } @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } } @keyframes cardIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } } @keyframes spin { to { transform: rotate(360deg); } }
-/* Custom Dark Input for Password Box */
-.custom-dark-input {
-    width: 100%; padding: 14px 15px; margin-top: 8px; border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.15); background: rgba(255, 255, 255, 0.05);
-    color: #ffffff; font-size: 1rem; outline: none; transition: all 0.3s ease; font-family: inherit;
-}
-.custom-dark-input::placeholder { color: rgba(255, 255, 255, 0.4); }
-.custom-dark-input:focus { border-color: #a855f7; background: rgba(255, 255, 255, 0.1); box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2); }
-
-/* Original Toast Styling */
-#toast-container { position: fixed; bottom: 85px; right: 28px; z-index: 999999 !important; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
-.toast { background: var(--surface); color: var(--text); padding: 12px 18px; border-radius: var(--r2); box-shadow: var(--shadow2); border: 1px solid var(--border2); animation: slideUp 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards; display: flex; align-items: center; gap: 10px; font-size: .85rem; font-weight: 500; }
-
-/* 1. Button ko kisi bhi phone mein dabne (bona hone) se rokne ke liye */
-.action-footer .btn {
-    flex-shrink: 0 !important; 
-}
-
-/* 2. SIRF aur SIRF chhote phones (400px ya usse kam) ke liye rule */
-@media screen and (max-width: 400px) {
-    .action-footer > *:first-child {
-        font-size: 0.95rem !important; /* Halka sa adjust hoga taki button ko jagah mile */
-    }
-}        /* 🔥 BOOK DETAILS TITLE - RESPONSIVE & CONSISTENT 🔥 */
-        #det-title {
-            /* 1. Alignment & Natural Flow */
-            text-align: left !important;
-            white-space: normal !important;
-            word-break: break-word !important;
-            overflow-wrap: break-word !important;
-            line-height: 1.35 !important;
-            margin-bottom: 12px !important;
-            
-            /* 2. Consistent Sizing (Screen ke hisaab se, Title ki length se farq nahi padega) */
-            /* Minimum 1.15rem, Preferred 5vw (5% of screen width), Max 1.8rem */
-            font-size: clamp(1.15rem, 5vw, 1.8rem) !important; 
-            
-            /* 3. Appearance */
-            font-family: 'Syne', sans-serif;
-            font-weight: 700;
-            color: var(--text);
-        }
-
-        /* 🔥 DESKTOP VIEW FIX (BOOK DETAILS) - FINAL PERFECTED 🔥 */
+            /* 5. Stepper (Tabs) ko left ki jagah Center mein set karna */
+            .stepper { 
+                justify-content: center !important; 
+            }
+            .step-item { 
+                padding: 10px 24px !important; 
+                font-size: 1rem !important; 
+            }              /* 🔥 HEADER, FOOTER & STEPPER DESKTOP FIX 🔥 */
         @media screen and (min-width: 768px) {
             
-            /* 1. Header/Nav alignment fix */
-            header { padding: 20px 10% !important; }
+            /* 1. Header and Footer spacing */
+            header {
+                padding: 20px 10% !important; 
+            }
+            .bottom-nav {
+                padding: 0 10% !important;
+                height: 80px !important;
+            }
+
+            /* 2. PC ke hisaab se text aur icons bade kar diye */
             .header-logo { font-size: 1.6rem !important; }
             .fa-moon, .fa-user-circle { font-size: 1.6rem !important; margin-left: 20px !important; }
+            .nav-item i { font-size: 1.4rem !important; }
+            .nav-item span { font-size: 0.9rem !important; }
 
-            .bottom-nav { padding: 0 10% !important; height: 80px !important; }
-
-            /* 2. Action Footer alignment - Download button profile icon ki seedh mein */
-            #action-footer {
-                padding-left: 10% !important;
-                padding-right: 10% !important;
-                background: rgba(10,10,15,0.95) !important;
-                backdrop-filter: blur(20px) !important;
+            /* 3. 🔥 FIX: Bada Header hone ki wajah se Stepper ko niche khiskaya 🔥 */
+            .stepper-wrap {
+                top: 85px !important;        /* Naye header ki height ke hisaab se */
+                margin-top: 85px !important; /* Naye header ki height ke hisaab se */
             }
-
-            /* 3. Main content area */
-            .main-content {
-                max-width: 900px !important;
-                margin: 0 auto !important;
-                padding-top: 100px !important; 
-            }
-
-            /* 4. 🔥 IMAGE SIZE FIX (Max-width ko hataya) 🔥 */
-            #det-thumb {
-                display: block !important;
-                margin: 0 auto 40px auto !important; 
-                width: 500px !important;      /* Ab ye sach mein bada hoga */
-                max-width: none !important;    /* Purani 250px wali limit khatam */
-                height: auto !important;
-                border-radius: 24px !important;
-                box-shadow: 0 25px 60px rgba(0,0,0,0.6) !important;
-            }
-
-            /* 5. 🔥 Title & Tag: Left side par shift 🔥 */
-            #det-title { 
-                max-width: 800px !important;
-                margin: 0 0 15px 0 !important; /* margin-left 0 kiya taki ekdum left me jaye */
-                font-size: 2.4rem !important; 
-                text-align: left !important; 
-            }
-            
-            #det-price-box { 
-                max-width: 800px !important;
-                margin: 0 0 25px 0 !important; /* margin-left 0 kiya */
-                display: flex !important; 
-                justify-content: flex-start !important; 
-            }
-
-            #det-arabic-phrase { 
-                font-size: 36px !important; 
-                text-align: center !important; /* Arabic phrase center me hi pyara lagta hai */
-                margin-bottom: 35px !important; 
-            }
-            
-            #det-desc { 
-                max-width: 850px !important;
-                margin: 0 0 !important; /* Isko bhi left shift kiya */
-                font-size: 1.15rem !important; 
-                line-height: 1.9 !important; 
-                text-align: left !important;
-                padding-bottom: 130px !important; 
-            }
-            /* 🍞 TOAST NOTIFICATIONS DESKTOP FIX 🍞 */
-            #toast-container {
-                bottom: 50px !important; 
-                right: 50px !important; /* PC par right kone mein aaram se set hoga */
-            }
-            .toast {
-                padding: 18px 24px !important;
-                font-size: 1.15rem !important; /* Text padhne layak bada kiya */
-                border-radius: 16px !important;
-                gap: 16px !important;
-                min-width: 320px !important; /* PC par thoda lamba toast acha lagta hai */
-                box-shadow: 0 15px 35px rgba(0,0,0,0.5) !important; /* Premium Shadow */
-            }
-            .toast i { 
-                font-size: 1.5rem !important; /* Error/Success wala Icon bhi bada hoga */
-            }
+        }
             /* 🚀 ALL MODALS DESKTOP FIX (Logout, Change Password) 🚀 */
             .modal-box {
                 max-width: 480px !important; /* Modals ab choude aur premium lagenge */
@@ -392,14 +175,21 @@
                 font-size: 1.1rem !important;
                 border-radius: 14px !important;
             }
-            /* 🔥 LIGHT MODE DESKTOP FOOTER FIX 🔥 */
-            [data-theme="light"] #action-footer {
-                background: rgba(255, 255, 255, 0.9) !important; /* Safed background */
-                border-top: 1px solid rgba(0,0,0,0.1) !important; /* Halka gray border */
+            /* 🍞 TOAST NOTIFICATIONS DESKTOP FIX 🍞 */
+            #toast-container {
+                bottom: 50px !important; 
+                right: 50px !important; /* PC par right kone mein aaram se set hoga */
             }
-            
-            [data-theme="light"] #action-footer .price-tag {
-                color: var(--accent2) !important; /* Price tag ka color dark theme jaisa na reh jaye */
+            .toast {
+                padding: 18px 24px !important;
+                font-size: 1.15rem !important; /* Text padhne layak bada kiya */
+                border-radius: 16px !important;
+                gap: 16px !important;
+                min-width: 320px !important; /* PC par thoda lamba toast acha lagta hai */
+                box-shadow: 0 15px 35px rgba(0,0,0,0.5) !important; /* Premium Shadow */
+            }
+            .toast i { 
+                font-size: 1.5rem !important; /* Error/Success wala Icon bhi bada hoga */
             }
 
         }
@@ -407,45 +197,38 @@
     </style>
 </head>
 <body>
-    <div id="change-password-modal" class="modal-overlay hidden">
-    <div class="modal-box" style="text-align:left;">
-        <h3 style="margin-bottom: 20px;">Change Password</h3>
-        <form id="changePasswordForm" onsubmit="event.preventDefault(); window.executeChangePassword();">
-            <div class="form-group">
-                <label style="color: var(--text); font-weight: 500;">New Password</label>
-                <input type="password" id="user_new_password" class="custom-dark-input" required minlength="6" placeholder="Enter new strong password">
-            </div>
-            <div class="modal-actions" style="margin-top:24px;">
-                <button type="button" class="btn btn-outline" onclick="window.closeChangePasswordModal()">Cancel</button>
-                <button type="submit" class="btn" id="update-pass-btn">Update Password</button>
-            </div>
-        </form>
+    <div id="change-password-modal" class="modal-overlay hidden" style="display: flex; justify-content: center; align-items: center; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10,10,15,0.85); backdrop-filter: blur(5px); z-index: 999999;">
+        <div class="modal-box" style="text-align:left; background: var(--surface); padding: 28px 24px; border-radius: 20px; width: 90%; max-width: 320px; border: 1px solid var(--border); box-shadow: 0 8px 40px rgba(0,0,0,0.5);">
+            <h3 style="margin-bottom: 20px; font-size: 1.3rem; color: var(--text); font-family: 'Syne', sans-serif;">Change Password</h3>
+            <form id="changePasswordForm" onsubmit="event.preventDefault(); window.executeChangePassword();">
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label style="color: var(--text); font-weight: 500; display: block; margin-bottom: 8px;">New Password</label>
+                    <input type="password" id="user_new_password" class="custom-dark-input" required minlength="6" placeholder="Enter new strong password">
+                </div>
+                <div class="modal-actions" style="margin-top:24px; display: flex; gap: 12px;">
+                    <button type="button" class="btn btn-outline" style="flex: 1;" onclick="window.closeChangePasswordModal()">Cancel</button>
+                    <button type="submit" class="btn" id="update-pass-btn" style="flex: 1;">Update</button>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
-
-    <div class="hero-bg"></div>
-    <div class="hero-grid"></div>
-
-    <div id="loader" class="hidden"><div class="spinner"></div></div>
-   
-
-    <div id="drawer-overlay" class="drawer-overlay" onclick="closeProfileDrawer()"></div>
+        <div id="toast-container"></div>
+    <div class="hero-bg"></div><div class="hero-grid"></div><div class="blob blob1"></div><div class="blob blob2"></div>
+    
+    <div id="drawer-overlay" class="drawer-overlay" onclick="window.closeProfileDrawer()"></div>
     <div id="profile-drawer" class="profile-drawer">
         <div class="drawer-header">
-            <h3>My Profile</h3>
-            <i class="fas fa-times" onclick="closeProfileDrawer()"></i>
+            <h3>Profile Menu</h3>
+            <i class="fas fa-times" onclick="window.closeProfileDrawer()"></i>
         </div>
+        
         <div class="drawer-body">
-            <div class="drawer-avatar"><i class="fas fa-user"></i></div>
-            <div class="drawer-name" id="profile-name">Library User</div>
-            <div class="drawer-mobile" id="profile-mobile">+XX XXXXXXXXXX</div>
-            <div class="drawer-menu">
-                <button class="btn btn-outline" onclick="openChangePassword()"><i class="fas fa-key"></i> Change Password</button>
-            </div>
+            <div class="drawer-avatar"><i class="fas fa-user-shield"></i></div>
+            <div class="drawer-name" id="profile-name">Loading...</div>
+            <div class="drawer-mobile" id="profile-mobile"></div>
+            <div class="drawer-menu" id="auth-actions"></div>
         </div>
-        <div class="drawer-footer">
-            <button class="btn" style="background: rgba(244, 63, 94, 0.1); color: var(--danger); border: 1px solid rgba(244, 63, 94, 0.3); box-shadow: none;" onmouseover="this.style.background='var(--danger)'; this.style.color='#fff';" onmouseout="this.style.background='rgba(244, 63, 94, 0.1)'; this.style.color='var(--danger)';" onclick="showLogoutModal()"><i class="fas fa-sign-out-alt"></i> Log Out</button>
-        </div>
+        <div class="drawer-footer" id="drawer-footer"></div>
     </div>
 
     <div id="confirm-modal" class="modal-overlay hidden">
@@ -453,7 +236,7 @@
             <h3 class="modal-title" id="modal-title-text">Log Out</h3>
             <p class="modal-desc" id="modal-desc-text">Are you sure you want to log out of your account?</p>
             <div class="modal-actions">
-                <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+                <button class="btn btn-outline" onclick="window.closeModal()">Cancel</button>
                 <button class="btn" id="modal-action-btn">Yes</button>
             </div>
         </div>
@@ -468,50 +251,54 @@
             </div>
         </div>
         <div class="flex align-center" style="gap: 20px;">
-            <i id="theme-toggle-icon" class="fas fa-moon" style="font-size: 1.2rem; color: var(--text2); cursor: pointer; transition: 0.3s;" onclick="toggleTheme()" title="Switch Theme"></i>
-            <i class="fas fa-user-circle" style="font-size: 1.3rem; color: var(--text2); cursor: pointer; transition: 0.3s;" onclick="openProfileDrawer()" title="Profile"></i>
+            <i id="theme-toggle-icon" class="fas fa-moon" style="font-size: 1.2rem; color: var(--text2); cursor: pointer; transition: 0.3s;" onclick="window.toggleTheme()"></i>
+            <i class="fas fa-user-circle" style="font-size: 1.3rem; color: var(--text2); cursor: pointer; transition: 0.3s;" onclick="window.openProfileDrawer()"></i>
         </div>
     </header>
 
-    <div class="main-content">
-        <div id="page-detail">
-            <div class="detail-header">
-                <div class="flex align-center" style="gap: 16px;">
-                    <button class="back-btn" onclick="window.location.href='../'"><i class="fas fa-arrow-left"></i></button>
-                    <h3 style="font-size: 1.2rem; margin:0;">Book Details</h3>
-                </div>
-                <button class="share-btn" onclick="shareBook()" title="Share this Book"><i class="fas fa-share-alt"></i></button>
+    <div class="stepper-wrap">
+        <div class="stepper">
+            <div class="step-item active" onclick="window.location.href='./'">
+                <i class="fas fa-info-circle"></i> About Us
             </div>
-            
-            <img src="" id="det-thumb" class="detail-thumb">
-            <h2 id="det-title" style="font-size: 1.6rem; margin-bottom: 12px;"></h2>
-            <div id="det-price-box" style="margin-bottom: 20px;"></div>
-            
-            <p id="det-arabic-phrase" class="arabic-text text-center" style="color:var(--accent2); font-size: 26px; margin-bottom: 20px; font-weight: bold; text-shadow: 0 0 10px var(--glow);"></p>
-            
-            <p id="det-desc" style="font-size: .95rem; color: var(--text2); line-height: 1.8; padding-bottom: 110px;"></p>
+            <div class="step-item" onclick="window.location.href='contact/'">
+                <i class="fas fa-paper-plane"></i> Contact
+            </div>
+            <div class="step-item" onclick="window.location.href='terms/'">
+                <i class="fas fa-file-contract"></i> Terms
+            </div>
+            <div class="step-item" onclick="window.location.href='privacy/'">
+                <i class="fas fa-shield-alt"></i> Privacy
+            </div>
         </div>
-    </div> 
+    </div>
 
-    <div id="action-footer" class="action-footer hidden">
-        <div id="det-footer-price" class="price-tag" style="font-size: 1.2rem; font-family: 'DM Mono', monospace;"></div>
-        <button id="det-action-btn" class="btn" style="width: auto; padding: 12px 32px; font-size: .95rem; border-radius: 99px;"></button>
+    <div class="main-content">
+        <div class="bismillah">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
+        
+        <div class="content-card">
+            <h3>Welcome to Islamic Library</h3>
+            <p>Assalamu Alaikum. Welcome to <strong>Islamic Library by Shekh</strong>, a dedicated digital platform designed to make authentic Islamic knowledge easily accessible to the Ummah.</p>
+            <p>Our mission is to spread the light of <em>Hikmah</em> (wisdom) by providing a vast collection of Islamic eBooks, Quranic PDFs, Hadith collections, and historical literature directly to your devices.</p>
+            
+            <h3 style="margin-top: 24px; font-size: 1.1rem; color: var(--accent3);">Free & Premium Content</h3>
+            <p>We firmly believe that Islamic knowledge should be accessible to everyone, regardless of their financial status. Therefore, the <strong>majority of the books and resources in our library are absolutely 100% FREE</strong> for anyone to download and read.</p>
+            <p>However, to support the maintenance of this platform, cover server costs, and continue adding high-quality content, we may occasionally feature exclusive <strong>Premium/Paid collections</strong>. Purchasing these premium books directly supports the library and helps us keep the free resources available forever.</p>
+            
+            <p style="margin-top: 20px; font-weight: 600; color: var(--accent2); text-align: center;">Jazakallah Khair for being a part of our journey.</p>
+        </div>
     </div>
 
     <div id="bottom-nav" class="bottom-nav">
-        <div class="nav-item active" onclick="window.location.href='../'"><i class="fas fa-home"></i><span>Home</span></div>
+        <div class="nav-item" onclick="window.location.href='../'"><i class="fas fa-home"></i><span>Home</span></div>
         <div class="nav-item" onclick="window.location.href='../library/'"><i class="fas fa-book-reader"></i><span>Library</span></div>
-        <a href="../info/" class="nav-item"><i class="fas fa-info-circle"></i><span>Info</span></a>
+        <a href="./" class="nav-item active"><i class="fas fa-info-circle"></i><span>Info</span></a>
     </div>
-<div id="toast-container" style="z-index: 999999 !important;"></div>
 
     <script type="module">
-        // ✅ FIREBASE IMPORTS (Updated with Auth)
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
-        import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
-        // ✅ FIREBASE CONFIG
         const firebaseConfig = {
             apiKey: "AIzaSyBhYLRH_0p7f4oRIZTDVf8bOb1bdRKPNe8",
             authDomain: "islamic-library-3b1d4.firebaseapp.com",
@@ -523,33 +310,18 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        // 🔥 MODERN CACHE SETUP: Isse warning khatam ho jayegi aur speed makkhan ho jayegi
-const db = initializeFirestore(app, {
-  localCache: persistentLocalCache({
-    tabManager: persistentMultipleTabManager()
-  })
-});
 
-
-        const ARABIC_PHRASES = ["سُبْحَانَ اللَّهِ", "الْحَمْدُ لِلَّهِ", "اللَّهُ أَكْبَرُ", "لَا إِلَٰهَ إِلَّا اللَّهُ", "مَا شَاءَ اللَّهُ", "بَارَكَ اللَّهُ فِيكَ"];
-
-        let userPayments = [];
-        let currentEbook = null;
-        let apiLocks = {};
-        const userId = localStorage.getItem("islamic_user_id");
-
-        // ✅ BACKGROUND FIREBASE SECURITY CHECK
-        onAuthStateChanged(auth, (user) => {
-            if (!user) { window.executeLogout(true); }
+        // 🔥 LOGOUT CHECK HATA DIYA TAAKI PUBLIC BHI PADH SAKE 🔥
+        onAuthStateChanged(auth, (user) => { 
+            // Ab public page makkhan ki tarah chalega
         });
 
-        // ✅ UI Functions attached to window for HTML handlers
         window.initTheme = function() {
             const currentTheme = document.documentElement.getAttribute("data-theme");
             const icon = document.getElementById("theme-toggle-icon");
-            if(icon) icon.className = currentTheme === "light" ? "fas fa-sun" : "fas fa-moon";
+            if(icon) { icon.className = currentTheme === "light" ? "fas fa-sun" : "fas fa-moon"; }
         };
-        
+
         window.toggleTheme = function() {
             const currentTheme = document.documentElement.getAttribute("data-theme");
             const newTheme = currentTheme === "light" ? "dark" : "light";
@@ -558,33 +330,48 @@ const db = initializeFirestore(app, {
             window.initTheme();
         };
 
-                window.openProfileDrawer = async function() {
-            // Drawer open karo
+        // 🔥 SMART DRAWER LOGIC (GUEST & LOGGED IN) 🔥
+        window.openProfileDrawer = async function() {
             document.getElementById("drawer-overlay").classList.add("active");
             document.getElementById("profile-drawer").classList.add("active");
             document.body.style.overflow = 'hidden';
 
-            // Pehle browser ke cache se naam dikhao
-            let cachedName = localStorage.getItem("islamic_user_name");
-            document.getElementById("profile-name").innerText = cachedName || "Library User";
-            document.getElementById("profile-mobile").innerText = localStorage.getItem("islamic_user_mobile") || "Registered User";
+            const userId = localStorage.getItem("islamic_user_id");
+            const authActions = document.getElementById("auth-actions");
+            const drawerFooter = document.getElementById("drawer-footer");
+            
+            // Auto detect login path (chahe user kisi bhi folder mein ho)
+            const inSubFolder = window.location.pathname.includes('/privacy') || window.location.pathname.includes('/terms') || window.location.pathname.includes('/contact');
+            const loginPath = inSubFolder ? '../../login/' : '../login/';
 
-            // 🔥 FIX: Agar cache mein naam nahi hai, toh turant Firebase se fetch karke save aur update kar do
-            if (!cachedName) {
-                try {
-                    const { getFirestore, doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
-                    const dbInstance = getFirestore();
-                    const userDoc = await getDoc(doc(dbInstance, "users", localStorage.getItem("islamic_user_id")));
-                    
-                    if (userDoc.exists() && userDoc.data().name) {
-                        const realName = userDoc.data().name;
-                        localStorage.setItem("islamic_user_name", realName); // Aage ke liye save kar diya
-                        document.getElementById("profile-name").innerText = realName; // UI par update kar diya
-                    }
-                } catch(e) { console.log("Name fetch error", e); }
+            if (userId) {
+                // Agar User Logged in hai
+                let cachedName = localStorage.getItem("islamic_user_name");
+                document.getElementById("profile-name").innerText = cachedName || "Library User";
+                document.getElementById("profile-mobile").innerText = localStorage.getItem("islamic_user_mobile") || "Registered User";
+                
+                authActions.innerHTML = `<button class="btn btn-outline" onclick="window.openChangePassword()"><i class="fas fa-key"></i> Change Password</button>`;
+                drawerFooter.innerHTML = `<button class="btn" style="background: rgba(244, 63, 94, 0.1); color: var(--danger); border: 1px solid rgba(244, 63, 94, 0.3); box-shadow: none;" onclick="window.showLogoutModal()"><i class="fas fa-sign-out-alt"></i> Log Out</button>`;
+
+                if (!cachedName) {
+                    try {
+                        const { getFirestore, doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
+                        const dbInstance = getFirestore();
+                        const userDoc = await getDoc(doc(dbInstance, "users", userId));
+                        if (userDoc.exists() && userDoc.data().name) {
+                            localStorage.setItem("islamic_user_name", userDoc.data().name);
+                            document.getElementById("profile-name").innerText = userDoc.data().name;
+                        }
+                    } catch(e) {}
+                }
+            } else {
+                // Agar User Guest Hai (Logged in nahi hai)
+                document.getElementById("profile-name").innerText = "Guest User";
+                document.getElementById("profile-mobile").innerText = "Welcome to Islamic Library";
+                authActions.innerHTML = ``; // Password update hata diya
+                drawerFooter.innerHTML = `<button class="btn" onclick="window.location.href='${loginPath}'"><i class="fas fa-sign-in-alt"></i> Login / Sign Up</button>`;
             }
         };
-
 
         window.closeProfileDrawer = function() {
             document.getElementById("drawer-overlay").classList.remove("active");
@@ -596,243 +383,75 @@ const db = initializeFirestore(app, {
 
         window.showLogoutModal = function() {
             window.closeProfileDrawer();
-            document.getElementById("modal-title-text").innerText = "Log Out";
-            document.getElementById("modal-desc-text").innerText = "Are you sure you want to log out of your account?";
-            const actionBtn = document.getElementById("modal-action-btn");
-            actionBtn.innerText = "Yes, Log Out";
-            actionBtn.onclick = window.confirmLogout;
+            document.getElementById("modal-action-btn").onclick = window.confirmLogout;
             document.getElementById("confirm-modal").classList.remove("hidden");
         };
 
-
-        // 🔥 MODAL OPEN & CLOSE LOGIC
-window.openChangePassword = function() {
-    window.closeProfileDrawer();
-    document.getElementById("change-password-modal").classList.remove("hidden");
-    document.getElementById("user_new_password").value = ""; // Box ko clean karne ke liye
-}
-
-window.closeChangePasswordModal = function() {
-    document.getElementById("change-password-modal").classList.add("hidden");
-}
-
-// 🔥 Original Home Page Toast Function
-window.showToast = function(msg, type = "success") {
-    const container = document.getElementById("toast-container");
-    if (!container) return;
-    
-    const toast = document.createElement("div");
-    toast.className = "toast";
-    // Yahan original characters '✓' aur '✕' use kiye hain with original inline styling
-    toast.innerHTML = (type === "success" ? '<span style="font-size:1.1rem; color:var(--success)">✓</span>' : '<span style="font-size:1.1rem; color:var(--danger)">✕</span>') + ` <span>${msg}</span>`;
-    container.appendChild(toast);
-    
-    setTimeout(() => { 
-        toast.style.transform = "translateX(110%)"; 
-        toast.style.opacity = "0"; 
-        setTimeout(() => toast.remove(), 400); 
-    }, 3000);
-}
-
-// 🔥 Original Home Page Password Update Logic
-window.executeChangePassword = async function() {
-    const newPass = document.getElementById("user_new_password").value.trim();
-    const btn = document.getElementById("update-pass-btn");
-
-    if (newPass.length < 6) {
-        window.showToast("Password must be at least 6 characters!", "error");
-        return;
-    }
-
-    // Firebase Auth se current user nikalo
-    const { getAuth, updatePassword } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js");
-    const auth = getAuth();
-    const user = auth.currentUser;
-
-    if (!user) {
-        window.showToast("Session expired. Please login again.", "error");
-        return;
-    }
-
-    try {
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
-        btn.disabled = true;
-
-        // Password update command
-        await updatePassword(user, newPass);
-        
-        window.showToast("Password updated successfully!", "success");
-        window.closeChangePasswordModal();
-
-    } catch (error) {
-        console.error("Password Update Error:", error);
-        
-        // Agar user ne bohot time se login kiya hua hai toh ye error aayega
-        if (error.code === 'auth/requires-recent-login') {
-            window.showToast("Security alert: Please logout and login again to change your password.", "error");
-        } else {
-            window.showToast("Error: " + error.message, "error");
-        }
-    } finally {
-        btn.innerHTML = 'Update Password';
-        btn.disabled = false;
-    }
-}
-
-
-
-
-        window.confirmLogout = function() { window.executeLogout(true); };
-        
-        window.executeLogout = function(redirect) {
-            if(userId) { localStorage.removeItem(`cache_payments_${userId}_data`); localStorage.removeItem(`cache_payments_${userId}_time`); }
-            localStorage.removeItem("islamic_user_id"); localStorage.removeItem("islamic_user_name"); localStorage.removeItem("islamic_user_mobile");
-            
-            signOut(auth).then(() => { if(redirect) window.location.href = "../login/"; })
-                         .catch(() => { if(redirect) window.location.href = "../login/"; });
-        };
-
-        window.shareBook = function() {
-            if (!currentEbook) return;
-            const siteUrl = window.location.origin + window.location.pathname.replace('../books/', '../');
-            const shareText = `📚 Check out this Islamic eBook: "${currentEbook.title}" on Islamic Library by Shekh.\n\n${siteUrl}`;
-            if (navigator.share) {
-                navigator.share({ title: currentEbook.title, text: shareText }).catch((error) => console.log('Error sharing:', error));
-            } else {
-                if (navigator.clipboard && window.isSecureContext) { 
-                    navigator.clipboard.writeText(shareText).then(() => showToast("Link copied to clipboard!")); 
-                } else {
-                    let textArea = document.createElement("textarea"); textArea.value = shareText; textArea.style.position = "fixed"; document.body.appendChild(textArea); textArea.focus(); textArea.select();
-                    try { document.execCommand('copy'); showToast("Link copied to clipboard!"); } catch (err) { showToast("Failed to copy link", "error"); } textArea.remove();
-                }
-            }
-        };
-
-        // SWIPE GESTURE
-        let touchstartX = 0; let touchstartY = 0; let touchendX = 0; let touchendY = 0;
-        document.addEventListener('touchstart', e => { touchstartX = e.changedTouches[0].screenX; touchstartY = e.changedTouches[0].screenY; }, {passive: true});
-        document.addEventListener('touchend', e => { touchendX = e.changedTouches[0].screenX; touchendY = e.changedTouches[0].screenY; handleSwipe(); }, {passive: true});
-        function handleSwipe() {
-            if (document.getElementById("profile-drawer").classList.contains("active")) return;
-            if (Math.abs(touchendY - touchstartY) > 50) return; 
-            if (touchendX > touchstartX + 70) window.location.href = '../'; 
+        window.openChangePassword = function() {
+            window.closeProfileDrawer();
+            document.getElementById("change-password-modal").classList.remove("hidden");
+            document.getElementById("user_new_password").value = ""; 
         }
 
-        function showLoader() { document.getElementById("loader").classList.remove("hidden"); }
-        function hideLoader() { document.getElementById("loader").classList.add("hidden"); }
-        function showToast(msg, type = "success") {
+        window.closeChangePasswordModal = function() { document.getElementById("change-password-modal").classList.add("hidden"); }
+
+        window.showToast = function(msg, type = "success") {
             const container = document.getElementById("toast-container");
-            const toast = document.createElement("div"); toast.className = "toast";
+            if (!container) return;
+            const toast = document.createElement("div");
+            toast.className = "toast";
             toast.innerHTML = (type === "success" ? '<span style="font-size:1.1rem; color:var(--success)">✓</span>' : '<span style="font-size:1.1rem; color:var(--danger)">✕</span>') + ` <span>${msg}</span>`;
             container.appendChild(toast);
             setTimeout(() => { toast.style.transform = "translateX(110%)"; toast.style.opacity = "0"; setTimeout(() => toast.remove(), 400); }, 3000);
         }
 
-        async function fetchPaymentsFirebase(uid, cacheKey, onDataChange, showBlockingLoader = false) {
-            const now = new Date().getTime();
-            const cachedDataStr = localStorage.getItem(cacheKey + "_data");
-            let hasCache = false;
-            if (cachedDataStr) { hasCache = true; try { onDataChange(JSON.parse(cachedDataStr)); } catch (e) { hasCache = false; } }
-            if (!hasCache && showBlockingLoader) showLoader();
-            if (apiLocks[cacheKey]) return;
-            apiLocks[cacheKey] = true;
+        window.executeChangePassword = async function() {
+            const newPass = document.getElementById("user_new_password").value.trim();
+            const btn = document.getElementById("update-pass-btn");
+            if (newPass.length < 6) return window.showToast("Password must be at least 6 characters!", "error");
+
+            const { getAuth, updatePassword } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js");
+            const user = getAuth().currentUser;
+            if (!user) return window.showToast("Session expired. Please login again.", "error");
 
             try {
-                const q = query(collection(db, "payments"), where("user_id", "==", uid));
-                const snapshot = await getDocs(q);
-                const freshData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                
-                const freshDataStr = JSON.stringify(freshData);
-                if (cachedDataStr !== freshDataStr) {
-                    localStorage.setItem(cacheKey + "_data", freshDataStr); 
-                    localStorage.setItem(cacheKey + "_time", now.toString()); 
-                    onDataChange(freshData); 
-                } else { localStorage.setItem(cacheKey + "_time", now.toString()); }
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; btn.disabled = true;
+                await updatePassword(user, newPass);
+                window.showToast("Password updated successfully!", "success");
+                window.closeChangePasswordModal();
             } catch (error) {
-                console.error("Firebase fetch error:", error);
-            } finally {
-                if (!hasCache && showBlockingLoader) hideLoader(); 
-                delete apiLocks[cacheKey];
-            }
+                if (error.code === 'auth/requires-recent-login') window.showToast("Security alert: Logout and login again to change password.", "error");
+                else window.showToast("Error: " + error.message, "error");
+            } finally { btn.innerHTML = 'Update'; btn.disabled = false; }
         }
 
-        document.addEventListener("DOMContentLoaded", () => {
-            window.initTheme();
-            initBook();
-        });
-
-        function initBook() {
-            const bookDataStr = sessionStorage.getItem("selected_book_data");
-            if(bookDataStr) {
-                currentEbook = JSON.parse(bookDataStr);
-                let currentPayments = [];
-                const cachedPayments = localStorage.getItem(`cache_payments_${userId}_data`);
-                if(cachedPayments) { try { currentPayments = JSON.parse(cachedPayments); } catch(e) {} }
-                userPayments = currentPayments;
-
-                renderDetail();
-                fetchPaymentsFirebase(userId, `cache_payments_${userId}`, (data) => {
-                    if (Array.isArray(data)) { userPayments = data; renderDetail(); }
-                }, false);
-            } else {
-                window.location.replace("../");
-            }
-        }
-
-        function renderDetail() {
-            document.getElementById("action-footer").classList.remove("hidden");
-            document.getElementById("det-thumb").src = currentEbook.thumbnail;
-            document.getElementById("det-title").innerText = currentEbook.title;
-            document.getElementById("det-desc").innerText = currentEbook.description;
-
-            if(!document.getElementById("det-arabic-phrase").innerText) {
-                document.getElementById("det-arabic-phrase").innerText = ARABIC_PHRASES[Math.floor(Math.random() * ARABIC_PHRASES.length)];
-            }
-
-            const isFree = String(currentEbook.is_free) === "true";
-            const priceBox = document.getElementById("det-price-box");
-            const footerPrice = document.getElementById("det-footer-price");
-            const actionBtn = document.getElementById("det-action-btn");
+        // 🔥 SMART LOGOUT LOGIC 🔥
+        window.confirmLogout = function() { window.executeLogout(true); };
+        window.executeLogout = function(redirect) {
+            const userId = localStorage.getItem("islamic_user_id");
+            if(userId) { localStorage.removeItem(`cache_payments_${userId}_data`); localStorage.removeItem(`cache_payments_${userId}_time`); }
+            localStorage.removeItem("islamic_user_id"); localStorage.removeItem("islamic_user_name"); localStorage.removeItem("islamic_user_mobile");
             
-            const ownedBook = userPayments.find(p => String(p.ebook_id) === String(currentEbook.id) && p.status.toLowerCase() !== "rejected");
+            const inSubFolder = window.location.pathname.includes('/privacy') || window.location.pathname.includes('/terms') || window.location.pathname.includes('/contact');
+            const loginPath = inSubFolder ? '../../login/' : '../login/';
 
-            if (isFree) {
-                priceBox.innerHTML = `<span class="badge-free" style="padding: 6px 16px; font-size: .85rem;">✦ 100% FREE</span>`;
-            } else {
-                let pHTML = `₹${currentEbook.discount_price || currentEbook.price}`;
-                if (currentEbook.discount_price && currentEbook.price > currentEbook.discount_price) pHTML += ` <span class="strike-price">₹${currentEbook.price}</span>`;
-                priceBox.innerHTML = `<span class="price-tag" style="font-size: 1.6rem;">${pHTML}</span>`;
-            }
+            signOut(auth).then(() => { if(redirect) window.location.href = loginPath; })
+                         .catch(() => { if(redirect) window.location.href = loginPath; });
+        };
 
-            actionBtn.className = "btn"; actionBtn.disabled = false; actionBtn.style.background = ""; actionBtn.style.color = ""; actionBtn.style.boxShadow = "";
+        let touchstartX = 0; let touchstartY = 0; let touchendX = 0; let touchendY = 0;
+        document.addEventListener('touchstart', e => { touchstartX = e.changedTouches[0].screenX; touchstartY = e.changedTouches[0].screenY; }, {passive: true});
+        document.addEventListener('touchend', e => { touchendX = e.changedTouches[0].screenX; touchendY = e.changedTouches[0].screenY; window.handleSwipe(); }, {passive: true});
+        window.handleSwipe = function() {
+            if (document.getElementById("profile-drawer").classList.contains("active")) return;
+            if (Math.abs(touchendY - touchstartY) > 50) return;
+            
+            const inSubFolder = window.location.pathname.includes('/privacy') || window.location.pathname.includes('/terms') || window.location.pathname.includes('/contact');
+            const libraryPath = inSubFolder ? '../../library/' : '../library/';
+            if (touchendX > touchstartX + 70) window.location.href = libraryPath;
+        };
 
-                        if (ownedBook) {
-                if (ownedBook.status.toLowerCase() === "approved") {
-                    
-                    // 🔥 BAS IS LINE MEIN JADOO KIYA HAI 🔥
-                    footerPrice.innerHTML = `<span style="color: var(--success) !important; font-weight: 700;">Owned</span>`;
-                    
-                    actionBtn.innerHTML = `<i class="fas fa-download"></i> Download`;
-                    actionBtn.onclick = () => window.open(currentEbook.pdf_link, "_blank");
-                    actionBtn.style.background = "var(--success)"; actionBtn.style.boxShadow = "0 4px 20px rgba(16,185,129,0.3)"; actionBtn.style.color = "#fff";
-                } else {
-                    footerPrice.innerHTML = "In Verification";
-                    actionBtn.innerHTML = `<i class="fas fa-hourglass-half spin"></i> Verifying...`;
-                    actionBtn.disabled = true; actionBtn.onclick = null;
-                }
-            } else if (isFree) {
-                footerPrice.innerHTML = "Free";
-                actionBtn.innerHTML = `<i class="fas fa-download"></i> Download`;
-                actionBtn.onclick = () => window.open(currentEbook.pdf_link, "_blank");
-            } else {
-                footerPrice.innerHTML = `₹${currentEbook.discount_price || currentEbook.price}`;
-                actionBtn.innerHTML = `Buy Now <i class="fas fa-arrow-right" style="margin-left:6px;"></i>`;
-                actionBtn.style.background = "linear-gradient(135deg, #7c6af7, #9f3fbf)"; actionBtn.style.color = "#fff";
-                actionBtn.onclick = () => window.location.href = '../payments/';
-            }
-
-        }
+        document.addEventListener("DOMContentLoaded", () => { window.initTheme(); });
     </script>
-
 </body>
 </html>
