@@ -9,9 +9,9 @@
     <meta name="keywords" content="Islamic Library by Shekh, Islamic ebooks, Quran PDF, Hadith books">
     <meta name="author" content="Islamic Library by Shekh">
 
-    <link rel="icon" type="image/png" sizes="32x32" href="../hikmahlogo.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="../hikmahlogo.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="../hikmahlogo.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/hikmahlogo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/hikmahlogo.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/hikmahlogo.png">
 
     <meta property="og:title" content="Islamic Library by Shekh">
     <meta property="og:description" content="Free & Paid Islamic eBooks, Quran PDFs, Hadith books available.">
@@ -182,7 +182,6 @@
         .header-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(1rem, 5vw, 1.25rem); background: linear-gradient(135deg, var(--accent2), #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; letter-spacing: -0.02em; white-space: nowrap; }
         .header-sub { font-family: 'DM Mono', monospace; font-size: .7rem; font-weight: 500; color: var(--accent2); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 4px; white-space: nowrap; }
         [data-theme="light"] header { background: rgba(255, 255, 255, 0.95) !important; border-bottom: 1px solid rgba(0,0,0,0.1) !important; }
-        [data-theme="light"] .header-logo { background: linear-gradient(135deg, var(--accent2), var(--accent)) !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important; }
 
         /* ===== ANIMATIONS ===== */
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } } 
@@ -267,9 +266,9 @@
         <div class="drawer-mobile">Login to access Your Library</div>
         
         <div class="drawer-menu">
-            <button class="btn btn-outline" onclick="window.location.href='../info/'"><i class="fas fa-info-circle"></i> About Us</button>
-            <button class="btn btn-outline" onclick="window.location.href='../info/privacy/'"><i class="fas fa-user-secret"></i> Privacy Policy</button>
-            <button class="btn btn-outline" onclick="window.location.href='support/'"><i class="fas fa-question-circle"></i> Login Help</button>
+            <button class="btn btn-outline" onclick="window.location.href='/info/'"><i class="fas fa-info-circle"></i> About Us</button>
+            <button class="btn btn-outline" onclick="window.location.href='/info/privacy/'"><i class="fas fa-user-secret"></i> Privacy Policy</button>
+            <button class="btn btn-outline" onclick="window.location.href='/login/support/'"><i class="fas fa-question-circle"></i> Login Help</button>
         </div>
     </div>
 </div>
@@ -291,7 +290,7 @@
     <div id="auth-views">
     <div id="initial-options-view" class="auth-container">
         <div class="auth-card">
-            <a href="support/" class="help-badge" title="Need Help?"><i class="fas fa-headset"></i> Help</a>
+            <a href="/login/support/" class="help-badge" title="Need Help?"><i class="fas fa-headset"></i> Help</a>
             <div class="bismillah" style="margin-bottom: 16px;">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
             <h2 style="margin-bottom: 6px;">Welcome to Library</h2>
             <p style="color: var(--text2); font-size: .85rem; margin-bottom: 24px;">Choose how you want to continue</p>
@@ -312,14 +311,14 @@
             </div>
 
             <div class="legal-text">
-                By continuing, you agree to our <a href="../info/terms/">Terms of Service</a> and <a href="../info/privacy/">Privacy Policy</a>.
+                By continuing, you agree to our <a href="/info/terms/">Terms of Service</a> and <a href="/info/privacy/">Privacy Policy</a>.
             </div>
         </div>
     </div>
 
     <div id="login-view" class="auth-container hidden">
         <div class="auth-card" style="position: relative;">
-            <i class="fas fa-arrow-left back-icon" onclick="goBackToInitial()"></i> <a href="support/" class="help-badge" title="Need Help?"><i class="fas fa-headset"></i> Help</a>
+            <i class="fas fa-arrow-left back-icon" onclick="goBackToInitial()"></i> <a href="/login/support/" class="help-badge" title="Need Help?"><i class="fas fa-headset"></i> Help</a>
             
             <h2 style="margin-bottom: 6px; margin-top: 15px;">Login</h2>
             <p style="color: var(--text2); font-size: .85rem; margin-bottom: 24px;">Sign in to access your library</p>
@@ -349,7 +348,7 @@
 
     <div id="signup-view" class="auth-container hidden">
         <div class="auth-card" style="position: relative;">
-            <i class="fas fa-arrow-left back-icon" onclick="goBackToInitial()"></i> <a href="support/" class="help-badge" title="Need Help?"><i class="fas fa-headset"></i> Help</a>
+            <i class="fas fa-arrow-left back-icon" onclick="goBackToInitial()"></i> <a href="/login/support/" class="help-badge" title="Need Help?"><i class="fas fa-headset"></i> Help</a>
             
             <h2 style="margin-bottom: 6px; margin-top: 15px;">Create Account</h2>
             <p style="color: var(--text2); font-size: .85rem; margin-bottom: 24px;">Join our Islamic eBook community</p>
@@ -373,7 +372,7 @@
     <div id="reset-view" class="auth-container hidden">
         <div class="auth-card" style="position: relative;">
             <i class="fas fa-arrow-left back-icon" onclick="switchAuth('login')"></i>
-            <a href="support/" class="help-badge" title="Need Help?"><i class="fas fa-headset"></i> Help</a>
+            <a href="/login/support/" class="help-badge" title="Need Help?"><i class="fas fa-headset"></i> Help</a>
             
             <h2 style="margin-bottom: 6px; margin-top: 15px;">Reset Password</h2>
             <p id="reset-desc" style="color: var(--text2); font-size: .85rem; margin-bottom: 24px;">Get a reset link via email</p>
@@ -387,7 +386,7 @@
                         <p style="color: #ffc107; font-size: 0.85rem; margin-bottom: 12px; line-height: 1.4;">
                             <i class="fas fa-exclamation-triangle"></i> You cannot change a mobile account password from here. Please Contact Support.
                         </p>
-                        <a href="support/" class="btn" style="display: inline-block; padding: 10px 20px; font-size: 0.85rem; text-decoration: none; color: white; border-radius: 99px;">
+                        <a href="/login/support/" class="btn" style="display: inline-block; padding: 10px 20px; font-size: 0.85rem; text-decoration: none; color: white; border-radius: 99px;">
                             Contact Support
                         </a>
                     </div>
@@ -408,7 +407,7 @@
             </div>
             <div style="display: flex; flex-direction: column; gap: 15px;">
                 <button onclick="closeResetSuccess()" class="btn" style="padding: 12px; font-weight: 600;">Back to Login</button>
-                <a href="support/" style="color: var(--text2); text-decoration: none; font-size: 0.85rem; transition: 0.3s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text2)'">
+                <a href="/login/support/" style="color: var(--text2); text-decoration: none; font-size: 0.85rem; transition: 0.3s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text2)'">
                     Didn't receive a link? <span style="color: var(--primary); font-weight: 600;">Contact Support</span>
                 </a>
             </div>
@@ -422,9 +421,9 @@
     <div class="footer-content">
         <span>&copy; 2026 <b>Islamic Library by Shekh</b></span>
         <div class="footer-links">
-            <a href="support/">Support</a>
+            <a href="/login/support/">Support</a>
             <span class="sep">|</span>
-            <a href="../info/privacy/">Privacy</a>
+            <a href="/info/privacy/">Privacy</a>
         </div>
     </div>
 </footer>
@@ -475,7 +474,7 @@
 
         document.addEventListener("DOMContentLoaded", () => {
             if (localStorage.getItem("islamic_user_id")) {
-                window.location.href = '../';
+                window.location.href = '/';
                 return;
             }
             if (sessionStorage.getItem('open_reset_tab') === 'true') {
@@ -637,7 +636,7 @@ window.loginWithGoogle = async function(btnId) {
         localStorage.setItem("islamic_user_mobile", user.email);
 
         window.showToast("Google Login Successful!");
-        setTimeout(() => { window.location.href = '../'; }, 200);
+        setTimeout(() => { window.location.href = '/'; }, 200);
 
     } catch (error) {
         // 🚀 THE MAGIC LINE: Agar user ne dobara click kiya hai, toh is purane error ko IGNORE kar do!
@@ -694,7 +693,7 @@ window.loginWithGoogle = async function(btnId) {
                 window.showToast("Login Successful! Redirecting..."); 
                 
                 // 🚀 FAST REDIRECT: 800ms se 150ms
-                setTimeout(() => { window.location.href = '../'; }, 150);
+                setTimeout(() => { window.location.href = '/'; }, 150);
             } catch (error) {
                 let msg = "Login failed. Please try again.";
                 if (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential') msg = "Incorrect details or password.";
@@ -755,7 +754,7 @@ window.loginWithGoogle = async function(btnId) {
                 window.showToast("Account Created! Redirecting..."); 
                 
                 // 🚀 FAST REDIRECT: 800ms se 150ms
-                setTimeout(() => { window.location.href = '../'; }, 150);
+                setTimeout(() => { window.location.href = '/'; }, 150);
             } catch (error) {
                 let msg = "Signup failed.";
                 if (error.code === 'auth/email-already-in-use') msg = "Account already exists! Please login.";
