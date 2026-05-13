@@ -13,11 +13,10 @@
     <link rel="icon" type="image/png" sizes="16x16" href="hikmahlogo.png">
     <link rel="apple-touch-icon" sizes="180x180" href="hikmahlogo.png">
 
-    <!-- ✅ OPEN GRAPH -->
     <meta property="og:title" content="Islamic Library by Shekh">
     <meta property="og:description" content="Free & Paid Islamic eBooks, Quran PDFs, Hadith books available.">
-    <meta property="og:image" content="https://islamiclibraryy.github.io/Resources/hikmahlogo.png">
-    <meta property="og:url" content="https://islamiclibraryy.github.io/Resources/">
+    <meta property="og:image" content="https://mysite.github.io/Resources/hikmahlogo.png">
+    <meta property="og:url" content="https://mysite.github.io/Resources/">
     <meta property="og:type" content="website">
 
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -60,6 +59,15 @@
         [data-theme="light"] .search-input { background: rgba(255, 255, 255, 0.8); }
         [data-theme="light"] .search-dropdown { background: rgba(255, 255, 255, 0.95); }
         [data-theme="light"] .profile-drawer { background: #fff; }
+        /* 🔥 LIGHT MODE PASSWORD INPUT FIX 🔥 */
+        [data-theme="light"] .custom-dark-input {
+            background: var(--surface2) !important; /* Halka gray background */
+            color: var(--text) !important;          /* Dark text color */
+            border-color: var(--border2) !important;
+        }
+        [data-theme="light"] .custom-dark-input::placeholder {
+            color: var(--text3) !important;         /* Dark placeholder */
+        }
 
         *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; font-size: 16px; }
@@ -106,10 +114,33 @@
             border-bottom: 1px solid var(--border); 
             transition: background-color 0.3s ease, border-color 0.3s ease; 
         }
-        .header-logo-container { display: flex; flex-direction: column; justify-content: center; }
-        .header-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.25rem; background: linear-gradient(135deg, var(--accent2), #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; letter-spacing: -0.02em; }
-        .header-sub { font-family: 'DM Mono', monospace; font-size: .7rem; font-weight: 500; color: var(--accent2); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 4px; }
+        .header-logo-container { display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
         
+        .header-logo { 
+            font-family: 'Syne', sans-serif; 
+            font-weight: 800; 
+            /* Font apne aap screen ke hisaab se set hoga */
+            font-size: clamp(1rem, 5vw, 1.25rem); 
+            background: linear-gradient(135deg, var(--accent2), #c084fc); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+            line-height: 1; 
+            letter-spacing: -0.02em; 
+            /* Text 2 line mein nahi tootega */
+            white-space: nowrap; 
+        }
+        
+        .header-sub { 
+            font-family: 'DM Mono', monospace; 
+            font-size: .7rem; 
+            font-weight: 500; 
+            color: var(--accent2); 
+            text-transform: uppercase; 
+            letter-spacing: 0.1em; 
+            margin-top: 4px; 
+            white-space: nowrap; 
+        }
+
         .main-content { padding: 90px 20px 90px; max-width: 1400px; margin: 0 auto; animation: fadeIn .5s ease both; transition: padding-top 0.3s ease; }
 
         .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 10001; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; backdrop-filter: blur(3px); }
@@ -197,10 +228,162 @@
         @keyframes slideUp { from { opacity: 0; transform: translateY(10px) scaleY(0.95); } to { opacity: 1; transform: translateY(0) scaleY(1); } } 
         @keyframes spin { to { transform: rotate(360deg); } } 
         @keyframes blobFloat { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(20px,-20px) scale(1.05)} 66%{transform:translate(-15px,15px) scale(0.97)} }
+       
+    /* Nayi CSS sirf is password box ke liye */
+    .custom-dark-input {
+        width: 100%;
+        padding: 14px 15px;
+        margin-top: 8px;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        background: rgba(255, 255, 255, 0.05); /* Subtle dark transparent background */
+        color: #ffffff;
+        font-size: 1rem;
+        outline: none;
+        transition: all 0.3s ease;
+        font-family: inherit;
+    }
+    .custom-dark-input::placeholder {
+        color: rgba(255, 255, 255, 0.4); /* Placeholder text color */
+    }
+    .custom-dark-input:focus {
+        border-color: #a855f7; /* Tumhare Update button se match karta hua Purple glow */
+        background: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2);
+
+}
+                /* 🔥 DESKTOP VIEW FIX (HOME PAGE) - ALIGNED WITH INFO PAGES 🔥 */
+        @media screen and (min-width: 768px) {
+            
+            /* 1. Header aur Footer ko Info pages se match karna */
+            header {
+                padding: 20px 10% !important; 
+            }
+            .bottom-nav {
+                padding: 0 10% !important;
+                height: 80px !important;
+            }
+
+            .header-logo { font-size: 1.6rem !important; }
+            .fa-moon, .fa-user-circle { font-size: 1.6rem !important; margin-left: 20px !important; }
+            .nav-item i { font-size: 1.4rem !important; }
+            .nav-item span { font-size: 0.9rem !important; }
+
+            /* 2. Main Content Area ko Center aur 900px pe limit karna */
+            .main-content {
+                max-width: 900px !important;
+                margin: 0 auto !important;
+                padding-top: 100px !important; /* Header ki vajah se thoda aur niche kiya */
+            }
+
+            /* 3. Search Bar aur Filters ko thoda chouda aur attractive banana */
+            .search-container {
+                max-width: 600px !important; /* PC pe search bar thoda lamba acha lagta hai */
+                margin: 0 auto 20px auto !important; 
+            }
+            .search-input {
+                font-size: 1.1rem !important;
+                padding: 16px 20px 16px 50px !important; /* Bada Search Bar */
+            }
+            
+            /* Filters ko bada karna aur Center mein lana */
+            .filters-wrapper {
+                justify-content: center !important;
+                gap: 20px !important;
+                margin-bottom: 40px !important;
+            }
+            .custom-filter {
+                width: 250px !important; /* PC pe Dropdown chaude aache lagte hain */
+                padding: 14px 20px !important;
+                font-size: 1rem !important;
+            }
+
+            /* 4. 🔥 Books Grid: PC par Books Premium dikhengi 🔥 */
+            .grid-container {
+                display: grid !important;
+                /* Badi screen par 1 line mein sirf 3 ya max 4 books taaki sizes aache aayen */
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important;
+                gap: 24px !important; /* Books ke beech mein khali jagah (gap) */
+            }
+
+            /* Bismillah text resize for PC */
+            .bismillah { font-size: 36px !important; margin-bottom: 30px !important; }
+            /* 🚀 ALL MODALS DESKTOP FIX (Logout, Change Password) 🚀 */
+            .modal-box {
+                max-width: 480px !important; /* Modals ab choude aur premium lagenge */
+                padding: 40px !important;
+                border-radius: 24px !important;
+            }
+            
+            /* Modal Heading aur Text ko bada karna */
+            .modal-title, #change-password-modal h3 {
+                font-size: 1.8rem !important;
+                margin-bottom: 15px !important;
+            }
+            .modal-desc {
+                font-size: 1.1rem !important;
+                line-height: 1.6 !important;
+                margin-bottom: 30px !important;
+            }
+            
+            /* Modal Buttons ko PC ke hisaab se clickable banana */
+            .modal-actions {
+                gap: 20px !important;
+            }
+            .modal-actions button {
+                padding: 14px !important;
+                font-size: 1.1rem !important;
+                border-radius: 14px !important;
+            }
+            
+            /* 🔥 Change Password Input Box PC Size 🔥 */
+            #change-password-modal .form-group label {
+                font-size: 1.1rem !important;
+                margin-bottom: 10px !important;
+            }
+            .custom-dark-input {
+                padding: 16px 20px !important;
+                font-size: 1.1rem !important;
+                border-radius: 14px !important;
+            }
+            /* 🍞 TOAST NOTIFICATIONS DESKTOP FIX 🍞 */
+            #toast-container {
+                bottom: 50px !important; 
+                right: 50px !important; /* PC par right kone mein aaram se set hoga */
+            }
+            .toast {
+                padding: 18px 24px !important;
+                font-size: 1.15rem !important; /* Text padhne layak bada kiya */
+                border-radius: 16px !important;
+                gap: 16px !important;
+                min-width: 320px !important; /* PC par thoda lamba toast acha lagta hai */
+                box-shadow: 0 15px 35px rgba(0,0,0,0.5) !important; /* Premium Shadow */
+            }
+            .toast i { 
+                font-size: 1.5rem !important; /* Error/Success wala Icon bhi bada hoga */
+            }
+
+        }
+
     </style>
 </head>
 <body>
 
+    <div id="change-password-modal" class="modal-overlay hidden">
+    <div class="modal-box" style="text-align:left;">
+        <h3 style="margin-bottom: 20px;">Change Password</h3>
+        <form id="changePasswordForm" onsubmit="event.preventDefault(); window.executeChangePassword();">
+            <div class="form-group">
+                <label style="color: var(--text); font-weight: 500;">New Password</label>
+                <input type="password" id="user_new_password" class="custom-dark-input" required minlength="6" placeholder="Enter new strong password">
+            </div>
+            <div class="modal-actions" style="margin-top:24px;">
+                <button type="button" class="btn btn-outline" onclick="window.closeChangePasswordModal()">Cancel</button>
+                <button type="submit" class="btn" id="update-pass-btn">Update Password</button>
+            </div>
+        </form>
+    </div>
+</div>
     <div class="hero-bg"></div>
     <div class="hero-grid"></div>
     <div class="blob blob1"></div>
@@ -208,13 +391,13 @@
     <div class="blob blob3"></div>
 
     <div id="loader" class="hidden"><div class="spinner"></div></div>
-    <div id="toast-container"></div>
+    
 
-    <div id="drawer-overlay" class="drawer-overlay" onclick="closeProfileDrawer()"></div>
+    <div id="drawer-overlay" class="drawer-overlay" onclick="window.closeProfileDrawer()"></div>
     <div id="profile-drawer" class="profile-drawer">
         <div class="drawer-header">
             <h3>My Profile</h3>
-            <i class="fas fa-times" onclick="closeProfileDrawer()"></i>
+            <i class="fas fa-times" onclick="window.closeProfileDrawer()"></i>
         </div>
         <div class="drawer-body">
             <div class="drawer-avatar"><i class="fas fa-user"></i></div>
@@ -222,11 +405,11 @@
             <div class="drawer-mobile" id="profile-mobile">+XX XXXXXXXXXX</div>
             
             <div class="drawer-menu">
-                <button class="btn btn-outline" onclick="openChangePassword()"><i class="fas fa-key"></i> Change Password</button>
+                <button class="btn btn-outline" onclick="window.openChangePassword()"><i class="fas fa-key"></i> Change Password</button>
             </div>
         </div>
         <div class="drawer-footer">
-            <button class="btn" style="background: rgba(244, 63, 94, 0.1); color: var(--danger); border: 1px solid rgba(244, 63, 94, 0.3); box-shadow: none;" onmouseover="this.style.background='var(--danger)'; this.style.color='#fff';" onmouseout="this.style.background='rgba(244, 63, 94, 0.1)'; this.style.color='var(--danger)';" onclick="showLogoutModal()"><i class="fas fa-sign-out-alt"></i> Log Out</button>
+            <button class="btn" style="background: rgba(244, 63, 94, 0.1); color: var(--danger); border: 1px solid rgba(244, 63, 94, 0.3); box-shadow: none;" onmouseover="this.style.background='var(--danger)'; this.style.color='#fff';" onmouseout="this.style.background='rgba(244, 63, 94, 0.1)'; this.style.color='var(--danger)';" onclick="window.showLogoutModal()"><i class="fas fa-sign-out-alt"></i> Log Out</button>
         </div>
     </div>
 
@@ -235,7 +418,7 @@
             <h3 class="modal-title" id="modal-title-text">Log Out</h3>
             <p class="modal-desc" id="modal-desc-text">Are you sure you want to log out of your account?</p>
             <div class="modal-actions">
-                <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+                <button class="btn btn-outline" onclick="window.closeModal()">Cancel</button>
                 <button class="btn" id="modal-action-btn">Yes</button>
             </div>
         </div>
@@ -252,8 +435,8 @@
                 </div>
             </div>
             <div class="flex align-center" style="gap: 20px;">
-                <i id="theme-toggle-icon" class="fas fa-moon" style="font-size: 1.2rem; color: var(--text2); cursor: pointer; transition: 0.3s;" onclick="toggleTheme()" title="Switch Theme"></i>
-                <i class="fas fa-user-circle" style="font-size: 1.3rem; color: var(--text2); cursor: pointer; transition: 0.3s;" onclick="openProfileDrawer()" title="Profile"></i>
+                <i id="theme-toggle-icon" class="fas fa-moon" style="font-size: 1.2rem; color: var(--text2); cursor: pointer; transition: 0.3s;" onclick="window.toggleTheme()" title="Switch Theme"></i>
+                <i class="fas fa-user-circle" style="font-size: 1.3rem; color: var(--text2); cursor: pointer; transition: 0.3s;" onclick="window.openProfileDrawer()" title="Profile"></i>
             </div>
         </header>
 
@@ -264,34 +447,34 @@
                 <div class="search-container">
                     <div class="search-input-wrapper">
                         <i class="fas fa-search"></i>
-                        <input type="text" id="search-bar" class="search-input" placeholder="Search for books..." oninput="handleSearch(this.value)" autocomplete="off">
-                        <i class="fas fa-times clear-search hidden" id="clear-search" onclick="clearSearch()" title="Clear"></i>
+                        <input type="text" id="search-bar" class="search-input" placeholder="Search for books..." oninput="window.handleSearch(this.value)" autocomplete="off">
+                        <i class="fas fa-times clear-search hidden" id="clear-search" onclick="window.clearSearch()" title="Clear"></i>
                     </div>
                     <div id="search-dropdown" class="search-dropdown"></div>
                 </div>
 
                 <div class="filters-wrapper">
                     
-                    <div class="custom-filter" id="price-dropdown-btn" onclick="toggleFilterMenu('price')">
+                    <div class="custom-filter" id="price-dropdown-btn" onclick="window.toggleFilterMenu('price')">
                         <span id="price-label">Price: All</span>
                         <i class="fas fa-chevron-down"></i>
                         <div class="filter-options" id="price-options">
-                            <div class="f-option selected" onclick="setPriceFilter('all', 'Price: All', event)">All Books</div>
-                            <div class="f-option" onclick="setPriceFilter('free', 'Free Books', event)">Free Books</div>
-                            <div class="f-option" onclick="setPriceFilter('premium', 'Premium', event)">Premium</div>
+                            <div class="f-option selected" onclick="window.setPriceFilter('all', 'Price: All', event)">All Books</div>
+                            <div class="f-option" onclick="window.setPriceFilter('free', 'Free Books', event)">Free Books</div>
+                            <div class="f-option" onclick="window.setPriceFilter('premium', 'Premium', event)">Premium</div>
                         </div>
                     </div>
 
-                    <div class="custom-filter" id="lang-dropdown-btn" onclick="toggleFilterMenu('lang')">
+                    <div class="custom-filter" id="lang-dropdown-btn" onclick="window.toggleFilterMenu('lang')">
                         <span id="lang-label">Lang: All</span>
                         <i class="fas fa-chevron-down"></i>
                         <div class="filter-options" id="lang-options">
-                            <div class="f-option selected" onclick="setLangFilter('all', 'Lang: All', event)">All Languages</div>
-                            <div class="f-option" onclick="setLangFilter('english', 'English', event)">English</div>
-                            <div class="f-option" onclick="setLangFilter('urdu', 'Urdu', event)">Urdu</div>
-                            <div class="f-option" onclick="setLangFilter('hindi', 'Hindi', event)">Hindi</div>
-                            <div class="f-option" onclick="setLangFilter('arabic', 'Arabic', event)">Arabic</div>
-                            <div class="f-option" onclick="setLangFilter('roman urdu / hindi', 'Roman Urdu', event)">Roman Urdu / Hindi</div>
+                            <div class="f-option selected" onclick="window.setLangFilter('all', 'Lang: All', event)">All Languages</div>
+                            <div class="f-option" onclick="window.setLangFilter('english', 'English', event)">English</div>
+                            <div class="f-option" onclick="window.setLangFilter('urdu', 'Urdu', event)">Urdu</div>
+                            <div class="f-option" onclick="window.setLangFilter('hindi', 'Hindi', event)">Hindi</div>
+                            <div class="f-option" onclick="window.setLangFilter('arabic', 'Arabic', event)">Arabic</div>
+                            <div class="f-option" onclick="window.setLangFilter('roman urdu / hindi', 'Roman Urdu', event)">Roman Urdu / Hindi</div>
                         </div>
                     </div>
 
@@ -302,7 +485,7 @@
                 <div id="ebook-grid" class="grid-container"></div>
                 
                 <div class="text-center mt-2" style="margin-bottom: 30px;">
-                    <button id="load-more-btn" class="btn btn-outline hidden" style="width: auto; margin: 0 auto; padding: 10px 30px;" onclick="loadMoreBooks()">Load More <i class="fas fa-chevron-down" style="margin-left: 6px;"></i></button>
+                    <button id="load-more-btn" class="btn btn-outline hidden" style="width: auto; margin: 0 auto; padding: 10px 30px;" onclick="window.loadMoreBooks()">Load More <i class="fas fa-chevron-down" style="margin-left: 6px;"></i></button>
                 </div>
             </div>
         </div>
@@ -314,96 +497,183 @@
         </div>
     </div>
 
-    <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbxCEiZaRqK2KKtcWGx0y9nMz5krOI9XeFnrS2ff_B5M0TU_dZFHYfKBPrys4eSBRJhx/exec"; 
+<div id="toast-container" style="z-index: 999999 !important;"></div>
+
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+        import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager, collection, getDocs, query, where, enableIndexedDbPersistence } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+
+        // 🛑 BHAIA YAHAN APNI ASLI FIREBASE KEYS ZAROOR PASTE KAR LENA 🛑
+        const firebaseConfig = {
+            apiKey: "AIzaSyBhYLRH_0p7f4oRIZTDVf8bOb1bdRKPNe8",
+            authDomain: "islamic-library-3b1d4.firebaseapp.com",
+            projectId: "islamic-library-3b1d4",
+            storageBucket: "islamic-library-3b1d4.firebasestorage.app",
+            messagingSenderId: "139007174646",
+            appId: "1:139007174646:web:0139e6d5c6bf38c7e409d7"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        // 🔥 MODERN CACHE SETUP: Isse warning khatam ho jayegi aur speed makkhan ho jayegi
+const db = initializeFirestore(app, {
+  localCache: persistentLocalCache({
+    tabManager: persistentMultipleTabManager()
+  })
+});
+
+
+
+        // ✅ STATE VARIABLES
         let ebooksData = [];
-        let apiLocks = {};
         let currentPage = 1;
         const itemsPerPage = 15;
-
-        // ✅ FILTER STATE VARIABLES
         let currentPriceFilter = 'all';
         let currentLangFilter = 'all';
 
-        function initTheme() {
+        // ✅ GLOBAL UI FUNCTIONS
+        window.initTheme = function() {
             const currentTheme = document.documentElement.getAttribute("data-theme");
             const icon = document.getElementById("theme-toggle-icon");
             if(icon) icon.className = currentTheme === "light" ? "fas fa-sun" : "fas fa-moon";
         }
 
-        function toggleTheme() {
+        window.toggleTheme = function() {
             const currentTheme = document.documentElement.getAttribute("data-theme");
             const newTheme = currentTheme === "light" ? "dark" : "light";
             document.documentElement.setAttribute("data-theme", newTheme);
             localStorage.setItem("islamic_theme", newTheme);
-            initTheme();
+            window.initTheme();
         }
 
-        function openProfileDrawer() {
-            document.getElementById("profile-name").innerText = localStorage.getItem("islamic_user_name") || "Library User";
-            document.getElementById("profile-mobile").innerText = localStorage.getItem("islamic_user_mobile") || "Registered User";
+                window.openProfileDrawer = async function() {
+            // Drawer open karo
             document.getElementById("drawer-overlay").classList.add("active");
             document.getElementById("profile-drawer").classList.add("active");
             document.body.style.overflow = 'hidden';
-        }
 
-        function closeProfileDrawer() {
+            // Pehle browser ke cache se naam dikhao
+            let cachedName = localStorage.getItem("islamic_user_name");
+            document.getElementById("profile-name").innerText = cachedName || "Library User";
+            document.getElementById("profile-mobile").innerText = localStorage.getItem("islamic_user_mobile") || "Registered User";
+
+            // 🔥 FIX: Agar cache mein naam nahi hai, toh turant Firebase se fetch karke save aur update kar do
+            if (!cachedName) {
+                try {
+                    const { getFirestore, doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
+                    const dbInstance = getFirestore();
+                    const userDoc = await getDoc(doc(dbInstance, "users", localStorage.getItem("islamic_user_id")));
+                    
+                    if (userDoc.exists() && userDoc.data().name) {
+                        const realName = userDoc.data().name;
+                        localStorage.setItem("islamic_user_name", realName); // Aage ke liye save kar diya
+                        document.getElementById("profile-name").innerText = realName; // UI par update kar diya
+                    }
+                } catch(e) { console.log("Name fetch error", e); }
+            }
+        };
+
+
+        window.closeProfileDrawer = function() {
             document.getElementById("drawer-overlay").classList.remove("active");
             document.getElementById("profile-drawer").classList.remove("active");
             document.body.style.overflow = '';
         }
 
-        function closeModal() {
+        window.closeModal = function() {
             document.getElementById("confirm-modal").classList.add("hidden");
         }
 
-        function showLogoutModal() {
-            closeProfileDrawer();
+        window.showLogoutModal = function() {
+            window.closeProfileDrawer();
             document.getElementById("modal-title-text").innerText = "Log Out";
             document.getElementById("modal-desc-text").innerText = "Are you sure you want to log out of your account?";
             const actionBtn = document.getElementById("modal-action-btn");
             actionBtn.innerText = "Yes, Log Out";
-            actionBtn.onclick = confirmLogout;
+            actionBtn.onclick = window.confirmLogout;
             document.getElementById("confirm-modal").classList.remove("hidden");
         }
 
-        function openChangePassword() {
-            closeProfileDrawer();
-            document.getElementById("modal-title-text").innerText = "Change Password";
-            document.getElementById("modal-desc-text").innerText = "You will be logged out securely to change your password. Continue?";
-            const actionBtn = document.getElementById("modal-action-btn");
-            actionBtn.innerText = "Yes, Continue";
-            actionBtn.onclick = () => {
-                closeModal();
-                executeLogout(false);
-                sessionStorage.setItem('open_reset_tab', 'true');
-                window.location.href = 'login/'; 
-            };
-            document.getElementById("confirm-modal").classList.remove("hidden");
+        // 🔥 MODAL OPEN & CLOSE LOGIC
+window.openChangePassword = function() {
+    window.closeProfileDrawer();
+    document.getElementById("change-password-modal").classList.remove("hidden");
+    document.getElementById("user_new_password").value = ""; // Box ko clean karne ke liye
+}
+
+window.closeChangePasswordModal = function() {
+    document.getElementById("change-password-modal").classList.add("hidden");
+}
+
+// 🔥 ASLI FIREBASE PASSWORD UPDATE LOGIC
+window.executeChangePassword = async function() {
+    const newPass = document.getElementById("user_new_password").value.trim();
+    const btn = document.getElementById("update-pass-btn");
+
+    if (newPass.length < 6) {
+        window.showToast("Password must be at least 6 characters!", "error");
+        return;
+    }
+
+    // Firebase Auth se current user nikalo
+    const { getAuth, updatePassword } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js");
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    if (!user) {
+        window.showToast("Session expired. Please login again.", "error");
+        return;
+    }
+
+    try {
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
+        btn.disabled = true;
+
+        // Password update command
+        await updatePassword(user, newPass);
+        
+        window.showToast("Password updated successfully!", "success");
+        window.closeChangePasswordModal();
+
+    } catch (error) {
+        console.error("Password Update Error:", error);
+        
+        // Agar user ne bohot time se login kiya hua hai toh ye error aayega
+        if (error.code === 'auth/requires-recent-login') {
+            window.showToast("Security alert: Please logout and login again to change your password.", "error");
+        } else {
+            window.showToast("Error: " + error.message, "error");
         }
+    } finally {
+        btn.innerHTML = 'Update Password';
+        btn.disabled = false;
+    }
+}
 
-        function confirmLogout() { executeLogout(true); }
 
-        function executeLogout(redirect) {
+        window.confirmLogout = function() { window.executeLogout(true); }
+
+        window.executeLogout = function(redirect) {
             const userId = localStorage.getItem("islamic_user_id");
-            if(userId) localStorage.removeItem(`cache_payments_${userId}_data`);
+            if(userId) {
+                localStorage.removeItem(`cache_payments_${userId}_data`);
+                localStorage.removeItem(`cache_payments_${userId}_time`);
+            }
             localStorage.removeItem("islamic_user_id");
             localStorage.removeItem("islamic_user_name");
             localStorage.removeItem("islamic_user_mobile");
-            if(redirect) window.location.href = 'login/'; 
+            
+            // ✅ Asli Firebase Logout
+            signOut(auth).then(() => {
+                if(redirect) window.location.replace('login/'); 
+            }).catch(() => {
+                if(redirect) window.location.replace('login/');
+            });
         }
 
-        document.addEventListener("DOMContentLoaded", () => {
-            initTheme();
-            if (!localStorage.getItem("islamic_user_id")) {
-                window.location.href = 'login/';
-                return;
-            }
-            document.getElementById("app-views").classList.remove("hidden");
-            loadHome();
-        });
-
-        function showToast(msg, type = "success") {
+        window.showToast = function(msg, type = "success") {
             const container = document.getElementById("toast-container");
             const toast = document.createElement("div");
             toast.className = "toast";
@@ -412,46 +682,27 @@
             setTimeout(() => { toast.style.transform = "translateX(110%)"; toast.style.opacity = "0"; setTimeout(() => toast.remove(), 400); }, 3000);
         }
 
-        async function apiCall(action, method = "GET", body = null, showFullScreenLoader = true) {
-            const loader = document.getElementById("loader");
-            if (showFullScreenLoader) loader.classList.remove("hidden");
-            const url = `${API_URL}?action=${action}`;
-            const options = { method: method, redirect: "follow" };
-            if (body) {
-                options.body = JSON.stringify(body);
-                options.headers = { "Content-Type": "text/plain;charset=utf-8" };
+        // ✅ SECURE INITIALIZATION
+        document.addEventListener("DOMContentLoaded", () => {
+            window.initTheme();
+            
+            // Fast Cache Check (Skeleton UI show karne ke liye bina lag ke)
+            if (!localStorage.getItem("islamic_user_id")) {
+                window.location.replace('login/');
+                return;
             }
-            try {
-                const response = await fetch(url, options);
-                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                return await response.json();
-            } catch (error) {
-                showToast("Network Error or API issue", "error");
-                return null;
-            } finally {
-                if (showFullScreenLoader) loader.classList.add("hidden");
-            }
-        }
+            
+            document.getElementById("app-views").classList.remove("hidden");
+            loadHome();
+        });
 
-        function fetchSWR(action, cacheKey, onDataChange, showBlockingLoader = false) {
-            const cachedDataStr = localStorage.getItem(cacheKey + "_data");
-            if (cachedDataStr) { try { onDataChange(JSON.parse(cachedDataStr)); } catch (e) {} }
-            if (!cachedDataStr && showBlockingLoader) document.getElementById('loader').classList.remove('hidden');
-            if (apiLocks[cacheKey]) return;
-            apiLocks[cacheKey] = true;
-            apiCall(action, "GET", null, false).then(freshData => {
-                if (freshData) {
-                    const freshDataStr = JSON.stringify(freshData);
-                    if (cachedDataStr !== freshDataStr) {
-                        localStorage.setItem(cacheKey + "_data", freshDataStr);
-                        onDataChange(freshData); 
-                    }
-                }
-            }).finally(() => { 
-                if (!cachedDataStr && showBlockingLoader) document.getElementById('loader').classList.add('hidden'); 
-                delete apiLocks[cacheKey]; 
-            });
-        }
+        // ✅ BACKGROUND FIREBASE SECURITY CHECK
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                // Agar user ka session sach mein nahi hai, toh turant bahar phek do
+                window.executeLogout(true);
+            }
+        });
 
         function showSkeletons() {
             const grid = document.getElementById("ebook-grid");
@@ -469,38 +720,74 @@
             document.getElementById("load-more-btn").classList.add("hidden");
         }
 
-        function loadHome() {
-            const cachedDataStr = localStorage.getItem("cache_ebooks_data");
-            if (!cachedDataStr) showSkeletons();
+        // ✅ FETCH FROM FIREBASE
+        async function loadHome() {
+    const cachedDataStr = localStorage.getItem("cache_ebooks_data");
+    const userId = localStorage.getItem("islamic_user_id");
 
-            fetchSWR("getEbooks", "cache_ebooks", (data) => {
-                if (Array.isArray(data)) { 
-                    ebooksData = data; 
-                    renderGrid(true);
-                }
-            }, false); 
+    // Pehle cache dikhao taaki user ko wait na lage
+    if (cachedDataStr) { 
+        try { 
+            ebooksData = JSON.parse(cachedDataStr); 
+            renderGrid(true); 
+        } catch (e) {} 
+    } else {
+        showSkeletons();
+    }
 
-            const userId = localStorage.getItem("islamic_user_id");
-            if (userId) {
-                fetchSWR(`getUserPayments&user_id=${userId}`, `cache_payments_${userId}`, () => {}, false);
-            }
+    try {
+        // 🔥 STEP: PARALLEL FETCHING (Dono kaam ek saath shuru honge)
+        const ebooksPromise = getDocs(collection(db, "ebooks"));
+        let paymentsPromise = Promise.resolve(null); // Default empty
+
+        if (userId) {
+            const q = query(collection(db, "payments"), where("user_id", "==", userId));
+            paymentsPromise = getDocs(q);
         }
 
-        // ✅ CUSTOM DROPDOWN LOGIC
-        function toggleFilterMenu(type) {
+        // Dono ka ek saath intezaar karo
+        const [querySnapshot, paySnapshot] = await Promise.all([ebooksPromise, paymentsPromise]);
+
+        // 1. Process Ebooks
+        const freshEbooks = [];
+        querySnapshot.forEach((doc) => {
+            freshEbooks.push({ id: doc.id, ...doc.data() });
+        });
+
+        ebooksData = freshEbooks;
+        localStorage.setItem("cache_ebooks_data", JSON.stringify(freshEbooks));
+        renderGrid(true);
+
+        // 2. Process Payments (Bina extra wait kiye)
+        if (paySnapshot) {
+            const userPayments = [];
+            paySnapshot.forEach((doc) => {
+                userPayments.push({ id: doc.id, ...doc.data() });
+            });
+            localStorage.setItem(`cache_payments_${userId}_data`, JSON.stringify(userPayments));
+        }
+
+    } catch (error) {
+        console.error("Firebase error:", error);
+        if (!cachedDataStr) window.showToast("Network Error loading books", "error");
+    }
+}
+
+
+        // ✅ FILTER & RENDER LOGIC
+        window.toggleFilterMenu = function(type) {
             const priceBtn = document.getElementById('price-dropdown-btn');
             const langBtn = document.getElementById('lang-dropdown-btn');
             
             if (type === 'price') {
                 priceBtn.classList.toggle('open');
-                langBtn.classList.remove('open'); // Close the other
+                langBtn.classList.remove('open');
             } else {
                 langBtn.classList.toggle('open');
-                priceBtn.classList.remove('open'); // Close the other
+                priceBtn.classList.remove('open');
             }
         }
 
-        // Close dropdowns if clicked outside
         document.addEventListener('click', (e) => {
             if (!e.target.closest('.custom-filter')) {
                 document.getElementById('price-dropdown-btn').classList.remove('open');
@@ -511,27 +798,23 @@
             }
         });
 
-        // ✅ SET PRICE FILTER
-        function setPriceFilter(value, label, event) {
-            event.stopPropagation(); // Prevent closing immediately to show click effect
+        window.setPriceFilter = function(value, label, event) {
+            event.stopPropagation();
             currentPriceFilter = value;
             document.getElementById('price-label').innerText = label;
             
-            // Handle UI selection
             document.querySelectorAll('#price-options .f-option').forEach(el => el.classList.remove('selected'));
             event.currentTarget.classList.add('selected');
             
-            // Highlight Button if not "all"
             const btn = document.getElementById('price-dropdown-btn');
             if(value !== 'all') btn.classList.add('active-filter');
             else btn.classList.remove('active-filter');
 
-            toggleFilterMenu('price'); // Close dropdown
+            window.toggleFilterMenu('price');
             renderGrid(true);
         }
 
-        // ✅ SET LANGUAGE FILTER
-        function setLangFilter(value, label, event) {
+        window.setLangFilter = function(value, label, event) {
             event.stopPropagation();
             currentLangFilter = value;
             document.getElementById('lang-label').innerText = label;
@@ -539,53 +822,44 @@
             document.querySelectorAll('#lang-options .f-option').forEach(el => el.classList.remove('selected'));
             event.currentTarget.classList.add('selected');
 
-            // Highlight Button if not "all"
             const btn = document.getElementById('lang-dropdown-btn');
             if(value !== 'all') btn.classList.add('active-filter');
             else btn.classList.remove('active-filter');
 
-            toggleFilterMenu('lang'); // Close dropdown
+            window.toggleFilterMenu('lang');
             renderGrid(true);
         }
 
-        // ✅ UPDATED RENDER GRID WITH MULTI-LANGUAGE SUPPORT
         function renderGrid(reset = false) {
             if (reset) currentPage = 1;
             const grid = document.getElementById("ebook-grid");
             const loadMoreBtn = document.getElementById("load-more-btn");
             if (reset) grid.innerHTML = "";
 
-            // 1. Filter Data based on selected dropdowns
+// 🔥 YEH NAYI LINE ADD KARNI HAI (Books ko number wise lagane ke liye) 🔥
+            ebooksData.sort((a, b) => (a.sort_order || 999) - (b.sort_order || 999));
+
             let filteredBooks = ebooksData.filter(eb => {
-                // Check Price
                 const isFree = String(eb.is_free) === "true";
                 let passPrice = true;
                 if (currentPriceFilter === 'free') passPrice = isFree;
                 if (currentPriceFilter === 'premium') passPrice = !isFree;
 
-                // Check Language (MULTI-LANGUAGE LOGIC)
                 let passLang = true;
                 if (currentLangFilter !== 'all') {
                     const langData = eb.language || 'none';
                     let bookLangs = [];
-                    
-                    // Agar backend array bhejta hai (future proof)
                     if (Array.isArray(langData)) {
                         bookLangs = langData.map(l => l.toLowerCase().trim());
-                    } 
-                    // Agar backend comma-separated string bhejta hai (e.g., "Urdu, Arabic")
-                    else {
+                    } else {
                         bookLangs = String(langData).split(',').map(l => l.toLowerCase().trim());
                     }
-
-                    // Check karo ki user ne jo select kiya hai wo book ki languages list me hai ya nahi
                     passLang = bookLangs.includes(currentLangFilter.toLowerCase());
                 }
 
                 return passPrice && passLang;
             });
 
-            // 2. Check for Empty State
             if (filteredBooks.length === 0) {
                 grid.innerHTML = `
                     <div class="empty-state">
@@ -597,7 +871,6 @@
                 return; 
             }
 
-            // 3. Render Cards if data exists
             const startIndex = (currentPage - 1) * itemsPerPage;
             const endIndex = startIndex + itemsPerPage;
             const booksToShow = filteredBooks.slice(startIndex, endIndex);
@@ -608,7 +881,7 @@
                 if(!isFree && eb.discount_price && eb.price > eb.discount_price) priceHTML += `<span class="strike-price">₹${eb.price}</span>`;
 
                 grid.innerHTML += `
-                <div class="book-card" onclick="openDetail('${eb.id}')">
+                <div class="book-card" onclick="window.openDetail('${eb.id}')">
                     <img src="${eb.thumbnail}" class="book-thumb">
                     <div class="book-info">
                         <div class="book-title">${eb.title}</div>
@@ -620,12 +893,12 @@
             loadMoreBtn.classList.toggle("hidden", filteredBooks.length <= endIndex);
         }
 
-        function loadMoreBooks() {
+        window.loadMoreBooks = function() {
             currentPage++;
             renderGrid(false);
         }
 
-        function openDetail(id) {
+        window.openDetail = function(id) {
             const selectedBook = ebooksData.find(e => String(e.id) === String(id));
             if(selectedBook) {
                 sessionStorage.setItem('selected_book_data', JSON.stringify(selectedBook));
@@ -633,8 +906,12 @@
             }
         }
 
-        // Search Logic
-        function handleSearch(query) {
+        window.clearSearch = function() {
+            document.getElementById("search-bar").value = "";
+            window.handleSearch("");
+        }
+
+        window.handleSearch = function(query) {
             const dropdown = document.getElementById("search-dropdown");
             const clearBtn = document.getElementById("clear-search");
             
@@ -659,7 +936,7 @@
                 dropdown.classList.add("active");
                 results.slice(0, 6).forEach(eb => {
                     dropdown.innerHTML += `
-                        <div class="search-item" onclick="openDetail('${eb.id}')">
+                        <div class="search-item" onclick="window.openDetail('${eb.id}')">
                             <img src="${eb.thumbnail}" class="search-thumb">
                             <div class="search-info">
                                 <div class="search-title">${eb.title}</div>
