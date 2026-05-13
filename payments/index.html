@@ -25,7 +25,7 @@
     
     <script>
         if (!localStorage.getItem("islamic_user_id") || !sessionStorage.getItem("selected_book_data")) {
-            window.location.replace("../login/");
+            window.location.replace("/login/");
         }
     </script>
 
@@ -423,8 +423,8 @@
                 If your status doesn't change after 2 hours, please contact our support.
             </p>
             <div class="modal-actions">
-    <button class="btn btn-outline" onclick="window.location.replace('../info/')">Contact Support</button>
-    <button class="btn" style="background: var(--success); box-shadow: 0 4px 15px rgba(16,185,129,0.3);" onclick="window.location.replace('../library/')">Continue</button>
+    <button class="btn btn-outline" onclick="window.location.replace('/info/')">Contact Support</button>
+    <button class="btn" style="background: var(--success); box-shadow: 0 4px 15px rgba(16,185,129,0.3);" onclick="window.location.replace('/library/')">Continue</button>
 </div>
 
         </div>
@@ -475,9 +475,9 @@
     </div> 
 
     <div id="bottom-nav" class="bottom-nav">
-        <div class="nav-item active" onclick="window.location.href='../'"><i class="fas fa-home"></i><span>Home</span></div>
-        <div class="nav-item" onclick="window.location.href='../library/'"><i class="fas fa-book-reader"></i><span>Library</span></div>
-        <a href="../info/" class="nav-item"><i class="fas fa-info-circle"></i><span>Info</span></a>
+        <div class="nav-item active" onclick="window.location.href='/'"><i class="fas fa-home"></i><span>Home</span></div>
+        <div class="nav-item" onclick="window.location.href='/library/'"><i class="fas fa-book-reader"></i><span>Library</span></div>
+        <a href="/info/" class="nav-item"><i class="fas fa-info-circle"></i><span>Info</span></a>
     </div>
 
      <script type="module">
@@ -653,8 +653,8 @@ window.executeChangePassword = async function() {
             localStorage.removeItem("islamic_user_name");
             localStorage.removeItem("islamic_user_mobile");
             
-            signOut(auth).then(() => { if(redirect) window.location.href = "../login/"; })
-                         .catch(() => { if(redirect) window.location.href = "../login/"; });
+            signOut(auth).then(() => { if(redirect) window.location.href = "/login/"; })
+                         .catch(() => { if(redirect) window.location.href = "/login/"; });
         };
 
         window.showToast = function(msg, type = "success") {
@@ -689,7 +689,7 @@ window.executeChangePassword = async function() {
                     // Toast dikhao aur history mita kar Library bhej do
                     window.showToast("Your request is already submitted!", "error");
                     setTimeout(() => {
-                        window.location.replace("../library/"); // Replace se Back button kaam nahi karega
+                        window.location.replace("/library/");
                     }, 1000);
                     return; // Code aage nahi jayega
                 }
@@ -762,7 +762,7 @@ window.executeChangePassword = async function() {
 
     if (isAlreadyPaid) {
         window.showToast("You have already submitted this request!", "error");
-        setTimeout(() => window.location.replace("../library/"), 1500);
+        setTimeout(() => window.location.replace("/library/"), 1500);
         return; // Yahi se wapas bhej do, Firebase tak mat jane do
     }
     
