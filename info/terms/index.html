@@ -257,16 +257,16 @@
 
     <div class="stepper-wrap">
         <div class="stepper">
-            <div class="step-item" onclick="window.location.href='../'">
+            <div class="step-item" onclick="window.location.href='/info/'">
                 <i class="fas fa-info-circle"></i> About Us
             </div>
-            <div class="step-item" onclick="window.location.href='../contact/'">
+            <div class="step-item" onclick="window.location.href='/info/contact/'">
                 <i class="fas fa-paper-plane"></i> Contact
             </div>
-            <div class="step-item active" onclick="window.location.href='./'">
+            <div class="step-item active" onclick="window.location.href='/info/terms/'">
                 <i class="fas fa-file-contract"></i> Terms
             </div>
-            <div class="step-item" onclick="window.location.href='../privacy/'">
+            <div class="step-item" onclick="window.location.href='/info/privacy/'">
                 <i class="fas fa-shield-alt"></i> Privacy
             </div>
         </div>
@@ -291,9 +291,9 @@
 
 
     <div id="bottom-nav" class="bottom-nav">
-        <div class="nav-item" onclick="window.location.href='../../'"><i class="fas fa-home"></i><span>Home</span></div>
-        <div class="nav-item" onclick="window.location.href='../../library/'"><i class="fas fa-book-reader"></i><span>Library</span></div>
-        <a href="../" class="nav-item active"><i class="fas fa-info-circle"></i><span>Info</span></a>
+        <div class="nav-item" onclick="window.location.href='/'"><i class="fas fa-home"></i><span>Home</span></div>
+        <div class="nav-item" onclick="window.location.href='/library/'"><i class="fas fa-book-reader"></i><span>Library</span></div>
+        <a href="/info/" class="nav-item active"><i class="fas fa-info-circle"></i><span>Info</span></a>
     </div>
 
 
@@ -342,9 +342,7 @@
             const authActions = document.getElementById("auth-actions");
             const drawerFooter = document.getElementById("drawer-footer");
             
-            // Auto detect login path (chahe user kisi bhi folder mein ho)
-            const inSubFolder = window.location.pathname.includes('/privacy') || window.location.pathname.includes('/terms') || window.location.pathname.includes('/contact');
-            const loginPath = inSubFolder ? '../../login/' : '../login/';
+            const loginPath = '/login/';
 
             if (userId) {
                 // Agar User Logged in hai
@@ -434,8 +432,7 @@
             if(userId) { localStorage.removeItem(`cache_payments_${userId}_data`); localStorage.removeItem(`cache_payments_${userId}_time`); }
             localStorage.removeItem("islamic_user_id"); localStorage.removeItem("islamic_user_name"); localStorage.removeItem("islamic_user_mobile");
             
-            const inSubFolder = window.location.pathname.includes('/privacy') || window.location.pathname.includes('/terms') || window.location.pathname.includes('/contact');
-            const loginPath = inSubFolder ? '../../login/' : '../login/';
+            const loginPath = '/login/';
 
             signOut(auth).then(() => { if(redirect) window.location.href = loginPath; })
                          .catch(() => { if(redirect) window.location.href = loginPath; });
@@ -445,13 +442,15 @@
         document.addEventListener('touchstart', e => { touchstartX = e.changedTouches[0].screenX; touchstartY = e.changedTouches[0].screenY; }, {passive: true});
         document.addEventListener('touchend', e => { touchendX = e.changedTouches[0].screenX; touchendY = e.changedTouches[0].screenY; window.handleSwipe(); }, {passive: true});
         window.handleSwipe = function() {
-            if (document.getElementById("profile-drawer").classList.contains("active")) return;
-            if (Math.abs(touchendY - touchstartY) > 50) return;
-            
-            const inSubFolder = window.location.pathname.includes('/privacy') || window.location.pathname.includes('/terms') || window.location.pathname.includes('/contact');
-            const libraryPath = inSubFolder ? '../../library/' : '../library/';
-            if (touchendX > touchstartX + 70) window.location.href = libraryPath;
-        };
+    if (document.getElementById("profile-drawer").classList.contains("active")) return;
+    if (Math.abs(touchendY - touchstartY) > 50) return;
+    
+    // Sirf ye ek line kaafi hai
+    const libraryPath = '/library/';
+    
+    if (touchendX > touchstartX + 70) window.location.href = libraryPath;
+};
+
 
         document.addEventListener("DOMContentLoaded", () => { window.initTheme(); });
     </script>
