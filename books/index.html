@@ -9,9 +9,9 @@
     <meta name="keywords" content="Islamic Library by Shekh, Islamic ebooks, Quran PDF, Hadith books">
     <meta name="author" content="Islamic Library by Shekh">
 
-    <link rel="icon" type="image/png" sizes="32x32" href="../hikmahlogo.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="../hikmahlogo.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="../hikmahlogo.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/hikmahlogo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/hikmahlogo.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/hikmahlogo.png">
 
     <meta property="og:title" content="Islamic Library by Shekh">
     <meta property="og:description" content="Free & Paid Islamic eBooks, Quran PDFs, Hadith books available.">
@@ -477,7 +477,7 @@
         <div id="page-detail">
             <div class="detail-header">
                 <div class="flex align-center" style="gap: 16px;">
-                    <button class="back-btn" onclick="window.location.href='../'"><i class="fas fa-arrow-left"></i></button>
+                    <button class="back-btn" onclick="window.location.href='/'"><i class="fas fa-arrow-left"></i></button>
                     <h3 style="font-size: 1.2rem; margin:0;">Book Details</h3>
                 </div>
                 <button class="share-btn" onclick="shareBook()" title="Share this Book"><i class="fas fa-share-alt"></i></button>
@@ -694,7 +694,7 @@ window.executeChangePassword = async function() {
 
         window.shareBook = function() {
             if (!currentEbook) return;
-            const siteUrl = window.location.origin + window.location.pathname.replace('../books/', '../');
+            const siteUrl = window.location.origin + window.location.pathname.replace('books/', '/');
             const shareText = `📚 Check out this Islamic eBook: "${currentEbook.title}" on Islamic Library by Shekh.\n\n${siteUrl}`;
             if (navigator.share) {
                 navigator.share({ title: currentEbook.title, text: shareText }).catch((error) => console.log('Error sharing:', error));
@@ -715,7 +715,7 @@ window.executeChangePassword = async function() {
         function handleSwipe() {
             if (document.getElementById("profile-drawer").classList.contains("active")) return;
             if (Math.abs(touchendY - touchstartY) > 50) return; 
-            if (touchendX > touchstartX + 70) window.location.href = '../'; 
+            if (touchendX > touchstartX + 70) window.location.href = '/'; 
         }
 
         function showLoader() { document.getElementById("loader").classList.remove("hidden"); }
@@ -775,7 +775,7 @@ window.executeChangePassword = async function() {
                     if (Array.isArray(data)) { userPayments = data; renderDetail(); }
                 }, false);
             } else {
-                window.location.replace("../");
+                window.location.replace("/");
             }
         }
 
