@@ -322,7 +322,7 @@
             if (document.getElementById("profile-drawer").classList.contains("active")) return;
             if (Math.abs(touchendY - touchstartY) > 50) return;
             
-            const libraryPath = '/library/';
+            const libraryPath = '/';
             if (touchendX > touchstartX + 70) window.location.href = libraryPath;
         };
 
