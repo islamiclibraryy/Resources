@@ -9,9 +9,9 @@
     <meta name="keywords" content="Islamic Library by Shekh, Islamic ebooks, Quran PDF, Hadith books">
     <meta name="author" content="Islamic Library by Shekh">
 
-    <link rel="icon" type="image/png" sizes="32x32" href="hikmahlogo.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="hikmahlogo.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="hikmahlogo.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/hikmahlogo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/hikmahlogo.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/hikmahlogo.png">
 
     <meta property="og:title" content="Islamic Library by Shekh">
     <meta property="og:description" content="Free & Paid Islamic eBooks, Quran PDFs, Hadith books available.">
@@ -492,8 +492,8 @@
 
         <div id="bottom-nav" class="bottom-nav">
             <div class="nav-item active" onclick="window.location.href='./'"><i class="fas fa-home"></i><span>Home</span></div>
-            <div class="nav-item" onclick="window.location.href='library/'"><i class="fas fa-book-reader"></i><span>Library</span></div>
-            <a href="info/" class="nav-item"><i class="fas fa-info-circle"></i><span>Info</span></a>
+            <div class="nav-item" onclick="window.location.href='/library/'"><i class="fas fa-book-reader"></i><span>Library</span></div>
+            <a href="/info/" class="nav-item"><i class="fas fa-info-circle"></i><span>Info</span></a>
         </div>
     </div>
 
@@ -667,9 +667,9 @@ window.executeChangePassword = async function() {
             
             // ✅ Asli Firebase Logout
             signOut(auth).then(() => {
-                if(redirect) window.location.replace('login/'); 
+                if(redirect) window.location.replace('/login/'); 
             }).catch(() => {
-                if(redirect) window.location.replace('login/');
+                if(redirect) window.location.replace('/login/');
             });
         }
 
@@ -688,7 +688,7 @@ window.executeChangePassword = async function() {
             
             // Fast Cache Check (Skeleton UI show karne ke liye bina lag ke)
             if (!localStorage.getItem("islamic_user_id")) {
-                window.location.replace('login/');
+                window.location.replace('/login/');
                 return;
             }
             
@@ -902,7 +902,7 @@ window.executeChangePassword = async function() {
             const selectedBook = ebooksData.find(e => String(e.id) === String(id));
             if(selectedBook) {
                 sessionStorage.setItem('selected_book_data', JSON.stringify(selectedBook));
-                window.location.href = 'books/';
+                window.location.href = '/books/';
             }
         }
 
