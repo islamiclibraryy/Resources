@@ -5,38 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>My Library - Islamic Library by Shekh</title>
 
-    <!-- ✅ SEO META -->
     <meta name="description" content="Islamic Library by Shekh – Download Islamic eBooks, Quran PDFs, and Hadith books. A free and premium Islamic digital library.">
     <meta name="keywords" content="Islamic Library by Shekh, Islamic ebooks, Quran PDF, Hadith books">
     <meta name="author" content="Islamic Library by Shekh">
 
-    <!-- ✅ FAVICON (LOCAL LOGO) -->
     <link rel="icon" type="image/png" sizes="32x32" href="../hikmahlogo.png">
     <link rel="icon" type="image/png" sizes="16x16" href="../hikmahlogo.png">
     <link rel="apple-touch-icon" sizes="180x180" href="../hikmahlogo.png">
 
-    <!-- ✅ OPEN GRAPH -->
     <meta property="og:title" content="Islamic Library by Shekh">
     <meta property="og:description" content="Free & Paid Islamic eBooks, Quran PDFs, Hadith books available.">
-    <meta property="og:image" content="https://islamiclibraryy.github.io/Resources/hikmahlogo.png">
-    <meta property="og:url" content="https://islamiclibraryy.github.io/Resources/">
+    <meta property="og:image" content="https://mysite.github.io/Resources/hikmahlogo.png">
+    <meta property="og:url" content="https://mysite.github.io/Resources/">
     <meta property="og:type" content="website">
 
-    <!-- Fonts: Original Amiri for Arabic + Resume Builder Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
     
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- ✅ SECURITY CHECK SCRIPT -->
     <script>
         if (!localStorage.getItem("islamic_user_id")) {
             window.location.replace("../login/");
         }
     </script>
 
-    <!-- ✅ PREVENT THEME FLASH -->
     <script>
         (function() {
             const savedTheme = localStorage.getItem('islamic_theme') || 'dark';
@@ -73,6 +66,15 @@
         [data-theme="light"] .blob { opacity: 0.5; }
         [data-theme="light"] header, [data-theme="light"] .bottom-nav { background: rgba(255, 255, 255, 0.9); border-bottom-color: rgba(0,0,0,0.1); border-top-color: rgba(0,0,0,0.1); }
         [data-theme="light"] .profile-drawer { background: #fff; }
+        /* 🔥 LIGHT MODE PASSWORD INPUT FIX 🔥 */
+        [data-theme="light"] .custom-dark-input {
+            background: var(--surface2) !important; /* Halka gray background */
+            color: var(--text) !important;          /* Dark text color */
+            border-color: var(--border2) !important;
+        }
+        [data-theme="light"] .custom-dark-input::placeholder {
+            color: var(--text3) !important;         /* Dark placeholder */
+        }
 
         /* ===== GLOBAL STYLES ===== */
         *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -86,7 +88,6 @@
         .blob { position:fixed; border-radius:50%; filter:blur(80px); pointer-events:none; animation:blobFloat 8s ease-in-out infinite; z-index:-1; }
         .blob1 { width:400px; height:400px; background:rgba(124,106,247,0.18); top:-100px; left:-100px; animation-delay:0s; }
         .blob2 { width:350px; height:350px; background:rgba(168,85,247,0.12); bottom:-80px; right:-80px; animation-delay:3s; }
-        .blob3 { width:250px; height:250px; background:rgba(99,102,241,0.1); top:40%; right:10%; animation-delay:5s; }
 
         h1, h2, h3 { font-family: 'Syne', sans-serif; font-weight: 700; letter-spacing: -0.02em; color: var(--text); }
         .hidden { display: none !important; } .flex { display: flex; } .align-center { align-items: center; } .text-center { text-align: center; } .mb-2 { margin-bottom: 20px; }
@@ -121,17 +122,40 @@
             transition: background-color 0.3s ease, border-color 0.3s ease; 
             transform: translateZ(0); 
         }
-        .header-logo-container { display: flex; flex-direction: column; justify-content: center; }
-        .header-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.25rem; background: linear-gradient(135deg, var(--accent2), #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; letter-spacing: -0.02em; }
-        .header-sub { font-family: 'DM Mono', monospace; font-size: .7rem; font-weight: 500; color: var(--accent2); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 4px; }
+        .header-logo-container { display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
+        
+        .header-logo { 
+            font-family: 'Syne', sans-serif; 
+            font-weight: 800; 
+            /* Font apne aap screen ke hisaab se set hoga */
+            font-size: clamp(1rem, 5vw, 1.25rem); 
+            background: linear-gradient(135deg, var(--accent2), #c084fc); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+            line-height: 1; 
+            letter-spacing: -0.02em; 
+            /* Text 2 line mein nahi tootega */
+            white-space: nowrap; 
+        }
+        
+        .header-sub { 
+            font-family: 'DM Mono', monospace; 
+            font-size: .7rem; 
+            font-weight: 500; 
+            color: var(--accent2); 
+            text-transform: uppercase; 
+            letter-spacing: 0.1em; 
+            margin-top: 4px; 
+            white-space: nowrap; 
+        }
+
         
         .main-content { padding: 90px 20px 90px; max-width: 1400px; margin: 0 auto; animation: fadeIn .5s ease both; }
         
-        /* ✅ PROFILE DRAWER UI (MATCHED WITH INFO.HTML) */
+        /* ✅ PROFILE DRAWER UI */
         .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 10001; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; backdrop-filter: blur(3px); }
         .drawer-overlay.active { opacity: 1; pointer-events: all; }
         
-        /* Fixed height using 100% and 100dvh for mobile address bar fixing */
         .profile-drawer { position: fixed; top: 0; right: -320px; width: 300px; height: 100%; height: 100dvh; background: var(--surface); z-index: 10002; box-shadow: -5px 0 30px rgba(0,0,0,0.5); transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; }
         .profile-drawer.active { right: 0; }
         
@@ -139,7 +163,6 @@
         .drawer-header h3 { margin: 0; font-size: 1.2rem; }
         .drawer-header i { font-size: 1.2rem; color: var(--text2); cursor: pointer; padding: 5px; }
         
-        /* Drawer body is scrollable so footer is always pushed to bottom */
         .drawer-body { padding: 30px 20px; text-align: center; flex: 1; overflow-y: auto; }
         .drawer-avatar { width: 80px; height: 80px; border-radius: 50%; background: var(--glow2); border: 2px solid var(--accent); color: var(--accent2); font-size: 2.5rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px auto; }
         .drawer-name { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 700; margin-bottom: 4px; color: var(--text); }
@@ -148,7 +171,6 @@
         .drawer-menu .btn-outline { width: 100%; text-align: left; padding: 14px 20px; margin-bottom: 12px; display: flex; align-items: center; gap: 12px; font-size: 0.95rem; border-color: var(--border); }
         .drawer-menu .btn-outline i { width: 20px; text-align: center; font-size: 1.1rem; }
         
-        /* Footer stays at bottom, added safe-area padding for iPhone bottom bar */
         .drawer-footer { padding: 20px; border-top: 1px solid var(--border); flex-shrink: 0; padding-bottom: calc(20px + env(safe-area-inset-bottom)); }
 
         /* Library Specific */
@@ -169,9 +191,147 @@
         .nav-item:hover:not(.active) { color: var(--text2); }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } } @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } } @keyframes cardIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } } @keyframes slideUp { from { opacity: 0; transform: translateY(20px) translateX(110%); } to { opacity: 1; transform: translateX(0); } } @keyframes spin { to { transform: rotate(360deg); } } @keyframes blobFloat { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(20px,-20px) scale(1.05)} 66%{transform:translate(-15px,15px) scale(0.97)} }
-    </style>
+        /* Custom Dark Input for Password Box */
+.custom-dark-input {
+    width: 100%; padding: 14px 15px; margin-top: 8px; border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.15); background: rgba(255, 255, 255, 0.05);
+    color: #ffffff; font-size: 1rem; outline: none; transition: all 0.3s ease; font-family: inherit;
+}
+.custom-dark-input::placeholder { color: rgba(255, 255, 255, 0.4); }
+.custom-dark-input:focus { border-color: #a855f7; background: rgba(255, 255, 255, 0.1); box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2); }
+
+/* Original Toast Styling */
+#toast-container { position: fixed; bottom: 85px; right: 28px; z-index: 999999 !important; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
+.toast { background: var(--surface); color: var(--text); padding: 12px 18px; border-radius: var(--r2); box-shadow: var(--shadow2); border: 1px solid var(--border2); animation: slideUp 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards; display: flex; align-items: center; gap: 10px; font-size: .85rem; font-weight: 500; }
+        /* 🔥 DESKTOP VIEW FIX (LIBRARY PAGE) - ALIGNED WITH OTHERS 🔥 */
+        @media screen and (min-width: 768px) {
+            
+            /* 1. Header aur Footer ko Info/Home pages se match karna */
+            header {
+                padding: 20px 10% !important; 
+            }
+            .bottom-nav {
+                padding: 0 10% !important;
+                height: 80px !important;
+            }
+
+            .header-logo { font-size: 1.6rem !important; }
+            .fa-moon, .fa-user-circle { font-size: 1.6rem !important; margin-left: 20px !important; }
+            .nav-item i { font-size: 1.4rem !important; }
+            .nav-item span { font-size: 0.9rem !important; }
+
+            /* 2. Main Content Area ko Center aur 900px pe limit karna */
+            .main-content {
+                max-width: 900px !important;
+                margin: 0 auto !important;
+                padding-top: 100px !important; /* Naye bade header ko jagah dene ke liye */
+            }
+
+            /* 3. Heading ko thoda bada karna PC ke liye */
+            #page-library h3 {
+                font-size: 1.6rem !important;
+                margin-bottom: 24px !important;
+            }
+                     /* 4. 🔥 Library Cards ko Premium aur Bada Banana 🔥 */
+            
+            /* Card ka size aur gap badhana */
+            #library-list > div {
+                padding: 20px 24px !important;  /* Box ko thoda lamba/khula banayega */
+                border-radius: 16px !important;
+                margin-bottom: 20px !important;
+                gap: 24px !important; /* Image aur text ke beech khuli jagah */
+            }
+
+            /* Thumbnail Image ko bada karna */
+            #library-list img {
+                width: 80px !important;  /* Image ki chaudai */
+                height: 80px !important; /* Image ki lambaai */
+                border-radius: 12px !important;
+            }
+
+            /* Text aur Status ko thoda bada karna PC ke liye */
+            #library-list h4, #library-list .book-title { 
+                font-size: 1.25rem !important; 
+                margin-bottom: 6px !important;
+            }
+            #library-list p, #library-list span { 
+                font-size: 0.95rem !important; 
+            }
+            /* 🚀 ALL MODALS DESKTOP FIX (Logout, Change Password) 🚀 */
+            .modal-box {
+                max-width: 480px !important; /* Modals ab choude aur premium lagenge */
+                padding: 40px !important;
+                border-radius: 24px !important;
+            }
+            
+            /* Modal Heading aur Text ko bada karna */
+            .modal-title, #change-password-modal h3 {
+                font-size: 1.8rem !important;
+                margin-bottom: 15px !important;
+            }
+            .modal-desc {
+                font-size: 1.1rem !important;
+                line-height: 1.6 !important;
+                margin-bottom: 30px !important;
+            }
+            
+            /* Modal Buttons ko PC ke hisaab se clickable banana */
+            .modal-actions {
+                gap: 20px !important;
+            }
+            .modal-actions button {
+                padding: 14px !important;
+                font-size: 1.1rem !important;
+                border-radius: 14px !important;
+            }
+            
+            /* 🔥 Change Password Input Box PC Size 🔥 */
+            #change-password-modal .form-group label {
+                font-size: 1.1rem !important;
+                margin-bottom: 10px !important;
+            }
+            .custom-dark-input {
+                padding: 16px 20px !important;
+                font-size: 1.1rem !important;
+                border-radius: 14px !important;
+            }
+            /* 🍞 TOAST NOTIFICATIONS DESKTOP FIX 🍞 */
+            #toast-container {
+                bottom: 50px !important; 
+                right: 50px !important; /* PC par right kone mein aaram se set hoga */
+            }
+            .toast {
+                padding: 18px 24px !important;
+                font-size: 1.15rem !important; /* Text padhne layak bada kiya */
+                border-radius: 16px !important;
+                gap: 16px !important;
+                min-width: 320px !important; /* PC par thoda lamba toast acha lagta hai */
+                box-shadow: 0 15px 35px rgba(0,0,0,0.5) !important; /* Premium Shadow */
+            }
+            .toast i { 
+                font-size: 1.5rem !important; /* Error/Success wala Icon bhi bada hoga */
+            }
+
+        }
+
+      </style>
 </head>
 <body>
+<div id="change-password-modal" class="modal-overlay hidden">
+    <div class="modal-box" style="text-align:left;">
+        <h3 style="margin-bottom: 20px;">Change Password</h3>
+        <form id="changePasswordForm" onsubmit="event.preventDefault(); window.executeChangePassword();">
+            <div class="form-group">
+                <label style="color: var(--text); font-weight: 500;">New Password</label>
+                <input type="password" id="user_new_password" class="custom-dark-input" required minlength="6" placeholder="Enter new strong password">
+            </div>
+            <div class="modal-actions" style="margin-top:24px;">
+                <button type="button" class="btn btn-outline" onclick="window.closeChangePasswordModal()">Cancel</button>
+                <button type="submit" class="btn" id="update-pass-btn">Update Password</button>
+            </div>
+        </form>
+    </div>
+</div>
 
     <div class="hero-bg"></div>
     <div class="hero-grid"></div>
@@ -181,12 +341,11 @@
     <div id="loader" class="hidden"><div class="spinner"></div></div>
     <div id="toast-container"></div>
 
-    <!-- ✅ PROFILE DRAWER -->
-    <div id="drawer-overlay" class="drawer-overlay" onclick="closeProfileDrawer()"></div>
+    <div id="drawer-overlay" class="drawer-overlay" onclick="window.closeProfileDrawer()"></div>
     <div id="profile-drawer" class="profile-drawer">
         <div class="drawer-header">
             <h3>My Profile</h3>
-            <i class="fas fa-times" onclick="closeProfileDrawer()"></i>
+            <i class="fas fa-times" onclick="window.closeProfileDrawer()"></i>
         </div>
         <div class="drawer-body">
             <div class="drawer-avatar"><i class="fas fa-user"></i></div>
@@ -194,22 +353,20 @@
             <div class="drawer-mobile" id="profile-mobile">+XX XXXXXXXXXX</div>
             
             <div class="drawer-menu">
-                <!-- Change Password redirects to ../ with a special flag -->
-                <button class="btn btn-outline" onclick="openChangePassword()"><i class="fas fa-key"></i> Change Password</button>
+                <button class="btn btn-outline" onclick="window.openChangePassword()"><i class="fas fa-key"></i> Change Password</button>
             </div>
         </div>
         <div class="drawer-footer">
-            <button class="btn" style="background: rgba(244, 63, 94, 0.1); color: var(--danger); border: 1px solid rgba(244, 63, 94, 0.3); box-shadow: none;" onmouseover="this.style.background='var(--danger)'; this.style.color='#fff';" onmouseout="this.style.background='rgba(244, 63, 94, 0.1)'; this.style.color='var(--danger)';" onclick="showLogoutModal()"><i class="fas fa-sign-out-alt"></i> Log Out</button>
+            <button class="btn" style="background: rgba(244, 63, 94, 0.1); color: var(--danger); border: 1px solid rgba(244, 63, 94, 0.3); box-shadow: none;" onmouseover="this.style.background='var(--danger)'; this.style.color='#fff';" onmouseout="this.style.background='rgba(244, 63, 94, 0.1)'; this.style.color='var(--danger)';" onclick="window.showLogoutModal()"><i class="fas fa-sign-out-alt"></i> Log Out</button>
         </div>
     </div>
 
-    <!-- ✅ UNIVERSAL CONFIRMATION MODAL -->
     <div id="confirm-modal" class="modal-overlay hidden">
         <div class="modal-box">
             <h3 class="modal-title" id="modal-title-text">Log Out</h3>
             <p class="modal-desc" id="modal-desc-text">Are you sure you want to log out of your account?</p>
             <div class="modal-actions">
-                <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+                <button class="btn btn-outline" onclick="window.closeModal()">Cancel</button>
                 <button class="btn" id="modal-action-btn">Yes</button>
             </div>
         </div>
@@ -223,10 +380,9 @@
                 <div class="header-sub">by Shekh</div>
             </div>
         </div>
-        <!-- ✅ THEME TOGGLE & PROFILE BUTTON -->
         <div class="flex align-center" style="gap: 20px;">
-            <i id="theme-toggle-icon" class="fas fa-moon" style="font-size: 1.2rem; color: var(--text2); cursor: pointer; transition: 0.3s;" onclick="toggleTheme()" title="Switch Theme"></i>
-            <i class="fas fa-user-circle" style="font-size: 1.3rem; color: var(--text2); cursor: pointer; transition: 0.3s;" onclick="openProfileDrawer()" title="Profile"></i>
+            <i id="theme-toggle-icon" class="fas fa-moon" style="font-size: 1.2rem; color: var(--text2); cursor: pointer; transition: 0.3s;" onclick="window.toggleTheme()" title="Switch Theme"></i>
+            <i class="fas fa-user-circle" style="font-size: 1.3rem; color: var(--text2); cursor: pointer; transition: 0.3s;" onclick="window.openProfileDrawer()" title="Profile"></i>
         </div>
     </header>
 
@@ -237,97 +393,180 @@
         </div>
     </div> 
 
-    <!-- Bottom Nav -->
     <div id="bottom-nav" class="bottom-nav">
         <div class="nav-item" onclick="window.location.href='../'"><i class="fas fa-home"></i><span>Home</span></div>
         <div class="nav-item active" onclick="window.location.href='../library/'"><i class="fas fa-book-reader"></i><span>Library</span></div>
         <a href="../info/" class="nav-item"><i class="fas fa-info-circle"></i><span>Info</span></a>
     </div>
 
-    <script>
-        // ✅ API URL HERE
-        const API_URL = "https://script.google.com/macros/s/AKfycbxCEiZaRqK2KKtcWGx0y9nMz5krOI9XeFnrS2ff_B5M0TU_dZFHYfKBPrys4eSBRJhx/exec"; 
+    <script type="module">
+        // ✅ FIREBASE IMPORTS
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+        import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+
+        // ✅ FIREBASE CONFIG
+        const firebaseConfig = {
+            apiKey: "AIzaSyBhYLRH_0p7f4oRIZTDVf8bOb1bdRKPNe8",
+            authDomain: "islamic-library-3b1d4.firebaseapp.com",
+            projectId: "islamic-library-3b1d4",
+            storageBucket: "islamic-library-3b1d4.firebasestorage.app",
+            messagingSenderId: "139007174646",
+            appId: "1:139007174646:web:0139e6d5c6bf38c7e409d7"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        // 🔥 MODERN CACHE SETUP: Isse warning khatam ho jayegi aur speed makkhan ho jayegi
+const db = initializeFirestore(app, {
+  localCache: persistentLocalCache({
+    tabManager: persistentMultipleTabManager()
+  })
+});
+
 
         const userId = localStorage.getItem("islamic_user_id");
         let ebooksData = [];
         let userPayments = [];
-        let apiLocks = {};
 
-        // ✅ INITIALIZE THEME UI
-        function initTheme() {
+        // ✅ BACKGROUND FIREBASE SECURITY CHECK
+        onAuthStateChanged(auth, (user) => {
+            if (!user) { window.executeLogout(true); }
+        });
+
+        // ✅ UI FUNCTIONS MAPPED TO WINDOW
+        window.initTheme = function() {
             const currentTheme = document.documentElement.getAttribute("data-theme");
             const icon = document.getElementById("theme-toggle-icon");
-            if(icon) {
-                icon.className = currentTheme === "light" ? "fas fa-sun" : "fas fa-moon";
-            }
-        }
+            if(icon) icon.className = currentTheme === "light" ? "fas fa-sun" : "fas fa-moon";
+        };
 
-        // ✅ TOGGLE THEME FUNCTION
-        function toggleTheme() {
+        window.toggleTheme = function() {
             const currentTheme = document.documentElement.getAttribute("data-theme");
             const newTheme = currentTheme === "light" ? "dark" : "light";
             document.documentElement.setAttribute("data-theme", newTheme);
             localStorage.setItem("islamic_theme", newTheme);
-            initTheme();
-        }
+            window.initTheme();
+        };
 
-        // ✅ PROFILE DRAWER LOGIC (MATCHED WITH INFO.HTML)
-        function openProfileDrawer() {
-            document.getElementById("profile-name").innerText = localStorage.getItem("islamic_user_name") || "Library User";
-            document.getElementById("profile-mobile").innerText = localStorage.getItem("islamic_user_mobile") || "Registered User";
+                window.openProfileDrawer = async function() {
+            // Drawer open karo
             document.getElementById("drawer-overlay").classList.add("active");
             document.getElementById("profile-drawer").classList.add("active");
-            // Prevent background scrolling
             document.body.style.overflow = 'hidden';
-        }
-        function closeProfileDrawer() {
+
+            // Pehle browser ke cache se naam dikhao
+            let cachedName = localStorage.getItem("islamic_user_name");
+            document.getElementById("profile-name").innerText = cachedName || "Library User";
+            document.getElementById("profile-mobile").innerText = localStorage.getItem("islamic_user_mobile") || "Registered User";
+
+            // 🔥 FIX: Agar cache mein naam nahi hai, toh turant Firebase se fetch karke save aur update kar do
+            if (!cachedName) {
+                try {
+                    const { getFirestore, doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
+                    const dbInstance = getFirestore();
+                    const userDoc = await getDoc(doc(dbInstance, "users", localStorage.getItem("islamic_user_id")));
+                    
+                    if (userDoc.exists() && userDoc.data().name) {
+                        const realName = userDoc.data().name;
+                        localStorage.setItem("islamic_user_name", realName); // Aage ke liye save kar diya
+                        document.getElementById("profile-name").innerText = realName; // UI par update kar diya
+                    }
+                } catch(e) { console.log("Name fetch error", e); }
+            }
+        };
+
+
+        window.closeProfileDrawer = function() {
             document.getElementById("drawer-overlay").classList.remove("active");
             document.getElementById("profile-drawer").classList.remove("active");
-            // Restore background scrolling
             document.body.style.overflow = '';
-        }
+        };
 
-        // ✅ UNIVERSAL MODAL SYSTEM
-        function closeModal() {
+        window.closeModal = function() {
             document.getElementById("confirm-modal").classList.add("hidden");
-        }
+        };
 
-        function showLogoutModal() {
-            closeProfileDrawer();
+        window.showLogoutModal = function() {
+            window.closeProfileDrawer();
             document.getElementById("modal-title-text").innerText = "Log Out";
             document.getElementById("modal-desc-text").innerText = "Are you sure you want to log out of your account?";
             const actionBtn = document.getElementById("modal-action-btn");
             actionBtn.innerText = "Yes, Log Out";
-            actionBtn.onclick = confirmLogout;
+            actionBtn.onclick = window.confirmLogout;
             document.getElementById("confirm-modal").classList.remove("hidden");
+        };
+
+        // 🔥 Modal Open/Close Logic
+window.openChangePassword = function() {
+    window.closeProfileDrawer();
+    document.getElementById("change-password-modal").classList.remove("hidden");
+    document.getElementById("user_new_password").value = ""; 
+}
+
+window.closeChangePasswordModal = function() {
+    document.getElementById("change-password-modal").classList.add("hidden");
+}
+
+// 🔥 Original Toast Function
+window.showToast = function(msg, type = "success") {
+    const container = document.getElementById("toast-container");
+    if (!container) return;
+    const toast = document.createElement("div");
+    toast.className = "toast";
+    toast.innerHTML = (type === "success" ? '<span style="font-size:1.1rem; color:var(--success)">✓</span>' : '<span style="font-size:1.1rem; color:var(--danger)">✕</span>') + ` <span>${msg}</span>`;
+    container.appendChild(toast);
+    setTimeout(() => { toast.style.transform = "translateX(110%)"; toast.style.opacity = "0"; setTimeout(() => toast.remove(), 400); }, 3000);
+}
+
+// 🔥 Original Password Update Logic
+window.executeChangePassword = async function() {
+    const newPass = document.getElementById("user_new_password").value.trim();
+    const btn = document.getElementById("update-pass-btn");
+
+    if (newPass.length < 6) {
+        window.showToast("Password must be at least 6 characters!", "error");
+        return;
+    }
+
+    const { getAuth, updatePassword } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js");
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    if (!user) {
+        window.showToast("Session expired. Please login again.", "error");
+        return;
+    }
+
+    try {
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
+        btn.disabled = true;
+
+        await updatePassword(user, newPass);
+        
+        window.showToast("Password updated successfully!", "success");
+        window.closeChangePasswordModal();
+
+    } catch (error) {
+        console.error("Password Update Error:", error);
+        
+        if (error.code === 'auth/requires-recent-login') {
+            window.showToast("Security alert: Please logout and login again to change your password.", "error");
+        } else {
+            window.showToast("Error: " + error.message, "error");
         }
+    } finally {
+        btn.innerHTML = 'Update Password';
+        btn.disabled = false;
+    }
+}
 
-        // ✅✅✅ UPDATED FUNCTION TO WORK FROM ANY PAGE ✅✅✅
-        function openChangePassword() {
-            closeProfileDrawer();
-            document.getElementById("modal-title-text").innerText = "Change Password";
-            document.getElementById("modal-desc-text").innerText = "You will be logged out securely to change your password. Continue?";
-            const actionBtn = document.getElementById("modal-action-btn");
-            actionBtn.innerText = "Yes, Continue";
-            actionBtn.onclick = () => {
-                closeModal();
-                executeLogout(false); // Sirf background me logout karega
 
-                // index.html ke liye ek 'flag' ya 'message' set kar rahe hain
-                sessionStorage.setItem('open_reset_tab', 'true');
-                
-                // Ab index.html par jao, wo is message ko padh lega
-                window.location.href = '../login/';
-            };
-            document.getElementById("confirm-modal").classList.remove("hidden");
-        }
+        window.confirmLogout = function() {
+            window.executeLogout(true);
+        };
 
-        function confirmLogout() {
-            executeLogout(true);
-        }
-
-        function executeLogout(redirect) {
-            const userId = localStorage.getItem("islamic_user_id");
+        window.executeLogout = function(redirect) {
             if(userId) { 
                 localStorage.removeItem(`cache_payments_${userId}_data`); 
                 localStorage.removeItem(`cache_payments_${userId}_time`); 
@@ -335,98 +574,34 @@
             localStorage.removeItem("islamic_user_id");
             localStorage.removeItem("islamic_user_name");
             localStorage.removeItem("islamic_user_mobile");
-            if(redirect) window.location.href = "../login/";
-        }
-
-        // ✅ SWIPE GESTURE LOGIC (Right -> Home, Left -> Info)
-        let touchstartX = 0; let touchstartY = 0; let touchendX = 0; let touchendY = 0;
-        document.addEventListener('touchstart', e => {
-            touchstartX = e.changedTouches[0].screenX;
-            touchstartY = e.changedTouches[0].screenY;
-        }, {passive: true});
-        document.addEventListener('touchend', e => {
-            touchendX = e.changedTouches[0].screenX;
-            touchendY = e.changedTouches[0].screenY;
-            handleSwipe();
-        }, {passive: true});
-        
-        function handleSwipe() {
-            if (document.getElementById("profile-drawer").classList.contains("active")) return;
-            if (Math.abs(touchendY - touchstartY) > 50) return; // Prevent vertical scroll trigger
             
-            if (touchendX > touchstartX + 70) {
-                window.location.href = '../'; // Swipe Right
-            } else if (touchendX < touchstartX - 70) {
-                window.location.href = '../info/'; // Swipe Left
-            }
-        }
+            signOut(auth).then(() => { if(redirect) window.location.href = "../login/"; })
+                         .catch(() => { if(redirect) window.location.href = "../login/"; });
+        };
 
-        function showLoader() { document.getElementById("loader").classList.remove("hidden"); }
-        function hideLoader() { document.getElementById("loader").classList.add("hidden"); }
-        function showToast(msg, type = "success") {
+        window.showToast = function(msg, type = "success") {
             const container = document.getElementById("toast-container");
             const toast = document.createElement("div");
             toast.className = "toast";
             toast.innerHTML = (type === "success" ? '<span style="font-size:1.1rem; color:var(--success)">✓</span>' : '<span style="font-size:1.1rem; color:var(--danger)">✕</span>') + ` <span>${msg}</span>`;
             container.appendChild(toast);
             setTimeout(() => { toast.style.transform = "translateX(110%)"; toast.style.opacity = "0"; setTimeout(() => toast.remove(), 400); }, 3000);
-        }
+        };
 
-        async function apiCall(action, method = "GET", body = null, isBackground = false) {
-            const url = `${API_URL}?action=${action}`;
-            const options = { method: method };
-            if (method === "POST" && body) { options.body = JSON.stringify(body); options.headers = { "Content-Type": "text/plain;charset=utf-8" }; }
-            try {
-                if (!isBackground) showLoader();
-                const response = await fetch(url, options);
-                const data = await response.json();
-                if (!isBackground) hideLoader();
-                return data;
-            } catch (error) {
-                if (!isBackground) hideLoader();
-                if (!isBackground) showToast("Network Error", "error");
-                return null;
-            }
-        }
-
-        function fetchSWR(action, cacheKey, onDataChange, showBlockingLoader = false) {
-            const now = new Date().getTime();
-            const cachedDataStr = localStorage.getItem(cacheKey + "_data");
-            const cachedTime = localStorage.getItem(cacheKey + "_time");
-            let hasCache = false;
-            
-            if (cachedDataStr) {
-                hasCache = true;
-                try { onDataChange(JSON.parse(cachedDataStr)); } catch (e) { hasCache = false; }
-            }
-
-            if (cachedTime && (now - parseInt(cachedTime) < 4000)) {
-                return; 
-            }
-            
-            if (!hasCache && showBlockingLoader) showLoader();
-            
-            if (apiLocks[cacheKey]) return;
-            apiLocks[cacheKey] = true;
-            
-            apiCall(action, "GET", null, true).then(freshData => {
-                if (freshData) {
-                    const freshDataStr = JSON.stringify(freshData);
-                    if (cachedDataStr !== freshDataStr) {
-                        localStorage.setItem(cacheKey + "_data", freshDataStr);
-                        localStorage.setItem(cacheKey + "_time", now.toString());
-                        onDataChange(freshData); 
-                    } else { localStorage.setItem(cacheKey + "_time", now.toString()); }
-                }
-            }).finally(() => { 
-                if (!hasCache && showBlockingLoader) hideLoader(); 
-                delete apiLocks[cacheKey]; 
-            });
+        // SWIPE GESTURE
+        let touchstartX = 0; let touchstartY = 0; let touchendX = 0; let touchendY = 0;
+        document.addEventListener('touchstart', e => { touchstartX = e.changedTouches[0].screenX; touchstartY = e.changedTouches[0].screenY; }, {passive: true});
+        document.addEventListener('touchend', e => { touchendX = e.changedTouches[0].screenX; touchendY = e.changedTouches[0].screenY; handleSwipe(); }, {passive: true});
+        function handleSwipe() {
+            if (document.getElementById("profile-drawer").classList.contains("active")) return;
+            if (Math.abs(touchendY - touchstartY) > 50) return; 
+            if (touchendX > touchstartX + 70) window.location.href = '../'; 
+            else if (touchendX < touchstartX - 70) window.location.href = '../info/'; 
         }
 
         document.addEventListener("DOMContentLoaded", () => {
-            initTheme();
-            loadLibrary();
+            window.initTheme();
+            fetchLibraryData();
         });
 
         function showLibrarySkeletons() {
@@ -456,66 +631,43 @@
             return false;
         }
 
-        function loadLibrary() {
-            const pendingSync = localStorage.getItem("sync_pending_payment");
-            
-            if (pendingSync) {
-                const payload = JSON.parse(pendingSync);
-                localStorage.removeItem("sync_pending_payment"); 
-                
-                const cachedPayments = localStorage.getItem(`cache_payments_${userId}_data`);
-                if (cachedPayments) {
-                    try { userPayments = JSON.parse(cachedPayments); } catch(e){}
-                }
-                
-                fetchSWR("getEbooks", "cache_ebooks", (data) => {
-                    if (Array.isArray(data)) { ebooksData = data; renderLibrary(); }
-                }, false);
+        // ✅ ASLI FIREBASE FETCH (SWR Jaisa Fast)
+        async function fetchLibraryData() {
+            const cachedPayments = localStorage.getItem(`cache_payments_${userId}_data`);
+            const cachedEbooks = localStorage.getItem("cache_ebooks_data");
 
-                apiCall("submitPayment", "POST", payload, true).then(res => {
-                    if (res && res.success) {
-                        setTimeout(() => {
-                            localStorage.removeItem(`cache_payments_${userId}_time`); 
-                            
-                            fetchSWR(`getUserPayments&user_id=${userId}`, `cache_payments_${userId}`, (data) => {
-                                if (Array.isArray(data)) { 
-                                    if(isDataDifferent(userPayments, data)) {
-                                        userPayments = data; 
-                                        renderLibrary(); 
-                                    } else {
-                                        userPayments = data; 
-                                    }
-                                }
-                            }, false);
-                        }, 5000); 
-                    }
-                });
-
+            if (!cachedPayments || !cachedEbooks) {
+                showLibrarySkeletons();
             } else {
-                const cachedPayments = localStorage.getItem(`cache_payments_${userId}_data`);
-                const cachedEbooks = localStorage.getItem("cache_ebooks_data");
+                try {
+                    userPayments = JSON.parse(cachedPayments);
+                    ebooksData = JSON.parse(cachedEbooks);
+                    renderLibrary();
+                } catch(e) {}
+            }
 
-                if (!cachedPayments || !cachedEbooks) {
-                    showLibrarySkeletons();
+            try {
+                // Fetch User Payments
+                const q = query(collection(db, "payments"), where("user_id", "==", userId));
+                const paySnapshot = await getDocs(q);
+                const freshPayments = paySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+                // Fetch All Ebooks
+                const bookSnapshot = await getDocs(collection(db, "ebooks"));
+                const freshEbooks = bookSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+                // Compare and Re-render if changed
+                if (isDataDifferent(userPayments, freshPayments) || JSON.stringify(ebooksData) !== JSON.stringify(freshEbooks)) {
+                    userPayments = freshPayments;
+                    ebooksData = freshEbooks;
+                    localStorage.setItem(`cache_payments_${userId}_data`, JSON.stringify(freshPayments));
+                    localStorage.setItem(`cache_payments_${userId}_time`, Date.now().toString());
+                    localStorage.setItem("cache_ebooks_data", JSON.stringify(freshEbooks));
+                    renderLibrary();
                 }
-
-                fetchSWR(`getUserPayments&user_id=${userId}`, `cache_payments_${userId}`, (data) => {
-                    if (Array.isArray(data)) {
-                        if(isDataDifferent(userPayments, data)) {
-                            userPayments = data;
-                            renderLibrary();
-                        } else {
-                            userPayments = data;
-                        }
-                    }
-                }, false);
-
-                fetchSWR("getEbooks", "cache_ebooks", (data) => {
-                    if (Array.isArray(data)) {
-                        ebooksData = data;
-                        renderLibrary();
-                    }
-                }, false);
+            } catch(e) {
+                console.error("Firebase fetch error:", e);
+                if (!cachedPayments) window.showToast("Network Error loading library", "error");
             }
         }
 
