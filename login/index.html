@@ -13,11 +13,10 @@
     <link rel="icon" type="image/png" sizes="16x16" href="../hikmahlogo.png">
     <link rel="apple-touch-icon" sizes="180x180" href="../hikmahlogo.png">
 
-    <!-- ✅ OPEN GRAPH -->
     <meta property="og:title" content="Islamic Library by Shekh">
     <meta property="og:description" content="Free & Paid Islamic eBooks, Quran PDFs, Hadith books available.">
-    <meta property="og:image" content="https://islamiclibraryy.github.io/Resources/hikmahlogo.png">
-    <meta property="og:url" content="https://islamiclibraryy.github.io/Resources/">
+    <meta property="og:image" content="https://mysite.github.io/Resources/hikmahlogo.png">
+    <meta property="og:url" content="https://mysite.github.io/Resources/">
     <meta property="og:type" content="website">
 
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -57,16 +56,16 @@
             --glow: rgba(99,102,241,0.15); --glow2: rgba(99,102,241,0.08);
             --shadow: 0 4px 20px rgba(0,0,0,0.06); --shadow2: 0 8px 30px rgba(0,0,0,0.1);
         }
-        
         [data-theme="light"] .blob { opacity: 0.5; }
 
         /* ===== GLOBAL STYLES ===== */
         *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; font-size: 16px; }
-        body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; min-height: 100vh; -webkit-tap-highlight-color: transparent; transition: background-color 0.3s ease, color 0.3s ease; }
+        
+        /* 🔥 FIX 1: LAYOUT FOUNDATION */
+        body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column; -webkit-tap-highlight-color: transparent; transition: background-color 0.3s ease, color 0.3s ease; }
         
         body::before { content:''; position:fixed; inset:0; pointer-events:none; z-index:9999; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E"); opacity:0.4; }
-
         .hero-bg { position:fixed; inset:0; pointer-events:none; z-index:-2; background: radial-gradient(ellipse 80% 50% at 50% -10%,rgba(124,106,247,0.2) 0%,transparent 70%), radial-gradient(ellipse 50% 40% at 80% 60%,rgba(168,85,247,0.12) 0%,transparent 60%), radial-gradient(ellipse 40% 30% at 20% 70%,rgba(99,102,241,0.1) 0%,transparent 60%); }
         .hero-grid { position:fixed; inset:0; pointer-events:none; z-index:-1; background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px); background-size:48px 48px; mask-image:radial-gradient(ellipse 100% 100% at 50% 50%,black 40%,transparent 100%); opacity:0.6; }
         .blob { position:fixed; border-radius:50%; filter:blur(80px); pointer-events:none; animation:blobFloat 8s ease-in-out infinite; z-index:-1; }
@@ -82,7 +81,7 @@
         /* ===== LOADER & TOAST ===== */
         #loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10,10,15,0.85); backdrop-filter: blur(5px); z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center; }
         .spinner { width: 50px; height: 50px; border: 4px solid var(--surface3); border-top: 4px solid var(--accent); border-radius: 50%; animation: spin 1s cubic-bezier(0.4,0,0.2,1) infinite; }
-        #toast-container { position: fixed; bottom: 30px; right: 28px; z-index: 9998; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
+        #toast-container { position: fixed; bottom: 30px; right: 28px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
         .toast { background: var(--surface); color: var(--text); padding: 12px 18px; border-radius: var(--r2); box-shadow: var(--shadow2); border: 1px solid var(--border2); animation: slideUp 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards; display: flex; align-items: center; gap: 10px; font-size: .85rem; font-weight: 500; }
 
         /* ===== FORMS & BUTTONS ===== */
@@ -90,16 +89,100 @@
         .form-group label { display: block; margin-bottom: 6px; font-size: .78rem; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.06em; }
         .form-group input { width: 100%; background: var(--surface2); color: var(--text); border: 1px solid var(--border2); padding: 12px 16px; border-radius: var(--r); font-size: .92rem; transition: var(--transition); }
         .form-group input:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px var(--glow2); }
-        .btn { background: linear-gradient(135deg, #7c6af7, #9f3fbf); color: #fff; border: none; padding: 14px 20px; border-radius: 99px; font-weight: 600; font-family: 'DM Sans', sans-serif; width: 100%; cursor: pointer; transition: var(--transition); font-size: 1rem; display: block; text-align: center; position: relative; overflow: hidden; box-shadow: 0 4px 20px rgba(124,106,247,0.4); }
+        
+        .btn { background: linear-gradient(135deg, #7c6af7, #9f3fbf); color: #fff; border: none; padding: 14px 20px; border-radius: 99px; font-weight: 600; font-family: 'DM Sans', sans-serif; width: 100%; cursor: pointer; transition: var(--transition); font-size: 1rem; display: block; text-align: center; position: relative; overflow: hidden; box-shadow: 0 4px 15px rgba(124,106,247,0.3) !important; }
         .btn::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,0.15),transparent); opacity:0; transition:opacity var(--transition); }
-        .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(124,106,247,0.5); } .btn:hover::before { opacity: 1; } .btn:active { transform: translateY(0) scale(0.98); }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(124,106,247,0.5) !important; } .btn:hover::before { opacity: 1; } .btn:active { transform: translateY(0) scale(0.98); }
+        
         .link-text { color: var(--accent2); font-size: .85rem; cursor: pointer; padding: 10px; display: inline-block; font-weight: 500; transition: var(--transition); }
         .link-text:hover { color: var(--accent3); text-shadow: 0 0 10px var(--glow); }
+        .btn:disabled, #signup-btn:disabled, #reset-btn:disabled { filter: grayscale(100%) opacity(0.6) !important; cursor: not-allowed !important; pointer-events: none !important; box-shadow: none !important; transform: none !important; }
+
+        /* ===== GOOGLE BUTTON & DIVIDER ===== */
+        .divider { display: flex; align-items: center; text-align: center; margin: 20px 0; color: var(--text3); font-size: 0.85rem; font-weight: 600; }
+        .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid var(--border2); }
+        .divider::before { margin-right: .5em; } .divider::after { margin-left: .5em; }
+        
+        .google-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 12px; background: #fff; border: none !important; border-radius: 99px; color: #3c4043; font-size: 15px; font-weight: 600; cursor: pointer; transition: 0.3s; font-family: 'DM Sans', sans-serif; box-shadow: 0 4px 12px rgba(0,0,0,0.2) !important; }
+        .google-btn:hover { background: #f8f9fa; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transform: translateY(-2px); }
+        .google-btn:active { transform: translateY(0); }
+        .google-btn img { width: 22px; }
+        .google-btn:disabled { opacity: 0.7; cursor: not-allowed; background-color: #f8f9fa; pointer-events: none; }
+        [data-theme="light"] .google-btn { box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important; border: 1px solid rgba(0,0,0,0.1) !important; }
 
         /* ===== VIEWS & STRUCTURE ===== */
-        .auth-container { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; animation: fadeUp .6s ease both; }
-        .auth-card { background: var(--surface); padding: 32px 28px; border-radius: var(--r3); width: 100%; max-width: 400px; box-shadow: var(--shadow); border: 1px solid var(--border); text-align: center; animation: cardIn .5s ease both; transition: var(--transition); }
+        #auth-views { flex: 1; display: flex; flex-direction: column; width: 100%; }
+        .auth-container { display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; min-height: calc(100vh - 60px) !important; padding: 80px 20px 20px !important; animation: fadeUp .6s ease both; }
+        .auth-card { background: var(--surface); padding: 32px 28px; border-radius: var(--r3); width: 100%; max-width: 400px; box-shadow: 0 2px 10px rgba(0,0,0,0.5); border: 1px solid var(--border); text-align: center; animation: cardIn .5s ease both; transition: var(--transition); position: relative; }
         .auth-card:hover { border-color: var(--border2); }
+        
+        .help-badge { position: absolute; top: 15px; right: 15px; background: var(--glow2); color: var(--accent2); border: 1px solid var(--border); padding: 6px 12px; border-radius: 99px; font-size: 0.67rem; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 6px; transition: var(--transition); z-index: 10; }
+        .help-badge:hover { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: 0 4px 15px var(--glow); transform: translateY(-2px); }
+
+        /* ===== 3 INITIAL GATEWAY BUTTONS ===== */
+        #initial-options-view .btn { box-shadow: none !important; }
+        #initial-options-view .btn::before { display: none !important; }
+        #initial-options-view .btn:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.2) !important; }
+        #initial-options-view .btn-outline { transition: 0.3s; }
+        #initial-options-view .btn-outline:hover { border-color: var(--accent) !important; background: var(--surface3) !important; transform: translateY(-2px); }
+
+        /* ===== TEXT & BACK ICON ===== */
+        .legal-text { font-size: 0.72rem !important; color: var(--text3) !important; margin-top: 35px !important; text-align: center !important; line-height: 1.5 !important; }
+        .legal-text a { color: var(--text3) !important; text-decoration: underline !important; text-underline-offset: 3px !important; transition: 0.3s; }
+        .legal-text a:hover { color: var(--text) !important; }
+        .back-icon { position: absolute; top: 25px; left: 20px; font-size: 1.2rem; color: var(--text3); cursor: pointer; transition: 0.3s; z-index: 10; }
+        .back-icon:hover { color: var(--accent); transform: translateX(-3px); }
+
+        /* ===== 🚨 FIXED APP-STYLE FOOTER 🚨 ===== */
+        .auth-footer { 
+            position: fixed !important; /* 👈 Yeh footer ko hamesha screen par lock rakhega */
+            bottom: 0 !important;       /* 👈 Ekdum niche chipka dega */
+            left: 0 !important; 
+            right: 0 !important;
+            width: 100% !important; 
+            padding: 12px 20px !important; 
+            border-top: 1px solid var(--border); 
+            text-align: center; 
+            
+            /* Header jaisa premium glass look diya hai taaki card scroll karne par mix na ho */
+            background: rgba(10,10,15,0.8) !important; 
+            backdrop-filter: blur(20px) !important; 
+            -webkit-backdrop-filter: blur(20px) !important;
+            z-index: 1000 !important; 
+        }
+        
+        /* Light theme ke liye bhi same header jaisa effect */
+        [data-theme="light"] .auth-footer {
+            background: rgba(255, 255, 255, 0.95) !important;
+        }
+
+        .footer-content { display: flex; flex-direction: column; gap: 6px !important; align-items: center; justify-content: center; margin: 0; }
+        .footer-content span { color: var(--text3); font-size: 0.75rem; }
+        .footer-links { display: flex; gap: 12px; align-items: center; font-size: 0.75rem; }
+        /* Footer Dandi/Underline */
+        .footer-links a { color: var(--text3) !important; text-decoration: underline !important; text-underline-offset: 3px !important; transition: 0.3s; }
+        .footer-links a:hover { color: var(--text) !important; }
+        .sep { opacity: 0.3; color: var(--text3); }
+
+        /* ===== DRAWER / SIDEBAR ===== */
+        .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 10001; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; backdrop-filter: blur(3px); }
+        .drawer-overlay.active { opacity: 1; pointer-events: all; }
+        .profile-drawer { position: fixed; top: 0; right: -320px; width: 300px; height: 100vh; background: var(--surface); z-index: 10002; box-shadow: -5px 0 30px rgba(0,0,0,0.5); transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: flex; flex-direction: column; }
+        .profile-drawer.active { right: 0; }
+        .drawer-header { padding: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
+        .drawer-body { padding: 30px 20px; text-align: center; flex: 1; overflow-y: auto; }
+        .drawer-avatar { width: 80px; height: 80px; border-radius: 50%; background: var(--glow2); border: 2px solid var(--accent); color: var(--accent2); font-size: 2.5rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px auto; }
+        .drawer-name { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 700; margin-bottom: 4px; color: var(--text); }
+        .drawer-mobile { font-family: 'DM Mono', monospace; font-size: 0.9rem; color: var(--text2); margin-bottom: 30px; letter-spacing: 0.05em; }
+        .drawer-menu .btn-outline { width: 100%; text-align: left; padding: 14px 20px; margin-bottom: 12px; display: flex; align-items: center; gap: 12px; font-size: 0.95rem; border-color: var(--border); background: transparent; color: var(--text); border-radius: var(--r); }
+
+        /* ===== HEADER MATCH ===== */
+        header { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; background: rgba(10,10,15,0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); transition: background-color 0.3s ease, border-color 0.3s ease; }
+        .header-logo-container { display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
+        .header-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(1rem, 5vw, 1.25rem); background: linear-gradient(135deg, var(--accent2), #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; letter-spacing: -0.02em; white-space: nowrap; }
+        .header-sub { font-family: 'DM Mono', monospace; font-size: .7rem; font-weight: 500; color: var(--accent2); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 4px; white-space: nowrap; }
+        [data-theme="light"] header { background: rgba(255, 255, 255, 0.95) !important; border-bottom: 1px solid rgba(0,0,0,0.1) !important; }
+        [data-theme="light"] .header-logo { background: linear-gradient(135deg, var(--accent2), var(--accent)) !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important; }
 
         /* ===== ANIMATIONS ===== */
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } } 
@@ -108,6 +191,57 @@
         @keyframes slideUp { from { opacity: 0; transform: translateY(10px) scaleY(0.95); } to { opacity: 1; transform: translateY(0) scaleY(1); } } 
         @keyframes spin { to { transform: rotate(360deg); } } 
         @keyframes blobFloat { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(20px,-20px) scale(1.05)} 66%{transform:translate(-15px,15px) scale(0.97)} }
+
+        /* ===== DESKTOP VIEW & EXACT ICONS MATCH ===== */
+        @media screen and (min-width: 768px) {
+            header { padding: 20px 10% !important; }
+            .header-logo { font-size: 1.6rem !important; }
+            .fa-moon, .fa-user-circle { font-size: 1.6rem !important; margin-left: 20px !important; }
+            
+            /* 🏰 CARD KO BADA AUR CHAUDA KIYA (PRO MAX LEVEL) */
+            .auth-card { max-width: 700px !important; padding: 70px 65px !important; border-radius: 32px !important; box-shadow: 0 2px 20px rgba(0,0,0,0.5) !important; }
+            
+            /* 📝 TEXT AUR HEADING BADI KI */
+            .bismillah { font-size: 38px !important; margin-bottom: 28px !important; }
+            .auth-card h2 { font-size: 2.5rem !important; margin-bottom: 14px !important; }
+            .auth-card p { font-size: 1.2rem !important; margin-bottom: 40px !important; }
+            
+            /* ⌨️ INPUT BOXES AUR LABELS BADE KIYE */
+            .form-group { margin-bottom: 28px !important; }
+            .form-group label { font-size: 1rem !important; margin-bottom: 12px !important; }
+            .form-group input { padding: 20px 24px !important; font-size: 1.2rem !important; border-radius: 18px !important; }
+            
+            /* 🔘 BUTTONS KO LUMBAY AUR CHAUDE KIYE */
+            .btn { padding: 20px 24px !important; font-size: 1.3rem !important; }
+            .google-btn { padding: 18px !important; font-size: 1.25rem !important; }
+            .google-btn img { width: 32px !important; } 
+            .divider { font-size: 1.1rem !important; margin: 35px 0 !important; }
+            
+            /* ℹ️ HELP BADGE AUR LEGAL TEXT */
+            .help-badge { font-size: 1rem !important; padding: 12px 20px !important; top: 30px !important; right: 30px !important; }
+            .legal-text { font-size: 0.95rem !important; margin-top: 50px !important; }
+
+            .auth-footer { padding: 25px 10% !important; }
+            .footer-content { flex-direction: row !important; justify-content: space-between !important; max-width: 1400px; margin: 0 auto !important; }
+            .footer-content span, .footer-links { font-size: 1.05rem !important; }
+            /* 🍞 TOAST NOTIFICATIONS DESKTOP FIX 🍞 */
+            #toast-container {
+                bottom: 50px !important; 
+                right: 50px !important; /* PC par right kone mein aaram se set hoga */
+            }
+            .toast {
+                padding: 18px 24px !important;
+                font-size: 1.15rem !important; /* Text padhne layak bada kiya */
+                border-radius: 16px !important;
+                gap: 16px !important;
+                min-width: 320px !important; /* PC par thoda lamba toast acha lagta hai */
+                box-shadow: 0 15px 35px rgba(0,0,0,0.5) !important; /* Premium Shadow */
+            }
+            .toast i { 
+                font-size: 1.5rem !important; /* Error/Success wala Icon bhi bada hoga */
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -119,79 +253,241 @@
     <div class="blob blob3"></div>
 
     <div id="loader" class="hidden"><div class="spinner"></div></div>
-    <div id="toast-container"></div>
+
+
+<div id="drawer-overlay" class="drawer-overlay" onclick="window.closeProfileDrawer()"></div>
+<div id="profile-drawer" class="profile-drawer">
+    <div class="drawer-header">
+        <h3>Menu</h3>
+        <i class="fas fa-times" onclick="window.closeProfileDrawer()"></i>
+    </div>
+    <div class="drawer-body">
+        <div class="drawer-avatar"><i class="fas fa-user-shield"></i></div>
+        <div class="drawer-name">Guest User</div>
+        <div class="drawer-mobile">Login to access Your Library</div>
+        
+        <div class="drawer-menu">
+            <button class="btn btn-outline" onclick="window.location.href='../info/'"><i class="fas fa-info-circle"></i> About Us</button>
+            <button class="btn btn-outline" onclick="window.location.href='../info/privacy/'"><i class="fas fa-user-secret"></i> Privacy Policy</button>
+            <button class="btn btn-outline" onclick="window.location.href='support/'"><i class="fas fa-question-circle"></i> Login Help</button>
+        </div>
+    </div>
+</div>
+
+<header>
+    <div class="flex align-center" style="gap: 12px;">
+        <i class="fas fa-book-open" style="color: var(--accent2); font-size: 1.4rem; text-shadow: 0 0 10px var(--glow);"></i>
+        <div class="header-logo-container">
+            <div class="header-logo">Islamic Library</div>
+            <div class="header-sub">by Shekh</div>
+        </div>
+    </div>
+    <div class="flex align-center" style="gap: 20px;">
+        <i id="theme-toggle-icon" class="fas fa-moon" style="font-size: 1.2rem; color: var(--text2); cursor: pointer;" onclick="window.toggleTheme()"></i>
+        <i class="fas fa-user-circle" style="font-size: 1.3rem; color: var(--text2); cursor: pointer;" onclick="window.openProfileDrawer()"></i>
+    </div>
+</header>
 
     <div id="auth-views">
-        <div id="login-view" class="auth-container">
-            <div class="auth-card">
-                <div class="bismillah" style="margin-bottom: 16px;">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
-                <h2 style="margin-bottom: 6px;">Welcome Back</h2>
-                <p style="color: var(--text2); font-size: .85rem; margin-bottom: 28px;">Sign in to access your Islamic library</p>
-                <form id="loginForm">
-                    <div class="form-group"><label>Mobile Number</label><input type="tel" id="login-mobile" placeholder="Enter your number" required></div>
-                    <div class="form-group"><label>Password</label><input type="password" id="login-pass" placeholder="Enter your password" required></div>
-                    <button type="submit" class="btn" id="login-btn" style="margin-top: 24px;">Login ✦</button>
-                </form>
-                <div class="mt-2 flex justify-between align-center">
-                    <span class="link-text" onclick="switchAuth('reset')">Forgot Password?</span>
-                    <span class="link-text" onclick="switchAuth('signup')">Create Account</span>
-                </div>
+    <div id="initial-options-view" class="auth-container">
+        <div class="auth-card">
+            <a href="support/" class="help-badge" title="Need Help?"><i class="fas fa-headset"></i> Help</a>
+            <div class="bismillah" style="margin-bottom: 16px;">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
+            <h2 style="margin-bottom: 6px;">Welcome to Library</h2>
+            <p style="color: var(--text2); font-size: .85rem; margin-bottom: 24px;">Choose how you want to continue</p>
+            
+            <div style="display: flex; flex-direction: column; gap: 14px;">
+                <button class="btn btn-outline" style="background: var(--surface2); color: var(--text); border: 1px solid var(--border); box-shadow: none;" onclick="goToAuth('email')">
+                    <i class="fas fa-envelope" style="color: var(--accent2); font-size: 1.1rem;"></i> Continue with Email
+                </button>
+                
+                <button class="btn btn-outline" style="background: var(--surface2); color: var(--text); border: 1px solid var(--border); box-shadow: none;" onclick="goToAuth('mobile')">
+                    <i class="fas fa-phone-alt" style="color: #10b981; font-size: 1.1rem;"></i> Continue with Mobile
+                </button>
+                
+                <button type="button" id="google-login-btn" onclick="loginWithGoogle('google-login-btn')" class="google-btn">
+                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+                    <span>Continue with Google</span>
+                </button>
             </div>
-        </div>
 
-        <div id="signup-view" class="auth-container hidden">
-            <div class="auth-card">
-                <h2 style="margin-bottom: 6px;">Create Account</h2>
-                <p style="color: var(--text2); font-size: .85rem; margin-bottom: 28px;">Join our Islamic eBook community</p>
-                <form id="signupForm">
-                    <div class="form-group"><label>Full Name</label><input type="text" id="reg-name" placeholder="e.g. Abdullah" required></div>
-                    <div class="form-group"><label>Mobile Number</label><input type="tel" id="reg-mobile" placeholder="Enter your number" required></div>
-                    <div class="form-group"><label>Password</label><input type="password" id="reg-pass" placeholder="Create a strong password" required></div>
-                    <button type="submit" class="btn" id="signup-btn" style="margin-top: 24px;">Sign Up ✦</button>
-                </form>
-                <div class="mt-2"><span class="link-text" onclick="switchAuth('login')"><i class="fas fa-arrow-left" style="margin-right: 6px;"></i> Back to Login</span></div>
-            </div>
-        </div>
-
-        <div id="reset-view" class="auth-container hidden">
-            <div class="auth-card">
-                <h2 style="margin-bottom: 6px;">Reset Password</h2>
-                <p style="color: var(--text2); font-size: .85rem; margin-bottom: 28px;">Enter your registered mobile number</p>
-                <form id="resetForm">
-                    <div class="form-group"><label>Mobile Number</label><input type="tel" id="reset-mobile" placeholder="Enter registered number" required></div>
-                    <div class="form-group"><label>New Password</label><input type="password" id="reset-pass" placeholder="Create a new password" required></div>
-                    <button type="submit" class="btn" id="reset-btn" style="margin-top: 24px;">Update Password ✦</button>
-                </form>
-                <div class="mt-2"><span class="link-text" onclick="switchAuth('login')"><i class="fas fa-arrow-left" style="margin-right: 6px;"></i> Back to Login</span></div>
+            <div class="legal-text">
+                By continuing, you agree to our <a href="../info/terms/">Terms of Service</a> and <a href="../info/privacy/">Privacy Policy</a>.
             </div>
         </div>
     </div>
 
-    <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbxCEiZaRqK2KKtcWGx0y9nMz5krOI9XeFnrS2ff_B5M0TU_dZFHYfKBPrys4eSBRJhx/exec"; // Tumhara API URL
+    <div id="login-view" class="auth-container hidden">
+        <div class="auth-card" style="position: relative;">
+            <i class="fas fa-arrow-left back-icon" onclick="goBackToInitial()"></i> <a href="support/" class="help-badge" title="Need Help?"><i class="fas fa-headset"></i> Help</a>
+            
+            <h2 style="margin-bottom: 6px; margin-top: 15px;">Login</h2>
+            <p style="color: var(--text2); font-size: .85rem; margin-bottom: 24px;">Sign in to access your library</p>
 
-        function initTheme() {
-            const currentTheme = document.documentElement.getAttribute("data-theme");
-        }
+            <form id="loginForm">
+                <div class="form-group">
+                    <label id="login-label">Email Address</label>
+                    <input type="text" id="login-input" placeholder="Enter your details" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="login-pass" placeholder="Enter your password" required>
+                </div>
+                
+                <div style="text-align: right; margin-top: -10px; margin-bottom: 20px;">
+                    <span class="link-text" style="padding: 0; font-size: 0.8rem;" onclick="switchAuth('reset')">Forgot Password?</span>
+                </div>
+
+                <button type="submit" class="btn" id="login-btn">Login ✦</button>
+            </form>
+
+            <div style="margin-top: 24px; font-size: 0.85rem; color: var(--text2);">
+                Don't have an account? <span class="link-text" style="padding: 0; font-weight: 700;" onclick="switchAuth('signup')">Sign Up</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="signup-view" class="auth-container hidden">
+        <div class="auth-card" style="position: relative;">
+            <i class="fas fa-arrow-left back-icon" onclick="goBackToInitial()"></i> <a href="support/" class="help-badge" title="Need Help?"><i class="fas fa-headset"></i> Help</a>
+            
+            <h2 style="margin-bottom: 6px; margin-top: 15px;">Create Account</h2>
+            <p style="color: var(--text2); font-size: .85rem; margin-bottom: 24px;">Join our Islamic eBook community</p>
+
+            <form id="signupForm">
+                <div class="form-group"><label>Full Name</label><input type="text" id="reg-name" placeholder="e.g. Abdullah" required></div>
+                <div class="form-group">
+                    <label id="signup-label">Email Address</label>
+                    <input type="text" id="reg-input" placeholder="Enter your details" required>
+                </div>
+                <div class="form-group"><label>Password</label><input type="password" id="reg-pass" placeholder="Create a strong password" required></div>
+                <button type="submit" class="btn" id="signup-btn" style="margin-top: 24px;">Sign Up ✦</button>
+            </form>
+
+            <div style="margin-top: 24px; font-size: 0.85rem; color: var(--text2);">
+                Already have an account? <span class="link-text" style="padding: 0; font-weight: 700;" onclick="switchAuth('login')">Login</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="reset-view" class="auth-container hidden">
+        <div class="auth-card" style="position: relative;">
+            <i class="fas fa-arrow-left back-icon" onclick="switchAuth('login')"></i>
+            <a href="support/" class="help-badge" title="Need Help?"><i class="fas fa-headset"></i> Help</a>
+            
+            <h2 style="margin-bottom: 6px; margin-top: 15px;">Reset Password</h2>
+            <p id="reset-desc" style="color: var(--text2); font-size: .85rem; margin-bottom: 24px;">Get a reset link via email</p>
+
+                        <form id="resetForm">
+                <div class="form-group">
+                    <label id="reset-label">Email Address</label>
+                    <input type="email" id="reset-input" placeholder="Enter your email" required>
+                    
+                    <div id="mobile-reset-warning" class="hidden" style="background: rgba(255, 193, 7, 0.1); border: 1px solid rgba(255, 193, 7, 0.2); border-radius: 8px; padding: 15px; margin-top: 10px; text-align: center;">
+                        <p style="color: #ffc107; font-size: 0.85rem; margin-bottom: 12px; line-height: 1.4;">
+                            <i class="fas fa-exclamation-triangle"></i> You cannot change a mobile account password from here. Please Contact Support.
+                        </p>
+                        <a href="support/" class="btn" style="display: inline-block; padding: 10px 20px; font-size: 0.85rem; text-decoration: none; color: white; border-radius: 99px;">
+                            Contact Support
+                        </a>
+                    </div>
+                </div>
+                <button type="submit" class="btn" id="reset-btn" style="margin-top: 24px;">Send Reset Link ✦</button>
+            </form>
+
+        </div>
+    </div>
+
+    <div id="reset-success-modal" class="modal-overlay hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: flex; justify-content: center; align-items: center; z-index: 9999; padding: 20px;">
+        <div class="auth-card" style="text-align: center; max-width: 360px; border: 1px solid rgba(124, 77, 255, 0.3); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+            <div style="font-size: 40px; color: var(--primary); margin-bottom: 20px;"><i class="fas fa-envelope-open-text"></i></div>
+            <h2 style="margin-bottom: 8px; font-size: 1.5rem;">Check Your Email</h2>
+            <p style="color: var(--text1); font-size: 0.9rem; line-height: 1.6; margin-bottom: 20px;">A password reset link has been sent to your email address. Please follow the instructions to reset your password.</p>
+            <div style="background: rgba(255, 193, 7, 0.05); border: 1px solid rgba(255, 193, 7, 0.2); border-radius: 8px; padding: 12px; margin-bottom: 25px;">
+                <p style="color: #ffc107; font-size: 0.8rem; margin: 0; line-height: 1.4;"><i class="fas fa-info-circle"></i> <b>Note:</b> If you don't see the email in your Inbox, please check your <b>Spam folder</b>.</p>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                <button onclick="closeResetSuccess()" class="btn" style="padding: 12px; font-weight: 600;">Back to Login</button>
+                <a href="support/" style="color: var(--text2); text-decoration: none; font-size: 0.85rem; transition: 0.3s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text2)'">
+                    Didn't receive a link? <span style="color: var(--primary); font-weight: 600;">Contact Support</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+<div id="auth-views">
+    </div>
+
+<footer class="auth-footer">
+    <div class="footer-content">
+        <span>&copy; 2026 <b>Islamic Library by Shekh</b></span>
+        <div class="footer-links">
+            <a href="support/">Support</a>
+            <span class="sep">|</span>
+            <a href="../info/privacy/">Privacy</a>
+        </div>
+    </div>
+</footer>
+    <div id="toast-container"></div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult} from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+        import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager, doc, setDoc, getDoc, enableIndexedDbPersistence, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+
+        // 🛑 DUMMY KEYS - APNI ASLI FIREBASE KEYS PASTE KAR LENA 🛑
+        const firebaseConfig = {
+            apiKey: "AIzaSyBhYLRH_0p7f4oRIZTDVf8bOb1bdRKPNe8",
+            authDomain: "islamic-library-3b1d4.firebaseapp.com",
+            projectId: "islamic-library-3b1d4",
+            storageBucket: "islamic-library-3b1d4.firebasestorage.app",
+            messagingSenderId: "139007174646",
+            appId: "1:139007174646:web:0139e6d5c6bf38c7e409d7"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        
+        // 🔥 MODERN CACHE SETUP: Isse warning khatam ho jayegi aur speed makkhan ho jayegi
+        const db = initializeFirestore(app, {
+          localCache: persistentLocalCache({
+            tabManager: persistentMultipleTabManager()
+          })
+        });
+
+        // Global State for Modes
+        window.currentAuthModes = { login: 'email', signup: 'email', reset: 'email' };
+
+        // 1. Initial 3-button screen se Login par jaane ke liye
+        window.goToAuth = function(type) {
+            document.getElementById('initial-options-view').classList.add('hidden');
+            document.getElementById('login-view').classList.remove('hidden');
+            if (typeof window.setAuthType === 'function') window.setAuthType('login', type); 
+        };
+
+        // 2. ⬅️ Back Button dabane par wapas Initial Screen par aane ke liye
+        window.goBackToInitial = function() {
+            document.getElementById('login-view').classList.add('hidden');
+            document.getElementById('signup-view').classList.add('hidden');
+            document.getElementById('reset-view').classList.add('hidden');
+            document.getElementById('initial-options-view').classList.remove('hidden');
+        };
 
         document.addEventListener("DOMContentLoaded", () => {
-            initTheme();
-
-            // ✅ REDIRECT LOGIC: Agar pehle se login hai, toh home page bhej do
             if (localStorage.getItem("islamic_user_id")) {
                 window.location.href = '../';
                 return;
             }
-
             if (sessionStorage.getItem('open_reset_tab') === 'true') {
                 sessionStorage.removeItem('open_reset_tab');
-                switchAuth('reset');
+                window.switchAuth('reset');
             } else {
-                switchAuth('login');
+                // 🔥 FIX: Page load hote hi login form nahi, seedha 3-button screen khulegi
+                window.goBackToInitial(); 
             }
         });
 
-        function showToast(msg, type = "success") {
+        window.showToast = function(msg, type = "success") {
             const container = document.getElementById("toast-container");
             const toast = document.createElement("div");
             toast.className = "toast";
@@ -200,31 +496,10 @@
             setTimeout(() => { toast.style.transform = "translateX(110%)"; toast.style.opacity = "0"; setTimeout(() => toast.remove(), 400); }, 3000);
         }
 
-        async function apiCall(action, method = "GET", body = null, showFullScreenLoader = true) {
-            const loader = document.getElementById("loader");
-            if (showFullScreenLoader) loader.classList.remove("hidden");
-            
-            const url = `${API_URL}?action=${action}`;
-            const options = { method: method, redirect: "follow" };
-            if (body) {
-                options.body = JSON.stringify(body);
-                options.headers = { "Content-Type": "text/plain;charset=utf-8" };
-            }
-            
-            try {
-                const response = await fetch(url, options);
-                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                return await response.json();
-            } catch (error) {
-                console.error("API Call Error:", error);
-                showToast("Network Error or API issue", "error");
-                return null;
-            } finally {
-                if (showFullScreenLoader) loader.classList.add("hidden");
-            }
-        }
+        window.switchAuth = function(view) {
+            const initialView = document.getElementById('initial-options-view');
+            if(initialView) initialView.classList.add('hidden');
 
-        function switchAuth(view) {
             document.getElementById("loginForm").reset();
             document.getElementById("signupForm").reset();
             document.getElementById("resetForm").reset();
@@ -234,101 +509,393 @@
             document.getElementById('signup-btn').disabled = false;
             document.getElementById('signup-btn').innerHTML = 'Sign Up ✦';
             document.getElementById('reset-btn').disabled = false;
-            document.getElementById('reset-btn').innerHTML = 'Update Password ✦';
+            document.getElementById('reset-btn').innerHTML = 'Send Reset Link ✦';
+
+            // 🔥 FIX: Jo mode (mobile/email) gateway pe select hua tha, usko aage pass karo
+            const currentMode = window.currentAuthModes['login'] || 'email';
+            if (typeof window.setAuthType === 'function') {
+                window.setAuthType(view, currentMode);
+            }
 
             document.getElementById("auth-views").classList.remove("hidden");
-            document.querySelectorAll(".auth-container").forEach(el => el.classList.add("hidden"));
+            document.querySelectorAll(".auth-container").forEach(el => {
+                if(el.id !== 'initial-options-view') el.classList.add("hidden");
+            });
             document.getElementById(`${view}-view`).classList.remove("hidden");
         }
 
-        // ✅ LOGIN SUBMIT WITH REDIRECT
+
+        // Toggle UI Logic
+        window.setAuthType = function(formType, authType) {
+            window.currentAuthModes[formType] = authType;
+            
+            // 🔥 YAHAN SE WOH DONO ERROR WALI 'classList.toggle' LINES HATA DI HAIN 🔥
+            
+            const label = document.getElementById(`${formType}-label`);
+            const inputId = formType === 'signup' ? 'reg-input' : `${formType}-input`;
+            const input = document.getElementById(inputId);
+            const resetBtn = document.getElementById('reset-btn');
+            const mobileWarning = document.getElementById('mobile-reset-warning');
+
+            if (input) {
+                                // Reset page ka description text pakadne ke liye
+                const desc = document.getElementById('reset-desc'); 
+
+                if (formType === 'reset') {
+                    if (authType === 'mobile') {
+                        input.classList.add('hidden'); label.classList.add('hidden');
+                        if(resetBtn) resetBtn.classList.add('hidden');
+                        if(mobileWarning) mobileWarning.classList.remove('hidden');
+                        // NAYA: Text change karega mobile ke liye
+                        if(desc) desc.innerText = "Mobile Account Password"; 
+                    } else {
+                        input.classList.remove('hidden'); label.classList.remove('hidden');
+                        if(resetBtn) resetBtn.classList.remove('hidden');
+                        if(mobileWarning) mobileWarning.classList.add('hidden');
+                        // NAYA: Text wapas email wala karega
+                        if(desc) desc.innerText = "Get a reset link via email"; 
+                        
+                        label.innerText = "Email Address"; input.placeholder = "Enter your email";
+                        input.type = "email"; input.setAttribute("inputmode", "email");
+                    }
+                } else {
+                    // YAHAN MERI GALTI THI JO MAINE UDA DIYA THA, AB WAPAS AA GAYA HAI
+                    if(authType === 'mobile') {
+                        label.innerText = "Mobile Number"; input.placeholder = "Enter your number";
+                        input.type = "tel"; input.setAttribute("inputmode", "tel");
+                    } else {
+                        label.innerText = "Email Address"; input.placeholder = "Enter your email";
+                        input.type = "email"; input.setAttribute("inputmode", "email");
+                    }
+                }
+
+            }
+        };
+
+        function getFirebaseEmail(inputValue, type) {
+            return type === 'mobile' ? `${inputValue.trim()}@islamiclibrary.com` : inputValue.trim();
+        }
+
+// Provider Setup
+const googleProvider = new GoogleAuthProvider();
+let googleAuthTimeout = null; // Ek simple timer variable
+
+// LOGIN BUTTON FUNCTION (Ekdum Simple aur Clean)
+window.loginWithGoogle = async function(btnId) {
+    const btn = document.getElementById(btnId);
+    if (!btn) return;
+
+    const defaultHTML = `<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google"> <span>Continue with Google</span>`;
+    
+    // 🧹 1. NAYE CLICK PAR SAB KUCH CLEAR KARO
+    if (googleAuthTimeout) clearTimeout(googleAuthTimeout);
+    window.removeEventListener('focus', window.handleGoogleFocus);
+
+    // 2. BUTTON KO VERIFYING MEIN DALO
+    btn.disabled = true;
+    btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span>Verifying...</span>`;
+
+    // 3. 2 SECOND WALA TIMER LAGA DO
+    window.handleGoogleFocus = () => {
+        googleAuthTimeout = setTimeout(() => {
+            if (btn.disabled) {
+                btn.disabled = false;
+                btn.innerHTML = defaultHTML;
+            }
+        }, 2000);
+        window.removeEventListener('focus', window.handleGoogleFocus);
+    };
+    window.addEventListener('focus', window.handleGoogleFocus);
+
+    try {
+        const result = await signInWithPopup(auth, googleProvider);
+        
+        // 🎉 SUCCESS MILITY HI TIMER CLEAR KARO
+        if (googleAuthTimeout) clearTimeout(googleAuthTimeout);
+        window.removeEventListener('focus', window.handleGoogleFocus);
+
+        const user = result.user;
+        const userRef = doc(db, "users", user.uid);
+        const userSnap = await getDoc(userRef);
+
+        if (!userSnap.exists()) {
+            await setDoc(userRef, {
+                uid: user.uid,
+                name: user.displayName || "Google User",
+                loginType: 'google',
+                displayId: user.email,
+                createdAt: new Date().toISOString()
+            });
+
+            try {
+                await updateDoc(doc(db, "metadata", "stats"), { total_users: increment(1) });
+            } catch(e) {}
+        }
+
+        localStorage.setItem("islamic_user_id", user.uid);
+        localStorage.setItem("islamic_user_name", userSnap.exists() && userSnap.data().name ? userSnap.data().name : (user.displayName || "Google User"));
+        localStorage.setItem("islamic_user_mobile", user.email);
+
+        window.showToast("Google Login Successful!");
+        setTimeout(() => { window.location.href = '../'; }, 200);
+
+    } catch (error) {
+        // 🚀 THE MAGIC LINE: Agar user ne dobara click kiya hai, toh is purane error ko IGNORE kar do!
+        if (error.code === 'auth/cancelled-popup-request') {
+            return; // Yahan se seedha bahar, button ko haath nahi lagayega
+        }
+
+        // ❌ NORMAL ERROR (Back aana ya Net band hona)
+        if (googleAuthTimeout) clearTimeout(googleAuthTimeout);
+        window.removeEventListener('focus', window.handleGoogleFocus);
+        
+        btn.disabled = false;
+        btn.innerHTML = defaultHTML;
+
+        // Sirf asli problem par toast dikhao
+        if (error.code !== 'auth/popup-closed-by-user') {
+            window.showToast("Login Failed. Try again.", "error");
+        }
+    }
+};
+
+
+        // ✅ LOGIN (FIREBASE)
         document.getElementById("loginForm").addEventListener("submit", async (e) => {
             e.preventDefault();
-            const btn = document.getElementById("login-btn");
-            btn.disabled = true;
-            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i>`;
-            
-            const m = document.getElementById("login-mobile").value;
-            const p = document.getElementById("login-pass").value;
-            const res = await apiCall(`loginUser&mobile=${encodeURIComponent(m)}&password=${encodeURIComponent(p)}`, "GET", null, false);
-            
-            if (res && res.success) {
-                localStorage.setItem("islamic_user_id", res.user_id); 
-                localStorage.setItem("islamic_user_mobile", m); 
-                localStorage.setItem("islamic_user_name", res.name || "Library User"); 
-                
-                showToast("Login Successful! Redirecting..."); 
-                
-                // Redirecting to the main app index.html
-                setTimeout(() => {
-                    window.location.href = '../';
-                }, 800);
+            const inputValue = document.getElementById("login-input").value.trim();
+            const password = document.getElementById("login-pass").value.trim();
 
+            if (window.currentAuthModes.login === 'mobile') {
+                if (!/^[0-9]{10}$/.test(inputValue)) return window.showToast("Please enter a valid 10-digit mobile number.", "error");
             } else {
-                if (res && res.error_code === 'USER_NOT_FOUND') {
-                    showToast(res.message || "Account not found. Redirecting to sign up...", "error");
-                    setTimeout(() => { switchAuth('signup'); }, 2000);
-                } else if (res && res.error_code === 'INVALID_PASSWORD') {
-                    showToast(res.message || "Incorrect password. Please try again.", "error");
-                    btn.disabled = false;
-                    btn.innerHTML = `Login ✦`;
-                } else {
-                    showToast(res ? (res.message || "Login failed!") : "API Failed", "error");
-                    btn.disabled = false;
-                    btn.innerHTML = `Login ✦`;
-                }
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputValue)) return window.showToast("Please enter a valid email address.", "error");
+            }
+            if (password.length < 6) return window.showToast("Password must be at least 6 characters.", "error");
+
+            const btn = document.getElementById("login-btn");
+            btn.disabled = true; btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i>`;
+            
+            const firebaseEmail = getFirebaseEmail(inputValue, window.currentAuthModes.login);
+            
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, firebaseEmail, password);
+                const uid = userCredential.user.uid;
+                
+                // SECURE CHECK: Yahan naam laya jaayega
+                try {
+                    const userDoc = await getDoc(doc(db, "users", uid));
+                    if (userDoc.exists() && userDoc.data().name) localStorage.setItem("islamic_user_name", userDoc.data().name);
+                } catch(err) { console.log("Name fetch error on login"); }
+
+                localStorage.setItem("islamic_user_id", uid); 
+                localStorage.setItem("islamic_user_mobile", inputValue); 
+                
+                window.showToast("Login Successful! Redirecting..."); 
+                
+                // 🚀 FAST REDIRECT: 800ms se 150ms
+                setTimeout(() => { window.location.href = '../'; }, 150);
+            } catch (error) {
+                let msg = "Login failed. Please try again.";
+                if (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential') msg = "Incorrect details or password.";
+                window.showToast(msg, "error");
+                btn.disabled = false; btn.innerHTML = `Login ✦`;
             }
         });
 
-        // ✅ SIGNUP SUBMIT WITH REDIRECT
+        // ✅ SIGNUP SUBMIT (FIREBASE)
         document.getElementById("signupForm").addEventListener("submit", async (e) => {
             e.preventDefault();
-            const btn = document.getElementById("signup-btn");
-            btn.disabled = true;
-            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i>`;
+            const nameVal = document.getElementById("reg-name").value.trim();
+            const inputVal = document.getElementById("reg-input").value.trim();
+            const passVal = document.getElementById("reg-pass").value.trim();
 
-            const n = document.getElementById("reg-name").value;
-            const m = document.getElementById("reg-mobile").value;
-            const payload = { name: n, mobile: m, password: document.getElementById("reg-pass").value };
-            const res = await apiCall("signupUser", "POST", payload, false);
-
-            if (res && res.success) { 
-                localStorage.setItem("islamic_user_id", res.user_id); 
-                localStorage.setItem("islamic_user_name", n); 
-                localStorage.setItem("islamic_user_mobile", m); 
-                
-                showToast("Account Created! Redirecting..."); 
-                
-                // Redirecting to the main app index.html
-                setTimeout(() => {
-                    window.location.href = '../';
-                }, 800);
-
+            if (!/^[A-Za-z\s]{3,50}$/.test(nameVal)) return window.showToast("Name should only contain alphabets (Min 3 letters).", "error");
+            
+            if (window.currentAuthModes.signup === 'mobile') {
+                if (!/^[0-9]{10}$/.test(inputVal)) return window.showToast("Please enter a valid 10-digit mobile number.", "error");
             } else {
-                showToast(res ? (res.message || "Signup failed!") : "API Failed", "error");
-                btn.disabled = false;
-                btn.innerHTML = `Sign Up ✦`;
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputVal)) return window.showToast("Please enter a valid email address.", "error");
+            }
+
+            if (passVal.length < 6) return window.showToast("Password must be at least 6 characters long.", "error");
+            if (localStorage.getItem('cooldown_signup')) return window.showToast("Please wait for the timer to finish.", "error");
+
+            const btn = document.getElementById("signup-btn");
+            btn.disabled = true; btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i>`;
+
+            const firebaseEmail = getFirebaseEmail(inputVal, window.currentAuthModes.signup);
+
+            try {
+    const userCredential = await createUserWithEmailAndPassword(auth, firebaseEmail, passVal);
+    const user = userCredential.user;
+
+    // User document save karo
+    await setDoc(doc(db, "users", user.uid), {
+        uid: user.uid, 
+        name: nameVal, 
+        loginType: window.currentAuthModes.signup, 
+        displayId: inputVal, 
+        createdAt: new Date().toISOString()
+    });
+
+    // 🔥 ASLI JADU: Naya Email/Mobile user bante hi stats me +1 kar do
+    try {
+        await updateDoc(doc(db, "metadata", "stats"), {
+            total_users: increment(1)
+        });
+    } catch (err) { console.log("Stats update error"); }
+
+
+                localStorage.setItem("islamic_user_id", user.uid); 
+                localStorage.setItem("islamic_user_name", nameVal); 
+                localStorage.setItem("islamic_user_mobile", inputVal); 
+                
+                window.startCooldown('signup-btn', 'cooldown_signup', 'Sign Up ✦');
+                window.showToast("Account Created! Redirecting..."); 
+                
+                // 🚀 FAST REDIRECT: 800ms se 150ms
+                setTimeout(() => { window.location.href = '../'; }, 150);
+            } catch (error) {
+                let msg = "Signup failed.";
+                if (error.code === 'auth/email-already-in-use') msg = "Account already exists! Please login.";
+                window.showToast(msg, "error");
+                btn.disabled = false; btn.innerHTML = `Sign Up ✦`;
             }
         });
 
+        // ✅ RESET SUBMIT (FIREBASE)
         document.getElementById("resetForm").addEventListener("submit", async (e) => {
             e.preventDefault();
-            const btn = document.getElementById("reset-btn");
-            btn.disabled = true;
-            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i>`;
+            const inputVal = document.getElementById("reset-input").value.trim();
 
-            const payload = { mobile: document.getElementById("reset-mobile").value, new_password: document.getElementById("reset-pass").value };
-            const res = await apiCall("resetPassword", "POST", payload, false);
-
-            if (res && res.success) { 
-                showToast("Password Reset Successfully! Please log in.");
-                setTimeout(() => { switchAuth('login'); }, 1500);
+            if (window.currentAuthModes.reset === 'mobile') {
+                if (!/^[0-9]{10}$/.test(inputVal)) return window.showToast("Please enter a valid 10-digit mobile number.", "error");
             } else {
-                showToast(res ? (res.message || "Mobile not found!") : "API Failed", "error");
-                btn.disabled = false;
-                btn.innerHTML = `Update Password ✦`;
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputVal)) return window.showToast("Please enter a valid email address.", "error");
+            }
+
+            if (localStorage.getItem('cooldown_reset')) return window.showToast("Please wait for the timer to finish.", "error");
+
+            const btn = document.getElementById("reset-btn");
+            btn.disabled = true; btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i>`;
+
+            const firebaseEmail = getFirebaseEmail(inputVal, window.currentAuthModes.reset);
+
+            try {
+                await sendPasswordResetEmail(auth, firebaseEmail);
+                window.showToast("Link sent! Please check your email.");
+                document.getElementById('reset-success-modal').classList.remove('hidden');
+                window.startCooldown('reset-btn', 'cooldown_reset', 'Send Reset Link ✦');
+            } catch (error) {
+                let msg = "Failed to send reset link.";
+                if (error.code === 'auth/user-not-found') msg = "Account not found.";
+                if (window.currentAuthModes.reset === 'mobile') msg = "Reset only works with real Email IDs.";
+                window.showToast(msg, "error");
+                btn.disabled = false; btn.innerHTML = `Send Reset Link ✦`;
             }
         });
+
+        window.closeResetSuccess = function() {
+            document.getElementById('reset-success-modal').classList.add('hidden');
+            window.switchAuth('login');
+        };
+
+        document.addEventListener("DOMContentLoaded", () => {
+            setAuthType('login', 'email');
+            setAuthType('signup', 'email');
+            setAuthType('reset', 'email');
+        });
+
+        window.startCooldown = function(btnId, storageKey, defaultText) {
+            const btn = document.getElementById(btnId);
+            if (!btn) return;
+            localStorage.setItem(storageKey, Date.now());
+            btn.disabled = true;
+            let timeLeft = 60;
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Wait ${timeLeft}s`;
+            
+            const timer = setInterval(() => {
+                timeLeft--;
+                if (timeLeft <= 0) {
+                    clearInterval(timer); btn.disabled = false; btn.innerHTML = defaultText; localStorage.removeItem(storageKey);
+                } else {
+                    btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Wait ${timeLeft}s`;
+                }
+            }, 1000);
+        };
+
+        window.checkActiveCooldowns = function() {
+            const config = [
+                { key: 'cooldown_signup', btnId: 'signup-btn', text: 'Sign Up ✦' },
+                { key: 'cooldown_reset', btnId: 'reset-btn', text: 'Send Reset Link ✦' }
+            ];
+            config.forEach(item => {
+                const lastTime = localStorage.getItem(item.key);
+                if (lastTime) {
+                    const elapsed = Math.floor((Date.now() - parseInt(lastTime)) / 1000);
+                    if (elapsed < 60) {
+                        const btn = document.getElementById(item.btnId);
+                        if (btn) {
+                            btn.disabled = true;
+                            let timeLeft = 60 - elapsed;
+                            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Wait ${timeLeft}s`;
+                            const timer = setInterval(() => {
+                                timeLeft--;
+                                if (timeLeft <= 0) {
+                                    clearInterval(timer); btn.disabled = false; btn.innerHTML = item.text; localStorage.removeItem(item.key);
+                                } else {
+                                    btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Wait ${timeLeft}s`;
+                                }
+                            }, 1000);
+                        }
+                    } else {
+                        localStorage.removeItem(item.key);
+                    }
+                }
+            });
+        };
+
+        document.addEventListener("DOMContentLoaded", () => {
+            window.checkActiveCooldowns();
+        });
+// Drawer Functions
+window.openProfileDrawer = function() {
+    document.getElementById('profile-drawer').classList.add('active');
+    document.getElementById('drawer-overlay').classList.add('active');
+document.body.style.overflow = 'hidden';
+};
+
+window.closeProfileDrawer = function() {
+    document.getElementById('profile-drawer').classList.remove('active');
+    document.getElementById('drawer-overlay').classList.remove('active');
+document.body.style.overflow = ''; 
+};
+
+// Theme Toggle Logic (Perfectly synced with other pages)
+window.toggleTheme = function() {
+    const root = document.documentElement; // <html> target karega
+    const icon = document.getElementById('theme-toggle-icon');
+    const newTheme = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    
+    root.setAttribute('data-theme', newTheme);
+    localStorage.setItem('islamic_theme', newTheme); // Same key as support page
+    
+    // Icon update
+    if(icon) icon.className = newTheme === 'light' ? 'fas fa-sun' : 'fas fa-moon';
+};
+
+// Initialize Theme on Load
+document.addEventListener('DOMContentLoaded', () => {
+    const savedTheme = localStorage.getItem('islamic_theme') || 'dark'; // Same key check
+    document.documentElement.setAttribute('data-theme', savedTheme); // <html> par lagayega
+    
+    const icon = document.getElementById('theme-toggle-icon');
+    if (icon) icon.className = savedTheme === 'light' ? 'fas fa-sun' : 'fas fa-moon';
+});
+
+
     </script>
+
 </body>
 </html>
