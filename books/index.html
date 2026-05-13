@@ -26,7 +26,7 @@
     
     <script>
         if (!localStorage.getItem("islamic_user_id") || !sessionStorage.getItem("selected_book_data")) {
-            window.location.replace("../login/");
+            window.location.replace("/login/");
         }
     </script>
 
@@ -499,9 +499,9 @@
     </div>
 
     <div id="bottom-nav" class="bottom-nav">
-        <div class="nav-item active" onclick="window.location.href='../'"><i class="fas fa-home"></i><span>Home</span></div>
-        <div class="nav-item" onclick="window.location.href='../library/'"><i class="fas fa-book-reader"></i><span>Library</span></div>
-        <a href="../info/" class="nav-item"><i class="fas fa-info-circle"></i><span>Info</span></a>
+        <div class="nav-item active" onclick="window.location.href='/'"><i class="fas fa-home"></i><span>Home</span></div>
+        <div class="nav-item" onclick="window.location.href='/library/'"><i class="fas fa-book-reader"></i><span>Library</span></div>
+        <a href="/info/" class="nav-item"><i class="fas fa-info-circle"></i><span>Info</span></a>
     </div>
 <div id="toast-container" style="z-index: 999999 !important;"></div>
 
@@ -688,8 +688,8 @@ window.executeChangePassword = async function() {
             if(userId) { localStorage.removeItem(`cache_payments_${userId}_data`); localStorage.removeItem(`cache_payments_${userId}_time`); }
             localStorage.removeItem("islamic_user_id"); localStorage.removeItem("islamic_user_name"); localStorage.removeItem("islamic_user_mobile");
             
-            signOut(auth).then(() => { if(redirect) window.location.href = "../login/"; })
-                         .catch(() => { if(redirect) window.location.href = "../login/"; });
+            signOut(auth).then(() => { if(redirect) window.location.href = "/login/"; })
+                         .catch(() => { if(redirect) window.location.href = "/login/"; });
         };
 
         window.shareBook = function() {
@@ -828,7 +828,7 @@ window.executeChangePassword = async function() {
                 footerPrice.innerHTML = `₹${currentEbook.discount_price || currentEbook.price}`;
                 actionBtn.innerHTML = `Buy Now <i class="fas fa-arrow-right" style="margin-left:6px;"></i>`;
                 actionBtn.style.background = "linear-gradient(135deg, #7c6af7, #9f3fbf)"; actionBtn.style.color = "#fff";
-                actionBtn.onclick = () => window.location.href = '../payments/';
+                actionBtn.onclick = () => window.location.href = '/payments/';
             }
 
         }
