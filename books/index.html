@@ -920,20 +920,37 @@ onAuthStateChanged(auth, (user) => {
                 
                 // 🔥 Naya Freemium Buy Now Logic
                 actionBtn.onclick = () => {
-                    const currentUserId = localStorage.getItem("islamic_user_id");
-                    if (currentUserId) {
-                        window.location.href = '/payments/';
-                    } else {
-                        window.showToast("Please login to purchase premium books", "error");
-                        actionBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Redirecting...`;
-                        actionBtn.disabled = true;
-                        localStorage.setItem('islamic_redirect_after_login', window.location.href);
-                        setTimeout(() => {
-                            window.location.href = '/login/';
-                        }, 2500);
-                    }
-                };
-            }
+    const currentUserId = localStorage.getItem("islamic_user_id");
+    
+    if (currentUserId) {
+        window.location.href = '/payments/';
+    } else {
+        window.showToast("Please login to purchase premium books", "error");
+        
+        // 1. Button ka purana text save kar lo (taaki exactly wahi wapas aaye)
+        const originalText = actionBtn.innerHTML; 
+        
+        // 2. Button ko Loading/Redirecting state mein daal diya
+        actionBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Redirecting...`;
+        actionBtn.disabled = true;
+        
+        localStorage.setItem('islamic_redirect_after_login', window.location.href);
+        
+        // 3. Tera original 2.5 second wala redirect timer
+        setTimeout(() => {
+            window.location.href = '/login/';
+            
+            // 4. NINJA TRICK: Redirect trigger hone ke theek baad button normal kar do
+            // Taaki browser jab page freeze kare, toh button theek halat mein ho
+            setTimeout(() => {
+                actionBtn.innerHTML = originalText;
+                actionBtn.disabled = false;
+            }, 100); 
+            
+        }, 2500);
+    }
+};
+
         }
 
     </script>
