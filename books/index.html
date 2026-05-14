@@ -898,16 +898,19 @@ onAuthStateChanged(auth, (user) => {
 
             actionBtn.className = "btn"; actionBtn.disabled = false; actionBtn.style.background = ""; actionBtn.style.color = ""; actionBtn.style.boxShadow = "";
 
-            if (ownedBook) {
+                        if (ownedBook) {
                 if (ownedBook.status.toLowerCase() === "approved") {
                     footerPrice.innerHTML = `<span style="color: var(--success) !important; font-weight: 700;">Owned</span>`;
                     actionBtn.innerHTML = `<i class="fas fa-download"></i> Download`;
                     actionBtn.onclick = () => window.open(currentEbook.pdf_link, "_blank");
-                    actionBtn.style.background = "var(--success)"; actionBtn.style.boxShadow = "0 4px 20px rgba(16,185,129,0.3)"; actionBtn.style.color = "#fff";
+                    actionBtn.style.background = "var(--success)"; 
+                    actionBtn.style.boxShadow = "0 4px 20px rgba(16,185,129,0.3)"; 
+                    actionBtn.style.color = "#fff";
                 } else {
                     footerPrice.innerHTML = "In Verification";
                     actionBtn.innerHTML = `<i class="fas fa-hourglass-half spin"></i> Verifying...`;
-                    actionBtn.disabled = true; actionBtn.onclick = null;
+                    actionBtn.disabled = true; 
+                    actionBtn.onclick = null;
                 }
             } else if (isFree) {
                 footerPrice.innerHTML = "Free";
@@ -916,44 +919,45 @@ onAuthStateChanged(auth, (user) => {
             } else {
                 footerPrice.innerHTML = `₹${currentEbook.discount_price || currentEbook.price}`;
                 actionBtn.innerHTML = `Buy Now <i class="fas fa-arrow-right" style="margin-left:6px;"></i>`;
-                actionBtn.style.background = "linear-gradient(135deg, #7c6af7, #9f3fbf)"; actionBtn.style.color = "#fff";
+                actionBtn.style.background = "linear-gradient(135deg, #7c6af7, #9f3fbf)"; 
+                actionBtn.style.color = "#fff";
                 
                 // 🔥 Naya Freemium Buy Now Logic
                 actionBtn.onclick = () => {
-    const currentUserId = localStorage.getItem("islamic_user_id");
-    
-    if (currentUserId) {
-        window.location.href = '/payments/';
-    } else {
-        // Toast message dikhao
-        if (window.showToast) {
-            window.showToast("Please login to purchase premium books", "error");
-        }
-        
-        // 1. Button ka purana text save karo
-        const originalText = actionBtn.innerHTML; 
-        
-        // 2. Button ko Redirecting state mein daalo
-        actionBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Redirecting...`;
-        actionBtn.disabled = true;
-        
-        // 3. Redirect URL save karo
-        localStorage.setItem('islamic_redirect_after_login', window.location.href);
-        
-        // 4. User ko login page par bhejo
-        setTimeout(() => {
-            window.location.href = '/login/';
-            
-            // 5. Back button fix: 0.1s baad button normal
-            setTimeout(() => {
-                actionBtn.innerHTML = originalText;
-                actionBtn.disabled = false;
-            }, 100);
-            
-        }, 2500);
-    }
-};
-
+                    const currentUserId = localStorage.getItem("islamic_user_id");
+                    
+                    if (currentUserId) {
+                        window.location.href = '/payments/';
+                    } else {
+                        // Toast message dikhao
+                        if (window.showToast) {
+                            window.showToast("Please login to purchase premium books", "error");
+                        }
+                        
+                        // 1. Button ka purana text save karo
+                        const originalText = actionBtn.innerHTML; 
+                        
+                        // 2. Button ko Redirecting state mein daalo
+                        actionBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Redirecting...`;
+                        actionBtn.disabled = true;
+                        
+                        // 3. Redirect URL save karo
+                        localStorage.setItem('islamic_redirect_after_login', window.location.href);
+                        
+                        // 4. User ko login page par bhejo
+                        setTimeout(() => {
+                            window.location.href = '/login/';
+                            
+                            // 5. Back button fix: 0.1s baad button normal
+                            setTimeout(() => {
+                                actionBtn.innerHTML = originalText;
+                                actionBtn.disabled = false;
+                            }, 100);
+                            
+                        }, 2500);
+                    }
+                };
+            }
 
     </script>
 
