@@ -3,12 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>About Us - Islamic Library by Shekh</title>
 
-    <meta name="description" content="About Islamic Library by Shekh.">
+    <title>Our Mission | Islamic Library by Shekh</title>
+    <meta name="title" content="Our Mission | Islamic Library by Shekh">
+    <meta name="description" content="Assalamu Alaikum. Welcome to Islamic Library by Shekh. Our mission is to spread the light of Hikmah by providing authentic Islamic eBooks, Quranic PDFs, and Hadith collections. Explore our library of 100% free resources and premium content.">
+    <meta name="keywords" content="Islamic Library by Shekh, Islamic eBooks, Free Quran PDF, Hadith Collections, Hikmah, Islamic Wisdom, Islamic Library Mission">
+
     <link rel="icon" type="image/png" sizes="32x32" href="/icons/hikmahlogo.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/icons/hikmahlogo.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/icons/hikmahlogo.png">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mysite.pages.dev/info/">
+    <meta property="og:title" content="Our Mission | Islamic Library by Shekh">
+    <meta property="og:description" content="Dedicated to making authentic Islamic knowledge accessible through free and premium digital resources. Join our journey.">
+    <meta property="og:image" content="https://mysite.pages.dev/icons/hikmahlogo.png">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:url" content="https://mysite.pages.dev/info/">
+    <meta name="twitter:title" content="Our Mission | Islamic Library by Shekh">
+    <meta name="twitter:description" content="Dedicated to making authentic Islamic knowledge accessible through free and premium digital resources. Join our journey.">
+    <meta name="twitter:image" content="https://mysite.pages.dev/icons/hikmahlogo.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
@@ -40,7 +55,27 @@
         .flex { display: flex; } .align-center { align-items: center; } .justify-between { justify-content: space-between; } .text-center { text-align: center; } .hidden { display: none !important; }
         .btn { background: linear-gradient(135deg, #7c6af7, #9f3fbf); color: #fff; border: none; padding: 14px 20px; border-radius: 99px; font-weight: 600; font-family: 'DM Sans', sans-serif; width: 100%; cursor: pointer; transition: var(--transition); font-size: 1rem; display: block; text-align: center; position: relative; overflow: hidden; box-shadow: 0 4px 20px rgba(124,106,247,0.4); }
         .btn::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,0.15),transparent); opacity:0; transition:opacity var(--transition); } .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(124,106,247,0.5); } .btn:hover::before { opacity: 1; } .btn:active { transform: translateY(0) scale(0.98); }
-        .btn-outline { background: transparent; color: var(--text2); border: 1px solid var(--border2); padding: 10px 20px; border-radius: 99px; font-weight: 500; font-size: .85rem; transition: var(--transition); cursor: pointer; box-shadow: none; } .btn-outline:hover { border-color: var(--accent); color: var(--accent2); background: var(--glow2); }
+        /* 🔥 UNIVERSAL OUTLINE BUTTON GLOW FIX (Sabhi pages ke liye) 🔥 */
+        .btn-outline { 
+            background: transparent; 
+            color: var(--text2); 
+            border: 1px solid var(--border2); 
+            padding: 10px 20px; 
+            border-radius: 99px; 
+            font-weight: 500; 
+            font-size: .85rem; 
+            transition: var(--transition); 
+            cursor: pointer; 
+            /* Yahan se 'box-shadow: none;' permanently hata diya gaya hai taaki original glow aaye */
+        }
+        
+        .btn-outline:hover { 
+            border-color: var(--accent); 
+            color: var(--accent2); 
+            background: var(--glow2); 
+            transform: translateY(-2px); /* Hover par thoda sa upar uthega */
+            box-shadow: 0 8px 30px rgba(124, 106, 247, 0.4); /* 🔥 Ekdum premium hover glow 🔥 */
+        }
         #confirm-modal { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10,10,15,0.85); backdrop-filter: blur(5px); z-index: 99999; display: flex; justify-content: center; align-items: center; animation: fadeIn 0.3s ease; }
         .modal-box { background: var(--surface); padding: 28px 24px; border-radius: var(--r3); width: 90%; max-width: 320px; text-align: center; border: 1px solid var(--border); box-shadow: var(--shadow2); animation: cardIn 0.4s ease both; } .modal-title { font-size: 1.3rem; margin-bottom: 8px; color: var(--text); } .modal-desc { font-size: 0.9rem; color: var(--text2); margin-bottom: 24px; line-height: 1.5; } .modal-actions { display: flex; gap: 12px; } .modal-actions button { flex: 1; padding: 12px; font-size: 0.9rem; }
         header { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; background: rgba(10,10,15,0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); transition: background-color 0.3s ease, border-color 0.3s ease; transform: translateZ(0); }
@@ -207,7 +242,7 @@
                 </div>
                 <div class="modal-actions" style="margin-top:24px; display: flex; gap: 12px;">
                     <button type="button" class="btn btn-outline" style="flex: 1;" onclick="window.closeChangePasswordModal()">Cancel</button>
-                    <button type="submit" class="btn" id="update-pass-btn" style="flex: 1;">Update</button>
+                    <button type="submit" class="btn" id="update-pass-btn" style="flex: 1;">Update Password</button>
                 </div>
             </form>
         </div>
@@ -223,7 +258,7 @@
         </div>
         
         <div class="drawer-body">
-            <div class="drawer-avatar"><i class="fas fa-user-shield"></i></div>
+            <div class="drawer-avatar"><i id="profile-avatar-icon" class="fas fa-user-shield"></i></div>
             <div class="drawer-name" id="profile-name">Loading...</div>
             <div class="drawer-mobile" id="profile-mobile"></div>
             <div class="drawer-menu" id="auth-actions"></div>
@@ -237,7 +272,7 @@
             <p class="modal-desc" id="modal-desc-text">Are you sure you want to log out of your account?</p>
             <div class="modal-actions">
                 <button class="btn btn-outline" onclick="window.closeModal()">Cancel</button>
-                <button class="btn" id="modal-action-btn">Yes</button>
+                <button class="btn" id="modal-action-btn">Yes, Log Out</button>
             </div>
         </div>
     </div>
@@ -343,6 +378,7 @@
             const loginPath = '/login/';
 
             if (userId) {
+                document.getElementById("profile-avatar-icon").className = "fas fa-user"; 
                 // Agar User Logged in hai
                 let cachedName = localStorage.getItem("islamic_user_name");
                 document.getElementById("profile-name").innerText = cachedName || "Library User";
@@ -363,6 +399,7 @@
                     } catch(e) {}
                 }
             } else {
+                document.getElementById("profile-avatar-icon").className = "fas fa-user-shield";
                 // Agar User Guest Hai (Logged in nahi hai)
                 document.getElementById("profile-name").innerText = "Guest User";
                 document.getElementById("profile-mobile").innerText = "Welcome to Islamic Library";
