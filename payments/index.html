@@ -3,21 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Payments - Islamic Library by Shekh</title>
+    <meta name="robots" content="noindex, nofollow">
 
-    <meta name="description" content="Islamic Library by Shekh – Download Islamic eBooks, Quran PDFs, and Hadith books.">
-    <meta name="keywords" content="Islamic Library by Shekh, Islamic ebooks, Quran PDF, Hadith books">
-    <meta name="author" content="Islamic Library by Shekh">
-
-    <meta property="og:title" content="Islamic Library by Shekh">
-    <meta property="og:description" content="Free & Paid Islamic eBooks, Quran PDFs, Hadith books available.">
-    <meta property="og:image" content="https://mysite.github.io/Resources/hikmahlogo.png">
-    <meta property="og:url" content="https://mysite.github.io/Resources/">
-    <meta property="og:type" content="website">
+    <title>Secure Checkout | Islamic Library by Shekh</title>
+    <meta name="title" content="Secure Checkout | Islamic Library by Shekh">
+    <meta name="description" content="Complete your purchase securely to get access to your premium Islamic eBooks. Safe and encrypted payment system for Islamic Library by Shekh.">
+    <meta name="keywords" content="secure payment, buy islamic books online, ebook checkout, premium islamic library, payment gateway">
 
     <link rel="icon" type="image/png" sizes="32x32" href="/icons/hikmahlogo.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/icons/hikmahlogo.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/icons/hikmahlogo.png">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mysite.pages.dev/payments/">
+    <meta property="og:title" content="Secure Checkout | Islamic Library by Shekh">
+    <meta property="og:description" content="Finalize your order and start reading your premium Islamic books today.">
+    <meta property="og:image" content="https://mysite.pages.dev/icons/hikmahlogo.png">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:url" content="https://mysite.pages.dev/payments/">
+    <meta name="twitter:title" content="Secure Checkout | Islamic Library by Shekh">
+    <meta name="twitter:description" content="Finalize your order and start reading your premium Islamic books today.">
+    <meta name="twitter:image" content="https://mysite.pages.dev/icons/hikmahlogo.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
@@ -125,9 +132,27 @@
         .btn { background: linear-gradient(135deg, #7c6af7, #9f3fbf); color: #fff; border: none; padding: 14px 20px; border-radius: 99px; font-weight: 600; font-family: 'DM Sans', sans-serif; width: 100%; cursor: pointer; transition: var(--transition); font-size: 1rem; display: block; text-align: center; position: relative; overflow: hidden; box-shadow: 0 4px 20px rgba(124,106,247,0.4); }
         .btn::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,0.15),transparent); opacity:0; transition:opacity var(--transition); }
         .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(124,106,247,0.5); } .btn:hover::before { opacity: 1; } .btn:active { transform: translateY(0) scale(0.98); }
-        .btn-outline { background: transparent; color: var(--text2); border: 1px solid var(--border2); padding: 10px 20px; border-radius: 99px; font-weight: 500; font-size: .85rem; transition: var(--transition); cursor: pointer; box-shadow: none; }
-        .btn-outline:hover { border-color: var(--accent); color: var(--accent2); background: var(--glow2); }
+                /* 🔥 UNIVERSAL OUTLINE BUTTON GLOW FIX (Sabhi pages ke liye) 🔥 */
+        .btn-outline { 
+            background: transparent; 
+            color: var(--text2); 
+            border: 1px solid var(--border2); 
+            padding: 10px 20px; 
+            border-radius: 99px; 
+            font-weight: 500; 
+            font-size: .85rem; 
+            transition: var(--transition); 
+            cursor: pointer; 
+            /* Yahan se 'box-shadow: none;' permanently hata diya gaya hai taaki original glow aaye */
+        }
         
+        .btn-outline:hover { 
+            border-color: var(--accent); 
+            color: var(--accent2); 
+            background: var(--glow2); 
+            transform: translateY(-2px); /* Hover par thoda sa upar uthega */
+            box-shadow: 0 8px 30px rgba(124, 106, 247, 0.4); /* 🔥 Ekdum premium hover glow 🔥 */
+        }
         .btn-danger { background: rgba(244, 63, 94, 0.1); color: var(--danger); border: 1px solid rgba(244, 63, 94, 0.3); }
         .btn-danger:hover { background: var(--danger); color: #fff; box-shadow: 0 4px 20px rgba(244, 63, 94, 0.4); }
 
@@ -409,7 +434,7 @@
             <p class="modal-desc" id="modal-desc-text">Are you sure you want to log out of your account?</p>
             <div class="modal-actions">
                 <button class="btn btn-outline" onclick="window.closeModal()">Cancel</button>
-                <button class="btn" id="modal-action-btn">Yes</button>
+                <button class="btn" id="modal-action-btn">Yes, Log Out</button>
             </div>
         </div>
     </div>
