@@ -925,33 +925,35 @@ onAuthStateChanged(auth, (user) => {
     if (currentUserId) {
         window.location.href = '/payments/';
     } else {
-        window.showToast("Please login to purchase premium books", "error");
+        // Toast message dikhao
+        if (window.showToast) {
+            window.showToast("Please login to purchase premium books", "error");
+        }
         
-        // 1. Button ka purana text save kar lo (taaki exactly wahi wapas aaye)
+        // 1. Button ka purana text save karo
         const originalText = actionBtn.innerHTML; 
         
-        // 2. Button ko Loading/Redirecting state mein daal diya
+        // 2. Button ko Redirecting state mein daalo
         actionBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Redirecting...`;
         actionBtn.disabled = true;
         
+        // 3. Redirect URL save karo
         localStorage.setItem('islamic_redirect_after_login', window.location.href);
         
-        // 3. Tera original 2.5 second wala redirect timer
+        // 4. User ko login page par bhejo
         setTimeout(() => {
             window.location.href = '/login/';
             
-            // 4. NINJA TRICK: Redirect trigger hone ke theek baad button normal kar do
-            // Taaki browser jab page freeze kare, toh button theek halat mein ho
+            // 5. Back button fix: 0.1s baad button normal
             setTimeout(() => {
                 actionBtn.innerHTML = originalText;
                 actionBtn.disabled = false;
-            }, 100); 
+            }, 100);
             
         }, 2500);
     }
 };
 
-        }
 
     </script>
 
