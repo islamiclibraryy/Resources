@@ -889,7 +889,8 @@ window.executeChangePassword = async function() {
             localStorage.removeItem("islamic_user_id");
             localStorage.removeItem("islamic_user_name");
             localStorage.removeItem("islamic_user_mobile");
-            
+            localStorage.removeItem("islamic_user_photo");
+
             // ✅ Asli Firebase Logout
             signOut(auth).then(() => {
                 if(redirect) window.location.replace('/login/'); 
