@@ -9,9 +9,9 @@
     <meta name="keywords" content="Islamic Library by Shekh, Islamic ebooks, Quran PDF, Hadith books">
     <meta name="author" content="Islamic Library by Shekh">
 
-    <link rel="icon" type="image/png" sizes="32x32" href="hikmahlogo.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="hikmahlogo.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="hikmahlogo.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/hikmahlogo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/hikmahlogo.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/hikmahlogo.png">
 
     <meta property="og:title" content="Islamic Library by Shekh">
     <meta property="og:description" content="Free & Paid Islamic eBooks, Quran PDFs, Hadith books available.">
@@ -364,6 +364,19 @@
             }
 
         }
+        /* 🔥 GPU Rendering Blink Fix for High-End Phones 🔥 */
+        .search-container, 
+        .filters-wrapper, 
+        .custom-filter,
+        .filter-options {
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            perspective: 1000px;
+            /* Ye text aur border ko animation ke time blur hone se rokta hai */
+            -webkit-font-smoothing: antialiased; 
+        }
 
     </style>
 </head>
@@ -400,16 +413,16 @@
             <i class="fas fa-times" onclick="window.closeProfileDrawer()"></i>
         </div>
         <div class="drawer-body">
-            <div class="drawer-avatar"><i class="fas fa-user"></i></div>
+            <div class="drawer-avatar"><i id="profile-avatar-icon" class="fas fa-user"></i></div>
             <div class="drawer-name" id="profile-name">Library User</div>
             <div class="drawer-mobile" id="profile-mobile">+XX XXXXXXXXXX</div>
             
-            <div class="drawer-menu">
-                <button class="btn btn-outline" onclick="window.openChangePassword()"><i class="fas fa-key"></i> Change Password</button>
+            <div class="drawer-menu" id="auth-actions">
+                
             </div>
         </div>
-        <div class="drawer-footer">
-            <button class="btn" style="background: rgba(244, 63, 94, 0.1); color: var(--danger); border: 1px solid rgba(244, 63, 94, 0.3); box-shadow: none;" onmouseover="this.style.background='var(--danger)'; this.style.color='#fff';" onmouseout="this.style.background='rgba(244, 63, 94, 0.1)'; this.style.color='var(--danger)';" onclick="window.showLogoutModal()"><i class="fas fa-sign-out-alt"></i> Log Out</button>
+        <div class="drawer-footer" id="drawer-footer">
+            
         </div>
     </div>
 
@@ -440,6 +453,7 @@
             </div>
         </header>
 
+
         <div class="main-content">
             <div id="page-home">
                 <div class="bismillah text-center" style="margin-top: 5px; margin-bottom: 24px;">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
@@ -462,6 +476,17 @@
                             <div class="f-option selected" onclick="window.setPriceFilter('all', 'Price: All', event)">All Books</div>
                             <div class="f-option" onclick="window.setPriceFilter('free', 'Free Books', event)">Free Books</div>
                             <div class="f-option" onclick="window.setPriceFilter('premium', 'Premium', event)">Premium</div>
+                        </div>
+                    </div>
+
+                    <div class="custom-filter" id="cat-dropdown-btn" onclick="window.toggleFilterMenu('cat')">
+                        <span id="cat-label">Cat: All</span>
+                        <i class="fas fa-chevron-down"></i>
+                        <div class="filter-options" id="cat-options">
+                            <div class="f-option selected" onclick="window.setCatFilter('all', 'Cat: All', event)">All Categories</div>
+                            <div class="f-option" onclick="window.setCatFilter('quran', 'Quran', event)">Quran</div>
+                            <div class="f-option" onclick="window.setCatFilter('hadith', 'Hadith', event)">Hadith</div>
+                            <div class="f-option" onclick="window.setCatFilter('seerah', 'Seerah', event)">Seerah</div>
                         </div>
                     </div>
 
@@ -491,9 +516,9 @@
         </div>
 
         <div id="bottom-nav" class="bottom-nav">
-            <div class="nav-item active" onclick="window.location.href='./'"><i class="fas fa-home"></i><span>Home</span></div>
-            <div class="nav-item" onclick="window.location.href='library/'"><i class="fas fa-book-reader"></i><span>Library</span></div>
-            <a href="info/" class="nav-item"><i class="fas fa-info-circle"></i><span>Info</span></a>
+            <div class="nav-item active" onclick="window.location.href='/'"><i class="fas fa-home"></i><span>Home</span></div>
+            <div class="nav-item" onclick="window.location.href='library/index.html'"><i class="fas fa-book-reader"></i><span>Library</span></div>
+            <a href="/info/" class="nav-item"><i class="fas fa-info-circle"></i><span>Info</span></a>
         </div>
     </div>
 
@@ -549,31 +574,48 @@ const db = initializeFirestore(app, {
         }
 
                 window.openProfileDrawer = async function() {
-            // Drawer open karo
-            document.getElementById("drawer-overlay").classList.add("active");
-            document.getElementById("profile-drawer").classList.add("active");
-            document.body.style.overflow = 'hidden';
+    document.getElementById("drawer-overlay").classList.add("active");
+    document.getElementById("profile-drawer").classList.add("active");
+    document.body.style.overflow = 'hidden';
 
-            // Pehle browser ke cache se naam dikhao
-            let cachedName = localStorage.getItem("islamic_user_name");
-            document.getElementById("profile-name").innerText = cachedName || "Library User";
-            document.getElementById("profile-mobile").innerText = localStorage.getItem("islamic_user_mobile") || "Registered User";
+    const userId = localStorage.getItem("islamic_user_id");
+    const authActions = document.getElementById("auth-actions");
+    const drawerFooter = document.getElementById("drawer-footer");
+    
+    const loginPath = '/login/';
 
-            // 🔥 FIX: Agar cache mein naam nahi hai, toh turant Firebase se fetch karke save aur update kar do
-            if (!cachedName) {
-                try {
-                    const { getFirestore, doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
-                    const dbInstance = getFirestore();
-                    const userDoc = await getDoc(doc(dbInstance, "users", localStorage.getItem("islamic_user_id")));
-                    
-                    if (userDoc.exists() && userDoc.data().name) {
-                        const realName = userDoc.data().name;
-                        localStorage.setItem("islamic_user_name", realName); // Aage ke liye save kar diya
-                        document.getElementById("profile-name").innerText = realName; // UI par update kar diya
-                    }
-                } catch(e) { console.log("Name fetch error", e); }
-            }
-        };
+    if (userId) {
+        // 🔥 Logged-in user ke liye Normal Icon
+        document.getElementById("profile-avatar-icon").className = "fas fa-user";
+        
+        let cachedName = localStorage.getItem("islamic_user_name");
+        document.getElementById("profile-name").innerText = cachedName || "Library User";
+        document.getElementById("profile-mobile").innerText = localStorage.getItem("islamic_user_mobile") || "Registered User";
+        
+        authActions.innerHTML = `<button class="btn btn-outline" onclick="window.openChangePassword()"><i class="fas fa-key"></i> Change Password</button>`;
+        drawerFooter.innerHTML = `<button class="btn" style="background: rgba(244, 63, 94, 0.1); color: var(--danger); border: 1px solid rgba(244, 63, 94, 0.3); box-shadow: none;" onclick="window.showLogoutModal()"><i class="fas fa-sign-out-alt"></i> Log Out</button>`;
+
+        if (!cachedName) {
+            try {
+                const { getFirestore, doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
+                const dbInstance = getFirestore();
+                const userDoc = await getDoc(doc(dbInstance, "users", userId));
+                if (userDoc.exists() && userDoc.data().name) {
+                    localStorage.setItem("islamic_user_name", userDoc.data().name);
+                    document.getElementById("profile-name").innerText = userDoc.data().name;
+                }
+            } catch(e) {}
+        }
+    } else {
+        // 🔥 Guest user ke liye Shield Icon 🛡️
+        document.getElementById("profile-avatar-icon").className = "fas fa-user-shield";
+        
+        document.getElementById("profile-name").innerText = "Guest User";
+        document.getElementById("profile-mobile").innerText = "Welcome to Islamic Library";
+        authActions.innerHTML = ``;
+        drawerFooter.innerHTML = `<button class="btn" onclick="window.location.href='${loginPath}'"><i class="fas fa-sign-in-alt"></i> Login / Sign Up</button>`;
+    }
+};
 
 
         window.closeProfileDrawer = function() {
@@ -667,9 +709,9 @@ window.executeChangePassword = async function() {
             
             // ✅ Asli Firebase Logout
             signOut(auth).then(() => {
-                if(redirect) window.location.replace('login/'); 
+                if(redirect) window.location.replace('/login/'); 
             }).catch(() => {
-                if(redirect) window.location.replace('login/');
+                if(redirect) window.location.replace('/login/');
             });
         }
 
@@ -682,27 +724,45 @@ window.executeChangePassword = async function() {
             setTimeout(() => { toast.style.transform = "translateX(110%)"; toast.style.opacity = "0"; setTimeout(() => toast.remove(), 400); }, 3000);
         }
 
-        // ✅ SECURE INITIALIZATION
-        document.addEventListener("DOMContentLoaded", () => {
-            window.initTheme();
-            
-            // Fast Cache Check (Skeleton UI show karne ke liye bina lag ke)
-            if (!localStorage.getItem("islamic_user_id")) {
-                window.location.replace('login/');
-                return;
-            }
-            
-            document.getElementById("app-views").classList.remove("hidden");
-            loadHome();
-        });
+// ✅ PUBLIC INITIALIZATION (Freemium Mode & Redirect Catcher)
+document.addEventListener("DOMContentLoaded", () => {
+    window.initTheme();
+    
+    // 🔥 THE MAGIC: Redirect Catcher
+    const redirectUrl = localStorage.getItem('islamic_redirect_after_login');
+    
+    if (redirectUrl) {
+        // Sabse pehle link ko jala kar raakh kar do (Delete kar do) taaki loop na bane
+        localStorage.removeItem('islamic_redirect_after_login');
+        
+        // Ab check karo: Kya user sach mein login karke aaya hai?
+        if (localStorage.getItem("islamic_user_id")) {
+            // Haan, login kiya hai! Toh usko wapas uski Book par bhej do.
+            window.location.replace(redirectUrl);
+            return; // Home page ko load hone se rok do, kyonki hum book par ja rahe hain
+        }
+        // Agar bina login kiye gaddari karke Back button se aaya hai, toh link toh upar delete ho hi gayi hai, 
+        // ab wo normal Home page par hi rahega.
+    }
 
-        // ✅ BACKGROUND FIREBASE SECURITY CHECK
-        onAuthStateChanged(auth, (user) => {
-            if (!user) {
-                // Agar user ka session sach mein nahi hai, toh turant bahar phek do
-                window.executeLogout(true);
-            }
-        });
+    // Normal behavior (Agar koi redirect nahi hai)
+    document.getElementById("app-views").classList.remove("hidden");
+    loadHome();
+});
+
+// ✅ BACKGROUND FIREBASE SECURITY CHECK
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        // Agar user login hai, toh cache set kar do
+        localStorage.setItem("islamic_user_id", user.uid);
+    } else {
+        // Bina redirect kiye user ko Home page par Guest ban kar ghoomne do
+        localStorage.removeItem("islamic_user_id");
+        localStorage.removeItem("islamic_user_name");
+        localStorage.removeItem("islamic_user_mobile");
+    }
+});
+
 
         function showSkeletons() {
             const grid = document.getElementById("ebook-grid");
@@ -719,72 +779,112 @@ window.executeChangePassword = async function() {
             }
             document.getElementById("load-more-btn").classList.add("hidden");
         }
+        // ✅ SMART DIFFING CHECKER
+        function isBookDataChanged(oldData, newData) {
+            if (!oldData || !newData) return true;
+            if (oldData.length !== newData.length) return true;
+            
+            // Check if any critical data point is different (like price, title, or order)
+            for (let i = 0; i < newData.length; i++) {
+                const oldBook = oldData.find(b => String(b.id) === String(newData[i].id));
+                if (!oldBook) return true;
+                
+                // Compare critical fields
+                if (
+                    oldBook.title !== newData[i].title ||
+                    oldBook.price !== newData[i].price ||
+                    oldBook.discount_price !== newData[i].discount_price ||
+                    oldBook.is_free !== newData[i].is_free ||
+                    oldBook.sort_order !== newData[i].sort_order ||
+                    oldBook.thumbnail !== newData[i].thumbnail
+                ) {
+                    return true;
+                }
+            }
+            return false;
+        }
 
-        // ✅ FETCH FROM FIREBASE
+        // ✅ SMART SWR FETCH FROM FIREBASE (Jhatka-Free)
         async function loadHome() {
-    const cachedDataStr = localStorage.getItem("cache_ebooks_data");
-    const userId = localStorage.getItem("islamic_user_id");
+            const cachedDataStr = localStorage.getItem("cache_ebooks_data");
+            const userId = localStorage.getItem("islamic_user_id");
 
-    // Pehle cache dikhao taaki user ko wait na lage
-    if (cachedDataStr) { 
-        try { 
-            ebooksData = JSON.parse(cachedDataStr); 
-            renderGrid(true); 
-        } catch (e) {} 
-    } else {
-        showSkeletons();
-    }
+            // 1. Pehle cache dikhao taaki user ko instant load mile
+            if (cachedDataStr) { 
+                try { 
+                    ebooksData = JSON.parse(cachedDataStr); 
+                    renderGrid(true); 
+                } catch (e) {} 
+            } else {
+                showSkeletons();
+            }
 
-    try {
-        // 🔥 STEP: PARALLEL FETCHING (Dono kaam ek saath shuru honge)
-        const ebooksPromise = getDocs(collection(db, "ebooks"));
-        let paymentsPromise = Promise.resolve(null); // Default empty
+            try {
+                // 2. Parallel fetching from Firebase
+                const ebooksPromise = getDocs(collection(db, "ebooks"));
+                let paymentsPromise = Promise.resolve(null); 
 
-        if (userId) {
-            const q = query(collection(db, "payments"), where("user_id", "==", userId));
-            paymentsPromise = getDocs(q);
+                if (userId) {
+                    const q = query(collection(db, "payments"), where("user_id", "==", userId));
+                    paymentsPromise = getDocs(q);
+                }
+
+                const [querySnapshot, paySnapshot] = await Promise.all([ebooksPromise, paymentsPromise]);
+
+                // 3. Process Fresh Ebooks
+                const freshEbooks = [];
+                querySnapshot.forEach((doc) => {
+                    freshEbooks.push({ id: doc.id, ...doc.data() });
+                });
+
+                // 🔥 THE MAGIC FIX: Check if data actually changed before re-rendering
+                if (isBookDataChanged(ebooksData, freshEbooks)) {
+                    // Agar admin ne naya book dala, ya price badli, TABHI re-render hoga
+                    ebooksData = freshEbooks;
+                    localStorage.setItem("cache_ebooks_data", JSON.stringify(freshEbooks));
+                    renderGrid(true); // Smoothly update screen
+                } else {
+                    // Agar data same hai, toh cache hi update kar do (for safety) par render mat karo!
+                    localStorage.setItem("cache_ebooks_data", JSON.stringify(freshEbooks));
+                    // NO renderGrid() call here -> No Jhatka!
+                }
+
+                // 4. Process Payments background me update kar do
+                if (paySnapshot) {
+                    const userPayments = [];
+                    paySnapshot.forEach((doc) => {
+                        userPayments.push({ id: doc.id, ...doc.data() });
+                    });
+                    localStorage.setItem(`cache_payments_${userId}_data`, JSON.stringify(userPayments));
+                }
+
+            } catch (error) {
+                console.error("Firebase error:", error);
+                if (!cachedDataStr) window.showToast("Network Error loading books", "error");
+            }
         }
-
-        // Dono ka ek saath intezaar karo
-        const [querySnapshot, paySnapshot] = await Promise.all([ebooksPromise, paymentsPromise]);
-
-        // 1. Process Ebooks
-        const freshEbooks = [];
-        querySnapshot.forEach((doc) => {
-            freshEbooks.push({ id: doc.id, ...doc.data() });
-        });
-
-        ebooksData = freshEbooks;
-        localStorage.setItem("cache_ebooks_data", JSON.stringify(freshEbooks));
-        renderGrid(true);
-
-        // 2. Process Payments (Bina extra wait kiye)
-        if (paySnapshot) {
-            const userPayments = [];
-            paySnapshot.forEach((doc) => {
-                userPayments.push({ id: doc.id, ...doc.data() });
-            });
-            localStorage.setItem(`cache_payments_${userId}_data`, JSON.stringify(userPayments));
-        }
-
-    } catch (error) {
-        console.error("Firebase error:", error);
-        if (!cachedDataStr) window.showToast("Network Error loading books", "error");
-    }
-}
-
 
         // ✅ FILTER & RENDER LOGIC
+        let currentCatFilter = 'all'; // Naya variable category ke liye
+
         window.toggleFilterMenu = function(type) {
             const priceBtn = document.getElementById('price-dropdown-btn');
             const langBtn = document.getElementById('lang-dropdown-btn');
+            const catBtn = document.getElementById('cat-dropdown-btn'); // Naya button
             
+            // Jo click kiya hai usko toggle karo, baaki dono ko band karo
             if (type === 'price') {
                 priceBtn.classList.toggle('open');
                 langBtn.classList.remove('open');
-            } else {
+                catBtn.classList.remove('open');
+            } else if (type === 'lang') {
                 langBtn.classList.toggle('open');
                 priceBtn.classList.remove('open');
+                catBtn.classList.remove('open');
+            } else if (type === 'cat') {
+                catBtn.classList.toggle('open');
+                priceBtn.classList.remove('open');
+                langBtn.classList.remove('open');
             }
         }
 
@@ -792,9 +892,12 @@ window.executeChangePassword = async function() {
             if (!e.target.closest('.custom-filter')) {
                 document.getElementById('price-dropdown-btn').classList.remove('open');
                 document.getElementById('lang-dropdown-btn').classList.remove('open');
+                const catBtn = document.getElementById('cat-dropdown-btn');
+                if(catBtn) catBtn.classList.remove('open');
             }
             if (!e.target.closest('.search-container')) {
-                document.getElementById('search-dropdown').classList.remove('active');
+                const searchDropdown = document.getElementById('search-dropdown');
+                if(searchDropdown) searchDropdown.classList.remove('active');
             }
         });
 
@@ -802,14 +905,10 @@ window.executeChangePassword = async function() {
             event.stopPropagation();
             currentPriceFilter = value;
             document.getElementById('price-label').innerText = label;
-            
             document.querySelectorAll('#price-options .f-option').forEach(el => el.classList.remove('selected'));
             event.currentTarget.classList.add('selected');
-            
             const btn = document.getElementById('price-dropdown-btn');
-            if(value !== 'all') btn.classList.add('active-filter');
-            else btn.classList.remove('active-filter');
-
+            if(value !== 'all') btn.classList.add('active-filter'); else btn.classList.remove('active-filter');
             window.toggleFilterMenu('price');
             renderGrid(true);
         }
@@ -818,15 +917,24 @@ window.executeChangePassword = async function() {
             event.stopPropagation();
             currentLangFilter = value;
             document.getElementById('lang-label').innerText = label;
-            
             document.querySelectorAll('#lang-options .f-option').forEach(el => el.classList.remove('selected'));
             event.currentTarget.classList.add('selected');
-
             const btn = document.getElementById('lang-dropdown-btn');
-            if(value !== 'all') btn.classList.add('active-filter');
-            else btn.classList.remove('active-filter');
-
+            if(value !== 'all') btn.classList.add('active-filter'); else btn.classList.remove('active-filter');
             window.toggleFilterMenu('lang');
+            renderGrid(true);
+        }
+
+        // 🔥 NAYA CATEGORY SETTER FUNCTION 🔥
+        window.setCatFilter = function(value, label, event) {
+            event.stopPropagation();
+            currentCatFilter = value;
+            document.getElementById('cat-label').innerText = label;
+            document.querySelectorAll('#cat-options .f-option').forEach(el => el.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
+            const btn = document.getElementById('cat-dropdown-btn');
+            if(value !== 'all') btn.classList.add('active-filter'); else btn.classList.remove('active-filter');
+            window.toggleFilterMenu('cat');
             renderGrid(true);
         }
 
@@ -836,28 +944,33 @@ window.executeChangePassword = async function() {
             const loadMoreBtn = document.getElementById("load-more-btn");
             if (reset) grid.innerHTML = "";
 
-// 🔥 YEH NAYI LINE ADD KARNI HAI (Books ko number wise lagane ke liye) 🔥
             ebooksData.sort((a, b) => (a.sort_order || 999) - (b.sort_order || 999));
 
             let filteredBooks = ebooksData.filter(eb => {
+                // 1. Price Check
                 const isFree = String(eb.is_free) === "true";
                 let passPrice = true;
                 if (currentPriceFilter === 'free') passPrice = isFree;
                 if (currentPriceFilter === 'premium') passPrice = !isFree;
 
+                // 2. Language Check
                 let passLang = true;
                 if (currentLangFilter !== 'all') {
                     const langData = eb.language || 'none';
-                    let bookLangs = [];
-                    if (Array.isArray(langData)) {
-                        bookLangs = langData.map(l => l.toLowerCase().trim());
-                    } else {
-                        bookLangs = String(langData).split(',').map(l => l.toLowerCase().trim());
-                    }
+                    let bookLangs = Array.isArray(langData) ? langData.map(l => l.toLowerCase().trim()) : String(langData).split(',').map(l => l.toLowerCase().trim());
                     passLang = bookLangs.includes(currentLangFilter.toLowerCase());
                 }
 
-                return passPrice && passLang;
+                // 🔥 3. NAYA CATEGORY CHECK 🔥
+                let passCat = true;
+                if (currentCatFilter !== 'all') {
+                    const catData = eb.category || 'none';
+                    let bookCats = Array.isArray(catData) ? catData.map(c => c.toLowerCase().trim()) : String(catData).split(',').map(c => c.toLowerCase().trim());
+                    passCat = bookCats.includes(currentCatFilter.toLowerCase());
+                }
+
+                // Teeno conditions pass hongi tabhi book dikhegi
+                return passPrice && passLang && passCat;
             });
 
             if (filteredBooks.length === 0) {
@@ -865,9 +978,9 @@ window.executeChangePassword = async function() {
                     <div class="empty-state">
                         <i class="fas fa-folder-open"></i>
                         <h4>No books available</h4>
-                        <p>We couldn't find any books in this category right now.</p>
+                        <p>We couldn't find any books matching your filters right now.</p>
                     </div>`;
-                loadMoreBtn.classList.add("hidden");
+                if(loadMoreBtn) loadMoreBtn.classList.add("hidden");
                 return; 
             }
 
@@ -890,7 +1003,7 @@ window.executeChangePassword = async function() {
                 </div>`;
             });
 
-            loadMoreBtn.classList.toggle("hidden", filteredBooks.length <= endIndex);
+            if(loadMoreBtn) loadMoreBtn.classList.toggle("hidden", filteredBooks.length <= endIndex);
         }
 
         window.loadMoreBooks = function() {
@@ -902,7 +1015,7 @@ window.executeChangePassword = async function() {
             const selectedBook = ebooksData.find(e => String(e.id) === String(id));
             if(selectedBook) {
                 sessionStorage.setItem('selected_book_data', JSON.stringify(selectedBook));
-                window.location.href = 'books/';
+                window.location.href = 'books/index.html';
             }
         }
 
@@ -925,15 +1038,29 @@ window.executeChangePassword = async function() {
             const q = query.toLowerCase().trim();
             const searchTerms = q.split(/\s+/); 
 
+            // 🔥 SMART MEGA-STRING FILTER LOGIC 🔥
             const results = ebooksData.filter(eb => {
-                const title = eb.title.toLowerCase();
-                const desc = eb.description ? eb.description.toLowerCase() : "";
-                return searchTerms.every(term => title.includes(term) || desc.includes(term));
+                // 1. Check book is free or premium and assign keywords
+                const isFree = String(eb.is_free) === "true";
+                const priceKeywords = isFree ? "free muft no cost" : "paid premium buy price";
+
+                // 2. Book ki saari details ko ek lambi string mein jod do (Kundali)
+                const megaString = `
+                    ${eb.title || ''} 
+                    ${eb.description || ''} 
+                    ${eb.category || ''} 
+                    ${eb.language || ''} 
+                    ${priceKeywords}
+                `.toLowerCase();
+
+                // 3. User ne jitne bhi words likhe hain, wo SAARE is megaString mein hone chahiye
+                return searchTerms.every(term => megaString.includes(term));
             });
             
             dropdown.innerHTML = "";
             if (results.length > 0) {
                 dropdown.classList.add("active");
+                // Max 6 results dikhane ka logic same rakha hai
                 results.slice(0, 6).forEach(eb => {
                     dropdown.innerHTML += `
                         <div class="search-item" onclick="window.openDetail('${eb.id}')">
@@ -948,6 +1075,64 @@ window.executeChangePassword = async function() {
                 dropdown.classList.remove("active");
             }
         }
+
+        // ✅ USER PANEL: Firebase se Master Categories aur Languages laakar dropdown me add karna
+        document.addEventListener("DOMContentLoaded", async () => {
+            try {
+                // Firebase Firestore import karo
+                const { getFirestore, doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
+                const dbInstance = getFirestore();
+                const docRef = doc(dbInstance, "settings", "app_data");
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+
+                    // 1. Nayi Categories Dropdown mein add karo
+                    if (data.categories) {
+                        const catContainer = document.getElementById('cat-options');
+                        if (catContainer) {
+                            data.categories.forEach(cat => {
+                                const lowerCat = cat.toLowerCase();
+                                // Check karo ki ye category pehle se HTML mein to nahi hai
+                                const exists = Array.from(catContainer.children).some(el => el.innerText.trim().toLowerCase() === lowerCat);
+                                
+                                if (!exists) {
+                                    const newDiv = document.createElement('div');
+                                    newDiv.className = 'f-option';
+                                    newDiv.innerText = cat; // Label jo user ko dikhega
+                                    newDiv.onclick = (e) => window.setCatFilter(lowerCat, cat, e);
+                                    catContainer.appendChild(newDiv);
+                                }
+                            });
+                        }
+                    }
+
+                    // 2. Nayi Languages Dropdown mein add karo
+                    if (data.languages) {
+                        const langContainer = document.getElementById('lang-options');
+                        if (langContainer) {
+                            data.languages.forEach(lang => {
+                                const lowerLang = lang.toLowerCase();
+                                // Check karo ki ye language pehle se HTML mein to nahi hai
+                                const exists = Array.from(langContainer.children).some(el => el.innerText.trim().toLowerCase() === lowerLang);
+                                
+                                if (!exists) {
+                                    const newDiv = document.createElement('div');
+                                    newDiv.className = 'f-option';
+                                    newDiv.innerText = lang; // Label jo user ko dikhega
+                                    newDiv.onclick = (e) => window.setLangFilter(lowerLang, lang, e);
+                                    langContainer.appendChild(newDiv);
+                                }
+                            });
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error("User Panel Master Tags Load Error:", error);
+            }
+        });
+
     </script>
 </body>
 </html>
