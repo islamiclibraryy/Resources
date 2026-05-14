@@ -3,21 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Login - Islamic Library by Shekh</title>
+    <meta name="robots" content="noindex, nofollow">
 
-    <meta name="description" content="Islamic Library by Shekh – Download Islamic eBooks, Quran PDFs, and Hadith books.">
-    <meta name="keywords" content="Islamic Library by Shekh, Islamic ebooks, Quran PDF, Hadith books">
-    <meta name="author" content="Islamic Library by Shekh">
+    <title>Login to Your Account | Islamic Library by Shekh</title>
+    <meta name="title" content="Login to Your Account | Islamic Library by Shekh">
+    <meta name="description" content="Sign in to your Islamic Library by Shekh account to manage your purchased eBooks and explore our full collection of Islamic resources.">
+    <meta name="keywords" content="Islamic Library login, user account, sign in, member access">
 
     <link rel="icon" type="image/png" sizes="32x32" href="/icons/hikmahlogo.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/icons/hikmahlogo.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/icons/hikmahlogo.png">
 
-    <meta property="og:title" content="Islamic Library by Shekh">
-    <meta property="og:description" content="Free & Paid Islamic eBooks, Quran PDFs, Hadith books available.">
-    <meta property="og:image" content="https://mysite.github.io/Resources/hikmahlogo.png">
-    <meta property="og:url" content="https://mysite.github.io/Resources/">
     <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mysite.pages.dev/login/">
+    <meta property="og:title" content="Login to Your Account | Islamic Library by Shekh">
+    <meta property="og:description" content="Sign in to access your personal Islamic eBook collection.">
+    <meta property="og:image" content="https://mysite.pages.dev/icons/hikmahlogo.png">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:url" content="https://mysite.pages.dev/login/">
+    <meta name="twitter:title" content="Login to Your Account | Islamic Library by Shekh">
+    <meta name="twitter:description" content="Sign in to access your personal Islamic eBook collection.">
+    <meta name="twitter:image" content="https://mysite.pages.dev/icons/hikmahlogo.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
@@ -116,7 +123,7 @@
         .auth-card { background: var(--surface); padding: 32px 28px; border-radius: var(--r3); width: 100%; max-width: 400px; box-shadow: 0 2px 10px rgba(0,0,0,0.5); border: 1px solid var(--border); text-align: center; animation: cardIn .5s ease both; transition: var(--transition); position: relative; }
         .auth-card:hover { border-color: var(--border2); }
         
-        .help-badge { position: absolute; top: 15px; right: 15px; background: var(--glow2); color: var(--accent2); border: 1px solid var(--border); padding: 6px 12px; border-radius: 99px; font-size: 0.67rem; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 6px; transition: var(--transition); z-index: 10; }
+        .help-badge { position: absolute; top: 15px; right: 15px; background: var(--glow2); color: var(--accent2); border: 1px solid var(--border); padding: 6px 12px; border-radius: 99px; font-size: 0.55rem; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 6px; transition: var(--transition); z-index: 10; }
         .help-badge:hover { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: 0 4px 15px var(--glow); transform: translateY(-2px); }
 
         /* ===== 3 INITIAL GATEWAY BUTTONS ===== */
@@ -241,6 +248,44 @@
             }
         }
 
+        /* 🔥 BACK TO HOME BUTTON CSS 🔥 */
+        .back-home-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-size: 0.55rem;
+            font-weight: 600;
+            color: var(--accent2);
+            text-decoration: none;
+            background: var(--glow2);
+            padding: 6px 12px;
+            border-radius: 99px;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            z-index: 10;
+        }
+        .back-home-badge:hover {
+            color: #fff; /* Hover par tera main theme color aayega */
+            border-color: var(--accent);
+            background: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px var(--glow);
+        }
+        
+        /* Desktop & Tablet View Scaling */
+        @media (min-width: 768px) {
+            .back-home-badge {
+                font-size: 1rem;
+                padding: 12px 20px;
+                top: 30px;
+                left: 30px;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -289,8 +334,12 @@
 
     <div id="auth-views">
     <div id="initial-options-view" class="auth-container">
-        <div class="auth-card">
+        <div class="auth-card" style="position: relative;">
+            
+            <a href="/" class="back-home-badge" title="Back to Home"><i class="fas fa-arrow-left"></i> Home</a>
+            
             <a href="/login/support/" class="help-badge" title="Need Help?"><i class="fas fa-headset"></i> Help</a>
+            
             <div class="bismillah" style="margin-bottom: 16px;">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
             <h2 style="margin-bottom: 6px;">Welcome to Library</h2>
             <p style="color: var(--text2); font-size: .85rem; margin-bottom: 24px;">Choose how you want to continue</p>
