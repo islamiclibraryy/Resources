@@ -741,7 +741,9 @@ window.loginWithGoogle = async function(btnId) {
 
                 localStorage.setItem("islamic_user_id", uid); 
                 localStorage.setItem("islamic_user_mobile", inputValue); 
-                
+                // Naye login par purani photo ka kachra saaf kar do
+                localStorage.removeItem("islamic_user_photo"); 
+
                 window.showToast("Login Successful! Redirecting..."); 
                 
                 // 🚀 FAST REDIRECT: 800ms se 150ms
@@ -801,7 +803,9 @@ window.loginWithGoogle = async function(btnId) {
                 localStorage.setItem("islamic_user_id", user.uid); 
                 localStorage.setItem("islamic_user_name", nameVal); 
                 localStorage.setItem("islamic_user_mobile", inputVal); 
-                
+                // Naye login par purani photo ka kachra saaf kar do
+                localStorage.removeItem("islamic_user_photo"); 
+
                 window.startCooldown('signup-btn', 'cooldown_signup', 'Sign Up ✦');
                 window.showToast("Account Created! Redirecting..."); 
                 
