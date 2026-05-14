@@ -378,36 +378,56 @@
             -webkit-font-smoothing: antialiased; 
         }
 /* ========================================================
-   🔥 UNIVERSAL RESPONSIVE FIX (FOR ALL PHONES UP TO 767px) 🔥
+   🔥 TRULY RESPONSIVE UNIVERSAL MOBILE FIX (UP TO 767px) 🔥
    ======================================================== */
 @media screen and (max-width: 767px) {
     
-    /* 1. Filters ke beech ka gap mobile ke hisab se set kiya */
+    /* Filters container ka gap tight rakha taaki teeno samane aa sakein */
     .filters-wrapper { 
-        gap: 8px !important; 
+        gap: 6px !important; 
         margin-bottom: 20px !important;
+        display: flex !important;
     }
     
-    /* 2. Padding aur font-size ko optimize kiya aur text wrap block kiya */
+    /* Main filter box setup */
     .custom-filter { 
-        padding: 10px 10px !important; 
-        font-size: 0.78rem !important; /* Sabhi bade/chhote mobiles ke liye best size */
-        border-radius: 10px !important;
+        position: relative;
+        flex: 1 !important; 
         
-        /* ❌ TEXT KO DO LINE MEIN TOOTNE SE ROKEGA (NO WRAP) */
+        /* 🔥 THE MAGIC LINE: Yeh dabba ko lamba hokar side me ghusne se rokega */
+        min-width: 0 !important; 
+        
+        padding: 12px 6px !important; /* Mobile ke liye padding balanced ki */
+        font-size: 0.76rem !important; 
+        border-radius: 12px !important; 
         white-space: nowrap !important; 
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
     }
 
-    /* Chevron arrow icon ko chhota aur adjust kiya */
+    /* 🔥 DYNAMIC SMART ELLIPSIS: Roman Urdu poora dikhega, par jo bohot lamba hoga sirf wahi dot-dot hoga */
+    .custom-filter span {
+        display: inline-block !important;
+        max-width: calc(100% - 12px) !important; /* Dabba ki width ke andar hi text ko simat kar rakhega */
+        overflow: hidden !important;
+        text-overflow: ellipsis !important; 
+        white-space: nowrap !important;
+        vertical-align: middle !important;
+    }
+
+    /* Chevron arrow icon adjustment */
     .custom-filter .fa-chevron-down {
-        font-size: 0.65rem !important;
-        margin-left: 4px !important; /* Icon aur text me thodi si safe doori */
+        font-size: 0.6rem !important;
+        margin-left: 2px !important;
+        flex-shrink: 0 !important; /* Arrow ko pichakne se rokega */
     }
     
-    /* 3. Dropdown options ka text bhi mobile ke liye responsive kiya */
+    /* Dropdown options view */
     .f-option {
         padding: 12px 14px !important;
-        font-size: 0.8rem !important;
+        font-size: 0.82rem !important;
+        white-space: normal !important; /* Dropdown me poora naam break hokar dikhega */
     }
 }
 
