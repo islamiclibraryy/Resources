@@ -380,7 +380,17 @@
             const loginPath = '/login/';
 
             if (userId) {
-                document.getElementById("profile-avatar-icon").className = "fas fa-user"; 
+                        // 🔥 Naya Avatar Logic start
+        const avatarContainer = document.querySelector(".drawer-avatar");
+        const cachedPhoto = localStorage.getItem("islamic_user_photo");
+
+        if (cachedPhoto && cachedPhoto !== "null") {
+            avatarContainer.innerHTML = `<img src="${cachedPhoto}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" onerror="this.outerHTML='<i id=\\'profile-avatar-icon\\' class=\\'fas fa-user\\'></i>'">`;
+        } else {
+            avatarContainer.innerHTML = `<i id="profile-avatar-icon" class="fas fa-user"></i>`;
+        }
+        // 🔥 Naya Avatar Logic end
+ 
                 // Agar User Logged in hai
                 let cachedName = localStorage.getItem("islamic_user_name");
                 document.getElementById("profile-name").innerText = cachedName || "Library User";
