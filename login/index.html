@@ -666,14 +666,20 @@ window.loginWithGoogle = async function(btnId) {
         const userRef = doc(db, "users", user.uid);
         const userSnap = await getDoc(userRef);
 
+        // 🔥 FIX: Agar user naya hai toh setDoc, agar purana hai toh photo update karo
         if (!userSnap.exists()) {
             await setDoc(userRef, {
                 uid: user.uid,
                 name: user.displayName || "Google User",
                 loginType: 'google',
                 displayId: user.email,
-                photoURL: user.photoURL || null, // 🔥 NAYA CHANGE 1: Database mein bhi photo link save kar diya (Future ke liye acha hai)
+                photoURL: user.photoURL || null, 
                 createdAt: new Date().toISOString()
+            });
+        } else {
+            // Agar user pehle se hai, toh uski photo update kar do (taki Email login mein dikhe)
+            await updateDoc(userRef, {
+                photoURL: user.photoURL || null
             });
 
             try {
@@ -733,16 +739,28 @@ window.loginWithGoogle = async function(btnId) {
                 const userCredential = await signInWithEmailAndPassword(auth, firebaseEmail, password);
                 const uid = userCredential.user.uid;
                 
-                // SECURE CHECK: Yahan naam laya jaayega
+                // SECURE CHECK: Yahan naam aur photo dono laye jayenge
                 try {
                     const userDoc = await getDoc(doc(db, "users", uid));
-                    if (userDoc.exists() && userDoc.data().name) localStorage.setItem("islamic_user_name", userDoc.data().name);
-                } catch(err) { console.log("Name fetch error on login"); }
+                    if (userDoc.exists()) {
+                        const data = userDoc.data();
+                        if (data.name) localStorage.setItem("islamic_user_name", data.name);
+                        
+                        // 🔥 NAYA JUGAAAD: Database check karo ki photo hai ya nahi
+                        if (data.photoURL) {
+                            localStorage.setItem("islamic_user_photo", data.photoURL); // Photo mil gayi toh save karo
+                        } else {
+                            localStorage.removeItem("islamic_user_photo"); // Photo nahi mili toh catch saaf karo
+                        }
+                    }
+                } catch(err) { 
+                    console.log("Data fetch error on login"); 
+                    localStorage.removeItem("islamic_user_photo"); // Error aane par bhi kachra saaf kar do
+                }
 
                 localStorage.setItem("islamic_user_id", uid); 
                 localStorage.setItem("islamic_user_mobile", inputValue); 
-                // Naye login par purani photo ka kachra saaf kar do
-                localStorage.removeItem("islamic_user_photo"); 
+                // Niche se wo akela 'removeItem' wali line HATA DENA, kyunki ab humne usko upar intelligently handle kar liya hai.
 
                 window.showToast("Login Successful! Redirecting..."); 
                 
