@@ -378,32 +378,36 @@
             -webkit-font-smoothing: antialiased; 
         }
 /* ========================================================
-   🔥 CHHOTE MOBILE KE LIYE DYNAMIC SCROLLING & FONT FIX 🔥
+   🔥 UNIVERSAL RESPONSIVE FIX (FOR ALL PHONES UP TO 767px) 🔥
    ======================================================== */
-@media screen and (max-width: 380px) {
+@media screen and (max-width: 767px) {
     
-    /* 1. Filters ke beech ka gap thoda kam kiya taaki jagah bache */
+    /* 1. Filters ke beech ka gap mobile ke hisab se set kiya */
     .filters-wrapper { 
-        gap: 6px !important; 
-        margin-bottom: 16px !important;
+        gap: 8px !important; 
+        margin-bottom: 20px !important;
     }
     
-    /* 2. Dabbo ki padding aur font size ko chhota kiya taaki text na toote */
+    /* 2. Padding aur font-size ko optimize kiya aur text wrap block kiya */
     .custom-filter { 
-        padding: 10px 8px !important; 
-        font-size: 0.74rem !important; /* Font size halka chhota kiya */
-        border-radius: 8px !important;
+        padding: 10px 10px !important; 
+        font-size: 0.78rem !important; /* Sabhi bade/chhote mobiles ke liye best size */
+        border-radius: 10px !important;
+        
+        /* ❌ TEXT KO DO LINE MEIN TOOTNE SE ROKEGA (NO WRAP) */
+        white-space: nowrap !important; 
     }
 
-    /* Chevron icon ko thoda chhota aur chipka hua kiya */
+    /* Chevron arrow icon ko chhota aur adjust kiya */
     .custom-filter .fa-chevron-down {
         font-size: 0.65rem !important;
+        margin-left: 4px !important; /* Icon aur text me thodi si safe doori */
     }
     
-    /* 3. Dropdown ke andar ke options ka text aur padding bhi scale kiya */
+    /* 3. Dropdown options ka text bhi mobile ke liye responsive kiya */
     .f-option {
-        padding: 10px 12px !important;
-        font-size: 0.78rem !important;
+        padding: 12px 14px !important;
+        font-size: 0.8rem !important;
     }
 }
 
