@@ -377,6 +377,35 @@
             /* Ye text aur border ko animation ke time blur hone se rokta hai */
             -webkit-font-smoothing: antialiased; 
         }
+/* ========================================================
+   🔥 CHHOTE MOBILE KE LIYE DYNAMIC SCROLLING & FONT FIX 🔥
+   ======================================================== */
+@media screen and (max-width: 380px) {
+    
+    /* 1. Filters ke beech ka gap thoda kam kiya taaki jagah bache */
+    .filters-wrapper { 
+        gap: 6px !important; 
+        margin-bottom: 16px !important;
+    }
+    
+    /* 2. Dabbo ki padding aur font size ko chhota kiya taaki text na toote */
+    .custom-filter { 
+        padding: 10px 8px !important; 
+        font-size: 0.74rem !important; /* Font size halka chhota kiya */
+        border-radius: 8px !important;
+    }
+
+    /* Chevron icon ko thoda chhota aur chipka hua kiya */
+    .custom-filter .fa-chevron-down {
+        font-size: 0.65rem !important;
+    }
+    
+    /* 3. Dropdown ke andar ke options ka text aur padding bhi scale kiya */
+    .f-option {
+        padding: 10px 12px !important;
+        font-size: 0.78rem !important;
+    }
+}
 
     </style>
 </head>
