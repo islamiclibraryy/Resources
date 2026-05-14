@@ -658,7 +658,7 @@ window.loginWithGoogle = async function(btnId) {
     try {
         const result = await signInWithPopup(auth, googleProvider);
         
-        // 🎉 SUCCESS MILITY HI TIMER CLEAR KARO
+        // 🎉 SUCCESS MILTE HI TIMER CLEAR KARO
         if (googleAuthTimeout) clearTimeout(googleAuthTimeout);
         window.removeEventListener('focus', window.handleGoogleFocus);
 
@@ -672,6 +672,7 @@ window.loginWithGoogle = async function(btnId) {
                 name: user.displayName || "Google User",
                 loginType: 'google',
                 displayId: user.email,
+                photoURL: user.photoURL || null, // 🔥 NAYA CHANGE 1: Database mein bhi photo link save kar diya (Future ke liye acha hai)
                 createdAt: new Date().toISOString()
             });
 
@@ -683,6 +684,9 @@ window.loginWithGoogle = async function(btnId) {
         localStorage.setItem("islamic_user_id", user.uid);
         localStorage.setItem("islamic_user_name", userSnap.exists() && userSnap.data().name ? userSnap.data().name : (user.displayName || "Google User"));
         localStorage.setItem("islamic_user_mobile", user.email);
+        
+        // 🔥 NAYA CHANGE 2: Local Storage mein photo link save kar liya (Drawer isko use karega)
+        localStorage.setItem("islamic_user_photo", user.photoURL); 
 
         window.showToast("Google Login Successful!");
         setTimeout(() => { window.location.href = '/'; }, 200);
@@ -706,7 +710,6 @@ window.loginWithGoogle = async function(btnId) {
         }
     }
 };
-
 
         // ✅ LOGIN (FIREBASE)
         document.getElementById("loginForm").addEventListener("submit", async (e) => {
