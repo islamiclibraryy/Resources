@@ -776,8 +776,8 @@ window.executeChangePassword = async function() {
             if(userId) { localStorage.removeItem(`cache_payments_${userId}_data`); localStorage.removeItem(`cache_payments_${userId}_time`); }
             localStorage.removeItem("islamic_user_id"); localStorage.removeItem("islamic_user_name"); localStorage.removeItem("islamic_user_mobile");
             localStorage.removeItem("islamic_user_photo");
-            signOut(auth).then(() => { if(redirect) window.location.href = "/login/"; })
-                         .catch(() => { if(redirect) window.location.href = "/login/"; });
+            signOut(auth).then(() => { if(redirect) window.location.href = "/books/"; })
+                         .catch(() => { if(redirect) window.location.href = "/books/"; });
         };
 
         window.shareBook = function() {
