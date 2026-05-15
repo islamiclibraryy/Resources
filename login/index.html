@@ -327,10 +327,22 @@
         </div>
     </div>
     <div class="flex align-center" style="gap: 20px;">
-        <i id="theme-toggle-icon" class="fas fa-moon" style="font-size: 1.2rem; color: var(--text2); cursor: pointer;" onclick="window.toggleTheme()"></i>
-        <i class="fas fa-user-circle" style="font-size: 1.3rem; color: var(--text2); cursor: pointer;" onclick="window.openProfileDrawer()"></i>
+        <i id="theme-toggle-icon" class="fas fa-moon" style="font-size: 1.2rem; color: var(--text2); cursor: pointer;" onclick="window.toggleTheme()" title="Switch Theme"></i>
+
+<i class="fas fa-user-circle" style="font-size: 1.3rem; color: var(--text2); cursor: pointer;" onclick="window.openProfileDrawer()" title="Profile"></i>
     </div>
 </header>
+
+        <script>
+            (function() {
+                const currentTheme = localStorage.getItem('islamic_theme') || 'dark';
+                const icon = document.getElementById("theme-toggle-icon");
+                if(icon) {
+                    // Agar light theme hai toh direct Sun laga do, Moon dikhne hi mat do
+                    icon.className = currentTheme === "light" ? "fas fa-sun" : "fas fa-moon";
+                }
+            })();
+        </script>
 
     <div id="auth-views">
     <div id="initial-options-view" class="auth-container">
@@ -836,6 +848,39 @@ window.loginWithGoogle = async function(btnId) {
                 btn.disabled = false; btn.innerHTML = `Sign Up ✦`;
             }
         });
+
+// 🔥 THE BFCache FIX FOR LOGIN/SIGNUP PAGE 🔥
+// Jab user mobile ka Back button dabakar logout hoke wapas aayega, ye chalega
+window.addEventListener("pageshow", (event) => {
+    if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+        
+        // 1. Dono forms ke inputs ko khali (reset) kar do
+        const loginForm = document.getElementById("loginForm");
+        if (loginForm) loginForm.reset();
+
+        const signupForm = document.getElementById("signupForm");
+        if (signupForm) signupForm.reset();
+
+        // 2. Normal Login Button ko wapas theek karo
+        const loginBtn = document.getElementById("login-btn");
+        if (loginBtn) {
+            loginBtn.disabled = false;
+            loginBtn.innerHTML = `Login ✦`;
+        }
+
+        // 3. Google Button ko theek karo 
+        // (Maine smartly wo button dhoondhne ka code likha hai jisme 'loginWithGoogle' call hota hai)
+        const googleBtn = document.querySelector("[onclick*='loginWithGoogle']");
+        if (googleBtn) {
+            googleBtn.disabled = false;
+            googleBtn.innerHTML = `<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google"> <span>Continue with Google</span>`;
+        }
+
+        // ⚠️ NOTE: Humne Signup button ("signup-btn") ko jaan-boojh kar nahi chheda hai! 
+        // Isse tumhara form toh zero se khali ho jayega, par jo 'startCooldown' wali 
+        // seconds chal rahi thi, wo bina atke chalti rahegi.
+    }
+});
 
         // ✅ RESET SUBMIT (FIREBASE)
         document.getElementById("resetForm").addEventListener("submit", async (e) => {
