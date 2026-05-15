@@ -3,21 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Book Details - Islamic Library by Shekh</title>
 
-    <meta name="description" content="Islamic Library by Shekh – Download Islamic eBooks, Quran PDFs, and Hadith books. A free and premium Islamic digital library.">
-    <meta name="keywords" content="Islamic Library by Shekh, Islamic ebooks, Quran PDF, Hadith books">
-    <meta name="author" content="Islamic Library by Shekh">
+    <title>Download & Purchase Islamic eBooks | Islamic Library by Shekh</title>
+    <meta name="title" content="Download & Purchase Islamic eBooks | Islamic Library by Shekh">
+    <meta name="description" content="Get full access to your favorite Islamic eBooks. View details, read descriptions, and download or purchase premium collections instantly. Start your journey with Islamic Library by Shekh.">
+    <meta name="keywords" content="Download Islamic Books, Buy Islamic eBooks, Quran PDF Download, Premium Islamic Resources, Islamic Library by Shekh Books">
 
-    <link rel="icon" type="image/png" sizes="32x32" href="../hikmahlogo.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="../hikmahlogo.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="../hikmahlogo.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/hikmahlogo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/hikmahlogo.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/hikmahlogo.png">
 
-    <meta property="og:title" content="Islamic Library by Shekh">
-    <meta property="og:description" content="Free & Paid Islamic eBooks, Quran PDFs, Hadith books available.">
-    <meta property="og:image" content="https://mysite.github.io/Resources/hikmahlogo.png">
-    <meta property="og:url" content="https://mysite.github.io/Resources/">
     <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mysite.pages.dev/books/">
+    <meta property="og:title" content="Download & Purchase Islamic eBooks | Islamic Library by Shekh">
+    <meta property="og:description" content="View book details and download or purchase authentic Islamic eBooks directly from our library.">
+    <meta property="og:image" content="https://mysite.pages.dev/icons/hikmahlogo.png">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:url" content="https://mysite.pages.dev/books/">
+    <meta name="twitter:title" content="Download & Purchase Islamic eBooks | Islamic Library by Shekh">
+    <meta name="twitter:description" content="View book details and download or purchase authentic Islamic eBooks directly from our library.">
+    <meta name="twitter:image" content="https://mysite.pages.dev/icons/hikmahlogo.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
@@ -25,10 +31,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script>
-        if (!localStorage.getItem("islamic_user_id") || !sessionStorage.getItem("selected_book_data")) {
-            window.location.replace("../login/");
+        // Sirf tab redirect karo jab user ne koi book select na ki ho (Direct URL visit)
+        if (!sessionStorage.getItem("selected_book_data")) {
+            window.location.replace("/");
         }
     </script>
+
 
     <script>
         (function() {
@@ -107,6 +115,11 @@
         .modal-actions button { flex: 1; padding: 12px; font-size: 0.9rem; }
         .btn-danger { background: rgba(244, 63, 94, 0.1); color: var(--danger); border: 1px solid rgba(244, 63, 94, 0.3); }
         .btn-danger:hover { background: var(--danger); color: #fff; box-shadow: 0 4px 20px rgba(244, 63, 94, 0.4); }
+        /* 🔥 Change Password Modal Button Wrap Fix 🔥 */
+        .modal-actions .btn {
+            white-space: normal !important; /* Nowak override kiya taki wrap ho sake */
+            flex-direction: row !important; /* Stacking override kiya taki natural wrap safe ho sake */
+        }
 
         /* ===== SKELETON LOADERS ===== */
         .skeleton { background: linear-gradient(90deg, var(--surface3) 25%, var(--surface2) 50%, var(--surface3) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite linear; border-radius: 4px; }
@@ -143,6 +156,27 @@
 .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(124,106,247,0.5); } 
 .btn:hover::before { opacity: 1; } 
 .btn:active { transform: translateY(0) scale(0.98); }
+        /* 🔥 UNIVERSAL OUTLINE BUTTON GLOW FIX (Sabhi pages ke liye) 🔥 */
+        .btn-outline { 
+            background: transparent; 
+            color: var(--text2); 
+            border: 1px solid var(--border2); 
+            padding: 10px 20px; 
+            border-radius: 99px; 
+            font-weight: 500; 
+            font-size: .85rem; 
+            transition: var(--transition); 
+            cursor: pointer; 
+            /* Yahan se 'box-shadow: none;' permanently hata diya gaya hai taaki original glow aaye */
+        }
+        
+        .btn-outline:hover { 
+            border-color: var(--accent); 
+            color: var(--accent2); 
+            background: var(--glow2); 
+            transform: translateY(-2px); /* Hover par thoda sa upar uthega */
+            box-shadow: 0 8px 30px rgba(124, 106, 247, 0.4); /* 🔥 Ekdum premium hover glow 🔥 */
+        }
 
         /* ✅ FIXED HEADER - EXACT MATCH */
         header { 
@@ -200,7 +234,14 @@
         
         .drawer-menu .btn-outline { width: 100%; text-align: left; padding: 14px 20px; margin-bottom: 12px; display: flex; align-items: center; gap: 12px; font-size: 0.95rem; border-color: var(--border); }
         .drawer-menu .btn-outline i { width: 20px; text-align: center; font-size: 1.1rem; }
-        
+                /* 🔥 Sidebar Pill Button Left Alignment Fix 🔥 */
+        .drawer-menu .btn-outline {
+            justify-content: flex-start !important; /* pill shaped button elements specific left align overwrites safe ho sake */
+            text-align: left !important;             /* specific text left align overwrite safe ho sake */
+            padding-left: 20px !important;            /* specific pill shaped button left margins override safe ho sake */
+            gap: 15px !important;                     /* key icon aur text ke beech specific specific gap overwrits safe ho sake */
+        }
+
         .drawer-footer { padding: 20px; border-top: 1px solid var(--border); flex-shrink: 0; padding-bottom: calc(20px + env(safe-area-inset-bottom)); }
 
         .price-tag { font-family: 'DM Mono', monospace; font-size: .9rem; color: var(--accent2); font-weight: 700; }
@@ -429,24 +470,26 @@
     <div id="loader" class="hidden"><div class="spinner"></div></div>
    
 
-    <div id="drawer-overlay" class="drawer-overlay" onclick="closeProfileDrawer()"></div>
+    <div id="drawer-overlay" class="drawer-overlay" onclick="window.closeProfileDrawer()"></div>
     <div id="profile-drawer" class="profile-drawer">
         <div class="drawer-header">
             <h3>My Profile</h3>
-            <i class="fas fa-times" onclick="closeProfileDrawer()"></i>
+            <i class="fas fa-times" onclick="window.closeProfileDrawer()"></i>
         </div>
         <div class="drawer-body">
-            <div class="drawer-avatar"><i class="fas fa-user"></i></div>
+            <div class="drawer-avatar"><i id="profile-avatar-icon" class="fas fa-user-shield"></i></div>
             <div class="drawer-name" id="profile-name">Library User</div>
             <div class="drawer-mobile" id="profile-mobile">+XX XXXXXXXXXX</div>
-            <div class="drawer-menu">
-                <button class="btn btn-outline" onclick="openChangePassword()"><i class="fas fa-key"></i> Change Password</button>
+            
+            <div class="drawer-menu" id="auth-actions">
+                
             </div>
         </div>
-        <div class="drawer-footer">
-            <button class="btn" style="background: rgba(244, 63, 94, 0.1); color: var(--danger); border: 1px solid rgba(244, 63, 94, 0.3); box-shadow: none;" onmouseover="this.style.background='var(--danger)'; this.style.color='#fff';" onmouseout="this.style.background='rgba(244, 63, 94, 0.1)'; this.style.color='var(--danger)';" onclick="showLogoutModal()"><i class="fas fa-sign-out-alt"></i> Log Out</button>
+        <div class="drawer-footer" id="drawer-footer">
+            
         </div>
     </div>
+
 
     <div id="confirm-modal" class="modal-overlay hidden">
         <div class="modal-box">
@@ -468,16 +511,28 @@
             </div>
         </div>
         <div class="flex align-center" style="gap: 20px;">
-            <i id="theme-toggle-icon" class="fas fa-moon" style="font-size: 1.2rem; color: var(--text2); cursor: pointer; transition: 0.3s;" onclick="toggleTheme()" title="Switch Theme"></i>
-            <i class="fas fa-user-circle" style="font-size: 1.3rem; color: var(--text2); cursor: pointer; transition: 0.3s;" onclick="openProfileDrawer()" title="Profile"></i>
+            <i id="theme-toggle-icon" class="fas fa-moon" style="font-size: 1.2rem; color: var(--text2); cursor: pointer;" onclick="window.toggleTheme()" title="Switch Theme"></i>
+
+<i class="fas fa-user-circle" style="font-size: 1.3rem; color: var(--text2); cursor: pointer;" onclick="window.openProfileDrawer()" title="Profile"></i>
         </div>
     </header>
+
+        <script>
+            (function() {
+                const currentTheme = localStorage.getItem('islamic_theme') || 'dark';
+                const icon = document.getElementById("theme-toggle-icon");
+                if(icon) {
+                    // Agar light theme hai toh direct Sun laga do, Moon dikhne hi mat do
+                    icon.className = currentTheme === "light" ? "fas fa-sun" : "fas fa-moon";
+                }
+            })();
+        </script>
 
     <div class="main-content">
         <div id="page-detail">
             <div class="detail-header">
                 <div class="flex align-center" style="gap: 16px;">
-                    <button class="back-btn" onclick="window.location.href='../'"><i class="fas fa-arrow-left"></i></button>
+                    <button class="back-btn" onclick="window.location.href='/'"><i class="fas fa-arrow-left"></i></button>
                     <h3 style="font-size: 1.2rem; margin:0;">Book Details</h3>
                 </div>
                 <button class="share-btn" onclick="shareBook()" title="Share this Book"><i class="fas fa-share-alt"></i></button>
@@ -499,9 +554,9 @@
     </div>
 
     <div id="bottom-nav" class="bottom-nav">
-        <div class="nav-item active" onclick="window.location.href='../'"><i class="fas fa-home"></i><span>Home</span></div>
-        <div class="nav-item" onclick="window.location.href='../library/'"><i class="fas fa-book-reader"></i><span>Library</span></div>
-        <a href="../info/" class="nav-item"><i class="fas fa-info-circle"></i><span>Info</span></a>
+        <div class="nav-item active" onclick="window.location.href='/'"><i class="fas fa-home"></i><span>Home</span></div>
+        <div class="nav-item" onclick="window.location.href='/library/'"><i class="fas fa-book-reader"></i><span>Library</span></div>
+        <a href="/info/" class="nav-item"><i class="fas fa-info-circle"></i><span>Info</span></a>
     </div>
 <div id="toast-container" style="z-index: 999999 !important;"></div>
 
@@ -538,9 +593,16 @@ const db = initializeFirestore(app, {
         let apiLocks = {};
         const userId = localStorage.getItem("islamic_user_id");
 
-        // ✅ BACKGROUND FIREBASE SECURITY CHECK
+        // ✅ 1. REDIRECT KILLER (Guest mode active)
         onAuthStateChanged(auth, (user) => {
-            if (!user) { window.executeLogout(true); }
+            if (!user) { 
+                // Yahan se `window.executeLogout(true)` hata diya hai. Ab koi login page par nahi fekega.
+                localStorage.removeItem("islamic_user_id");
+                localStorage.removeItem("islamic_user_name");
+                localStorage.removeItem("islamic_user_mobile");
+            } else {
+                localStorage.setItem("islamic_user_id", user.uid);
+            }
         });
 
         // ✅ UI Functions attached to window for HTML handlers
@@ -558,30 +620,56 @@ const db = initializeFirestore(app, {
             window.initTheme();
         };
 
-                window.openProfileDrawer = async function() {
-            // Drawer open karo
+                 // ✅ 2. SIDEBAR / DRAWER FIX (Guest + Shield Icon)
+        window.openProfileDrawer = async function() {
             document.getElementById("drawer-overlay").classList.add("active");
             document.getElementById("profile-drawer").classList.add("active");
             document.body.style.overflow = 'hidden';
 
-            // Pehle browser ke cache se naam dikhao
-            let cachedName = localStorage.getItem("islamic_user_name");
-            document.getElementById("profile-name").innerText = cachedName || "Library User";
-            document.getElementById("profile-mobile").innerText = localStorage.getItem("islamic_user_mobile") || "Registered User";
+            const userId = localStorage.getItem("islamic_user_id");
+            const authActions = document.getElementById("auth-actions");
+            const drawerFooter = document.getElementById("drawer-footer");
+            const loginPath = '/login/';
 
-            // 🔥 FIX: Agar cache mein naam nahi hai, toh turant Firebase se fetch karke save aur update kar do
-            if (!cachedName) {
-                try {
-                    const { getFirestore, doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
-                    const dbInstance = getFirestore();
-                    const userDoc = await getDoc(doc(dbInstance, "users", localStorage.getItem("islamic_user_id")));
-                    
-                    if (userDoc.exists() && userDoc.data().name) {
-                        const realName = userDoc.data().name;
-                        localStorage.setItem("islamic_user_name", realName); // Aage ke liye save kar diya
-                        document.getElementById("profile-name").innerText = realName; // UI par update kar diya
-                    }
-                } catch(e) { console.log("Name fetch error", e); }
+            if (userId) {
+                // Logged-in user: Normal Icon
+                        // 🔥 Naya Avatar Logic start
+        const avatarContainer = document.querySelector(".drawer-avatar");
+        const cachedPhoto = localStorage.getItem("islamic_user_photo");
+
+        if (cachedPhoto && cachedPhoto !== "null") {
+            avatarContainer.innerHTML = `<img src="${cachedPhoto}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" onerror="this.outerHTML='<i id=\\'profile-avatar-icon\\' class=\\'fas fa-user\\'></i>'">`;
+        } else {
+            avatarContainer.innerHTML = `<i id="profile-avatar-icon" class="fas fa-user"></i>`;
+        }
+        // 🔥 Naya Avatar Logic end
+                
+                let cachedName = localStorage.getItem("islamic_user_name");
+                document.getElementById("profile-name").innerText = cachedName || "Library User";
+                document.getElementById("profile-mobile").innerText = localStorage.getItem("islamic_user_mobile") || "Registered User";
+                
+                authActions.innerHTML = `<button class="btn btn-outline" onclick="window.openChangePassword()"><i class="fas fa-key"></i> Change Password</button>`;
+                drawerFooter.innerHTML = `<button class="btn" style="background: rgba(244, 63, 94, 0.1); color: var(--danger); border: 1px solid rgba(244, 63, 94, 0.3); box-shadow: none;" onclick="window.showLogoutModal()"><i class="fas fa-sign-out-alt"></i> Log Out</button>`;
+
+                if (!cachedName) {
+                    try {
+                        const { getFirestore, doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
+                        const dbInstance = getFirestore();
+                        const userDoc = await getDoc(doc(dbInstance, "users", userId));
+                        if (userDoc.exists() && userDoc.data().name) {
+                            localStorage.setItem("islamic_user_name", userDoc.data().name);
+                            document.getElementById("profile-name").innerText = userDoc.data().name;
+                        }
+                    } catch(e) {}
+                }
+            } else {
+                // Guest user: Shield Icon 🛡️
+                document.getElementById("profile-avatar-icon").className = "fas fa-user-shield";
+                
+                document.getElementById("profile-name").innerText = "Guest User";
+                document.getElementById("profile-mobile").innerText = "Welcome to Islamic Library";
+                authActions.innerHTML = ``;
+                drawerFooter.innerHTML = `<button class="btn" onclick="window.location.href='${loginPath}'"><i class="fas fa-sign-in-alt"></i> Login / Sign Up</button>`;
             }
         };
 
@@ -687,14 +775,14 @@ window.executeChangePassword = async function() {
         window.executeLogout = function(redirect) {
             if(userId) { localStorage.removeItem(`cache_payments_${userId}_data`); localStorage.removeItem(`cache_payments_${userId}_time`); }
             localStorage.removeItem("islamic_user_id"); localStorage.removeItem("islamic_user_name"); localStorage.removeItem("islamic_user_mobile");
-            
-            signOut(auth).then(() => { if(redirect) window.location.href = "../login/"; })
-                         .catch(() => { if(redirect) window.location.href = "../login/"; });
+            localStorage.removeItem("islamic_user_photo");
+            signOut(auth).then(() => { if(redirect) window.location.href = "/books/"; })
+                         .catch(() => { if(redirect) window.location.href = "/books/"; });
         };
 
         window.shareBook = function() {
             if (!currentEbook) return;
-            const siteUrl = window.location.origin + window.location.pathname.replace('../books/', '../');
+            const siteUrl = window.location.origin + window.location.pathname.replace('books/', '/');
             const shareText = `📚 Check out this Islamic eBook: "${currentEbook.title}" on Islamic Library by Shekh.\n\n${siteUrl}`;
             if (navigator.share) {
                 navigator.share({ title: currentEbook.title, text: shareText }).catch((error) => console.log('Error sharing:', error));
@@ -715,7 +803,7 @@ window.executeChangePassword = async function() {
         function handleSwipe() {
             if (document.getElementById("profile-drawer").classList.contains("active")) return;
             if (Math.abs(touchendY - touchstartY) > 50) return; 
-            if (touchendX > touchstartX + 70) window.location.href = '../'; 
+            if (touchendX > touchstartX + 70) window.location.href = '/'; 
         }
 
         function showLoader() { document.getElementById("loader").classList.remove("hidden"); }
@@ -728,11 +816,31 @@ window.executeChangePassword = async function() {
             setTimeout(() => { toast.style.transform = "translateX(110%)"; toast.style.opacity = "0"; setTimeout(() => toast.remove(), 400); }, 3000);
         }
 
+        // 🔥 SMART 5-MINUTE CACHE (Synced with Library & Payments)
         async function fetchPaymentsFirebase(uid, cacheKey, onDataChange, showBlockingLoader = false) {
             const now = new Date().getTime();
             const cachedDataStr = localStorage.getItem(cacheKey + "_data");
+            const cachedTime = localStorage.getItem(cacheKey + "_time"); // Timer nikal liya
+            const CACHE_TIME_LIMIT = 5 * 60 * 1000; // 5 Minutes ka lock
+
             let hasCache = false;
-            if (cachedDataStr) { hasCache = true; try { onDataChange(JSON.parse(cachedDataStr)); } catch (e) { hasCache = false; } }
+            
+            // 1. Pehle cache se instant UI update (No delay)
+            if (cachedDataStr) { 
+                hasCache = true; 
+                try { 
+                    onDataChange(JSON.parse(cachedDataStr)); 
+                } catch (e) { 
+                    hasCache = false; 
+                } 
+            }
+
+            // 🔥 THE GATEKEEPER: Agar 5 minute nahi hue hain, toh Firebase se mat maango!
+            if (hasCache && cachedTime && (now - parseInt(cachedTime)) < CACHE_TIME_LIMIT) {
+                return; // Token aur Speed dono bach gaye!
+            }
+
+            // 2. Agar 5 minute cross ho gaye (ya lock payment page se toot gaya), tabhi fetch karo
             if (!hasCache && showBlockingLoader) showLoader();
             if (apiLocks[cacheKey]) return;
             apiLocks[cacheKey] = true;
@@ -743,11 +851,16 @@ window.executeChangePassword = async function() {
                 const freshData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 
                 const freshDataStr = JSON.stringify(freshData);
+                
+                // Diffing: Agar data sach mein badla hai tabhi re-render karo
                 if (cachedDataStr !== freshDataStr) {
                     localStorage.setItem(cacheKey + "_data", freshDataStr); 
-                    localStorage.setItem(cacheKey + "_time", now.toString()); 
+                    localStorage.setItem(cacheKey + "_time", now.toString()); // Naya Lock lag gaya
                     onDataChange(freshData); 
-                } else { localStorage.setItem(cacheKey + "_time", now.toString()); }
+                } else { 
+                    // Data same hai, bas naya lock laga do agle 5 minute ke liye
+                    localStorage.setItem(cacheKey + "_time", now.toString()); 
+                }
             } catch (error) {
                 console.error("Firebase fetch error:", error);
             } finally {
@@ -761,77 +874,174 @@ window.executeChangePassword = async function() {
             initBook();
         });
 
+        // 🔥 THE MAGIC FIX: BROWSER BACK BUTTON BFCache Reset 🔥
+        // Jab user mobile ka Back button dabakar wapas aayega, toh ye event trigger hoga
+        window.addEventListener("pageshow", (event) => {
+            // Check karta hai ki kya page history/cache se wapas restore hua hai
+            if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+                // Instantly data wapas read karke button ko update kar dega
+                initBook();
+            }
+        });
+
+
+        // ✅ BACKGROUND FIREBASE SECURITY CHECK (Freemium Update)
+onAuthStateChanged(auth, (user) => {
+    if (!user) { 
+        // Ab hum usko bahar nahi fekenge, Guest mode active rahega
+        localStorage.removeItem("islamic_user_id");
+        localStorage.removeItem("islamic_user_name");
+        localStorage.removeItem("islamic_user_mobile");
+    }
+});
+
         function initBook() {
             const bookDataStr = sessionStorage.getItem("selected_book_data");
+            const userId = localStorage.getItem("islamic_user_id");
+
             if(bookDataStr) {
                 currentEbook = JSON.parse(bookDataStr);
                 let currentPayments = [];
-                const cachedPayments = localStorage.getItem(`cache_payments_${userId}_data`);
-                if(cachedPayments) { try { currentPayments = JSON.parse(cachedPayments); } catch(e) {} }
-                userPayments = currentPayments;
 
-                renderDetail();
-                fetchPaymentsFirebase(userId, `cache_payments_${userId}`, (data) => {
-                    if (Array.isArray(data)) { userPayments = data; renderDetail(); }
-                }, false);
-            } else {
-                window.location.replace("../");
-            }
-        }
+                if (userId) {
+                    // Logged in user: cache aur firebase se payment check karo
+                    const cachedPayments = localStorage.getItem(`cache_payments_${userId}_data`);
+                    if(cachedPayments) { try { currentPayments = JSON.parse(cachedPayments); } catch(e) {} }
+                    userPayments = currentPayments;
 
-        function renderDetail() {
-            document.getElementById("action-footer").classList.remove("hidden");
-            document.getElementById("det-thumb").src = currentEbook.thumbnail;
-            document.getElementById("det-title").innerText = currentEbook.title;
-            document.getElementById("det-desc").innerText = currentEbook.description;
-
-            if(!document.getElementById("det-arabic-phrase").innerText) {
-                document.getElementById("det-arabic-phrase").innerText = ARABIC_PHRASES[Math.floor(Math.random() * ARABIC_PHRASES.length)];
-            }
-
-            const isFree = String(currentEbook.is_free) === "true";
-            const priceBox = document.getElementById("det-price-box");
-            const footerPrice = document.getElementById("det-footer-price");
-            const actionBtn = document.getElementById("det-action-btn");
-            
-            const ownedBook = userPayments.find(p => String(p.ebook_id) === String(currentEbook.id) && p.status.toLowerCase() !== "rejected");
-
-            if (isFree) {
-                priceBox.innerHTML = `<span class="badge-free" style="padding: 6px 16px; font-size: .85rem;">✦ 100% FREE</span>`;
-            } else {
-                let pHTML = `₹${currentEbook.discount_price || currentEbook.price}`;
-                if (currentEbook.discount_price && currentEbook.price > currentEbook.discount_price) pHTML += ` <span class="strike-price">₹${currentEbook.price}</span>`;
-                priceBox.innerHTML = `<span class="price-tag" style="font-size: 1.6rem;">${pHTML}</span>`;
-            }
-
-            actionBtn.className = "btn"; actionBtn.disabled = false; actionBtn.style.background = ""; actionBtn.style.color = ""; actionBtn.style.boxShadow = "";
-
-                        if (ownedBook) {
-                if (ownedBook.status.toLowerCase() === "approved") {
+                    renderDetail();
                     
-                    // 🔥 BAS IS LINE MEIN JADOO KIYA HAI 🔥
-                    footerPrice.innerHTML = `<span style="color: var(--success) !important; font-weight: 700;">Owned</span>`;
-                    
-                    actionBtn.innerHTML = `<i class="fas fa-download"></i> Download`;
-                    actionBtn.onclick = () => window.open(currentEbook.pdf_link, "_blank");
-                    actionBtn.style.background = "var(--success)"; actionBtn.style.boxShadow = "0 4px 20px rgba(16,185,129,0.3)"; actionBtn.style.color = "#fff";
+                    fetchPaymentsFirebase(userId, `cache_payments_${userId}`, (data) => {
+                        if (Array.isArray(data)) { userPayments = data; renderDetail(); }
+                    }, false);
                 } else {
-                    footerPrice.innerHTML = "In Verification";
-                    actionBtn.innerHTML = `<i class="fas fa-hourglass-half spin"></i> Verifying...`;
-                    actionBtn.disabled = true; actionBtn.onclick = null;
+                    // Guest user: payment zero, seedha render karo
+                    userPayments = [];
+                    renderDetail();
                 }
-            } else if (isFree) {
-                footerPrice.innerHTML = "Free";
-                actionBtn.innerHTML = `<i class="fas fa-download"></i> Download`;
-                actionBtn.onclick = () => window.open(currentEbook.pdf_link, "_blank");
             } else {
-                footerPrice.innerHTML = `₹${currentEbook.discount_price || currentEbook.price}`;
-                actionBtn.innerHTML = `Buy Now <i class="fas fa-arrow-right" style="margin-left:6px;"></i>`;
-                actionBtn.style.background = "linear-gradient(135deg, #7c6af7, #9f3fbf)"; actionBtn.style.color = "#fff";
-                actionBtn.onclick = () => window.location.href = '../payments/';
+                window.location.replace("/");
             }
-
         }
+
+// =========================================================================
+// 🔒 SECURE RENDER DETAIL FUNCTION (On-Demand Link Fetcher)
+// =========================================================================
+function renderDetail() {
+    document.getElementById("action-footer").classList.remove("hidden");
+    document.getElementById("det-thumb").src = currentEbook.thumbnail;
+    document.getElementById("det-title").innerText = currentEbook.title;
+    document.getElementById("det-desc").innerText = currentEbook.description;
+
+    if(!document.getElementById("det-arabic-phrase").innerText) {
+        if (typeof ARABIC_PHRASES !== 'undefined' && ARABIC_PHRASES.length > 0) {
+            document.getElementById("det-arabic-phrase").innerText = ARABIC_PHRASES[Math.floor(Math.random() * ARABIC_PHRASES.length)];
+        }
+    }
+
+    const isFree = String(currentEbook.is_free) === "true";
+    const priceBox = document.getElementById("det-price-box");
+    const footerPrice = document.getElementById("det-footer-price");
+    const actionBtn = document.getElementById("det-action-btn");
+    
+    const ownedBook = (userPayments || []).find(p => String(p.ebook_id) === String(currentEbook.id) && p.status.toLowerCase() !== "rejected");
+
+    if (isFree) {
+        priceBox.innerHTML = `<span class="badge-free" style="padding: 6px 16px; font-size: .85rem;">✦ 100% FREE</span>`;
+    } else {
+        let pHTML = `₹${currentEbook.discount_price || currentEbook.price}`;
+        if (currentEbook.discount_price && currentEbook.price > currentEbook.discount_price) pHTML += ` <span class="strike-price">₹${currentEbook.price}</span>`;
+        priceBox.innerHTML = `<span class="price-tag" style="font-size: 1.6rem;">${pHTML}</span>`;
+    }
+
+    actionBtn.className = "btn"; actionBtn.disabled = false; actionBtn.style.background = ""; actionBtn.style.color = ""; actionBtn.style.boxShadow = "";
+
+    // 🛡️ SCENARIO 1: PAID BOOK LELI HAI (Approved / Owned)
+    if (ownedBook) {
+        if (ownedBook.status.toLowerCase() === "approved") {
+            footerPrice.innerHTML = `<span style="color: var(--success) !important; font-weight: 700;">Owned</span>`;
+            actionBtn.innerHTML = `<i class="fas fa-download"></i> Download`;
+            actionBtn.style.background = "var(--success)"; actionBtn.style.boxShadow = "0 4px 20px rgba(16,185,129,0.3)"; actionBtn.style.color = "#fff";
+            
+            // 🔥 THE MAGIC: On-Demand Secure Link Fetcher 🔥
+            actionBtn.onclick = async () => {
+                const originalHTML = actionBtn.innerHTML;
+                window.showToast("Verifying access & preparing download...", "info");
+                actionBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Verifying...`;
+                actionBtn.disabled = true;
+
+                try {
+                    const { getFirestore, doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
+                    const dbInstance = getFirestore();
+                    
+                    // Seedha secure_links wale khufiya dabbe me check karo
+                    const secureDocRef = doc(dbInstance, "secure_links", String(currentEbook.id));
+                    const secureDocSnap = await getDoc(secureDocRef);
+
+                    if (secureDocSnap.exists() && secureDocSnap.data().pdf_link) {
+                        window.showToast("Access Verified! Opening File...", "success");
+                        // Link milte hi seedha naye tab mein khol do (Browser me save nahi hogi)
+                        window.open(secureDocSnap.data().pdf_link, "_blank");
+                    } else {
+                        window.showToast("Secure file not found. Please contact admin.", "error");
+                    }
+                } catch (err) {
+                    console.error("Verification Error:", err);
+                    window.showToast("Network error during verification.", "error");
+                } finally {
+                    actionBtn.innerHTML = originalHTML;
+                    actionBtn.disabled = false;
+                }
+            };
+            
+        } else {
+            // Pending in Verification
+            footerPrice.innerHTML = "In Verification";
+            actionBtn.innerHTML = `<i class="fas fa-hourglass-half spin"></i> Verifying...`;
+            actionBtn.disabled = true; actionBtn.onclick = null;
+        }
+    } 
+    // 🛡️ SCENARIO 2: FREE BOOK HAI (Direct Public Link)
+    else if (isFree) {
+        footerPrice.innerHTML = "Free";
+        actionBtn.innerHTML = `<i class="fas fa-download"></i> Download`;
+        actionBtn.onclick = () => {
+            if (currentEbook.pdf_link) {
+                window.open(currentEbook.pdf_link, "_blank");
+            } else {
+                window.showToast("File link is currently unavailable.", "error");
+            }
+        };
+    } 
+    // 🛡️ SCENARIO 3: KHARIDNI PADEGI (Buy Now)
+    else {
+        footerPrice.innerHTML = `₹${currentEbook.discount_price || currentEbook.price}`;
+        actionBtn.innerHTML = `Buy Now <i class="fas fa-arrow-right" style="margin-left:6px;"></i>`;
+        actionBtn.style.background = "linear-gradient(135deg, #7c6af7, #9f3fbf)"; actionBtn.style.color = "#fff";
+        
+        actionBtn.onclick = () => {
+            const currentUserId = localStorage.getItem("islamic_user_id");
+            if (currentUserId) {
+                window.location.href = '/payments/';
+            } else {
+                window.showToast("Please login to purchase premium books", "error");
+                const originalHTML = actionBtn.innerHTML;
+                actionBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Redirecting...`;
+                actionBtn.disabled = true;
+                localStorage.setItem('islamic_redirect_after_login', window.location.href);
+                
+                setTimeout(() => {
+                    window.location.href = '/login/';
+                    setTimeout(() => {
+                        actionBtn.innerHTML = originalHTML;
+                        actionBtn.disabled = false;
+                    }, 500);
+                }, 2500);
+            }
+        };
+    }
+}
+
     </script>
 
 </body>
