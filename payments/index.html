@@ -464,10 +464,22 @@
             </div>
         </div>
         <div class="flex align-center" style="gap: 20px;">
-            <i id="theme-toggle-icon" class="fas fa-moon" style="font-size: 1.2rem; color: var(--text2); cursor: pointer; transition: 0.3s;" onclick="window.toggleTheme()" title="Switch Theme"></i>
-            <i class="fas fa-user-circle" style="font-size: 1.3rem; color: var(--text2); cursor: pointer; transition: 0.3s;" onclick="window.openProfileDrawer()" title="Profile"></i>
+            <i id="theme-toggle-icon" class="fas fa-moon" style="font-size: 1.2rem; color: var(--text2); cursor: pointer;" onclick="window.toggleTheme()" title="Switch Theme"></i>
+
+<i class="fas fa-user-circle" style="font-size: 1.3rem; color: var(--text2); cursor: pointer;" onclick="window.openProfileDrawer()" title="Profile"></i>
         </div>
     </header>
+
+        <script>
+            (function() {
+                const currentTheme = localStorage.getItem('islamic_theme') || 'dark';
+                const icon = document.getElementById("theme-toggle-icon");
+                if(icon) {
+                    // Agar light theme hai toh direct Sun laga do, Moon dikhne hi mat do
+                    icon.className = currentTheme === "light" ? "fas fa-sun" : "fas fa-moon";
+                }
+            })();
+        </script>
 
     <div class="main-content">
         <div id="page-payment">
@@ -815,11 +827,13 @@ window.executeChangePassword = async function() {
         } catch (statError) {
             console.error("Stats update fail ho gaya:", statError);
         }
-        
         // Cache mein naya payment add karna (Taaki upar wala block turant kaam kare)
         currentPayments.push(payload);
         localStorage.setItem(`cache_payments_${userId}_data`, JSON.stringify(currentPayments));
-        localStorage.setItem(`cache_payments_${userId}_time`, Date.now().toString());
+        
+        // 🔥 CACHE BUSTER MAGIC: Time wali key ko delete kar do!
+        // Isse Library page par jate hi lock toot jayega.
+        localStorage.removeItem(`cache_payments_${userId}_time`);
 
         submitBtn.innerHTML = originalText;
         submitBtn.disabled = false;
