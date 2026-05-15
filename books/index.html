@@ -511,10 +511,22 @@
             </div>
         </div>
         <div class="flex align-center" style="gap: 20px;">
-            <i id="theme-toggle-icon" class="fas fa-moon" style="font-size: 1.2rem; color: var(--text2); cursor: pointer; transition: 0.3s;" onclick="toggleTheme()" title="Switch Theme"></i>
-            <i class="fas fa-user-circle" style="font-size: 1.3rem; color: var(--text2); cursor: pointer; transition: 0.3s;" onclick="openProfileDrawer()" title="Profile"></i>
+            <i id="theme-toggle-icon" class="fas fa-moon" style="font-size: 1.2rem; color: var(--text2); cursor: pointer;" onclick="window.toggleTheme()" title="Switch Theme"></i>
+
+<i class="fas fa-user-circle" style="font-size: 1.3rem; color: var(--text2); cursor: pointer;" onclick="window.openProfileDrawer()" title="Profile"></i>
         </div>
     </header>
+
+        <script>
+            (function() {
+                const currentTheme = localStorage.getItem('islamic_theme') || 'dark';
+                const icon = document.getElementById("theme-toggle-icon");
+                if(icon) {
+                    // Agar light theme hai toh direct Sun laga do, Moon dikhne hi mat do
+                    icon.className = currentTheme === "light" ? "fas fa-sun" : "fas fa-moon";
+                }
+            })();
+        </script>
 
     <div class="main-content">
         <div id="page-detail">
@@ -763,7 +775,7 @@ window.executeChangePassword = async function() {
         window.executeLogout = function(redirect) {
             if(userId) { localStorage.removeItem(`cache_payments_${userId}_data`); localStorage.removeItem(`cache_payments_${userId}_time`); }
             localStorage.removeItem("islamic_user_id"); localStorage.removeItem("islamic_user_name"); localStorage.removeItem("islamic_user_mobile");
-            
+            localStorage.removeItem("islamic_user_photo");
             signOut(auth).then(() => { if(redirect) window.location.href = "/login/"; })
                          .catch(() => { if(redirect) window.location.href = "/login/"; });
         };
@@ -804,11 +816,31 @@ window.executeChangePassword = async function() {
             setTimeout(() => { toast.style.transform = "translateX(110%)"; toast.style.opacity = "0"; setTimeout(() => toast.remove(), 400); }, 3000);
         }
 
+        // 🔥 SMART 5-MINUTE CACHE (Synced with Library & Payments)
         async function fetchPaymentsFirebase(uid, cacheKey, onDataChange, showBlockingLoader = false) {
             const now = new Date().getTime();
             const cachedDataStr = localStorage.getItem(cacheKey + "_data");
+            const cachedTime = localStorage.getItem(cacheKey + "_time"); // Timer nikal liya
+            const CACHE_TIME_LIMIT = 5 * 60 * 1000; // 5 Minutes ka lock
+
             let hasCache = false;
-            if (cachedDataStr) { hasCache = true; try { onDataChange(JSON.parse(cachedDataStr)); } catch (e) { hasCache = false; } }
+            
+            // 1. Pehle cache se instant UI update (No delay)
+            if (cachedDataStr) { 
+                hasCache = true; 
+                try { 
+                    onDataChange(JSON.parse(cachedDataStr)); 
+                } catch (e) { 
+                    hasCache = false; 
+                } 
+            }
+
+            // 🔥 THE GATEKEEPER: Agar 5 minute nahi hue hain, toh Firebase se mat maango!
+            if (hasCache && cachedTime && (now - parseInt(cachedTime)) < CACHE_TIME_LIMIT) {
+                return; // Token aur Speed dono bach gaye!
+            }
+
+            // 2. Agar 5 minute cross ho gaye (ya lock payment page se toot gaya), tabhi fetch karo
             if (!hasCache && showBlockingLoader) showLoader();
             if (apiLocks[cacheKey]) return;
             apiLocks[cacheKey] = true;
@@ -819,11 +851,16 @@ window.executeChangePassword = async function() {
                 const freshData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 
                 const freshDataStr = JSON.stringify(freshData);
+                
+                // Diffing: Agar data sach mein badla hai tabhi re-render karo
                 if (cachedDataStr !== freshDataStr) {
                     localStorage.setItem(cacheKey + "_data", freshDataStr); 
-                    localStorage.setItem(cacheKey + "_time", now.toString()); 
+                    localStorage.setItem(cacheKey + "_time", now.toString()); // Naya Lock lag gaya
                     onDataChange(freshData); 
-                } else { localStorage.setItem(cacheKey + "_time", now.toString()); }
+                } else { 
+                    // Data same hai, bas naya lock laga do agle 5 minute ke liye
+                    localStorage.setItem(cacheKey + "_time", now.toString()); 
+                }
             } catch (error) {
                 console.error("Firebase fetch error:", error);
             } finally {
