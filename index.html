@@ -3,21 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Islamic Library by Shekh - Free & Paid Islamic eBooks</title>
 
-    <meta name="description" content="Islamic Library by Shekh – Download Islamic eBooks, Quran PDFs, and Hadith books. A free and premium Islamic digital library.">
-    <meta name="keywords" content="Islamic Library by Shekh, Islamic ebooks, Quran PDF, Hadith books">
+    <title>Islamic Library by Shekh | Free & Premium Islamic eBooks</title>
+    <meta name="title" content="Islamic Library by Shekh | Free & Premium Islamic eBooks">
+    <meta name="description" content="Welcome to Islamic Library by Shekh. Explore, read, and download top-quality free and premium Islamic eBooks, Quran PDFs, Hadith, and Seerah collections in multiple languages.">
+    <meta name="keywords" content="Islamic Library by Shekh, Islamic eBooks, free Islamic books, Quran PDF, Hadith books, Seerah, online Islamic library, read Islamic books">
     <meta name="author" content="Islamic Library by Shekh">
 
     <link rel="icon" type="image/png" sizes="32x32" href="/icons/hikmahlogo.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/icons/hikmahlogo.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/icons/hikmahlogo.png">
 
-    <meta property="og:title" content="Islamic Library by Shekh">
-    <meta property="og:description" content="Free & Paid Islamic eBooks, Quran PDFs, Hadith books available.">
-    <meta property="og:image" content="https://mysite.github.io/Resources/hikmahlogo.png">
-    <meta property="og:url" content="https://mysite.github.io/Resources/">
     <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mysite.pages.dev/">
+    <meta property="og:title" content="Islamic Library by Shekh | Free & Premium Islamic eBooks">
+    <meta property="og:description" content="Explore, read, and download top-quality free and premium Islamic eBooks, Quran PDFs, Hadith, and Seerah collections.">
+    <meta property="og:image" content="https://mysite.pages.dev/icons/hikmahlogo.png">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:url" content="https://mysite.pages.dev/">
+    <meta name="twitter:title" content="Islamic Library by Shekh | Free & Premium Islamic eBooks">
+    <meta name="twitter:description" content="Explore, read, and download top-quality free and premium Islamic eBooks, Quran PDFs, Hadith, and Seerah collections.">
+    <meta name="twitter:image" content="https://mysite.pages.dev/icons/hikmahlogo.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
@@ -42,6 +49,10 @@
             --r: 12px; --r2: 16px; --r3: 20px;
             --shadow: 0 4px 24px rgba(0,0,0,0.4); --shadow2: 0 8px 40px rgba(0,0,0,0.5);
             --transition: 0.2s cubic-bezier(0.4,0,0.2,1);
+            --drop-shadow: rgba(255, 255, 255, 0.15);
+            --scroll-thumb: rgba(255, 255, 255, 0.12); /* Dark mode me halki white line */
+--scroll-thumb-hover: rgba(255, 255, 255, 0.25);
+
         }
 
         [data-theme="light"] {
@@ -52,6 +63,10 @@
             --accent: #6366f1; --accent2: #4f46e5; --accent3: #4338ca;
             --glow: rgba(99,102,241,0.15); --glow2: rgba(99,102,241,0.08);
             --shadow: 0 4px 20px rgba(0,0,0,0.06); --shadow2: 0 8px 30px rgba(0,0,0,0.1);
+            --drop-shadow: rgba(0, 0, 0, 0.45);
+--scroll-thumb: rgba(0, 0, 0, 0.15); /* Light mode me halki dark/gray line */
+--scroll-thumb-hover: rgba(0, 0, 0, 0.3);
+
         }
         
         [data-theme="light"] .blob { opacity: 0.5; }
@@ -71,9 +86,17 @@
 
         *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; font-size: 16px; }
-        body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; min-height: 100vh; -webkit-tap-highlight-color: transparent; transition: background-color 0.3s ease, color 0.3s ease; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; min-height: 100vh; -webkit-tap-highlight-color: transparent; }
         
-        body::before { content:''; position:fixed; inset:0; pointer-events:none; z-index:9999; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E"); opacity:0.4; }
+        body::before { 
+    content:''; position:fixed; inset:0; pointer-events:none; z-index:9999; 
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E"); 
+    opacity:0.4; 
+    
+    /* 🔥 NEW: Fixes the SVG calculation block */
+    will-change: opacity;
+    transform: translateZ(0);
+}
 
         .hero-bg { position:fixed; inset:0; pointer-events:none; z-index:-2; background: radial-gradient(ellipse 80% 50% at 50% -10%,rgba(124,106,247,0.2) 0%,transparent 70%), radial-gradient(ellipse 50% 40% at 80% 60%,rgba(168,85,247,0.12) 0%,transparent 60%), radial-gradient(ellipse 40% 30% at 20% 70%,rgba(99,102,241,0.1) 0%,transparent 60%); }
         .hero-grid { position:fixed; inset:0; pointer-events:none; z-index:-1; background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px); background-size:48px 48px; mask-image:radial-gradient(ellipse 100% 100% at 50% 50%,black 40%,transparent 100%); opacity:0.6; }
@@ -108,12 +131,18 @@
         .btn-outline:hover { border-color: var(--accent); color: var(--accent2); background: var(--glow2); }
 
         header { 
-            position: fixed; top: 0; left: 0; right: 0; z-index: 1000; 
-            padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; 
-            background: rgba(10,10,15,0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
-            border-bottom: 1px solid var(--border); 
-            transition: background-color 0.3s ease, border-color 0.3s ease; 
-        }
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000; 
+    padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; 
+    background: rgba(10,10,15,0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
+    border-bottom: 1px solid var(--border); 
+    transition: background-color 0.3s ease, border-color 0.3s ease; 
+    
+    /* 🔥 NEW: Hardware Acceleration for smooth load */
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    backface-visibility: hidden;
+    will-change: transform, background-color;
+}
         .header-logo-container { display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
         
         .header-logo { 
@@ -141,7 +170,7 @@
             white-space: nowrap; 
         }
 
-        .main-content { padding: 90px 20px 90px; max-width: 1400px; margin: 0 auto; animation: fadeIn .5s ease both; transition: padding-top 0.3s ease; }
+        .main-content { padding: 90px 20px 90px; max-width: 1400px; margin: 0 auto; animation: fadeIn .5s ease both; }
 
         .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 10001; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; backdrop-filter: blur(3px); }
         .drawer-overlay.active { opacity: 1; pointer-events: all; }
@@ -189,7 +218,97 @@
         .custom-filter .fa-chevron-down { font-size: 0.75rem; transition: transform 0.3s ease; }
         .custom-filter.open .fa-chevron-down { transform: rotate(180deg); }
         
-        .filter-options { position: absolute; top: calc(100% + 8px); left: 0; right: 0; background: var(--surface2); border: 1px solid var(--border); border-radius: var(--r); box-shadow: var(--shadow2); opacity: 0; pointer-events: none; transform: translateY(-10px); transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); z-index: 1000; overflow: hidden; }
+        /* ✅ DROPDOWN INTERNAL SCROLL SYSTEM WITH PREMIER DEPTH (GENERAL CSS) */
+        .filter-options { 
+            position: absolute; 
+            top: calc(100% + 8px); 
+            left: 0; 
+            right: 0; 
+            background: var(--surface2); 
+            border: 1px solid var(--border); 
+            border-radius: var(--r); 
+            opacity: 0; 
+            pointer-events: none; 
+            transform: translateY(-10px); 
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
+            z-index: 1000; 
+
+            /* Scroll setting same rakhi hai */
+            max-height: 250px !important; 
+            overflow-y: auto !important;  
+        }
+
+        /* ✅ DROPDOWN CONTAINER (FIXED FOR MODERN BROWSERS) */
+        .filter-options { 
+            position: absolute; 
+            top: calc(100% + 8px); 
+            left: 0; 
+            right: 0; 
+            background: var(--surface2); 
+            border: 1px solid var(--border); 
+            border-radius: var(--r); 
+            box-shadow: var(--shadow2); 
+            opacity: 0; 
+            pointer-events: none; 
+            transform: translateY(-10px); 
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
+            z-index: 1000; 
+
+            max-height: 250px !important; 
+            overflow-y: auto !important; /* Standard property jo har browser me chalegi */
+
+            /* Dropdown ke main rounded corners se scrollbar ko bahar nikalne se rokega */
+            overflow-x: hidden !important; 
+
+            /* Dynamic Shadows Code */
+            background-image:
+                linear-gradient(var(--surface2) 30%, transparent),
+                linear-gradient(transparent, var(--surface2) 70%),
+                linear-gradient(to bottom, var(--drop-shadow), transparent),
+                linear-gradient(to top, var(--drop-shadow), transparent);
+            background-position: 0 0, 0 100%, 0 0, 0 100%;
+            background-repeat: no-repeat;
+            background-size: 100% 24px, 100% 24px, 100% 14px, 100% 14px;
+            background-attachment: local, local, scroll, scroll;
+        }
+
+        /* 🔥 DIVIDER LINES FIX: Yeh line un divider lines ko zabardasti right wall tak kheench degi */
+        .f-option { 
+            padding: 12px 16px; 
+            color: var(--text2); 
+            font-size: 0.85rem; 
+            transition: background 0.2s, color 0.2s; 
+            border-bottom: 1px solid var(--border); 
+            
+            /* Magic Lines: Dandi ke area (7px) ke andar tak borders ko badhayega aur text ko safe rakhega */
+            margin-right: -7px !important; 
+            padding-right: 23px !important; /* 16px original + 7px dandi ki space */
+        }
+        .f-option:last-child { border-bottom: none; }
+        .f-option:hover { background: var(--surface3); color: var(--text); }
+        .f-option.selected { background: var(--glow2); color: var(--accent2); font-weight: 700; border-left: 3px solid var(--accent); padding-left: 13px; }
+
+        /* 🔥 SCROLLBAR MASTER CLEANUP (NO CORNER LEAKING) 🔥 */
+        .filter-options::-webkit-scrollbar {
+            width: 7px; 
+        }
+        
+        .filter-options::-webkit-scrollbar-track {
+            background: transparent;
+            /* Parent ke right-top aur right-bottom corners se match kiya taaki dandi bahar na bhage */
+            border-radius: 0 var(--r) var(--r) 0; 
+        }
+        
+        .filter-options::-webkit-scrollbar-thumb {
+            background: var(--scroll-thumb) !important;
+            border-radius: 10px;
+            /* 1px transparent border pading-box ke sath thumb ko dabba ke andar hi rakhta hai */
+            border: 1px solid transparent;
+            background-clip: padding-box;
+        }
+        .filter-options::-webkit-scrollbar-thumb:hover {
+            background: var(--scroll-thumb-hover) !important;
+        }
         .custom-filter.open .filter-options { opacity: 1; pointer-events: all; transform: translateY(0); }
         
         .f-option { padding: 12px 16px; color: var(--text2); font-size: 0.85rem; transition: background 0.2s, color 0.2s; border-bottom: 1px solid var(--border); }
@@ -215,8 +334,19 @@
         .strike-price { font-size: .75rem; color: var(--text3); text-decoration: line-through; margin-left: 6px; font-weight: normal; }
         .badge-free { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 99px; background: var(--glow2); border: 1px solid rgba(124,106,247,0.3); font-size: .75rem; font-weight: 600; color: var(--accent3); }
 
-        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 70px; background: rgba(10,10,15,0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--border); z-index: 999; transition: background-color 0.3s ease, border-color 0.3s ease; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text3); font-size: .75rem; font-weight: 500; gap: 6px; cursor: pointer; flex: 1; height: 100%; transition: all var(--transition); text-decoration: none; }
+        .bottom-nav { 
+    position: fixed; bottom: 0; left: 0; width: 100%; height: 70px; 
+    background: rgba(10,10,15,0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
+    display: flex; justify-content: space-around; align-items: center; 
+    border-top: 1px solid var(--border); z-index: 999; 
+    transition: background-color 0.3s ease, border-color 0.3s ease; 
+    
+    /* 🔥 NEW: Hardware Acceleration */
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    backface-visibility: hidden;
+    will-change: transform, background-color;
+}        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text3); font-size: .75rem; font-weight: 500; gap: 6px; cursor: pointer; flex: 1; height: 100%; transition: all var(--transition); text-decoration: none; }
         .nav-item i { font-size: 1.2rem; transition: all var(--transition); }
         .nav-item.active { color: var(--accent2); }
         .nav-item.active i { background: var(--glow2); padding: 8px; border-radius: 50%; box-shadow: 0 0 15px var(--glow); transform: translateY(-4px); color: var(--accent); }
@@ -292,10 +422,25 @@
                 gap: 20px !important;
                 margin-bottom: 40px !important;
             }
+            /* 1. Filters ka purana code dhoondho aur usme white-space jod do */
             .custom-filter {
-                width: 250px !important; /* PC pe Dropdown chaude aache lagte hain */
+                width: 250px !important; 
                 padding: 14px 20px !important;
                 font-size: 1rem !important;
+                
+                /* 🔥 YEH LINE ADD KARO: PC par bhi text ko niche tootne se rokegi */
+                white-space: nowrap !important; 
+            }
+
+            /* 🔥 YEH NAYA RULE USKE THEEK NEECHE PASTE KARO 🔥 */
+            .custom-filter span {
+                display: inline-block !important;
+                max-width: calc(100% - 25px) !important; /* PC ke chevron icon ke hisab se width safe ki */
+                overflow: hidden !important;
+                text-overflow: ellipsis !important; /* Lamba naam hone par '...' lagayega */
+                white-space: nowrap !important;
+                vertical-align: middle !important;
+                text-align: left !important;
             }
 
             /* 4. 🔥 Books Grid: PC par Books Premium dikhengi 🔥 */
@@ -377,6 +522,59 @@
             /* Ye text aur border ko animation ke time blur hone se rokta hai */
             -webkit-font-smoothing: antialiased; 
         }
+/* ========================================================
+   🔥 TRULY RESPONSIVE UNIVERSAL MOBILE FIX (UP TO 767px) 🔥
+   ======================================================== */
+@media screen and (max-width: 767px) {
+    
+    /* Filters container ka gap tight rakha taaki teeno samane aa sakein */
+    .filters-wrapper { 
+        gap: 6px !important; 
+        margin-bottom: 20px !important;
+        display: flex !important;
+    }
+    
+    /* Main filter box setup */
+    .custom-filter { 
+        position: relative;
+        flex: 1 !important; 
+        
+        /* 🔥 THE MAGIC LINE: Yeh dabba ko lamba hokar side me ghusne se rokega */
+        min-width: 0 !important; 
+        
+        padding: 12px 6px !important; /* Mobile ke liye padding balanced ki */
+        font-size: 0.76rem !important; 
+        border-radius: 12px !important; 
+        white-space: nowrap !important; 
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+    }
+
+    /* 🔥 DYNAMIC SMART ELLIPSIS: Roman Urdu poora dikhega, par jo bohot lamba hoga sirf wahi dot-dot hoga */
+    .custom-filter span {
+        display: inline-block !important;
+        max-width: calc(100% - 12px) !important; /* Dabba ki width ke andar hi text ko simat kar rakhega */
+        overflow: hidden !important;
+        text-overflow: ellipsis !important; 
+        white-space: nowrap !important;
+        vertical-align: middle !important;
+    }
+
+    /* Chevron arrow icon adjustment */
+    .custom-filter .fa-chevron-down {
+        font-size: 0.6rem !important;
+        margin-left: 2px !important;
+        flex-shrink: 0 !important; /* Arrow ko pichakne se rokega */
+    }
+    
+    /* Dropdown options view */
+    .f-option {
+        padding: 12px 14px !important;
+        font-size: 0.82rem !important;
+        white-space: normal !important; /* Dropdown me poora naam break hokar dikhega */
+    }
+}
 
     </style>
 </head>
@@ -437,7 +635,7 @@
         </div>
     </div>
 
-    <div id="app-views" class="hidden">
+    <div id="app-views">
         
         <header>
             <div class="flex align-center" style="gap: 12px;">
@@ -479,6 +677,17 @@
                         </div>
                     </div>
 
+                    <div class="custom-filter" id="cat-dropdown-btn" onclick="window.toggleFilterMenu('cat')">
+                        <span id="cat-label">Cat: All</span>
+                        <i class="fas fa-chevron-down"></i>
+                        <div class="filter-options" id="cat-options">
+                            <div class="f-option selected" onclick="window.setCatFilter('all', 'Cat: All', event)">All Categories</div>
+                            <div class="f-option" onclick="window.setCatFilter('quran', 'Quran', event)">Quran</div>
+                            <div class="f-option" onclick="window.setCatFilter('hadith', 'Hadith', event)">Hadith</div>
+                            <div class="f-option" onclick="window.setCatFilter('seerah', 'Seerah', event)">Seerah</div>
+                        </div>
+                    </div>
+
                     <div class="custom-filter" id="lang-dropdown-btn" onclick="window.toggleFilterMenu('lang')">
                         <span id="lang-label">Lang: All</span>
                         <i class="fas fa-chevron-down"></i>
@@ -505,9 +714,9 @@
         </div>
 
         <div id="bottom-nav" class="bottom-nav">
-            <div class="nav-item active" onclick="window.location.href='/'"><i class="fas fa-home"></i><span>Home</span></div>
-            <div class="nav-item" onclick="window.location.href='library/index.html'"><i class="fas fa-book-reader"></i><span>Library</span></div>
-            <a href="/info/" class="nav-item"><i class="fas fa-info-circle"></i><span>Info</span></a>
+            <div class="nav-item active" onclick="window.location.href='index.html'"><i class="fas fa-home"></i><span>Home</span></div>
+            <div class="nav-item" onclick="window.location.href='../library/index.html'"><i class="fas fa-book-reader"></i><span>Library</span></div>
+            <a href="info/index.html" class="nav-item"><i class="fas fa-info-circle"></i><span>Info</span></a>
         </div>
     </div>
 
@@ -734,9 +943,11 @@ document.addEventListener("DOMContentLoaded", () => {
         // ab wo normal Home page par hi rahega.
     }
 
-    // Normal behavior (Agar koi redirect nahi hai)
-    document.getElementById("app-views").classList.remove("hidden");
-    loadHome();
+     // 🔥 THE FIX: Browser ko pehle Header/Footer paint karne do, 
+    // aur 50 milliseconds baad heavy books load karo taaki jhatka na lage.
+    setTimeout(() => {
+        loadHome();
+    }, 50);
 });
 
 // ✅ BACKGROUND FIREBASE SECURITY CHECK
@@ -798,14 +1009,17 @@ onAuthStateChanged(auth, (user) => {
             const cachedDataStr = localStorage.getItem("cache_ebooks_data");
             const userId = localStorage.getItem("islamic_user_id");
 
-            // 1. Pehle cache dikhao taaki user ko instant load mile
+            // 1. Pehle cache check karo
             if (cachedDataStr) { 
                 try { 
                     ebooksData = JSON.parse(cachedDataStr); 
+                    // Yahan 'reset=true' bhejo par grid ko flash mat hone do (Step 2 wala logic kaam karega)
                     renderGrid(true); 
-                } catch (e) {} 
+                } catch (e) {
+                    showSkeletons(); // Sirf tab jab cache corrupt ho
+                } 
             } else {
-                showSkeletons();
+                showSkeletons(); // Sirf tab jab pehli baar site khuli ho
             }
 
             try {
@@ -854,16 +1068,26 @@ onAuthStateChanged(auth, (user) => {
         }
 
         // ✅ FILTER & RENDER LOGIC
+        let currentCatFilter = 'all'; // Naya variable category ke liye
+
         window.toggleFilterMenu = function(type) {
             const priceBtn = document.getElementById('price-dropdown-btn');
             const langBtn = document.getElementById('lang-dropdown-btn');
+            const catBtn = document.getElementById('cat-dropdown-btn'); // Naya button
             
+            // Jo click kiya hai usko toggle karo, baaki dono ko band karo
             if (type === 'price') {
                 priceBtn.classList.toggle('open');
                 langBtn.classList.remove('open');
-            } else {
+                catBtn.classList.remove('open');
+            } else if (type === 'lang') {
                 langBtn.classList.toggle('open');
                 priceBtn.classList.remove('open');
+                catBtn.classList.remove('open');
+            } else if (type === 'cat') {
+                catBtn.classList.toggle('open');
+                priceBtn.classList.remove('open');
+                langBtn.classList.remove('open');
             }
         }
 
@@ -871,9 +1095,12 @@ onAuthStateChanged(auth, (user) => {
             if (!e.target.closest('.custom-filter')) {
                 document.getElementById('price-dropdown-btn').classList.remove('open');
                 document.getElementById('lang-dropdown-btn').classList.remove('open');
+                const catBtn = document.getElementById('cat-dropdown-btn');
+                if(catBtn) catBtn.classList.remove('open');
             }
             if (!e.target.closest('.search-container')) {
-                document.getElementById('search-dropdown').classList.remove('active');
+                const searchDropdown = document.getElementById('search-dropdown');
+                if(searchDropdown) searchDropdown.classList.remove('active');
             }
         });
 
@@ -881,14 +1108,10 @@ onAuthStateChanged(auth, (user) => {
             event.stopPropagation();
             currentPriceFilter = value;
             document.getElementById('price-label').innerText = label;
-            
             document.querySelectorAll('#price-options .f-option').forEach(el => el.classList.remove('selected'));
             event.currentTarget.classList.add('selected');
-            
             const btn = document.getElementById('price-dropdown-btn');
-            if(value !== 'all') btn.classList.add('active-filter');
-            else btn.classList.remove('active-filter');
-
+            if(value !== 'all') btn.classList.add('active-filter'); else btn.classList.remove('active-filter');
             window.toggleFilterMenu('price');
             renderGrid(true);
         }
@@ -897,80 +1120,87 @@ onAuthStateChanged(auth, (user) => {
             event.stopPropagation();
             currentLangFilter = value;
             document.getElementById('lang-label').innerText = label;
-            
             document.querySelectorAll('#lang-options .f-option').forEach(el => el.classList.remove('selected'));
             event.currentTarget.classList.add('selected');
-
             const btn = document.getElementById('lang-dropdown-btn');
-            if(value !== 'all') btn.classList.add('active-filter');
-            else btn.classList.remove('active-filter');
-
+            if(value !== 'all') btn.classList.add('active-filter'); else btn.classList.remove('active-filter');
             window.toggleFilterMenu('lang');
             renderGrid(true);
         }
 
-        function renderGrid(reset = false) {
-            if (reset) currentPage = 1;
-            const grid = document.getElementById("ebook-grid");
-            const loadMoreBtn = document.getElementById("load-more-btn");
-            if (reset) grid.innerHTML = "";
-
-// 🔥 YEH NAYI LINE ADD KARNI HAI (Books ko number wise lagane ke liye) 🔥
-            ebooksData.sort((a, b) => (a.sort_order || 999) - (b.sort_order || 999));
-
-            let filteredBooks = ebooksData.filter(eb => {
-                const isFree = String(eb.is_free) === "true";
-                let passPrice = true;
-                if (currentPriceFilter === 'free') passPrice = isFree;
-                if (currentPriceFilter === 'premium') passPrice = !isFree;
-
-                let passLang = true;
-                if (currentLangFilter !== 'all') {
-                    const langData = eb.language || 'none';
-                    let bookLangs = [];
-                    if (Array.isArray(langData)) {
-                        bookLangs = langData.map(l => l.toLowerCase().trim());
-                    } else {
-                        bookLangs = String(langData).split(',').map(l => l.toLowerCase().trim());
-                    }
-                    passLang = bookLangs.includes(currentLangFilter.toLowerCase());
-                }
-
-                return passPrice && passLang;
-            });
-
-            if (filteredBooks.length === 0) {
-                grid.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-folder-open"></i>
-                        <h4>No books available</h4>
-                        <p>We couldn't find any books in this category right now.</p>
-                    </div>`;
-                loadMoreBtn.classList.add("hidden");
-                return; 
-            }
-
-            const startIndex = (currentPage - 1) * itemsPerPage;
-            const endIndex = startIndex + itemsPerPage;
-            const booksToShow = filteredBooks.slice(startIndex, endIndex);
-
-            booksToShow.forEach(eb => {
-                const isFree = String(eb.is_free) === "true";
-                let priceHTML = isFree ? `<span class="badge-free">✦ FREE</span>` : `₹${eb.discount_price || eb.price}`;
-                if(!isFree && eb.discount_price && eb.price > eb.discount_price) priceHTML += `<span class="strike-price">₹${eb.price}</span>`;
-
-                grid.innerHTML += `
-                <div class="book-card" onclick="window.openDetail('${eb.id}')">
-                    <img src="${eb.thumbnail}" class="book-thumb">
-                    <div class="book-info">
-                        <div class="book-title">${eb.title}</div>
-                        <div class="price-tag">${priceHTML}</div>
-                    </div>
-                </div>`;
-            });
-
-            loadMoreBtn.classList.toggle("hidden", filteredBooks.length <= endIndex);
+        // 🔥 NAYA CATEGORY SETTER FUNCTION 🔥
+        window.setCatFilter = function(value, label, event) {
+            event.stopPropagation();
+            currentCatFilter = value;
+            document.getElementById('cat-label').innerText = label;
+            document.querySelectorAll('#cat-options .f-option').forEach(el => el.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
+            const btn = document.getElementById('cat-dropdown-btn');
+            if(value !== 'all') btn.classList.add('active-filter'); else btn.classList.remove('active-filter');
+            window.toggleFilterMenu('cat');
+            renderGrid(true);
         }
+
+        function renderGrid(reset = false) {
+    if (reset) currentPage = 1;
+    const grid = document.getElementById("ebook-grid");
+    const loadMoreBtn = document.getElementById("load-more-btn");
+    
+    let newHTML = "";
+    ebooksData.sort((a, b) => (a.sort_order || 999) - (b.sort_order || 999));
+
+    // Filter logic wahi rakho jo pehle tha...
+    let filteredBooks = ebooksData.filter(eb => {
+        const isFree = String(eb.is_free) === "true";
+        let passPrice = (currentPriceFilter === 'all') || (currentPriceFilter === 'free' ? isFree : !isFree);
+        
+        let passLang = true;
+        if (currentLangFilter !== 'all') {
+            let bookLangs = Array.isArray(eb.language) ? eb.language : String(eb.language || '').split(',');
+            passLang = bookLangs.some(l => l.toLowerCase().trim() === currentLangFilter.toLowerCase());
+        }
+
+        let passCat = true;
+        if (currentCatFilter !== 'all') {
+            let bookCats = Array.isArray(eb.category) ? eb.category : String(eb.category || '').split(',');
+            passCat = bookCats.some(c => c.toLowerCase().trim() === currentCatFilter.toLowerCase());
+        }
+        return passPrice && passLang && passCat;
+    });
+
+    if (filteredBooks.length === 0) {
+        grid.innerHTML = `<div class="empty-state"><h4>No books available</h4></div>`;
+        if(loadMoreBtn) loadMoreBtn.classList.add("hidden");
+        return; 
+    }
+
+    const booksToShow = filteredBooks.slice(0, currentPage * itemsPerPage);
+
+    booksToShow.forEach(eb => {
+        const isFree = String(eb.is_free) === "true";
+        let priceHTML = isFree ? `<span class="badge-free">✦ FREE</span>` : `₹${eb.discount_price || eb.price}`;
+        
+        newHTML += `
+        <div class="book-card" onclick="window.openDetail('${eb.id}')">
+            <img src="${eb.thumbnail}" class="book-thumb" loading="lazy">
+            <div class="book-info">
+                <div class="book-title">${eb.title}</div>
+                <div class="price-tag">${priceHTML}</div>
+            </div>
+        </div>`;
+    });
+
+    // 🔥 SMART UPDATE: 
+    // Grid ko poora delete karne ki jagah, sirf tabhi update karo jab HTML badla ho
+    // Par comparison se pehle ek temporary div ka use karo real strings check karne ke liye
+    if (grid.getAttribute('data-last-html') !== newHTML) {
+        grid.innerHTML = newHTML;
+        grid.setAttribute('data-last-html', newHTML); // Memory mein save kar lo
+    }
+
+    if(loadMoreBtn) loadMoreBtn.classList.toggle("hidden", filteredBooks.length <= (currentPage * itemsPerPage));
+}
+
 
         window.loadMoreBooks = function() {
             currentPage++;
@@ -981,7 +1211,7 @@ onAuthStateChanged(auth, (user) => {
             const selectedBook = ebooksData.find(e => String(e.id) === String(id));
             if(selectedBook) {
                 sessionStorage.setItem('selected_book_data', JSON.stringify(selectedBook));
-                window.location.href = 'books/index.html';
+                window.location.href = '/books/';
             }
         }
 
@@ -1004,15 +1234,29 @@ onAuthStateChanged(auth, (user) => {
             const q = query.toLowerCase().trim();
             const searchTerms = q.split(/\s+/); 
 
+            // 🔥 SMART MEGA-STRING FILTER LOGIC 🔥
             const results = ebooksData.filter(eb => {
-                const title = eb.title.toLowerCase();
-                const desc = eb.description ? eb.description.toLowerCase() : "";
-                return searchTerms.every(term => title.includes(term) || desc.includes(term));
+                // 1. Check book is free or premium and assign keywords
+                const isFree = String(eb.is_free) === "true";
+                const priceKeywords = isFree ? "free muft no cost" : "paid premium buy price";
+
+                // 2. Book ki saari details ko ek lambi string mein jod do (Kundali)
+                const megaString = `
+                    ${eb.title || ''} 
+                    ${eb.description || ''} 
+                    ${eb.category || ''} 
+                    ${eb.language || ''} 
+                    ${priceKeywords}
+                `.toLowerCase();
+
+                // 3. User ne jitne bhi words likhe hain, wo SAARE is megaString mein hone chahiye
+                return searchTerms.every(term => megaString.includes(term));
             });
             
             dropdown.innerHTML = "";
             if (results.length > 0) {
                 dropdown.classList.add("active");
+                // Max 6 results dikhane ka logic same rakha hai
                 results.slice(0, 6).forEach(eb => {
                     dropdown.innerHTML += `
                         <div class="search-item" onclick="window.openDetail('${eb.id}')">
@@ -1027,6 +1271,64 @@ onAuthStateChanged(auth, (user) => {
                 dropdown.classList.remove("active");
             }
         }
+
+        // ✅ USER PANEL: Firebase se Master Categories aur Languages laakar dropdown me add karna
+// ✅ USER PANEL: Firebase se Master Categories aur Languages laakar dropdown me add karna
+document.addEventListener("DOMContentLoaded", () => {
+    // Pehle page smoothly load hone do, phir aaram se categories background me laao
+    setTimeout(async () => {
+        try {
+            // Firebase Firestore import karo
+            const { getFirestore, doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
+            const dbInstance = getFirestore();
+            const docRef = doc(dbInstance, "settings", "app_data");
+            const docSnap = await getDoc(docRef);
+
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+
+                // 1. Nayi Categories Dropdown mein add karo
+                if (data.categories) {
+                    const catContainer = document.getElementById('cat-options');
+                    if (catContainer) {
+                        data.categories.forEach(cat => {
+                            const lowerCat = cat.toLowerCase();
+                            const exists = Array.from(catContainer.children).some(el => el.innerText.trim().toLowerCase() === lowerCat);
+                            if (!exists) {
+                                const newDiv = document.createElement('div');
+                                newDiv.className = 'f-option';
+                                newDiv.innerText = cat; 
+                                newDiv.onclick = (e) => window.setCatFilter(lowerCat, cat, e);
+                                catContainer.appendChild(newDiv);
+                            }
+                        });
+                    }
+                }
+
+                // 2. Nayi Languages Dropdown mein add karo
+                if (data.languages) {
+                    const langContainer = document.getElementById('lang-options');
+                    if (langContainer) {
+                        data.languages.forEach(lang => {
+                            const lowerLang = lang.toLowerCase();
+                            const exists = Array.from(langContainer.children).some(el => el.innerText.trim().toLowerCase() === lowerLang);
+                            if (!exists) {
+                                const newDiv = document.createElement('div');
+                                newDiv.className = 'f-option';
+                                newDiv.innerText = lang; 
+                                newDiv.onclick = (e) => window.setLangFilter(lowerLang, lang, e);
+                                langContainer.appendChild(newDiv);
+                            }
+                        });
+                    }
+                }
+            }
+        } catch (error) {
+            console.error("User Panel Master Tags Load Error:", error);
+        }
+    }, 500); // 500ms delay
+});
+
     </script>
 </body>
 </html>
