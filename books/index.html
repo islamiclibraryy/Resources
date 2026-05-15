@@ -925,7 +925,7 @@ onAuthStateChanged(auth, (user) => {
         }
 
 // =========================================================================
-// 🔒 SECURE RENDER DETAIL FUNCTION (On-Demand Link Fetcher)
+// 🔒 SECURE RENDER DETAIL FUNCTION (With Real-Time Status Verification)
 // =========================================================================
 function renderDetail() {
     document.getElementById("action-footer").classList.remove("hidden");
@@ -956,31 +956,62 @@ function renderDetail() {
 
     actionBtn.className = "btn"; actionBtn.disabled = false; actionBtn.style.background = ""; actionBtn.style.color = ""; actionBtn.style.boxShadow = "";
 
-    // 🛡️ SCENARIO 1: PAID BOOK LELI HAI (Approved / Owned)
+    // 🛡️ SCENARIO 1: PAID BOOK (Local Cache says 'Approved')
     if (ownedBook) {
         if (ownedBook.status.toLowerCase() === "approved") {
             footerPrice.innerHTML = `<span style="color: var(--success) !important; font-weight: 700;">Owned</span>`;
             actionBtn.innerHTML = `<i class="fas fa-download"></i> Download`;
             actionBtn.style.background = "var(--success)"; actionBtn.style.boxShadow = "0 4px 20px rgba(16,185,129,0.3)"; actionBtn.style.color = "#fff";
             
-            // 🔥 THE MAGIC: On-Demand Secure Link Fetcher 🔥
+            // 🔥 THE MAGIC: REAL-TIME VERIFICATION + LINK FETCH 🔥
             actionBtn.onclick = async () => {
+                const currentUserId = localStorage.getItem("islamic_user_id");
                 const originalHTML = actionBtn.innerHTML;
-                window.showToast("Verifying access & preparing download...", "info");
+                window.showToast("Verifying live access...", "info");
                 actionBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Verifying...`;
                 actionBtn.disabled = true;
 
                 try {
-                    const { getFirestore, doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
+                    const { getFirestore, doc, getDoc, collection, query, where, getDocs } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
                     const dbInstance = getFirestore();
                     
-                    // Seedha secure_links wale khufiya dabbe me check karo
+                    // 🚨 STEP 1: Live Payment Check (Kya admin ne abhi reject kiya?)
+                    const qPay = query(collection(dbInstance, "payments"), 
+                        where("user_id", "==", currentUserId), 
+                        where("ebook_id", "==", String(currentEbook.id))
+                    );
+                    const paySnap = await getDocs(qPay);
+                    
+                    let liveStatus = "pending";
+                    if (!paySnap.empty) liveStatus = paySnap.docs[0].data().status.toLowerCase();
+
+                    // Agar Live status Approved nahi hai (yani reject kar diya gaya hai)
+                    if (liveStatus !== "approved") {
+                        window.showToast(`Access Denied! Status is now ${liveStatus}.`, "error");
+                        
+                        // 🧹 CHOR PAKDA GAYA: Local Cache ko turant update karo taaki dobara 'Owned' na dikhe!
+                        const cacheKey = `cache_payments_${currentUserId}_data`;
+                        let cachedPayments = JSON.parse(localStorage.getItem(cacheKey)) || [];
+                        const pIndex = cachedPayments.findIndex(p => String(p.ebook_id) === String(currentEbook.id));
+                        if(pIndex > -1) {
+                            cachedPayments[pIndex].status = liveStatus;
+                        } else if (!paySnap.empty) {
+                            cachedPayments.push({id: paySnap.docs[0].id, ...paySnap.docs[0].data()});
+                        }
+                        localStorage.setItem(cacheKey, JSON.stringify(cachedPayments));
+                        window.userPayments = cachedPayments; // Global state update
+                        
+                        // Page ko nayi sachai (Rejected state) ke sath dobara render kar do
+                        renderDetail(); 
+                        return; // 🛑 YAHIN RUK JAO, aage link lene mat jao!
+                    }
+
+                    // 🚨 STEP 2: Access Verified! Ab Tijori se link lao
                     const secureDocRef = doc(dbInstance, "secure_links", String(currentEbook.id));
                     const secureDocSnap = await getDoc(secureDocRef);
 
                     if (secureDocSnap.exists() && secureDocSnap.data().pdf_link) {
                         window.showToast("Access Verified! Opening File...", "success");
-                        // Link milte hi seedha naye tab mein khol do (Browser me save nahi hogi)
                         window.open(secureDocSnap.data().pdf_link, "_blank");
                     } else {
                         window.showToast("Secure file not found. Please contact admin.", "error");
@@ -989,8 +1020,11 @@ function renderDetail() {
                     console.error("Verification Error:", err);
                     window.showToast("Network error during verification.", "error");
                 } finally {
-                    actionBtn.innerHTML = originalHTML;
-                    actionBtn.disabled = false;
+                    // Button ko wapas normal tabhi karo jab reject nahi hua ho
+                    if (actionBtn.innerHTML.includes("Verifying")) {
+                        actionBtn.innerHTML = originalHTML;
+                        actionBtn.disabled = false;
+                    }
                 }
             };
             
