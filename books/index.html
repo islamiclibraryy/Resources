@@ -967,7 +967,7 @@ function renderDetail() {
             actionBtn.onclick = async () => {
                 const currentUserId = localStorage.getItem("islamic_user_id");
                 const originalHTML = actionBtn.innerHTML;
-                window.showToast("Verifying live access...", "info");
+                window.showToast("Verifying your access...", "info");
                 actionBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Verifying...`;
                 actionBtn.disabled = true;
 
@@ -986,25 +986,34 @@ function renderDetail() {
                     if (!paySnap.empty) liveStatus = paySnap.docs[0].data().status.toLowerCase();
 
                     // Agar Live status Approved nahi hai (yani reject kar diya gaya hai)
-                    if (liveStatus !== "approved") {
-                        window.showToast(`Access Denied! Status is now ${liveStatus}.`, "error");
-                        
-                        // 🧹 CHOR PAKDA GAYA: Local Cache ko turant update karo taaki dobara 'Owned' na dikhe!
-                        const cacheKey = `cache_payments_${currentUserId}_data`;
-                        let cachedPayments = JSON.parse(localStorage.getItem(cacheKey)) || [];
-                        const pIndex = cachedPayments.findIndex(p => String(p.ebook_id) === String(currentEbook.id));
-                        if(pIndex > -1) {
-                            cachedPayments[pIndex].status = liveStatus;
-                        } else if (!paySnap.empty) {
-                            cachedPayments.push({id: paySnap.docs[0].id, ...paySnap.docs[0].data()});
-                        }
-                        localStorage.setItem(cacheKey, JSON.stringify(cachedPayments));
-                        window.userPayments = cachedPayments; // Global state update
-                        
-                        // Page ko nayi sachai (Rejected state) ke sath dobara render kar do
-                        renderDetail(); 
-                        return; // 🛑 YAHIN RUK JAO, aage link lene mat jao!
-                    }
+if (liveStatus !== "approved") {
+    let errorMsg = liveStatus === "rejected" 
+        ? "Access Denied! Your payment was rejected. Please contact support for more information." 
+        : `Access Denied! Your payment is currently ${liveStatus}.`;
+    window.showToast(errorMsg, "error");
+    
+    // 🧹 CHOR PAKDA GAYA: Local Cache ko turant update karo!
+    const cacheKey = `cache_payments_${currentUserId}_data`;
+    let cachedPayments = JSON.parse(localStorage.getItem(cacheKey)) || [];
+    const pIndex = cachedPayments.findIndex(p => String(p.ebook_id) === String(currentEbook.id));
+    if(pIndex > -1) {
+        cachedPayments[pIndex].status = liveStatus;
+    } else if (!paySnap.empty) {
+        cachedPayments.push({id: paySnap.docs[0].id, ...paySnap.docs[0].data()});
+    }
+    localStorage.setItem(cacheKey, JSON.stringify(cachedPayments));
+    window.userPayments = cachedPayments; // Global state update
+    
+    // 1. Pehle hand-to-hand button ka status update kar do
+    renderDetail(); 
+
+    // 2. 🔥 TERA NAYA IDEA: 2 Second baad Page Auto-Refresh 🔥
+    setTimeout(() => {
+        window.location.reload();
+    }, 2000);
+
+    return; // 🛑 YAHIN RUK JAO, aage link lene mat jao!
+}
 
                     // 🚨 STEP 2: Access Verified! Ab Tijori se link lao
                     const secureDocRef = doc(dbInstance, "secure_links", String(currentEbook.id));
