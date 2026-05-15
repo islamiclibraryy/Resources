@@ -462,10 +462,22 @@
             </div>
         </div>
         <div class="flex align-center" style="gap: 20px;">
-            <i id="theme-toggle-icon" class="fas fa-moon" style="font-size: 1.2rem; color: var(--text2); cursor: pointer; transition: 0.3s;" onclick="window.toggleTheme()" title="Switch Theme"></i>
-            <i class="fas fa-user-circle" style="font-size: 1.3rem; color: var(--text2); cursor: pointer; transition: 0.3s;" onclick="window.openProfileDrawer()" title="Profile"></i>
+            <i id="theme-toggle-icon" class="fas fa-moon" style="font-size: 1.2rem; color: var(--text2); cursor: pointer;" onclick="window.toggleTheme()" title="Switch Theme"></i>
+
+<i class="fas fa-user-circle" style="font-size: 1.3rem; color: var(--text2); cursor: pointer;" onclick="window.openProfileDrawer()" title="Profile"></i>
         </div>
     </header>
+
+        <script>
+            (function() {
+                const currentTheme = localStorage.getItem('islamic_theme') || 'dark';
+                const icon = document.getElementById("theme-toggle-icon");
+                if(icon) {
+                    // Agar light theme hai toh direct Sun laga do, Moon dikhne hi mat do
+                    icon.className = currentTheme === "light" ? "fas fa-sun" : "fas fa-moon";
+                }
+            })();
+        </script>
 
     <div class="main-content">
         <div id="page-library">
@@ -615,7 +627,8 @@ const db = initializeFirestore(app, {
             localStorage.removeItem("islamic_user_id"); 
             localStorage.removeItem("islamic_user_name"); 
             localStorage.removeItem("islamic_user_mobile");
-            
+            localStorage.removeItem("islamic_user_photo");
+
             signOut(auth).then(() => { if(redirect) window.location.href = "/login/"; })
                          .catch(() => { if(redirect) window.location.href = "/login/"; });
         };
@@ -662,7 +675,7 @@ const db = initializeFirestore(app, {
             return false;
         }
 
-        // ✅ 3. FIREBASE FETCH (Guest Check Added)
+        // ✅ 3. FIREBASE FETCH (With Smart TTL Cache for Payments)
         async function fetchLibraryData() {
             const currentUserId = localStorage.getItem("islamic_user_id");
             
@@ -673,8 +686,14 @@ const db = initializeFirestore(app, {
             }
 
             const cachedPayments = localStorage.getItem(`cache_payments_${currentUserId}_data`);
+            const cachedTime = localStorage.getItem(`cache_payments_${currentUserId}_time`);
             const cachedEbooks = localStorage.getItem("cache_ebooks_data");
+            
+            // 🔥 TIMING SETTING: 5 Minutes (5 * 60 * 1000). Tum isko 10 ya 15 bhi kar sakte ho.
+            const CACHE_TIME_LIMIT = 5 * 60 * 1000; 
+            const now = Date.now();
 
+            // 1. Fast UI Rendering from Cache
             if (!cachedPayments || !cachedEbooks) {
                 showLibrarySkeletons();
             } else {
@@ -685,6 +704,12 @@ const db = initializeFirestore(app, {
                 } catch(e) {}
             }
 
+            // 🔥 THE GATEKEEPER: Agar 5 minute nahi hue hain, toh Firebase se mat maango!
+            if (cachedTime && cachedPayments && (now - parseInt(cachedTime)) < CACHE_TIME_LIMIT) {
+                return; // Token bach gaye!
+            }
+
+            // 2. 5 Minute poore hone par Firebase se background mein check karo
             try {
                 const q = query(collection(db, "payments"), where("user_id", "==", currentUserId));
                 const paySnapshot = await getDocs(q);
@@ -693,19 +718,24 @@ const db = initializeFirestore(app, {
                 const bookSnapshot = await getDocs(collection(db, "ebooks"));
                 const freshEbooks = bookSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
+                // Agar data badla hai tabhi re-render karo
                 if (isDataDifferent(userPayments, freshPayments) || JSON.stringify(ebooksData) !== JSON.stringify(freshEbooks)) {
                     userPayments = freshPayments;
                     ebooksData = freshEbooks;
                     localStorage.setItem(`cache_payments_${currentUserId}_data`, JSON.stringify(freshPayments));
-                    localStorage.setItem(`cache_payments_${currentUserId}_time`, Date.now().toString());
                     localStorage.setItem("cache_ebooks_data", JSON.stringify(freshEbooks));
                     renderLibrary();
                 }
+
+                // 🔥 Naya time update kar do taaki agle 5 minute tak lock lag jaye
+                localStorage.setItem(`cache_payments_${currentUserId}_time`, now.toString());
+
             } catch(e) {
                 console.error("Firebase fetch error:", e);
                 if (!cachedPayments) window.showToast("Network Error loading library", "error");
             }
         }
+
 
         // ✅ 4. RENDER LIBRARY (Guest vs Logged In UI)
         function renderLibrary() {
