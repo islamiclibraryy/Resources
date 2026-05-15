@@ -629,8 +629,8 @@ const db = initializeFirestore(app, {
             localStorage.removeItem("islamic_user_mobile");
             localStorage.removeItem("islamic_user_photo");
 
-            signOut(auth).then(() => { if(redirect) window.location.href = "/privacy/"; })
-                         .catch(() => { if(redirect) window.location.href = "/privacy/"; });
+            signOut(auth).then(() => { if(redirect) window.location.href = "/library/"; })
+                         .catch(() => { if(redirect) window.location.href = "/library/"; });
         };
 
         window.openChangePassword = function() {
