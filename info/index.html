@@ -286,10 +286,22 @@
             </div>
         </div>
         <div class="flex align-center" style="gap: 20px;">
-            <i id="theme-toggle-icon" class="fas fa-moon" style="font-size: 1.2rem; color: var(--text2); cursor: pointer; transition: 0.3s;" onclick="window.toggleTheme()"></i>
-            <i class="fas fa-user-circle" style="font-size: 1.3rem; color: var(--text2); cursor: pointer; transition: 0.3s;" onclick="window.openProfileDrawer()"></i>
+            <i id="theme-toggle-icon" class="fas fa-moon" style="font-size: 1.2rem; color: var(--text2); cursor: pointer;" onclick="window.toggleTheme()" title="Switch Theme"></i>
+
+<i class="fas fa-user-circle" style="font-size: 1.3rem; color: var(--text2); cursor: pointer;" onclick="window.openProfileDrawer()" title="Profile"></i>
         </div>
     </header>
+
+        <script>
+            (function() {
+                const currentTheme = localStorage.getItem('islamic_theme') || 'dark';
+                const icon = document.getElementById("theme-toggle-icon");
+                if(icon) {
+                    // Agar light theme hai toh direct Sun laga do, Moon dikhne hi mat do
+                    icon.className = currentTheme === "light" ? "fas fa-sun" : "fas fa-moon";
+                }
+            })();
+        </script>
 
     <div class="stepper-wrap">
         <div class="stepper">
@@ -476,8 +488,9 @@
             const userId = localStorage.getItem("islamic_user_id");
             if(userId) { localStorage.removeItem(`cache_payments_${userId}_data`); localStorage.removeItem(`cache_payments_${userId}_time`); }
             localStorage.removeItem("islamic_user_id"); localStorage.removeItem("islamic_user_name"); localStorage.removeItem("islamic_user_mobile");
-            
-            const loginPath = '/login/';
+            localStorage.removeItem("islamic_user_photo");
+
+            const loginPath = '/info/';
 
 
             signOut(auth).then(() => { if(redirect) window.location.href = loginPath; })
