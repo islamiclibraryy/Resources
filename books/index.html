@@ -924,86 +924,123 @@ onAuthStateChanged(auth, (user) => {
             }
         }
 
-        function renderDetail() {
-            document.getElementById("action-footer").classList.remove("hidden");
-            document.getElementById("det-thumb").src = currentEbook.thumbnail;
-            document.getElementById("det-title").innerText = currentEbook.title;
-            document.getElementById("det-desc").innerText = currentEbook.description;
+// =========================================================================
+// 🔒 SECURE RENDER DETAIL FUNCTION (On-Demand Link Fetcher)
+// =========================================================================
+function renderDetail() {
+    document.getElementById("action-footer").classList.remove("hidden");
+    document.getElementById("det-thumb").src = currentEbook.thumbnail;
+    document.getElementById("det-title").innerText = currentEbook.title;
+    document.getElementById("det-desc").innerText = currentEbook.description;
 
-            // Safe check for Arabic phrase (crash se bachane ke liye)
-            if(!document.getElementById("det-arabic-phrase").innerText) {
-                if (typeof ARABIC_PHRASES !== 'undefined' && ARABIC_PHRASES.length > 0) {
-                    document.getElementById("det-arabic-phrase").innerText = ARABIC_PHRASES[Math.floor(Math.random() * ARABIC_PHRASES.length)];
-                }
-            }
-
-            const isFree = String(currentEbook.is_free) === "true";
-            const priceBox = document.getElementById("det-price-box");
-            const footerPrice = document.getElementById("det-footer-price");
-            const actionBtn = document.getElementById("det-action-btn");
-            
-            // Safe array find
-            const ownedBook = (userPayments || []).find(p => String(p.ebook_id) === String(currentEbook.id) && p.status.toLowerCase() !== "rejected");
-
-            if (isFree) {
-                priceBox.innerHTML = `<span class="badge-free" style="padding: 6px 16px; font-size: .85rem;">✦ 100% FREE</span>`;
-            } else {
-                let pHTML = `₹${currentEbook.discount_price || currentEbook.price}`;
-                if (currentEbook.discount_price && currentEbook.price > currentEbook.discount_price) pHTML += ` <span class="strike-price">₹${currentEbook.price}</span>`;
-                priceBox.innerHTML = `<span class="price-tag" style="font-size: 1.6rem;">${pHTML}</span>`;
-            }
-
-            actionBtn.className = "btn"; actionBtn.disabled = false; actionBtn.style.background = ""; actionBtn.style.color = ""; actionBtn.style.boxShadow = "";
-
-            if (ownedBook) {
-                if (ownedBook.status.toLowerCase() === "approved") {
-                    footerPrice.innerHTML = `<span style="color: var(--success) !important; font-weight: 700;">Owned</span>`;
-                    actionBtn.innerHTML = `<i class="fas fa-download"></i> Download`;
-                    actionBtn.onclick = () => window.open(currentEbook.pdf_link, "_blank");
-                    actionBtn.style.background = "var(--success)"; actionBtn.style.boxShadow = "0 4px 20px rgba(16,185,129,0.3)"; actionBtn.style.color = "#fff";
-                } else {
-                    footerPrice.innerHTML = "In Verification";
-                    actionBtn.innerHTML = `<i class="fas fa-hourglass-half spin"></i> Verifying...`;
-                    actionBtn.disabled = true; actionBtn.onclick = null;
-                }
-            } else if (isFree) {
-                footerPrice.innerHTML = "Free";
-                actionBtn.innerHTML = `<i class="fas fa-download"></i> Download`;
-                actionBtn.onclick = () => window.open(currentEbook.pdf_link, "_blank");
-            } else {
-                footerPrice.innerHTML = `₹${currentEbook.discount_price || currentEbook.price}`;
-                actionBtn.innerHTML = `Buy Now <i class="fas fa-arrow-right" style="margin-left:6px;"></i>`;
-                actionBtn.style.background = "linear-gradient(135deg, #7c6af7, #9f3fbf)"; actionBtn.style.color = "#fff";
-                
-                // 🔥 Naya Freemium Buy Now Logic
-                                actionBtn.onclick = () => {
-                    const currentUserId = localStorage.getItem("islamic_user_id");
-                    if (currentUserId) {
-                        window.location.href = '/payments/';
-                    } else {
-                        window.showToast("Please login to purchase premium books", "error");
-
-                        // --- FIX 1: Purana text save kar liya ---
-                        const originalHTML = actionBtn.innerHTML;
-
-                        actionBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Redirecting...`;
-                        actionBtn.disabled = true;
-                        localStorage.setItem('islamic_redirect_after_login', window.location.href);
-                        
-                        setTimeout(() => {
-                            window.location.href = '/login/';
-                            
-                            // --- FIX 2: Redirect hone ke baad button ko wapas normal kar do ---
-                            setTimeout(() => {
-                                actionBtn.innerHTML = originalHTML;
-                                actionBtn.disabled = false;
-                            }, 500);
-
-                        }, 2500);
-                    }
-                };
-            }
+    if(!document.getElementById("det-arabic-phrase").innerText) {
+        if (typeof ARABIC_PHRASES !== 'undefined' && ARABIC_PHRASES.length > 0) {
+            document.getElementById("det-arabic-phrase").innerText = ARABIC_PHRASES[Math.floor(Math.random() * ARABIC_PHRASES.length)];
         }
+    }
+
+    const isFree = String(currentEbook.is_free) === "true";
+    const priceBox = document.getElementById("det-price-box");
+    const footerPrice = document.getElementById("det-footer-price");
+    const actionBtn = document.getElementById("det-action-btn");
+    
+    const ownedBook = (userPayments || []).find(p => String(p.ebook_id) === String(currentEbook.id) && p.status.toLowerCase() !== "rejected");
+
+    if (isFree) {
+        priceBox.innerHTML = `<span class="badge-free" style="padding: 6px 16px; font-size: .85rem;">✦ 100% FREE</span>`;
+    } else {
+        let pHTML = `₹${currentEbook.discount_price || currentEbook.price}`;
+        if (currentEbook.discount_price && currentEbook.price > currentEbook.discount_price) pHTML += ` <span class="strike-price">₹${currentEbook.price}</span>`;
+        priceBox.innerHTML = `<span class="price-tag" style="font-size: 1.6rem;">${pHTML}</span>`;
+    }
+
+    actionBtn.className = "btn"; actionBtn.disabled = false; actionBtn.style.background = ""; actionBtn.style.color = ""; actionBtn.style.boxShadow = "";
+
+    // 🛡️ SCENARIO 1: PAID BOOK LELI HAI (Approved / Owned)
+    if (ownedBook) {
+        if (ownedBook.status.toLowerCase() === "approved") {
+            footerPrice.innerHTML = `<span style="color: var(--success) !important; font-weight: 700;">Owned</span>`;
+            actionBtn.innerHTML = `<i class="fas fa-download"></i> Download`;
+            actionBtn.style.background = "var(--success)"; actionBtn.style.boxShadow = "0 4px 20px rgba(16,185,129,0.3)"; actionBtn.style.color = "#fff";
+            
+            // 🔥 THE MAGIC: On-Demand Secure Link Fetcher 🔥
+            actionBtn.onclick = async () => {
+                const originalHTML = actionBtn.innerHTML;
+                window.showToast("Verifying access & preparing download...", "info");
+                actionBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Verifying...`;
+                actionBtn.disabled = true;
+
+                try {
+                    const { getFirestore, doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
+                    const dbInstance = getFirestore();
+                    
+                    // Seedha secure_links wale khufiya dabbe me check karo
+                    const secureDocRef = doc(dbInstance, "secure_links", String(currentEbook.id));
+                    const secureDocSnap = await getDoc(secureDocRef);
+
+                    if (secureDocSnap.exists() && secureDocSnap.data().pdf_link) {
+                        window.showToast("Access Verified! Opening File...", "success");
+                        // Link milte hi seedha naye tab mein khol do (Browser me save nahi hogi)
+                        window.open(secureDocSnap.data().pdf_link, "_blank");
+                    } else {
+                        window.showToast("Secure file not found. Please contact admin.", "error");
+                    }
+                } catch (err) {
+                    console.error("Verification Error:", err);
+                    window.showToast("Network error during verification.", "error");
+                } finally {
+                    actionBtn.innerHTML = originalHTML;
+                    actionBtn.disabled = false;
+                }
+            };
+            
+        } else {
+            // Pending in Verification
+            footerPrice.innerHTML = "In Verification";
+            actionBtn.innerHTML = `<i class="fas fa-hourglass-half spin"></i> Verifying...`;
+            actionBtn.disabled = true; actionBtn.onclick = null;
+        }
+    } 
+    // 🛡️ SCENARIO 2: FREE BOOK HAI (Direct Public Link)
+    else if (isFree) {
+        footerPrice.innerHTML = "Free";
+        actionBtn.innerHTML = `<i class="fas fa-download"></i> Download`;
+        actionBtn.onclick = () => {
+            if (currentEbook.pdf_link) {
+                window.open(currentEbook.pdf_link, "_blank");
+            } else {
+                window.showToast("File link is currently unavailable.", "error");
+            }
+        };
+    } 
+    // 🛡️ SCENARIO 3: KHARIDNI PADEGI (Buy Now)
+    else {
+        footerPrice.innerHTML = `₹${currentEbook.discount_price || currentEbook.price}`;
+        actionBtn.innerHTML = `Buy Now <i class="fas fa-arrow-right" style="margin-left:6px;"></i>`;
+        actionBtn.style.background = "linear-gradient(135deg, #7c6af7, #9f3fbf)"; actionBtn.style.color = "#fff";
+        
+        actionBtn.onclick = () => {
+            const currentUserId = localStorage.getItem("islamic_user_id");
+            if (currentUserId) {
+                window.location.href = '/payments/';
+            } else {
+                window.showToast("Please login to purchase premium books", "error");
+                const originalHTML = actionBtn.innerHTML;
+                actionBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Redirecting...`;
+                actionBtn.disabled = true;
+                localStorage.setItem('islamic_redirect_after_login', window.location.href);
+                
+                setTimeout(() => {
+                    window.location.href = '/login/';
+                    setTimeout(() => {
+                        actionBtn.innerHTML = originalHTML;
+                        actionBtn.disabled = false;
+                    }, 500);
+                }, 2500);
+            }
+        };
+    }
+}
 
     </script>
 
