@@ -874,6 +874,17 @@ window.executeChangePassword = async function() {
             initBook();
         });
 
+        // 🔥 THE MAGIC FIX: BROWSER BACK BUTTON BFCache Reset 🔥
+        // Jab user mobile ka Back button dabakar wapas aayega, toh ye event trigger hoga
+        window.addEventListener("pageshow", (event) => {
+            // Check karta hai ki kya page history/cache se wapas restore hua hai
+            if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+                // Instantly data wapas read karke button ko update kar dega
+                initBook();
+            }
+        });
+
+
         // ✅ BACKGROUND FIREBASE SECURITY CHECK (Freemium Update)
 onAuthStateChanged(auth, (user) => {
     if (!user) { 
