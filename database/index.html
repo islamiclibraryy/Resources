@@ -1261,13 +1261,32 @@ function renderGrid(reset = false) {
             renderGrid(false);
         }
 
-        window.openDetail = function(id) {
-            const selectedBook = ebooksData.find(e => String(e.id) === String(id));
-            if(selectedBook) {
-                sessionStorage.setItem('selected_book_data', JSON.stringify(selectedBook));
-                window.location.href = '/books/';
+// ✅ FIXED: OPEN DETAIL PAGE (Supports 15 Books + Load More Mega Index Books)
+window.openDetail = function(id) {
+    // 1. Pehle normal 15 books wale dabbe me dhoondho
+    let selectedBook = ebooksData.find(e => String(e.id) === String(id));
+    
+    // 2. Agar wahan nahi mili (matlab Load More ya Search wali book hai), toh Mega Index me dhoondho
+    if (!selectedBook) {
+        const megaIndexStr = localStorage.getItem("cache_mega_search_index");
+        if (megaIndexStr) {
+            try {
+                const megaIndex = JSON.parse(megaIndexStr);
+                selectedBook = megaIndex.find(e => String(e.id) === String(id));
+            } catch (e) {
+                console.error("Mega Index search failed", e);
             }
         }
+    }
+
+    // 3. Agar book kahin bhi mil gayi, toh session storage me daalo aur page khol do!
+    if (selectedBook) {
+        sessionStorage.setItem('selected_book_data', JSON.stringify(selectedBook));
+        window.location.href = 'books/'; // Dhyan rakhna path yahi tha na tera?
+    } else {
+        console.error("Book not found in any cache!");
+    }
+}
 
         window.clearSearch = function() {
             document.getElementById("search-bar").value = "";
