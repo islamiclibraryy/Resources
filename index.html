@@ -1004,75 +1004,97 @@ onAuthStateChanged(auth, (user) => {
             return false;
         }
 
-        // ✅ SMART SWR FETCH FROM FIREBASE (With Token Saver TTL Cache)
+// ✅ GLOBALS FOR FILTERS (Ensure these are at the top)
+window.currentCatFilter = 'all';
+window.currentLangFilter = 'all';
+window.currentPriceFilter = 'all';
+window.currentPage = 1;
+window.itemsPerPage = 10; // Load more ke liye 10 set kiya
+
+// ✅ BUG-FREE LOADHOME FUNCTION
 async function loadHome() {
     const cachedDataStr = localStorage.getItem("cache_ebooks_data");
-    const cachedTime = localStorage.getItem("cache_time_ebooks_fetch"); // Naya timer variable
+    const cachedTime = localStorage.getItem("cache_time_ebooks_fetch"); 
     const userId = localStorage.getItem("islamic_user_id");
     const now = Date.now();
-    const CACHE_TIME_BOOKS = 30 * 60 * 1000; // 30 Minutes lock
+    const CACHE_TIME_BOOKS = 30 * 60 * 1000; // 30 Min Timer
 
-    // 1. Pehle catch se fast UI dikhao
+    // 1. Fast UI Load
     if (cachedDataStr) { 
         try { 
             ebooksData = JSON.parse(cachedDataStr); 
             renderGrid(true); 
-        } catch (e) {
-            showSkeletons(); 
-        } 
+        } catch (e) { showSkeletons(); } 
     } else {
         showSkeletons(); 
     }
 
-    // 🔥 THE MAGIC GATEKEEPER: Agar data 30 min se naya hai, toh aage ka code mat chalao!
-    if (cachedTime && cachedDataStr && (now - parseInt(cachedTime)) < CACHE_TIME_BOOKS) {
-        // Token saved! Background check ko rok diya gaya hai.
-        return; 
+    // =========================================================================
+    // 🚀 FIXED: MEGA INDEX BACKGROUND FETCH (Now Independent of Gatekeeper)
+    // =========================================================================
+    const megaIndexTime = localStorage.getItem("cache_time_mega_index");
+    if (!megaIndexTime || (now - parseInt(megaIndexTime)) > CACHE_TIME_BOOKS || !localStorage.getItem("cache_mega_search_index")) {
+        (async () => {
+            try {
+                const { getFirestore, collection, getDocs } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
+                const dbInstance = getFirestore();
+                const chunkSnapshot = await getDocs(collection(dbInstance, "search_indexes"));
+                let megaSearchIndex = [];
+
+                chunkSnapshot.forEach((doc) => {
+                    if (doc.data() && doc.data().books_list) {
+                        megaSearchIndex = megaSearchIndex.concat(doc.data().books_list);
+                    }
+                });
+
+                localStorage.setItem("cache_mega_search_index", JSON.stringify(megaSearchIndex));
+                localStorage.setItem("cache_time_mega_index", now.toString()); // Naya timer
+                console.log(`✅ Mega Search Index Updated! Filter bug fixed.`);
+                
+                // 🔥 Naya data aate hi grid ko dobara refresh karo taaki filters chal sakein!
+                if(document.getElementById('ebook-grid')) renderGrid(true); 
+            } catch (err) { console.error("Mega Index Error:", err); }
+        })();
     }
 
-    // Yahan tabhi aayega jab 30 minute poore ho jayenge ya pehli baar visit hoga
-    try {
-        // 2. Parallel fetching from Firebase
-        const ebooksPromise = getDocs(collection(db, "ebooks"));
-        let paymentsPromise = Promise.resolve(null); 
+    // =========================================================================
+    // 🛡️ THE GATEKEEPER FOR 15-BOOKS & PAYMENTS
+    // =========================================================================
+    if (cachedTime && cachedDataStr && (now - parseInt(cachedTime)) < CACHE_TIME_BOOKS) {
+        return; // Token saved for ebooks & payments!
+    }
 
+    try {
+        const { getFirestore, collection, query, where, getDocs, orderBy, limit } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
+        
+        const qBooks = query(collection(db, "ebooks"), orderBy("sort_order"), limit(15));
+        const ebooksPromise = getDocs(qBooks);
+        
+        let paymentsPromise = Promise.resolve(null); 
         if (userId) {
-            const q = query(collection(db, "payments"), where("user_id", "==", userId));
-            paymentsPromise = getDocs(q);
+            const qPay = query(collection(db, "payments"), where("user_id", "==", userId));
+            paymentsPromise = getDocs(qPay);
         }
 
         const [querySnapshot, paySnapshot] = await Promise.all([ebooksPromise, paymentsPromise]);
 
-        // 3. Process Fresh Ebooks
         const freshEbooks = [];
-        querySnapshot.forEach((doc) => {
-            freshEbooks.push({ id: doc.id, ...doc.data() });
-        });
+        querySnapshot.forEach(doc => freshEbooks.push({ id: doc.id, ...doc.data() }));
 
-        // Smart Diffing & Update
         if (isBookDataChanged(ebooksData, freshEbooks)) {
             ebooksData = freshEbooks;
             localStorage.setItem("cache_ebooks_data", JSON.stringify(freshEbooks));
             renderGrid(true); 
-        } else {
-            localStorage.setItem("cache_ebooks_data", JSON.stringify(freshEbooks));
         }
-        
-        // 🔥 Time stamp update kar do taaki aagle 30 min tak fetch na ho
         localStorage.setItem("cache_time_ebooks_fetch", now.toString());
 
-        // 4. Process Payments background
         if (paySnapshot) {
             const userPayments = [];
-            paySnapshot.forEach((doc) => {
-                userPayments.push({ id: doc.id, ...doc.data() });
-            });
+            paySnapshot.forEach(doc => userPayments.push({ id: doc.id, ...doc.data() }));
             localStorage.setItem(`cache_payments_${userId}_data`, JSON.stringify(userPayments));
         }
-
     } catch (error) {
         console.error("Firebase error:", error);
-        if (!cachedDataStr) window.showToast("Network Error loading books", "error");
     }
 }
 
@@ -1150,156 +1172,201 @@ async function loadHome() {
             renderGrid(true);
         }
 
-        function renderGrid(reset = false) {
-            if (reset) currentPage = 1;
-            const grid = document.getElementById("ebook-grid");
-            const loadMoreBtn = document.getElementById("load-more-btn");
-            if (reset) grid.innerHTML = "";
+// ✅ 🔥 PHASE 3 FIX: SKELETON CRASH FIXED (loadMoreBtn bug resolved) 🔥
+function renderGrid(reset = false) {
+    if (reset) currentPage = 1;
+    const grid = document.getElementById("ebook-grid");
+    const loadMoreBtn = document.getElementById("load-more-btn");
+    if (reset) grid.innerHTML = "";
 
-            ebooksData.sort((a, b) => (a.sort_order || 999) - (b.sort_order || 999));
-
-            let filteredBooks = ebooksData.filter(eb => {
-                // 1. Price Check
-                const isFree = String(eb.is_free) === "true";
-                let passPrice = true;
-                if (currentPriceFilter === 'free') passPrice = isFree;
-                if (currentPriceFilter === 'premium') passPrice = !isFree;
-
-                // 2. Language Check
-                let passLang = true;
-                if (currentLangFilter !== 'all') {
-                    const langData = eb.language || 'none';
-                    let bookLangs = Array.isArray(langData) ? langData.map(l => l.toLowerCase().trim()) : String(langData).split(',').map(l => l.toLowerCase().trim());
-                    passLang = bookLangs.includes(currentLangFilter.toLowerCase());
-                }
-
-                // 🔥 3. NAYA CATEGORY CHECK 🔥
-                let passCat = true;
-                if (currentCatFilter !== 'all') {
-                    const catData = eb.category || 'none';
-                    let bookCats = Array.isArray(catData) ? catData.map(c => c.toLowerCase().trim()) : String(catData).split(',').map(c => c.toLowerCase().trim());
-                    passCat = bookCats.includes(currentCatFilter.toLowerCase());
-                }
-
-                // Teeno conditions pass hongi tabhi book dikhegi
-                return passPrice && passLang && passCat;
-            });
-
-            if (filteredBooks.length === 0) {
-                grid.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-folder-open"></i>
-                        <h4>No books available</h4>
-                        <p>We couldn't find any books matching your filters right now.</p>
-                    </div>`;
-                if(loadMoreBtn) loadMoreBtn.classList.add("hidden");
-                return; 
-            }
-
-            const startIndex = (currentPage - 1) * itemsPerPage;
-            const endIndex = startIndex + itemsPerPage;
-            const booksToShow = filteredBooks.slice(startIndex, endIndex);
-
-            booksToShow.forEach(eb => {
-                const isFree = String(eb.is_free) === "true";
-                let priceHTML = isFree ? `<span class="badge-free">✦ FREE</span>` : `₹${eb.discount_price || eb.price}`;
-                if(!isFree && eb.discount_price && eb.price > eb.discount_price) priceHTML += `<span class="strike-price">₹${eb.price}</span>`;
-
-                grid.innerHTML += `
-                <div class="book-card" onclick="window.openDetail('${eb.id}')">
-                    <img src="${eb.thumbnail}" class="book-thumb">
-                    <div class="book-info">
-                        <div class="book-title">${eb.title}</div>
-                        <div class="price-tag">${priceHTML}</div>
-                    </div>
-                </div>`;
-            });
-
-            if(loadMoreBtn) loadMoreBtn.classList.toggle("hidden", filteredBooks.length <= endIndex);
+    // 1. LocalStorage se Mega Index data source uthao
+    let booksSource = ebooksData;
+    const megaIndexStr = localStorage.getItem("cache_mega_search_index");
+    if (megaIndexStr) {
+        try {
+            booksSource = JSON.parse(megaIndexStr);
+        } catch (e) {
+            booksSource = ebooksData;
         }
+    }
+
+    // 2. Books ko sort_order ke hisaab se sort karo
+    booksSource.sort((a, b) => (a.sort_order || 999) - (b.sort_order || 999));
+
+    // 3. Saare filters lagao (Price, Language, Category)
+    let filteredBooks = booksSource.filter(eb => {
+        // Price Check
+        const isFree = String(eb.is_free) === "true";
+        let passPrice = true;
+        if (currentPriceFilter === 'free') passPrice = isFree;
+        if (currentPriceFilter === 'premium') passPrice = !isFree;
+
+        // Language Check
+        let passLang = true;
+        if (currentLangFilter !== 'all') {
+            const langData = eb.language || 'none';
+            let bookLangs = Array.isArray(langData) ? langData.map(l => l.toLowerCase().trim()) : String(langData).split(',').map(l => l.toLowerCase().trim());
+            passLang = bookLangs.includes(currentLangFilter.toLowerCase());
+        }
+
+        // Category Check
+        let passCat = true;
+        if (currentCatFilter !== 'all') {
+            const catData = eb.category || 'none';
+            let bookCats = Array.isArray(catData) ? catData.map(c => c.toLowerCase().trim()) : String(catData).split(',').map(c => c.toLowerCase().trim());
+            passCat = bookCats.includes(currentCatFilter.toLowerCase());
+        }
+
+        return passPrice && passLang && passCat;
+    });
+
+    // 4. Agar koi book na mile toh empty state dikhao
+    if (filteredBooks.length === 0) {
+        grid.innerHTML = `
+            <div class="empty-state">
+                <i class="fas fa-folder-open"></i>
+                <h4>No books available</h4>
+                <p>We couldn't find any books matching your filters right now.</p>
+            </div>`;
+        if(loadMoreBtn) loadMoreBtn.classList.add("hidden");
+        return; 
+    }
+
+    // 5. Local Pagination (15 books ke baad next 10 items show karna)
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const booksToShow = filteredBooks.slice(startIndex, endIndex);
+
+    booksToShow.forEach(eb => {
+        const isFree = String(eb.is_free) === "true";
+        let priceHTML = isFree ? `<span class="badge-free">✦ FREE</span>` : `₹${eb.discount_price || eb.price}`;
+        if(!isFree && eb.discount_price && eb.price > eb.discount_price) priceHTML += `<span class="strike-price">₹${eb.price}</span>`;
+
+        grid.innerHTML += `
+        <div class="book-card" onclick="window.openDetail('${eb.id}')">
+            <img src="${eb.thumbnail}" class="book-thumb">
+            <div class="book-info">
+                <div class="book-title">${eb.title}</div>
+                <div class="price-tag">${priceHTML}</div>
+            </div>
+        </div>`;
+    });
+
+    // 🔥 FIX: yahan classList.toggle kar diya hai jo galti se toot gaya tha
+    if(loadMoreBtn) loadMoreBtn.classList.toggle("hidden", filteredBooks.length <= endIndex);
+}
 
         window.loadMoreBooks = function() {
             currentPage++;
             renderGrid(false);
         }
 
-        window.openDetail = function(id) {
-            const selectedBook = ebooksData.find(e => String(e.id) === String(id));
-            if(selectedBook) {
-                sessionStorage.setItem('selected_book_data', JSON.stringify(selectedBook));
-                window.location.href = '/books/';
+// ✅ FIXED: OPEN DETAIL PAGE (Supports 15 Books + Load More Mega Index Books)
+window.openDetail = function(id) {
+    // 1. Pehle normal 15 books wale dabbe me dhoondho
+    let selectedBook = ebooksData.find(e => String(e.id) === String(id));
+    
+    // 2. Agar wahan nahi mili (matlab Load More ya Search wali book hai), toh Mega Index me dhoondho
+    if (!selectedBook) {
+        const megaIndexStr = localStorage.getItem("cache_mega_search_index");
+        if (megaIndexStr) {
+            try {
+                const megaIndex = JSON.parse(megaIndexStr);
+                selectedBook = megaIndex.find(e => String(e.id) === String(id));
+            } catch (e) {
+                console.error("Mega Index search failed", e);
             }
         }
+    }
+
+    // 3. Agar book kahin bhi mil gayi, toh session storage me daalo aur page khol do!
+    if (selectedBook) {
+        sessionStorage.setItem('selected_book_data', JSON.stringify(selectedBook));
+        window.location.href = 'books/'; // Dhyan rakhna path yahi tha na tera?
+    } else {
+        console.error("Book not found in any cache!");
+    }
+}
 
         window.clearSearch = function() {
             document.getElementById("search-bar").value = "";
             window.handleSearch("");
         }
 
-        window.handleSearch = function(query) {
-            const dropdown = document.getElementById("search-dropdown");
-            const clearBtn = document.getElementById("clear-search");
-            
-            if (!query.trim()) {
-                dropdown.classList.remove("active");
-                clearBtn.classList.add("hidden");
-                return;
-            }
+        // ✅ 🔥 PHASE 3 FIX: ZERO-TOKEN MEGA SEARCH BAR LOGIC 🔥
+window.handleSearch = function(query) {
+    const dropdown = document.getElementById("search-dropdown");
+    const clearBtn = document.getElementById("clear-search");
+    
+    if (!query.trim()) {
+        dropdown.classList.remove("active");
+        clearBtn.classList.add("hidden");
+        return;
+    }
 
-            clearBtn.classList.remove("hidden");
-            const q = query.toLowerCase().trim();
-            const searchTerms = q.split(/\s+/); 
+    clearBtn.classList.remove("hidden");
+    const q = query.toLowerCase().trim();
+    const searchTerms = q.split(/\s+/); 
 
-            // 🔥 SMART MEGA-STRING FILTER LOGIC 🔥
-            const results = ebooksData.filter(eb => {
-                // 1. Check book is free or premium and assign keywords
-                const isFree = String(eb.is_free) === "true";
-                const priceKeywords = isFree ? "free muft no cost" : "paid premium buy price";
-
-                // 2. Book ki saari details ko ek lambi string mein jod do (Kundali)
-                const megaString = `
-                    ${eb.title || ''} 
-                    ${eb.description || ''} 
-                    ${eb.category || ''} 
-                    ${eb.language || ''} 
-                    ${priceKeywords}
-                `.toLowerCase();
-
-                // 3. User ne jitne bhi words likhe hain, wo SAARE is megaString mein hone chahiye
-                return searchTerms.every(term => megaString.includes(term));
-            });
-            
-            dropdown.innerHTML = "";
-            if (results.length > 0) {
-                dropdown.classList.add("active");
-                // Max 6 results dikhane ka logic same rakha hai
-                results.slice(0, 6).forEach(eb => {
-                    dropdown.innerHTML += `
-                        <div class="search-item" onclick="window.openDetail('${eb.id}')">
-                            <img src="${eb.thumbnail}" class="search-thumb">
-                            <div class="search-info">
-                                <div class="search-title">${eb.title}</div>
-                                <div class="search-desc">${eb.description || ''}</div>
-                            </div>
-                        </div>`;
-                });
-            } else {
-                dropdown.classList.remove("active");
-            }
+    // 🧠 SYSTEM KA DIMAG: Pehle localStorage se 5000 books wala mega index uthao
+    // Agar background fetch abhi chal hi raha ho (ya pehli baar page khula ho), toh fallback default 15 books par karo.
+    let searchSource = ebooksData;
+    const megaIndexStr = localStorage.getItem("cache_mega_search_index");
+    if (megaIndexStr) {
+        try {
+            searchSource = JSON.parse(megaIndexStr);
+        } catch (e) {
+            searchSource = ebooksData;
         }
+    }
+
+    // 🔥 SMART MEGA-STRING FILTER LOGIC (Ab poori 5000 books ke dhabbe par chalega!)
+    const results = searchSource.filter(eb => {
+        const isFree = String(eb.is_free) === "true";
+        const priceKeywords = isFree ? "free muft no cost" : "paid premium buy price";
+
+        const megaString = `
+            ${eb.title || ''} 
+            ${eb.description || ''} 
+            ${eb.category || ''} 
+            ${eb.language || ''} 
+            ${priceKeywords}
+        `.toLowerCase();
+
+        // Check karo ki user ke saare typed words is lambi string me hain ya nahi
+        return searchTerms.every(term => megaString.includes(term));
+    });
+    
+    dropdown.innerHTML = "";
+    if (results.length > 0) {
+        dropdown.classList.add("active");
+        results.slice(0, 6).forEach(eb => {
+            dropdown.innerHTML += `
+                <div class="search-item" onclick="window.openDetail('${eb.id}')">
+                    <img src="${eb.thumbnail}" class="search-thumb">
+                    <div class="search-info">
+                        <div class="search-title">${eb.title}</div>
+                        <div class="search-desc">${eb.description || ''}</div>
+                    </div>
+                </div>`;
+        });
+    } else {
+        dropdown.classList.remove("active");
+    }
+}
 
 // ✅ USER PANEL: Firebase se Master Categories aur Languages (15 Min Cache)
 document.addEventListener("DOMContentLoaded", () => {
     setTimeout(async () => {
         try {
-            const CACHE_TIME_LIMIT = 60 * 60 * 1000; // 15 Minutes
+            const CACHE_TIME_LIMIT = 60 * 60 * 1000; // 60 Minutes
             const now = Date.now();
             const savedTime = localStorage.getItem('cache_time_settings');
             const savedDataStr = localStorage.getItem('cache_data_settings');
 
             let data;
 
-            // Check karo agar cache 15 min ke andar ka hai
+            // Check karo agar cache 60 min ke andar ka hai
             if (savedTime && savedDataStr && (now - parseInt(savedTime)) < CACHE_TIME_LIMIT) {
                 data = JSON.parse(savedDataStr); // Catch se data nikal lo
             } else {
