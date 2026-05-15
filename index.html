@@ -3,28 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Islamic Library by Shekh - Free & Paid Islamic eBooks</title>
 
-    <title>Islamic Library by Shekh | Free & Premium Islamic eBooks</title>
-    <meta name="title" content="Islamic Library by Shekh | Free & Premium Islamic eBooks">
-    <meta name="description" content="Welcome to Islamic Library by Shekh. Explore, read, and download top-quality free and premium Islamic eBooks, Quran PDFs, Hadith, and Seerah collections in multiple languages.">
-    <meta name="keywords" content="Islamic Library by Shekh, Islamic eBooks, free Islamic books, Quran PDF, Hadith books, Seerah, online Islamic library, read Islamic books">
+    <meta name="description" content="Islamic Library by Shekh – Download Islamic eBooks, Quran PDFs, and Hadith books. A free and premium Islamic digital library.">
+    <meta name="keywords" content="Islamic Library by Shekh, Islamic ebooks, Quran PDF, Hadith books">
     <meta name="author" content="Islamic Library by Shekh">
 
     <link rel="icon" type="image/png" sizes="32x32" href="/icons/hikmahlogo.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/icons/hikmahlogo.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/icons/hikmahlogo.png">
 
+    <meta property="og:title" content="Islamic Library by Shekh">
+    <meta property="og:description" content="Free & Paid Islamic eBooks, Quran PDFs, Hadith books available.">
+    <meta property="og:image" content="https://mysite.github.io/Resources/hikmahlogo.png">
+    <meta property="og:url" content="https://mysite.github.io/Resources/">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://mysite.pages.dev/">
-    <meta property="og:title" content="Islamic Library by Shekh | Free & Premium Islamic eBooks">
-    <meta property="og:description" content="Explore, read, and download top-quality free and premium Islamic eBooks, Quran PDFs, Hadith, and Seerah collections.">
-    <meta property="og:image" content="https://mysite.pages.dev/icons/hikmahlogo.png">
-
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:url" content="https://mysite.pages.dev/">
-    <meta name="twitter:title" content="Islamic Library by Shekh | Free & Premium Islamic eBooks">
-    <meta name="twitter:description" content="Explore, read, and download top-quality free and premium Islamic eBooks, Quran PDFs, Hadith, and Seerah collections.">
-    <meta name="twitter:image" content="https://mysite.pages.dev/icons/hikmahlogo.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
@@ -49,10 +42,6 @@
             --r: 12px; --r2: 16px; --r3: 20px;
             --shadow: 0 4px 24px rgba(0,0,0,0.4); --shadow2: 0 8px 40px rgba(0,0,0,0.5);
             --transition: 0.2s cubic-bezier(0.4,0,0.2,1);
-            --drop-shadow: rgba(255, 255, 255, 0.15);
-            --scroll-thumb: rgba(255, 255, 255, 0.12); /* Dark mode me halki white line */
---scroll-thumb-hover: rgba(255, 255, 255, 0.25);
-
         }
 
         [data-theme="light"] {
@@ -63,10 +52,6 @@
             --accent: #6366f1; --accent2: #4f46e5; --accent3: #4338ca;
             --glow: rgba(99,102,241,0.15); --glow2: rgba(99,102,241,0.08);
             --shadow: 0 4px 20px rgba(0,0,0,0.06); --shadow2: 0 8px 30px rgba(0,0,0,0.1);
-            --drop-shadow: rgba(0, 0, 0, 0.45);
---scroll-thumb: rgba(0, 0, 0, 0.15); /* Light mode me halki dark/gray line */
---scroll-thumb-hover: rgba(0, 0, 0, 0.3);
-
         }
         
         [data-theme="light"] .blob { opacity: 0.5; }
@@ -204,97 +189,7 @@
         .custom-filter .fa-chevron-down { font-size: 0.75rem; transition: transform 0.3s ease; }
         .custom-filter.open .fa-chevron-down { transform: rotate(180deg); }
         
-        /* ✅ DROPDOWN INTERNAL SCROLL SYSTEM WITH PREMIER DEPTH (GENERAL CSS) */
-        .filter-options { 
-            position: absolute; 
-            top: calc(100% + 8px); 
-            left: 0; 
-            right: 0; 
-            background: var(--surface2); 
-            border: 1px solid var(--border); 
-            border-radius: var(--r); 
-            opacity: 0; 
-            pointer-events: none; 
-            transform: translateY(-10px); 
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
-            z-index: 1000; 
-
-            /* Scroll setting same rakhi hai */
-            max-height: 250px !important; 
-            overflow-y: auto !important;  
-        }
-
-        /* ✅ DROPDOWN CONTAINER (FIXED FOR MODERN BROWSERS) */
-        .filter-options { 
-            position: absolute; 
-            top: calc(100% + 8px); 
-            left: 0; 
-            right: 0; 
-            background: var(--surface2); 
-            border: 1px solid var(--border); 
-            border-radius: var(--r); 
-            box-shadow: var(--shadow2); 
-            opacity: 0; 
-            pointer-events: none; 
-            transform: translateY(-10px); 
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
-            z-index: 1000; 
-
-            max-height: 250px !important; 
-            overflow-y: auto !important; /* Standard property jo har browser me chalegi */
-
-            /* Dropdown ke main rounded corners se scrollbar ko bahar nikalne se rokega */
-            overflow-x: hidden !important; 
-
-            /* Dynamic Shadows Code */
-            background-image:
-                linear-gradient(var(--surface2) 30%, transparent),
-                linear-gradient(transparent, var(--surface2) 70%),
-                linear-gradient(to bottom, var(--drop-shadow), transparent),
-                linear-gradient(to top, var(--drop-shadow), transparent);
-            background-position: 0 0, 0 100%, 0 0, 0 100%;
-            background-repeat: no-repeat;
-            background-size: 100% 24px, 100% 24px, 100% 14px, 100% 14px;
-            background-attachment: local, local, scroll, scroll;
-        }
-
-        /* 🔥 DIVIDER LINES FIX: Yeh line un divider lines ko zabardasti right wall tak kheench degi */
-        .f-option { 
-            padding: 12px 16px; 
-            color: var(--text2); 
-            font-size: 0.85rem; 
-            transition: background 0.2s, color 0.2s; 
-            border-bottom: 1px solid var(--border); 
-            
-            /* Magic Lines: Dandi ke area (7px) ke andar tak borders ko badhayega aur text ko safe rakhega */
-            margin-right: -7px !important; 
-            padding-right: 23px !important; /* 16px original + 7px dandi ki space */
-        }
-        .f-option:last-child { border-bottom: none; }
-        .f-option:hover { background: var(--surface3); color: var(--text); }
-        .f-option.selected { background: var(--glow2); color: var(--accent2); font-weight: 700; border-left: 3px solid var(--accent); padding-left: 13px; }
-
-        /* 🔥 SCROLLBAR MASTER CLEANUP (NO CORNER LEAKING) 🔥 */
-        .filter-options::-webkit-scrollbar {
-            width: 7px; 
-        }
-        
-        .filter-options::-webkit-scrollbar-track {
-            background: transparent;
-            /* Parent ke right-top aur right-bottom corners se match kiya taaki dandi bahar na bhage */
-            border-radius: 0 var(--r) var(--r) 0; 
-        }
-        
-        .filter-options::-webkit-scrollbar-thumb {
-            background: var(--scroll-thumb) !important;
-            border-radius: 10px;
-            /* 1px transparent border pading-box ke sath thumb ko dabba ke andar hi rakhta hai */
-            border: 1px solid transparent;
-            background-clip: padding-box;
-        }
-        .filter-options::-webkit-scrollbar-thumb:hover {
-            background: var(--scroll-thumb-hover) !important;
-        }
+        .filter-options { position: absolute; top: calc(100% + 8px); left: 0; right: 0; background: var(--surface2); border: 1px solid var(--border); border-radius: var(--r); box-shadow: var(--shadow2); opacity: 0; pointer-events: none; transform: translateY(-10px); transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); z-index: 1000; overflow: hidden; }
         .custom-filter.open .filter-options { opacity: 1; pointer-events: all; transform: translateY(0); }
         
         .f-option { padding: 12px 16px; color: var(--text2); font-size: 0.85rem; transition: background 0.2s, color 0.2s; border-bottom: 1px solid var(--border); }
@@ -397,25 +292,10 @@
                 gap: 20px !important;
                 margin-bottom: 40px !important;
             }
-            /* 1. Filters ka purana code dhoondho aur usme white-space jod do */
             .custom-filter {
-                width: 250px !important; 
+                width: 250px !important; /* PC pe Dropdown chaude aache lagte hain */
                 padding: 14px 20px !important;
                 font-size: 1rem !important;
-                
-                /* 🔥 YEH LINE ADD KARO: PC par bhi text ko niche tootne se rokegi */
-                white-space: nowrap !important; 
-            }
-
-            /* 🔥 YEH NAYA RULE USKE THEEK NEECHE PASTE KARO 🔥 */
-            .custom-filter span {
-                display: inline-block !important;
-                max-width: calc(100% - 25px) !important; /* PC ke chevron icon ke hisab se width safe ki */
-                overflow: hidden !important;
-                text-overflow: ellipsis !important; /* Lamba naam hone par '...' lagayega */
-                white-space: nowrap !important;
-                vertical-align: middle !important;
-                text-align: left !important;
             }
 
             /* 4. 🔥 Books Grid: PC par Books Premium dikhengi 🔥 */
@@ -497,59 +377,6 @@
             /* Ye text aur border ko animation ke time blur hone se rokta hai */
             -webkit-font-smoothing: antialiased; 
         }
-/* ========================================================
-   🔥 TRULY RESPONSIVE UNIVERSAL MOBILE FIX (UP TO 767px) 🔥
-   ======================================================== */
-@media screen and (max-width: 767px) {
-    
-    /* Filters container ka gap tight rakha taaki teeno samane aa sakein */
-    .filters-wrapper { 
-        gap: 6px !important; 
-        margin-bottom: 20px !important;
-        display: flex !important;
-    }
-    
-    /* Main filter box setup */
-    .custom-filter { 
-        position: relative;
-        flex: 1 !important; 
-        
-        /* 🔥 THE MAGIC LINE: Yeh dabba ko lamba hokar side me ghusne se rokega */
-        min-width: 0 !important; 
-        
-        padding: 12px 6px !important; /* Mobile ke liye padding balanced ki */
-        font-size: 0.76rem !important; 
-        border-radius: 12px !important; 
-        white-space: nowrap !important; 
-        display: flex !important;
-        justify-content: space-between !important;
-        align-items: center !important;
-    }
-
-    /* 🔥 DYNAMIC SMART ELLIPSIS: Roman Urdu poora dikhega, par jo bohot lamba hoga sirf wahi dot-dot hoga */
-    .custom-filter span {
-        display: inline-block !important;
-        max-width: calc(100% - 12px) !important; /* Dabba ki width ke andar hi text ko simat kar rakhega */
-        overflow: hidden !important;
-        text-overflow: ellipsis !important; 
-        white-space: nowrap !important;
-        vertical-align: middle !important;
-    }
-
-    /* Chevron arrow icon adjustment */
-    .custom-filter .fa-chevron-down {
-        font-size: 0.6rem !important;
-        margin-left: 2px !important;
-        flex-shrink: 0 !important; /* Arrow ko pichakne se rokega */
-    }
-    
-    /* Dropdown options view */
-    .f-option {
-        padding: 12px 14px !important;
-        font-size: 0.82rem !important;
-        white-space: normal !important; /* Dropdown me poora naam break hokar dikhega */
-    }
-}
 
     </style>
 </head>
@@ -652,17 +479,6 @@
                         </div>
                     </div>
 
-                    <div class="custom-filter" id="cat-dropdown-btn" onclick="window.toggleFilterMenu('cat')">
-                        <span id="cat-label">Cat: All</span>
-                        <i class="fas fa-chevron-down"></i>
-                        <div class="filter-options" id="cat-options">
-                            <div class="f-option selected" onclick="window.setCatFilter('all', 'Cat: All', event)">All Categories</div>
-                            <div class="f-option" onclick="window.setCatFilter('quran', 'Quran', event)">Quran</div>
-                            <div class="f-option" onclick="window.setCatFilter('hadith', 'Hadith', event)">Hadith</div>
-                            <div class="f-option" onclick="window.setCatFilter('seerah', 'Seerah', event)">Seerah</div>
-                        </div>
-                    </div>
-
                     <div class="custom-filter" id="lang-dropdown-btn" onclick="window.toggleFilterMenu('lang')">
                         <span id="lang-label">Lang: All</span>
                         <i class="fas fa-chevron-down"></i>
@@ -690,7 +506,7 @@
 
         <div id="bottom-nav" class="bottom-nav">
             <div class="nav-item active" onclick="window.location.href='/'"><i class="fas fa-home"></i><span>Home</span></div>
-            <div class="nav-item" onclick="window.location.href='/library/'"><i class="fas fa-book-reader"></i><span>Library</span></div>
+            <div class="nav-item" onclick="window.location.href='library/index.html'"><i class="fas fa-book-reader"></i><span>Library</span></div>
             <a href="/info/" class="nav-item"><i class="fas fa-info-circle"></i><span>Info</span></a>
         </div>
     </div>
@@ -1038,26 +854,16 @@ onAuthStateChanged(auth, (user) => {
         }
 
         // ✅ FILTER & RENDER LOGIC
-        let currentCatFilter = 'all'; // Naya variable category ke liye
-
         window.toggleFilterMenu = function(type) {
             const priceBtn = document.getElementById('price-dropdown-btn');
             const langBtn = document.getElementById('lang-dropdown-btn');
-            const catBtn = document.getElementById('cat-dropdown-btn'); // Naya button
             
-            // Jo click kiya hai usko toggle karo, baaki dono ko band karo
             if (type === 'price') {
                 priceBtn.classList.toggle('open');
                 langBtn.classList.remove('open');
-                catBtn.classList.remove('open');
-            } else if (type === 'lang') {
+            } else {
                 langBtn.classList.toggle('open');
                 priceBtn.classList.remove('open');
-                catBtn.classList.remove('open');
-            } else if (type === 'cat') {
-                catBtn.classList.toggle('open');
-                priceBtn.classList.remove('open');
-                langBtn.classList.remove('open');
             }
         }
 
@@ -1065,12 +871,9 @@ onAuthStateChanged(auth, (user) => {
             if (!e.target.closest('.custom-filter')) {
                 document.getElementById('price-dropdown-btn').classList.remove('open');
                 document.getElementById('lang-dropdown-btn').classList.remove('open');
-                const catBtn = document.getElementById('cat-dropdown-btn');
-                if(catBtn) catBtn.classList.remove('open');
             }
             if (!e.target.closest('.search-container')) {
-                const searchDropdown = document.getElementById('search-dropdown');
-                if(searchDropdown) searchDropdown.classList.remove('active');
+                document.getElementById('search-dropdown').classList.remove('active');
             }
         });
 
@@ -1078,10 +881,14 @@ onAuthStateChanged(auth, (user) => {
             event.stopPropagation();
             currentPriceFilter = value;
             document.getElementById('price-label').innerText = label;
+            
             document.querySelectorAll('#price-options .f-option').forEach(el => el.classList.remove('selected'));
             event.currentTarget.classList.add('selected');
+            
             const btn = document.getElementById('price-dropdown-btn');
-            if(value !== 'all') btn.classList.add('active-filter'); else btn.classList.remove('active-filter');
+            if(value !== 'all') btn.classList.add('active-filter');
+            else btn.classList.remove('active-filter');
+
             window.toggleFilterMenu('price');
             renderGrid(true);
         }
@@ -1090,24 +897,15 @@ onAuthStateChanged(auth, (user) => {
             event.stopPropagation();
             currentLangFilter = value;
             document.getElementById('lang-label').innerText = label;
+            
             document.querySelectorAll('#lang-options .f-option').forEach(el => el.classList.remove('selected'));
             event.currentTarget.classList.add('selected');
-            const btn = document.getElementById('lang-dropdown-btn');
-            if(value !== 'all') btn.classList.add('active-filter'); else btn.classList.remove('active-filter');
-            window.toggleFilterMenu('lang');
-            renderGrid(true);
-        }
 
-        // 🔥 NAYA CATEGORY SETTER FUNCTION 🔥
-        window.setCatFilter = function(value, label, event) {
-            event.stopPropagation();
-            currentCatFilter = value;
-            document.getElementById('cat-label').innerText = label;
-            document.querySelectorAll('#cat-options .f-option').forEach(el => el.classList.remove('selected'));
-            event.currentTarget.classList.add('selected');
-            const btn = document.getElementById('cat-dropdown-btn');
-            if(value !== 'all') btn.classList.add('active-filter'); else btn.classList.remove('active-filter');
-            window.toggleFilterMenu('cat');
+            const btn = document.getElementById('lang-dropdown-btn');
+            if(value !== 'all') btn.classList.add('active-filter');
+            else btn.classList.remove('active-filter');
+
+            window.toggleFilterMenu('lang');
             renderGrid(true);
         }
 
@@ -1117,33 +915,28 @@ onAuthStateChanged(auth, (user) => {
             const loadMoreBtn = document.getElementById("load-more-btn");
             if (reset) grid.innerHTML = "";
 
+// 🔥 YEH NAYI LINE ADD KARNI HAI (Books ko number wise lagane ke liye) 🔥
             ebooksData.sort((a, b) => (a.sort_order || 999) - (b.sort_order || 999));
 
             let filteredBooks = ebooksData.filter(eb => {
-                // 1. Price Check
                 const isFree = String(eb.is_free) === "true";
                 let passPrice = true;
                 if (currentPriceFilter === 'free') passPrice = isFree;
                 if (currentPriceFilter === 'premium') passPrice = !isFree;
 
-                // 2. Language Check
                 let passLang = true;
                 if (currentLangFilter !== 'all') {
                     const langData = eb.language || 'none';
-                    let bookLangs = Array.isArray(langData) ? langData.map(l => l.toLowerCase().trim()) : String(langData).split(',').map(l => l.toLowerCase().trim());
+                    let bookLangs = [];
+                    if (Array.isArray(langData)) {
+                        bookLangs = langData.map(l => l.toLowerCase().trim());
+                    } else {
+                        bookLangs = String(langData).split(',').map(l => l.toLowerCase().trim());
+                    }
                     passLang = bookLangs.includes(currentLangFilter.toLowerCase());
                 }
 
-                // 🔥 3. NAYA CATEGORY CHECK 🔥
-                let passCat = true;
-                if (currentCatFilter !== 'all') {
-                    const catData = eb.category || 'none';
-                    let bookCats = Array.isArray(catData) ? catData.map(c => c.toLowerCase().trim()) : String(catData).split(',').map(c => c.toLowerCase().trim());
-                    passCat = bookCats.includes(currentCatFilter.toLowerCase());
-                }
-
-                // Teeno conditions pass hongi tabhi book dikhegi
-                return passPrice && passLang && passCat;
+                return passPrice && passLang;
             });
 
             if (filteredBooks.length === 0) {
@@ -1151,9 +944,9 @@ onAuthStateChanged(auth, (user) => {
                     <div class="empty-state">
                         <i class="fas fa-folder-open"></i>
                         <h4>No books available</h4>
-                        <p>We couldn't find any books matching your filters right now.</p>
+                        <p>We couldn't find any books in this category right now.</p>
                     </div>`;
-                if(loadMoreBtn) loadMoreBtn.classList.add("hidden");
+                loadMoreBtn.classList.add("hidden");
                 return; 
             }
 
@@ -1176,7 +969,7 @@ onAuthStateChanged(auth, (user) => {
                 </div>`;
             });
 
-            if(loadMoreBtn) loadMoreBtn.classList.toggle("hidden", filteredBooks.length <= endIndex);
+            loadMoreBtn.classList.toggle("hidden", filteredBooks.length <= endIndex);
         }
 
         window.loadMoreBooks = function() {
@@ -1188,7 +981,7 @@ onAuthStateChanged(auth, (user) => {
             const selectedBook = ebooksData.find(e => String(e.id) === String(id));
             if(selectedBook) {
                 sessionStorage.setItem('selected_book_data', JSON.stringify(selectedBook));
-                window.location.href = '/books/';
+                window.location.href = 'books/index.html';
             }
         }
 
@@ -1211,29 +1004,15 @@ onAuthStateChanged(auth, (user) => {
             const q = query.toLowerCase().trim();
             const searchTerms = q.split(/\s+/); 
 
-            // 🔥 SMART MEGA-STRING FILTER LOGIC 🔥
             const results = ebooksData.filter(eb => {
-                // 1. Check book is free or premium and assign keywords
-                const isFree = String(eb.is_free) === "true";
-                const priceKeywords = isFree ? "free muft no cost" : "paid premium buy price";
-
-                // 2. Book ki saari details ko ek lambi string mein jod do (Kundali)
-                const megaString = `
-                    ${eb.title || ''} 
-                    ${eb.description || ''} 
-                    ${eb.category || ''} 
-                    ${eb.language || ''} 
-                    ${priceKeywords}
-                `.toLowerCase();
-
-                // 3. User ne jitne bhi words likhe hain, wo SAARE is megaString mein hone chahiye
-                return searchTerms.every(term => megaString.includes(term));
+                const title = eb.title.toLowerCase();
+                const desc = eb.description ? eb.description.toLowerCase() : "";
+                return searchTerms.every(term => title.includes(term) || desc.includes(term));
             });
             
             dropdown.innerHTML = "";
             if (results.length > 0) {
                 dropdown.classList.add("active");
-                // Max 6 results dikhane ka logic same rakha hai
                 results.slice(0, 6).forEach(eb => {
                     dropdown.innerHTML += `
                         <div class="search-item" onclick="window.openDetail('${eb.id}')">
@@ -1248,64 +1027,6 @@ onAuthStateChanged(auth, (user) => {
                 dropdown.classList.remove("active");
             }
         }
-
-        // ✅ USER PANEL: Firebase se Master Categories aur Languages laakar dropdown me add karna
-        document.addEventListener("DOMContentLoaded", async () => {
-            try {
-                // Firebase Firestore import karo
-                const { getFirestore, doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
-                const dbInstance = getFirestore();
-                const docRef = doc(dbInstance, "settings", "app_data");
-                const docSnap = await getDoc(docRef);
-
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-
-                    // 1. Nayi Categories Dropdown mein add karo
-                    if (data.categories) {
-                        const catContainer = document.getElementById('cat-options');
-                        if (catContainer) {
-                            data.categories.forEach(cat => {
-                                const lowerCat = cat.toLowerCase();
-                                // Check karo ki ye category pehle se HTML mein to nahi hai
-                                const exists = Array.from(catContainer.children).some(el => el.innerText.trim().toLowerCase() === lowerCat);
-                                
-                                if (!exists) {
-                                    const newDiv = document.createElement('div');
-                                    newDiv.className = 'f-option';
-                                    newDiv.innerText = cat; // Label jo user ko dikhega
-                                    newDiv.onclick = (e) => window.setCatFilter(lowerCat, cat, e);
-                                    catContainer.appendChild(newDiv);
-                                }
-                            });
-                        }
-                    }
-
-                    // 2. Nayi Languages Dropdown mein add karo
-                    if (data.languages) {
-                        const langContainer = document.getElementById('lang-options');
-                        if (langContainer) {
-                            data.languages.forEach(lang => {
-                                const lowerLang = lang.toLowerCase();
-                                // Check karo ki ye language pehle se HTML mein to nahi hai
-                                const exists = Array.from(langContainer.children).some(el => el.innerText.trim().toLowerCase() === lowerLang);
-                                
-                                if (!exists) {
-                                    const newDiv = document.createElement('div');
-                                    newDiv.className = 'f-option';
-                                    newDiv.innerText = lang; // Label jo user ko dikhega
-                                    newDiv.onclick = (e) => window.setLangFilter(lowerLang, lang, e);
-                                    langContainer.appendChild(newDiv);
-                                }
-                            });
-                        }
-                    }
-                }
-            } catch (error) {
-                console.error("User Panel Master Tags Load Error:", error);
-            }
-        });
-
     </script>
 </body>
 </html>
