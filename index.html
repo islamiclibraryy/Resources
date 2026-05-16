@@ -1063,9 +1063,11 @@ onAuthStateChanged(auth, (user) => {
         }
 
 // ✅ GLOBALS FOR FILTERS (Ensure these are at the top)
-window.currentCatFilter = 'all';
-window.currentLangFilter = 'all';
-window.currentPriceFilter = 'all';
+// ✅ FILTER & RENDER LOGIC
+window.currentCatFilter = 'all'; 
+window.currentPriceFilter = 'all'; 
+window.currentLangFilter = 'all'; 
+
 window.currentPage = 1;
 window.itemsPerPage = 10; // Load more ke liye 10 set kiya
 
@@ -1224,7 +1226,7 @@ async function loadHome() {
         // 🔥 NAYA CATEGORY SETTER FUNCTION 🔥
         window.setCatFilter = function(value, label, event) {
             event.stopPropagation();
-            currentCatFilter = value;
+            window.currentCatFilter = value;  // 🔥 Yahan Fix kiya hai
             document.getElementById('cat-label').innerText = label;
             document.querySelectorAll('#cat-options .f-option').forEach(el => el.classList.remove('selected'));
             event.currentTarget.classList.add('selected');
