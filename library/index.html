@@ -695,7 +695,7 @@ function showToast(msg, type = "success") {
     }, 3000);
 }
 
-        // ✅ 3. FIREBASE FETCH (Crash-Proof & Safe State)
+        // ✅ 3. FIREBASE FETCH (Token Saver Version - No Ebooks Fetching)
         async function fetchLibraryData() {
             const currentUserId = localStorage.getItem("islamic_user_id");
             if (!currentUserId) {
@@ -709,12 +709,10 @@ function showToast(msg, type = "success") {
             const CACHE_TIME_LIMIT = 5 * 60 * 1000; 
             const now = Date.now();
 
-            // Skeletons dikhao agar cache nahi hai
             if (!cachedPayments || !cachedEbooks) {
                 showLibrarySkeletons();
             } else {
                 try {
-                    // Safe Initialization taaki undefined error na aaye
                     window.userPayments = JSON.parse(cachedPayments) || [];
                     window.ebooksData = JSON.parse(cachedEbooks) || [];
                     renderLibrary();
@@ -724,7 +722,6 @@ function showToast(msg, type = "success") {
                 }
             }
 
-            // Gatekeeper: Agar 5 minute nahi hue, toh yahi ruk jao
             if (cachedTime && cachedPayments && (now - parseInt(cachedTime)) < CACHE_TIME_LIMIT) {
                 return; 
             }
@@ -733,19 +730,15 @@ function showToast(msg, type = "success") {
                 const { getFirestore, collection, query, where, getDocs } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
                 const db = getFirestore();
 
+                // 🔥 TOKEN SAVER: Yahan ab hum sirf user ki payments check kar rahe hain. 
+                // Ebooks (5000 docs) faltu mein fetch nahi kar rahe!
                 const q = query(collection(db, "payments"), where("user_id", "==", currentUserId));
                 const paySnapshot = await getDocs(q);
                 const freshPayments = paySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
-                const bookSnapshot = await getDocs(collection(db, "ebooks"));
-                const freshEbooks = bookSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-
-                // Agar data change hua hai toh update karo
-                if (isDataDifferent(window.userPayments, freshPayments) || JSON.stringify(window.ebooksData) !== JSON.stringify(freshEbooks)) {
+                if (isDataDifferent(window.userPayments, freshPayments)) {
                     window.userPayments = freshPayments;
-                    window.ebooksData = freshEbooks;
                     localStorage.setItem(`cache_payments_${currentUserId}_data`, JSON.stringify(freshPayments));
-                    localStorage.setItem("cache_ebooks_data", JSON.stringify(freshEbooks));
                     renderLibrary();
                 }
 
@@ -753,22 +746,20 @@ function showToast(msg, type = "success") {
 
             } catch(e) {
                 console.error("Firebase fetch error:", e);
-                // 🔥 FIX: window.showToast hata kar sirf showToast kar diya hai
                 if (!cachedPayments) {
                     try { showToast("Network Error loading library", "error"); } catch(err){}
                 }
             }
         }
 
-        // ✅ 4. RENDER LIBRARY (Blank Page Issue Fixed)
+        // ✅ 4. RENDER LIBRARY (Mega Index Fix + Blank Page Fixed)
         function renderLibrary() {
             const container = document.getElementById("library-list");
-            if (!container) return; // Safety check
+            if (!container) return; 
             
             container.innerHTML = "";
             const currentUserId = localStorage.getItem("islamic_user_id");
 
-            // 🔥 GUEST UI STATE
             if (!currentUserId) {
                 container.innerHTML = `
                 <div class="premium-lock-container">
@@ -782,12 +773,17 @@ function showToast(msg, type = "success") {
                 return;
             }
 
-            // Safe Arrays (Crash hone se bachayega)
             const paymentsArray = window.userPayments || [];
             const ebooksArray = window.ebooksData || [];
 
-            // Normal Empty Library State
-            if (ebooksArray.length === 0 || paymentsArray.length === 0) {
+            // 🌟 THE FIX: MEGA INDEX KO BHI LOAD KARO 🌟
+            let megaIndex = [];
+            try {
+                const megaIndexStr = localStorage.getItem("cache_mega_search_index");
+                if (megaIndexStr) megaIndex = JSON.parse(megaIndexStr);
+            } catch(e) {}
+
+            if (paymentsArray.length === 0) {
                 container.innerHTML = `<div class="text-center" style="margin-top: 60px; color:var(--text3); animation: fadeUp .5s ease both;">
                     <div style="width: 80px; height: 80px; border-radius: 50%; background: var(--glow2); border: 1px solid rgba(124,106,247,0.2); display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 16px auto; color: var(--accent2);">📚</div>
                     <h4 style="font-family:'Syne', sans-serif; color:var(--text2); margin-bottom: 8px;">Library is empty</h4>
@@ -797,7 +793,14 @@ function showToast(msg, type = "success") {
             }
 
             paymentsArray.forEach(pay => {
-                const book = ebooksArray.find(e => String(e.id) === String(pay.ebook_id));
+                // 1. Pehle normal 15 books me dhundo
+                let book = ebooksArray.find(e => String(e.id) === String(pay.ebook_id));
+                
+                // 2. Agar wahan nahi mili toh Mega Index me dhundo
+                if (!book) {
+                    book = megaIndex.find(e => String(e.id) === String(pay.ebook_id));
+                }
+
                 if(!book) return; 
 
                 const statusLower = pay.status.toLowerCase();
@@ -837,7 +840,6 @@ function showToast(msg, type = "success") {
             btnElement.innerHTML = `<i class="fas fa-spinner fa-spin"></i>`;
             btnElement.disabled = true;
             
-            // 🔥 FIX: window.showToast -> showToast kar diya gaya hai
             showToast("Verifying live access...", "info");
 
             let liveStatus = "pending";
@@ -859,7 +861,7 @@ function showToast(msg, type = "success") {
                         ? "Access Denied! Your payment was rejected. Please contact support." 
                         : `Access Denied! Your payment is currently ${liveStatus}.`;
                     
-                    showToast(errorMsg, "error"); // 🔥 FIX
+                    showToast(errorMsg, "error");
                     
                     const cacheKey = `cache_payments_${currentUserId}_data`;
                     let cachedPayments = JSON.parse(localStorage.getItem(cacheKey)) || [];
@@ -885,19 +887,26 @@ function showToast(msg, type = "success") {
                 const secureDocSnap = await getDoc(secureDocRef);
 
                 if (secureDocSnap.exists() && secureDocSnap.data().pdf_link) {
-                    showToast("Access Verified! Opening File...", "success"); // 🔥 FIX
+                    showToast("Access Verified! Opening File...", "success"); 
                     window.open(secureDocSnap.data().pdf_link, "_blank");
                 } else {
-                    const fallbackBook = (window.ebooksData || []).find(e => String(e.id) === String(ebookId));
+                    // 🌟 FALLBACK BHI MEGA INDEX CHECK KAREGA 🌟
+                    let fallbackBook = (window.ebooksData || []).find(e => String(e.id) === String(ebookId));
+                    if (!fallbackBook) {
+                        let mIndex = [];
+                        try { mIndex = JSON.parse(localStorage.getItem("cache_mega_search_index") || "[]"); } catch(e){}
+                        fallbackBook = mIndex.find(e => String(e.id) === String(ebookId));
+                    }
+
                     if (fallbackBook && fallbackBook.pdf_link) {
                         window.open(fallbackBook.pdf_link, "_blank");
                     } else {
-                        showToast("Secure file not found. Please contact admin.", "error"); // 🔥 FIX
+                        showToast("Secure file not found. Please contact admin.", "error"); 
                     }
                 }
             } catch (err) {
                 console.error("Verification Error:", err);
-                showToast("Network error during verification.", "error"); // 🔥 FIX
+                showToast("Network error during verification.", "error"); 
             } finally {
                 if (document.body.contains(btnElement) && liveStatus === "approved") {
                     btnElement.innerHTML = originalHTML;
