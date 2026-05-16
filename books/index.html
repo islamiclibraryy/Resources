@@ -84,6 +84,17 @@
         [data-theme="light"] .custom-dark-input::placeholder {
             color: var(--text3) !important;         /* Dark placeholder */
         }
+            /* 🔥 LIGHT MODE DESKTOP FOOTER FIX (Ye tere code mein already hai, uske neeche ye daal de) 🔥 */
+            [data-theme="light"] #action-footer {
+                background: rgba(255, 255, 255, 0.9) !important;
+                border-top: 1px solid rgba(0,0,0,0.1) !important;
+            }
+            
+            #action-footer .badge-premium, #action-footer .badge-free {
+                 /* Action footer me badge ka size thoda normal rakhna hoga taki button ke sath match ho */
+                 font-size: 1.1rem !important;
+                 padding: 8px 16px !important;
+            }
 
         *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; font-size: 16px; }
@@ -242,10 +253,51 @@
 
         .drawer-footer { padding: 20px; border-top: 1px solid var(--border); flex-shrink: 0; padding-bottom: calc(20px + env(safe-area-inset-bottom)); }
 
-        .price-tag { font-family: 'DM Mono', monospace; font-size: .9rem; color: var(--accent2); font-weight: 700; }
-        .strike-price { font-size: .75rem; color: var(--text3); text-decoration: line-through; margin-left: 6px; font-weight: normal; }
-        .badge-free { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 99px; background: var(--glow2); border: 1px solid rgba(124,106,247,0.3); font-size: .75rem; font-weight: 600; color: var(--accent3); }
-        
+        /* 🏷️ UNIVERSAL PREMIUM & FREE BADGES */
+        .price-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .badge-premium { 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 6px; 
+            padding: 6px 14px; 
+            border-radius: 99px; 
+            /* Tera suggestion: Halka green/success color Premium/Paid books ke liye */
+            background: rgba(16, 185, 129, 0.15); 
+            border: 1px solid rgba(16, 185, 129, 0.4); 
+            font-family: 'DM Mono', monospace;
+            font-size: 1rem; 
+            font-weight: 700; 
+            color: var(--success); /* Green text */
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.1);
+        }
+
+        .badge-free { 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 6px; 
+            padding: 6px 14px; 
+            border-radius: 99px; 
+            background: var(--glow2); 
+            border: 1px solid rgba(124,106,247,0.3); 
+            font-family: 'DM Mono', monospace;
+            font-size: 1rem; 
+            font-weight: 700; 
+            color: var(--accent3); 
+        }
+
+        .strike-price { 
+            font-size: 0.85rem; 
+            color: var(--text3); 
+            text-decoration: line-through; 
+            font-weight: 500; 
+        }
+
         /* Details UI */
         .detail-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
         .back-btn, .share-btn { background: var(--surface2); color: var(--text); border: 1px solid var(--border2); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; cursor: pointer; transition: all var(--transition); }
@@ -344,19 +396,29 @@
                 box-shadow: 0 25px 60px rgba(0,0,0,0.6) !important;
             }
 
-            /* 5. 🔥 Title & Tag: Left side par shift 🔥 */
+            /* 🔥 Title & Tag: Left side par shift (Aur Badge Bada) 🔥 */
             #det-title { 
                 max-width: 800px !important;
-                margin: 0 0 15px 0 !important; /* margin-left 0 kiya taki ekdum left me jaye */
+                margin: 0 0 15px 0 !important;
                 font-size: 2.4rem !important; 
                 text-align: left !important; 
             }
             
             #det-price-box { 
                 max-width: 800px !important;
-                margin: 0 0 25px 0 !important; /* margin-left 0 kiya */
+                margin: 0 0 25px 0 !important; 
                 display: flex !important; 
                 justify-content: flex-start !important; 
+            }
+
+            /* 🔥 DESKTOP VIEW BADGE FIX 🔥 */
+            .badge-premium, .badge-free {
+                padding: 10px 20px !important;
+                font-size: 1.3rem !important; /* PC pe size bada aur premium lagega */
+                gap: 8px !important;
+            }
+            .strike-price {
+                font-size: 1rem !important; /* Kata hua price bhi pc par clear dikhega */
             }
 
             #det-arabic-phrase { 
@@ -594,8 +656,7 @@
     </div> 
 
     <div id="action-footer" class="action-footer hidden">
-        <div id="det-footer-price" class="price-tag" style="font-size: 1.2rem; font-family: 'DM Mono', monospace;"></div>
-        <button id="det-action-btn" class="btn" style="width: auto; padding: 12px 32px; font-size: .95rem; border-radius: 99px;"></button>
+        <div id="det-footer-price"></div> <button id="det-action-btn" class="btn" style="width: auto; padding: 12px 32px; font-size: .95rem; border-radius: 99px;"></button>
     </div>
 
     <div id="bottom-nav" class="bottom-nav">
@@ -1005,12 +1066,16 @@ function renderDetail() {
     
     const ownedBook = (window.userPayments || []).find(p => String(p.ebook_id) === String(window.currentEbook.id) && p.status.toLowerCase() !== "rejected");
 
+    // 🔥 UPDATED: Top Price Box (Pill Shape Badges) 🔥
     if (isFree) {
-        priceBox.innerHTML = `<span class="badge-free" style="padding: 6px 16px; font-size: .85rem;">✦ 100% FREE</span>`;
+        priceBox.innerHTML = `<div class="price-wrapper"><span class="badge-free">✦ 100% FREE</span></div>`;
     } else {
-        let pHTML = `₹${window.currentEbook.discount_price || window.currentEbook.price}`;
-        if (window.currentEbook.discount_price && window.currentEbook.price > window.currentEbook.discount_price) pHTML += ` <span class="strike-price">₹${window.currentEbook.price}</span>`;
-        priceBox.innerHTML = `<span class="price-tag" style="font-size: 1.6rem;">${pHTML}</span>`;
+        let priceNum = window.currentEbook.discount_price || window.currentEbook.price;
+        let pHTML = `₹${priceNum}`;
+        if (window.currentEbook.discount_price && window.currentEbook.price > window.currentEbook.discount_price) {
+            pHTML += ` <span class="strike-price">₹${window.currentEbook.price}</span>`;
+        }
+        priceBox.innerHTML = `<div class="price-wrapper"><span class="badge-premium">${pHTML}</span></div>`;
     }
 
     actionBtn.className = "btn"; actionBtn.disabled = false; actionBtn.style.background = ""; actionBtn.style.color = ""; actionBtn.style.boxShadow = "";
@@ -1018,7 +1083,8 @@ function renderDetail() {
     // 🛡️ SCENARIO 1: PAID BOOK (Local Cache says 'Approved')
     if (ownedBook) {
         if (ownedBook.status.toLowerCase() === "approved") {
-            footerPrice.innerHTML = `<span style="color: var(--success) !important; font-weight: 700;">Owned</span>`;
+            // 🔥 NAYA OWNED BADGE
+            footerPrice.innerHTML = `<span class="badge-premium" style="background: rgba(16,185,129,0.15); border-color: rgba(16,185,129,0.4); color: var(--success);">Owned ✓</span>`;
             actionBtn.innerHTML = `<i class="fas fa-download"></i> Download`;
             actionBtn.style.background = "var(--success)"; actionBtn.style.boxShadow = "0 4px 20px rgba(16,185,129,0.3)"; actionBtn.style.color = "#fff";
             
@@ -1101,14 +1167,17 @@ function renderDetail() {
             
         } else {
             // Pending in Verification
-            footerPrice.innerHTML = "In Verification";
+       
+            // 🔥 NAYA PENDING BADGE
+            footerPrice.innerHTML = `<span class="badge-premium" style="background: rgba(245,158,11,0.15); border-color: rgba(245,158,11,0.4); color: var(--amber);">In Verification</span>`;
             actionBtn.innerHTML = `<i class="fas fa-hourglass-half spin"></i> Verifying...`;
             actionBtn.disabled = true; actionBtn.onclick = null;
         }
     } 
     // 🛡️ SCENARIO 2: FREE BOOK HAI (Direct Public Link)
     else if (isFree) {
-        footerPrice.innerHTML = "Free";
+        footerPrice.innerHTML = `<span class="badge-free">Free</span>`;
+
         actionBtn.innerHTML = `<i class="fas fa-download"></i> Download`;
         actionBtn.onclick = () => {
             if (window.currentEbook.pdf_link) {
@@ -1119,8 +1188,15 @@ function renderDetail() {
         };
     } 
     // 🛡️ SCENARIO 3: KHARIDNI PADEGI (Buy Now)
+    // 🛡️ SCENARIO 3: KHARIDNI PADEGI (Buy Now)
     else {
-        footerPrice.innerHTML = `₹${window.currentEbook.discount_price || window.currentEbook.price}`;
+        let priceNum = window.currentEbook.discount_price || window.currentEbook.price;
+        let pHTML = `₹${priceNum}`;
+        if (window.currentEbook.discount_price && window.currentEbook.price > window.currentEbook.discount_price) {
+            pHTML += `<span class="strike-price">₹${window.currentEbook.price}</span>`;
+        }
+        // 🔥 NAYA FOOTER PRICE BADGE
+        footerPrice.innerHTML = `<span class="badge-premium">${pHTML}</span>`;
         actionBtn.innerHTML = `Buy Now <i class="fas fa-arrow-right" style="margin-left:6px;"></i>`;
         actionBtn.style.background = "linear-gradient(135deg, #7c6af7, #9f3fbf)"; actionBtn.style.color = "#fff";
         
