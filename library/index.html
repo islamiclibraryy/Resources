@@ -858,7 +858,7 @@ function showToast(msg, type = "success") {
 
                 if (liveStatus !== "approved") {
                     let errorMsg = liveStatus === "rejected" 
-                        ? "Access Denied! Your payment was rejected. Please contact support." 
+                        ? "Access Denied! Your payment was rejected. Please contact support for more information." 
                         : `Access Denied! Your payment is currently ${liveStatus}.`;
                     
                     showToast(errorMsg, "error");
@@ -874,12 +874,10 @@ function showToast(msg, type = "success") {
                     localStorage.setItem(cacheKey, JSON.stringify(cachedPayments));
                     window.userPayments = cachedPayments; 
                     
+                    // UI instantly update karega, button hata kar text dikhayega
                     renderLibrary(); 
 
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 2000);
-
+                    // 🛑 Auto-refresh hata diya hai
                     return; 
                 }
 
