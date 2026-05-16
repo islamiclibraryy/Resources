@@ -674,12 +674,30 @@ const db = initializeFirestore(app, {
             }
             return false;
         }
+// ✅ UNIVERSAL TOAST SYSTEM FOR LIBRARY PAGE
+function showToast(msg, type = "success") {
+    const container = document.getElementById("toast-container");
+    if (!container) return; // Safety check agar container na mile
 
-        // ✅ 3. FIREBASE FETCH (With Smart TTL Cache for Payments)
+    const toast = document.createElement("div"); 
+    toast.className = "toast";
+    
+    // Icon aur design tumhare purane format ke hisab se
+    toast.innerHTML = (type === "success" ? '<span style="font-size:1.1rem; color:var(--success)">✓</span>' : '<span style="font-size:1.1rem; color:var(--danger)">✕</span>') + ` <span>${msg}</span>`;
+    
+    container.appendChild(toast);
+    
+    // Temporary basic animation jab tak final CSS nahi likhte
+    setTimeout(() => { 
+        toast.style.transform = "translateX(110%)"; 
+        toast.style.opacity = "0"; 
+        setTimeout(() => toast.remove(), 400); 
+    }, 3000);
+}
+
+        // ✅ 3. FIREBASE FETCH (Crash-Proof & Safe State)
         async function fetchLibraryData() {
             const currentUserId = localStorage.getItem("islamic_user_id");
-            
-            // Agar Guest hai toh seedha render karo, database call mat maro
             if (!currentUserId) {
                 renderLibrary();
                 return;
@@ -688,29 +706,33 @@ const db = initializeFirestore(app, {
             const cachedPayments = localStorage.getItem(`cache_payments_${currentUserId}_data`);
             const cachedTime = localStorage.getItem(`cache_payments_${currentUserId}_time`);
             const cachedEbooks = localStorage.getItem("cache_ebooks_data");
-            
-            // 🔥 TIMING SETTING: 5 Minutes (5 * 60 * 1000). Tum isko 10 ya 15 bhi kar sakte ho.
             const CACHE_TIME_LIMIT = 5 * 60 * 1000; 
             const now = Date.now();
 
-            // 1. Fast UI Rendering from Cache
+            // Skeletons dikhao agar cache nahi hai
             if (!cachedPayments || !cachedEbooks) {
                 showLibrarySkeletons();
             } else {
                 try {
-                    userPayments = JSON.parse(cachedPayments);
-                    ebooksData = JSON.parse(cachedEbooks);
+                    // Safe Initialization taaki undefined error na aaye
+                    window.userPayments = JSON.parse(cachedPayments) || [];
+                    window.ebooksData = JSON.parse(cachedEbooks) || [];
                     renderLibrary();
-                } catch(e) {}
+                } catch(e) {
+                    window.userPayments = []; 
+                    window.ebooksData = [];
+                }
             }
 
-            // 🔥 THE GATEKEEPER: Agar 5 minute nahi hue hain, toh Firebase se mat maango!
+            // Gatekeeper: Agar 5 minute nahi hue, toh yahi ruk jao
             if (cachedTime && cachedPayments && (now - parseInt(cachedTime)) < CACHE_TIME_LIMIT) {
-                return; // Token bach gaye!
+                return; 
             }
 
-            // 2. 5 Minute poore hone par Firebase se background mein check karo
             try {
+                const { getFirestore, collection, query, where, getDocs } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
+                const db = getFirestore();
+
                 const q = query(collection(db, "payments"), where("user_id", "==", currentUserId));
                 const paySnapshot = await getDocs(q);
                 const freshPayments = paySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -718,28 +740,31 @@ const db = initializeFirestore(app, {
                 const bookSnapshot = await getDocs(collection(db, "ebooks"));
                 const freshEbooks = bookSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
-                // Agar data badla hai tabhi re-render karo
-                if (isDataDifferent(userPayments, freshPayments) || JSON.stringify(ebooksData) !== JSON.stringify(freshEbooks)) {
-                    userPayments = freshPayments;
-                    ebooksData = freshEbooks;
+                // Agar data change hua hai toh update karo
+                if (isDataDifferent(window.userPayments, freshPayments) || JSON.stringify(window.ebooksData) !== JSON.stringify(freshEbooks)) {
+                    window.userPayments = freshPayments;
+                    window.ebooksData = freshEbooks;
                     localStorage.setItem(`cache_payments_${currentUserId}_data`, JSON.stringify(freshPayments));
                     localStorage.setItem("cache_ebooks_data", JSON.stringify(freshEbooks));
                     renderLibrary();
                 }
 
-                // 🔥 Naya time update kar do taaki agle 5 minute tak lock lag jaye
                 localStorage.setItem(`cache_payments_${currentUserId}_time`, now.toString());
 
             } catch(e) {
                 console.error("Firebase fetch error:", e);
-                if (!cachedPayments) window.showToast("Network Error loading library", "error");
+                // 🔥 FIX: window.showToast hata kar sirf showToast kar diya hai
+                if (!cachedPayments) {
+                    try { showToast("Network Error loading library", "error"); } catch(err){}
+                }
             }
         }
 
-
-        // ✅ 4. RENDER LIBRARY (Guest vs Logged In UI)
+        // ✅ 4. RENDER LIBRARY (Blank Page Issue Fixed)
         function renderLibrary() {
             const container = document.getElementById("library-list");
+            if (!container) return; // Safety check
+            
             container.innerHTML = "";
             const currentUserId = localStorage.getItem("islamic_user_id");
 
@@ -757,8 +782,12 @@ const db = initializeFirestore(app, {
                 return;
             }
 
+            // Safe Arrays (Crash hone se bachayega)
+            const paymentsArray = window.userPayments || [];
+            const ebooksArray = window.ebooksData || [];
+
             // Normal Empty Library State
-            if (!ebooksData || ebooksData.length === 0 || !userPayments || userPayments.length === 0) {
+            if (ebooksArray.length === 0 || paymentsArray.length === 0) {
                 container.innerHTML = `<div class="text-center" style="margin-top: 60px; color:var(--text3); animation: fadeUp .5s ease both;">
                     <div style="width: 80px; height: 80px; border-radius: 50%; background: var(--glow2); border: 1px solid rgba(124,106,247,0.2); display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 16px auto; color: var(--accent2);">📚</div>
                     <h4 style="font-family:'Syne', sans-serif; color:var(--text2); margin-bottom: 8px;">Library is empty</h4>
@@ -767,8 +796,8 @@ const db = initializeFirestore(app, {
                 return;
             }
 
-            userPayments.forEach(pay => {
-                const book = ebooksData.find(e => String(e.id) === String(pay.ebook_id));
+            paymentsArray.forEach(pay => {
+                const book = ebooksArray.find(e => String(e.id) === String(pay.ebook_id));
                 if(!book) return; 
 
                 const statusLower = pay.status.toLowerCase();
@@ -777,7 +806,6 @@ const db = initializeFirestore(app, {
                 else if (statusLower === "rejected") badgeClass = "status-rejected";
                 
                 let actionBtn = "";
-                // 🔥 FIX: Ab onclick par humara naya function call hoga
                 if (statusLower === "approved") {
                     actionBtn = `<button class="btn" style="padding: 8px 16px; font-size:.8rem; border-radius: 99px; width:auto; background:var(--success); box-shadow: 0 4px 15px rgba(16,185,129,0.3); color:#fff;" onclick="window.handleLibraryDownload(this, '${book.id}')"><i class="fas fa-download"></i></button>`;
                 } else if (statusLower === "rejected") {
@@ -808,7 +836,9 @@ const db = initializeFirestore(app, {
             const originalHTML = btnElement.innerHTML;
             btnElement.innerHTML = `<i class="fas fa-spinner fa-spin"></i>`;
             btnElement.disabled = true;
-            window.showToast("Verifying live access...", "info");
+            
+            // 🔥 FIX: window.showToast -> showToast kar diya gaya hai
+            showToast("Verifying live access...", "info");
 
             let liveStatus = "pending";
 
@@ -816,7 +846,6 @@ const db = initializeFirestore(app, {
                 const { getFirestore, doc, getDoc, collection, query, where, getDocs } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
                 const dbInstance = getFirestore();
 
-                // 🚨 STEP 1: Live Payment Check
                 const qPay = query(collection(dbInstance, "payments"), 
                     where("user_id", "==", currentUserId), 
                     where("ebook_id", "==", String(ebookId))
@@ -825,14 +854,13 @@ const db = initializeFirestore(app, {
                 
                 if (!paySnap.empty) liveStatus = paySnap.docs[0].data().status.toLowerCase();
 
-                // Agar Admin ne abhi-abhi reject kiya hai
                 if (liveStatus !== "approved") {
                     let errorMsg = liveStatus === "rejected" 
-                        ? "Access Denied! Your payment was rejected. Please contact support for more information." 
+                        ? "Access Denied! Your payment was rejected. Please contact support." 
                         : `Access Denied! Your payment is currently ${liveStatus}.`;
-                    window.showToast(errorMsg, "error");
                     
-                    // Cache Update Karo
+                    showToast(errorMsg, "error"); // 🔥 FIX
+                    
                     const cacheKey = `cache_payments_${currentUserId}_data`;
                     let cachedPayments = JSON.parse(localStorage.getItem(cacheKey)) || [];
                     const pIndex = cachedPayments.findIndex(p => String(p.ebook_id) === String(ebookId));
@@ -844,37 +872,33 @@ const db = initializeFirestore(app, {
                     localStorage.setItem(cacheKey, JSON.stringify(cachedPayments));
                     window.userPayments = cachedPayments; 
                     
-                    renderLibrary(); // Hand-to-hand UI update
+                    renderLibrary(); 
 
-                    // 2 Second Auto-Refresh!
                     setTimeout(() => {
                         window.location.reload();
                     }, 2000);
 
-                    return; // Yahin ruk jao
+                    return; 
                 }
 
-                // 🚨 STEP 2: Tijori se Link laao
                 const secureDocRef = doc(dbInstance, "secure_links", String(ebookId));
                 const secureDocSnap = await getDoc(secureDocRef);
 
                 if (secureDocSnap.exists() && secureDocSnap.data().pdf_link) {
-                    window.showToast("Access Verified! Opening File...", "success");
+                    showToast("Access Verified! Opening File...", "success"); // 🔥 FIX
                     window.open(secureDocSnap.data().pdf_link, "_blank");
                 } else {
-                    // Agar Free book hui toh uski link public cache mein hogi
-                    const fallbackBook = ebooksData.find(e => String(e.id) === String(ebookId));
+                    const fallbackBook = (window.ebooksData || []).find(e => String(e.id) === String(ebookId));
                     if (fallbackBook && fallbackBook.pdf_link) {
                         window.open(fallbackBook.pdf_link, "_blank");
                     } else {
-                        window.showToast("Secure file not found. Please contact admin.", "error");
+                        showToast("Secure file not found. Please contact admin.", "error"); // 🔥 FIX
                     }
                 }
             } catch (err) {
                 console.error("Verification Error:", err);
-                window.showToast("Network error during verification.", "error");
+                showToast("Network error during verification.", "error"); // 🔥 FIX
             } finally {
-                // Button ko wapas normal karo (lekin tabhi jab reject na hua ho, kyunki reject hone par toh renderLibrary waise hi button uda dega)
                 if (document.body.contains(btnElement) && liveStatus === "approved") {
                     btnElement.innerHTML = originalHTML;
                     btnElement.disabled = false;
