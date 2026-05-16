@@ -95,8 +95,6 @@
 
         #loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10,10,15,0.85); backdrop-filter: blur(5px); z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center; }
         .spinner { width: 50px; height: 50px; border: 4px solid var(--surface3); border-top: 4px solid var(--accent); border-radius: 50%; animation: spin 1s cubic-bezier(0.4,0,0.2,1) infinite; }
-        #toast-container { position: fixed; bottom: 85px; right: 28px; z-index: 9998; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
-        .toast { background: var(--surface); color: var(--text); padding: 12px 18px; border-radius: var(--r2); box-shadow: var(--shadow2); border: 1px solid var(--border2); animation: slideUp 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards; display: flex; align-items: center; gap: 10px; font-size: .85rem; font-weight: 500; }
 
         .btn { background: linear-gradient(135deg, #7c6af7, #9f3fbf); color: #fff; border: none; padding: 14px 20px; border-radius: 99px; font-weight: 600; font-family: 'DM Sans', sans-serif; width: 100%; cursor: pointer; transition: var(--transition); font-size: 1rem; display: block; text-align: center; position: relative; overflow: hidden; box-shadow: 0 4px 20px rgba(124,106,247,0.4); }
                 /* 🔥 UNIVERSAL OUTLINE BUTTON GLOW FIX (Sabhi pages ke liye) 🔥 */
@@ -220,9 +218,6 @@
 .custom-dark-input::placeholder { color: rgba(255, 255, 255, 0.4); }
 .custom-dark-input:focus { border-color: #a855f7; background: rgba(255, 255, 255, 0.1); box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2); }
 
-/* Original Toast Styling */
-#toast-container { position: fixed; bottom: 85px; right: 28px; z-index: 999999 !important; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
-.toast { background: var(--surface); color: var(--text); padding: 12px 18px; border-radius: var(--r2); box-shadow: var(--shadow2); border: 1px solid var(--border2); animation: slideUp 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards; display: flex; align-items: center; gap: 10px; font-size: .85rem; font-weight: 500; }
         /* 🔥 DESKTOP VIEW FIX (LIBRARY PAGE) - ALIGNED WITH OTHERS 🔥 */
         @media screen and (min-width: 768px) {
             
@@ -315,22 +310,6 @@
                 font-size: 1.1rem !important;
                 border-radius: 14px !important;
             }
-            /* 🍞 TOAST NOTIFICATIONS DESKTOP FIX 🍞 */
-            #toast-container {
-                bottom: 50px !important; 
-                right: 50px !important; /* PC par right kone mein aaram se set hoga */
-            }
-            .toast {
-                padding: 18px 24px !important;
-                font-size: 1.15rem !important; /* Text padhne layak bada kiya */
-                border-radius: 16px !important;
-                gap: 16px !important;
-                min-width: 320px !important; /* PC par thoda lamba toast acha lagta hai */
-                box-shadow: 0 15px 35px rgba(0,0,0,0.5) !important; /* Premium Shadow */
-            }
-            .toast i { 
-                font-size: 1.5rem !important; /* Error/Success wala Icon bhi bada hoga */
-            }
 
         }
 
@@ -392,6 +371,73 @@
             .premium-lock-title { font-size: 2rem; margin-bottom: 12px; }
             .premium-lock-desc { font-size: 1.1rem; max-width: 500px; margin-bottom: 32px; }
             .premium-lock-btn { padding: 16px 48px !important; font-size: 1.1rem; }
+        }
+        /* =========================================================================
+           🚀 UNIVERSAL PREMIUM TOAST NOTIFICATION SYSTEM (Upgraded Position & Size)
+           ========================================================================= */
+        #toast-container {
+            position: fixed;
+            bottom: 100px; /* 🔥 FIX: Mobile par bottom nav (70px) se thoda aur upar kar diya */
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            pointer-events: none;
+            width: 100%;
+            max-width: 400px;
+            padding: 0 20px; /* 🔥 Chhote mobiles me screen ke kono se chipke gaa nahi, automatic fit hoga */
+        }
+
+        .toast {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--surface2, #1f1f30);
+            color: var(--text, #f0f0f8);
+            padding: 14px 22px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            font-family: 'Syne', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            line-height: 1.4;
+            width: fit-content;
+            max-width: 100%;
+            text-align: left;
+            pointer-events: auto;
+            animation: toastEnter 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .toast.success span:first-child { color: var(--success, #10b981); }
+        .toast.error span:first-child { color: var(--danger, #f43f5e); }
+        .toast.info span:first-child { color: var(--accent, #7c6af7); }
+
+        .toast.fade-out {
+            opacity: 0 !important;
+            transform: translateY(20px) scale(0.95) !important;
+        }
+
+        @keyframes toastEnter {
+            0% { opacity: 0; transform: translateY(30px) scale(0.9); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* 🖥️ DESKTOP MODIFICATIONS (PC & BIG SCREENS) */
+        @media (min-width: 768px) {
+            #toast-container { 
+                bottom: 240px; /* 🔥 FIX: PC par isko kaafi upar le aaye hain taaki center field me saaf dikhe */
+                max-width: 550px; /* 🔥 Container thoda chauda kiya desktop ke liye */
+            }
+            .toast { 
+                font-size: 1.25rem; /* 🔥 FIX: Font size pure 30% bada kar diya (.95rem se direct 1.25rem) */
+                padding: 18px 32px; /* 🔥 FIX: Padding badha di taaki dabba bada aur premium lage */
+                border-radius: 16px; 
+                gap: 16px;
+            }
         }
 
       </style>
@@ -496,7 +542,7 @@
         // ✅ FIREBASE IMPORTS
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
-        import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+        import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager, collection, doc, getDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
         // ✅ FIREBASE CONFIG
         const firebaseConfig = {
@@ -510,28 +556,26 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        // 🔥 MODERN CACHE SETUP: Isse warning khatam ho jayegi aur speed makkhan ho jayegi
-const db = initializeFirestore(app, {
-  localCache: persistentLocalCache({
-    tabManager: persistentMultipleTabManager()
-  })
-});
+        const db = initializeFirestore(app, {
+            localCache: persistentLocalCache({
+                tabManager: persistentMultipleTabManager()
+            })
+        });
 
+        window.ebooksData = [];
+        window.userPayments = [];
 
-                const userId = localStorage.getItem("islamic_user_id");
-        let ebooksData = [];
-        let userPayments = [];
-
-        // ✅ 1. REDIRECT KILLER (Guest mode active)
+        // ✅ 1. REDIRECT KILLER & GUEST DETECTOR
         onAuthStateChanged(auth, (user) => {
             if (!user) { 
                 localStorage.removeItem("islamic_user_id");
                 localStorage.removeItem("islamic_user_name");
                 localStorage.removeItem("islamic_user_mobile");
+                localStorage.removeItem("islamic_user_photo");
             }
         });
 
-        // ✅ UI FUNCTIONS
+        // ✅ UI THEME FUNCTIONS
         window.initTheme = function() {
             const currentTheme = document.documentElement.getAttribute("data-theme");
             const icon = document.getElementById("theme-toggle-icon");
@@ -546,7 +590,7 @@ const db = initializeFirestore(app, {
             window.initTheme();
         };
 
-        // ✅ 2. SIDEBAR / DRAWER FIX (Guest + Shield Icon)
+        // ✅ SIDEBAR DRAWER SYSTEM
         window.openProfileDrawer = async function() {
             document.getElementById("drawer-overlay").classList.add("active");
             document.getElementById("profile-drawer").classList.add("active");
@@ -558,16 +602,15 @@ const db = initializeFirestore(app, {
             const loginPath = '/login/';
 
             if (currentUserId) {
-                        // 🔥 Naya Avatar Logic start
-        const avatarContainer = document.querySelector(".drawer-avatar");
-        const cachedPhoto = localStorage.getItem("islamic_user_photo");
+                const avatarContainer = document.querySelector(".drawer-avatar");
+                const cachedPhoto = localStorage.getItem("islamic_user_photo");
 
-        if (cachedPhoto && cachedPhoto !== "null") {
-            avatarContainer.innerHTML = `<img src="${cachedPhoto}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" onerror="this.outerHTML='<i id=\\'profile-avatar-icon\\' class=\\'fas fa-user\\'></i>'">`;
-        } else {
-            avatarContainer.innerHTML = `<i id="profile-avatar-icon" class="fas fa-user"></i>`;
-        }
-        // 🔥 Naya Avatar Logic end
+                if (cachedPhoto && cachedPhoto !== "null") {
+                    avatarContainer.innerHTML = `<img src="${cachedPhoto}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" onerror="this.outerHTML='<i id=\\'profile-avatar-icon\\', class=\\'fas fa-user\\'></i>'">`;
+                } else {
+                    avatarContainer.innerHTML = `<i id="profile-avatar-icon" class="fas fa-user"></i>`;
+                }
+                
                 let cachedName = localStorage.getItem("islamic_user_name");
                 document.getElementById("profile-name").innerText = cachedName || "Library User";
                 document.getElementById("profile-mobile").innerText = localStorage.getItem("islamic_user_mobile") || "Registered User";
@@ -577,9 +620,7 @@ const db = initializeFirestore(app, {
 
                 if (!cachedName) {
                     try {
-                        const { getFirestore, doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
-                        const dbInstance = getFirestore();
-                        const userDoc = await getDoc(doc(dbInstance, "users", currentUserId));
+                        const userDoc = await getDoc(doc(db, "users", currentUserId));
                         if (userDoc.exists() && userDoc.data().name) {
                             localStorage.setItem("islamic_user_name", userDoc.data().name);
                             document.getElementById("profile-name").innerText = userDoc.data().name;
@@ -595,7 +636,6 @@ const db = initializeFirestore(app, {
             }
         };
 
-        // 🔥 MISSING FUNCTIONS JO MERA Wajah SE DELETE HO GAYE THE
         window.closeProfileDrawer = function() {
             document.getElementById("drawer-overlay").classList.remove("active");
             document.getElementById("profile-drawer").classList.remove("active");
@@ -650,6 +690,7 @@ const db = initializeFirestore(app, {
 
         function showLibrarySkeletons() {
             const container = document.getElementById("library-list");
+            if(!container) return;
             container.innerHTML = "";
             for(let i=0; i<4; i++) {
                 container.innerHTML += `
@@ -668,36 +709,44 @@ const db = initializeFirestore(app, {
             if (!oldData || oldData.length !== newData.length) return true;
             for (let i = 0; i < newData.length; i++) {
                 const oldItem = oldData.find(p => String(p.ebook_id) === String(newData[i].ebook_id));
-                if (!oldItem || oldItem.status !== newData[i].status) {
-                    return true;
-                }
+                if (!oldItem || oldItem.status !== newData[i].status) return true;
             }
             return false;
         }
-// ✅ UNIVERSAL TOAST SYSTEM FOR LIBRARY PAGE
+
+        // ✅ Clean Universal-Ready Toast DOM Injector
+// ✅ THE PERFECT SMART UNIVERSAL TOAST JS
 function showToast(msg, type = "success") {
     const container = document.getElementById("toast-container");
-    if (!container) return; // Safety check agar container na mile
+    if (!container) return;
+
+    // 🔥 INSTANT CLEAR: Naya toast aate hi purana (chahe loader ho) instantly saaf!
+    container.innerHTML = "";
 
     const toast = document.createElement("div"); 
-    toast.className = "toast";
+    toast.className = `toast ${type}`;
     
-    // Icon aur design tumhare purane format ke hisab se
-    toast.innerHTML = (type === "success" ? '<span style="font-size:1.1rem; color:var(--success)">✓</span>' : '<span style="font-size:1.1rem; color:var(--danger)">✕</span>') + ` <span>${msg}</span>`;
-    
+    let iconHTML = '✓';
+    if (type === "error") iconHTML = '✕';
+    if (type === "info") iconHTML = '<i class="fas fa-spinner fa-spin"></i>'; 
+
+    toast.innerHTML = `<span style="font-size: 1.1rem; display: flex; align-items: center;">${iconHTML}</span> <span>${msg}</span>`;
     container.appendChild(toast);
     
-    // Temporary basic animation jab tak final CSS nahi likhte
-    setTimeout(() => { 
-        toast.style.transform = "translateX(110%)"; 
-        toast.style.opacity = "0"; 
-        setTimeout(() => toast.remove(), 400); 
-    }, 3000);
+    // 🔥 SMART TIMER: Loader (info) ko auto-hide mat karo, wo backend response par khud clear hoga.
+    // Success aur Error ko 3.5 second baad smooth fade-out karo taaki user padh sake.
+    if (type !== "info") {
+        setTimeout(() => { 
+            toast.classList.add("fade-out"); // CSS wali animation trigger hogi
+            setTimeout(() => toast.remove(), 400); // DOM se permanent clear
+        }, 3500);
+    }
 }
 
-        // ✅ 3. FIREBASE FETCH (Token Saver Version - No Ebooks Fetching)
+        // ✅ 3. SMART TOKENS-SAVER FETCH LIBRARY DATA
         async function fetchLibraryData() {
             const currentUserId = localStorage.getItem("islamic_user_id");
+            // Security Check 1: User login nahi hai toh request block karo
             if (!currentUserId) {
                 renderLibrary();
                 return;
@@ -715,6 +764,7 @@ function showToast(msg, type = "success") {
                 try {
                     window.userPayments = JSON.parse(cachedPayments) || [];
                     window.ebooksData = JSON.parse(cachedEbooks) || [];
+                    await syncMissingBookDetails();
                     renderLibrary();
                 } catch(e) {
                     window.userPayments = []; 
@@ -722,16 +772,13 @@ function showToast(msg, type = "success") {
                 }
             }
 
+            // 5 Minute Gatekeeper: Agar cache update hue 5 min nahi hue, toh database hit mat karo
             if (cachedTime && cachedPayments && (now - parseInt(cachedTime)) < CACHE_TIME_LIMIT) {
                 return; 
             }
 
             try {
-                const { getFirestore, collection, query, where, getDocs } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
-                const db = getFirestore();
-
-                // 🔥 TOKEN SAVER: Yahan ab hum sirf user ki payments check kar rahe hain. 
-                // Ebooks (5000 docs) faltu mein fetch nahi kar rahe!
+                // TOKEN PROTECTION ACTIVE: Faltu 5000 kitabein call nahi ho rahi hain!
                 const q = query(collection(db, "payments"), where("user_id", "==", currentUserId));
                 const paySnapshot = await getDocs(q);
                 const freshPayments = paySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -739,20 +786,55 @@ function showToast(msg, type = "success") {
                 if (isDataDifferent(window.userPayments, freshPayments)) {
                     window.userPayments = freshPayments;
                     localStorage.setItem(`cache_payments_${currentUserId}_data`, JSON.stringify(freshPayments));
+                    await syncMissingBookDetails();
                     renderLibrary();
                 }
-
                 localStorage.setItem(`cache_payments_${currentUserId}_time`, now.toString());
 
             } catch(e) {
                 console.error("Firebase fetch error:", e);
-                if (!cachedPayments) {
-                    try { showToast("Network Error loading library", "error"); } catch(err){}
+                if (!cachedPayments) showToast("Network Error loading library", "error");
+            }
+        }
+
+        // 🔥 ONDEMAND SINGLE-BOOK SYNC FOR DIRECT LANDING LOOPS (Requirement 9)
+        async function syncMissingBookDetails() {
+            let megaIndex = [];
+            try {
+                const megaIndexStr = localStorage.getItem("cache_mega_search_index");
+                if (megaIndexStr) megaIndex = JSON.parse(megaIndexStr);
+            } catch(e) {}
+
+            const fetchPromises = [];
+            const freshMissingBooks = [];
+
+            window.userPayments.forEach(pay => {
+                const inMainCache = window.ebooksData.some(e => String(e.id) === String(pay.ebook_id));
+                const inMegaCache = megaIndex.some(e => String(e.id) === String(pay.ebook_id));
+
+                // Agar book dono local caches me nahi milti tabhi direct call jayega
+                if (!inMainCache && !inMegaCache) {
+                    const fetchSingleDoc = async () => {
+                        try {
+                            const bookSnap = await getDoc(doc(db, "ebooks", String(pay.ebook_id)));
+                            if (bookSnap.exists()) {
+                                freshMissingBooks.push({ id: bookSnap.id, ...bookSnap.data() });
+                            }
+                        } catch(err) { console.error("Error fetching single doc metadata:", err); }
+                    };
+                    fetchPromises.push(fetchSingleDoc());
+                }
+            });
+
+            if (fetchPromises.length > 0) {
+                await Promise.all(fetchPromises);
+                if (freshMissingBooks.length > 0) {
+                    window.ebooksData = [...window.ebooksData, ...freshMissingBooks];
                 }
             }
         }
 
-        // ✅ 4. RENDER LIBRARY (Mega Index Fix + Blank Page Fixed)
+        // ✅ 4. RENDER LIBRARY
         function renderLibrary() {
             const container = document.getElementById("library-list");
             if (!container) return; 
@@ -776,7 +858,6 @@ function showToast(msg, type = "success") {
             const paymentsArray = window.userPayments || [];
             const ebooksArray = window.ebooksData || [];
 
-            // 🌟 THE FIX: MEGA INDEX KO BHI LOAD KARO 🌟
             let megaIndex = [];
             try {
                 const megaIndexStr = localStorage.getItem("cache_mega_search_index");
@@ -793,10 +874,7 @@ function showToast(msg, type = "success") {
             }
 
             paymentsArray.forEach(pay => {
-                // 1. Pehle normal 15 books me dhundo
                 let book = ebooksArray.find(e => String(e.id) === String(pay.ebook_id));
-                
-                // 2. Agar wahan nahi mili toh Mega Index me dhundo
                 if (!book) {
                     book = megaIndex.find(e => String(e.id) === String(pay.ebook_id));
                 }
@@ -830,7 +908,7 @@ function showToast(msg, type = "success") {
         }
 
         // =========================================================================
-        // 🔒 5. THE GATEKEEPER: SECURE LIBRARY DOWNLOAD FUNCTION 
+        // 🔒 THE GATEKEEPER: SECURE LIBRARY DOWNLOAD FUNCTION (1s Window Guard)
         // =========================================================================
         window.handleLibraryDownload = async (btnElement, ebookId) => {
             const currentUserId = localStorage.getItem("islamic_user_id");
@@ -840,15 +918,13 @@ function showToast(msg, type = "success") {
             btnElement.innerHTML = `<i class="fas fa-spinner fa-spin"></i>`;
             btnElement.disabled = true;
             
-            showToast("Verifying live access...", "info");
+            // Premium text update
+            showToast("Verifying your download access... Please wait", "info");
 
             let liveStatus = "pending";
 
             try {
-                const { getFirestore, doc, getDoc, collection, query, where, getDocs } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
-                const dbInstance = getFirestore();
-
-                const qPay = query(collection(dbInstance, "payments"), 
+                const qPay = query(collection(db, "payments"), 
                     where("user_id", "==", currentUserId), 
                     where("ebook_id", "==", String(ebookId))
                 );
@@ -858,8 +934,8 @@ function showToast(msg, type = "success") {
 
                 if (liveStatus !== "approved") {
                     let errorMsg = liveStatus === "rejected" 
-                        ? "Access Denied! Your payment was rejected. Please contact support for more information." 
-                        : `Access Denied! Your payment is currently ${liveStatus}.`;
+                        ? "Access Denied! Your payment was rejected. Please contact support." 
+                        : `Access Denied! Your payment status is currently ${liveStatus}.`;
                     
                     showToast(errorMsg, "error");
                     
@@ -874,21 +950,26 @@ function showToast(msg, type = "success") {
                     localStorage.setItem(cacheKey, JSON.stringify(cachedPayments));
                     window.userPayments = cachedPayments; 
                     
-                    // UI instantly update karega, button hata kar text dikhayega
                     renderLibrary(); 
-
-                    // 🛑 Auto-refresh hata diya hai
                     return; 
                 }
 
-                const secureDocRef = doc(dbInstance, "secure_links", String(ebookId));
-                const secureDocSnap = await getDoc(secureDocRef);
+                const secureDocSnap = await getDoc(doc(db, "secure_links", String(ebookId)));
 
                 if (secureDocSnap.exists() && secureDocSnap.data().pdf_link) {
-                    showToast("Access Verified! Opening File...", "success"); 
-                    window.open(secureDocSnap.data().pdf_link, "_blank");
+                    showToast("Access Verified! Preparing file download...", "success"); 
+                    
+                    // 🔥 THE 1-SECOND WINDOW: User ko success toast dekhne ka moka milega!
+                    setTimeout(() => {
+                        window.open(secureDocSnap.data().pdf_link, "_blank");
+                        // Link khulne ke baad loader/button wapas normal reset ho jaye background me
+                        if (document.body.contains(btnElement)) {
+                            btnElement.innerHTML = originalHTML;
+                            btnElement.disabled = false;
+                        }
+                    }, 1000);
+                    
                 } else {
-                    // 🌟 FALLBACK BHI MEGA INDEX CHECK KAREGA 🌟
                     let fallbackBook = (window.ebooksData || []).find(e => String(e.id) === String(ebookId));
                     if (!fallbackBook) {
                         let mIndex = [];
@@ -897,22 +978,27 @@ function showToast(msg, type = "success") {
                     }
 
                     if (fallbackBook && fallbackBook.pdf_link) {
-                        window.open(fallbackBook.pdf_link, "_blank");
+                        showToast("Access Verified! Opening File...", "success");
+                        setTimeout(() => {
+                            window.open(fallbackBook.pdf_link, "_blank");
+                            if (document.body.contains(btnElement)) {
+                                btnElement.innerHTML = originalHTML;
+                                btnElement.disabled = false;
+                            }
+                        }, 1000);
                     } else {
                         showToast("Secure file not found. Please contact admin.", "error"); 
+                        btnElement.innerHTML = originalHTML;
+                        btnElement.disabled = false;
                     }
                 }
             } catch (err) {
                 console.error("Verification Error:", err);
                 showToast("Network error during verification.", "error"); 
-            } finally {
-                if (document.body.contains(btnElement) && liveStatus === "approved") {
-                    btnElement.innerHTML = originalHTML;
-                    btnElement.disabled = false;
-                }
+                btnElement.innerHTML = originalHTML;
+                btnElement.disabled = false;
             }
         };
-
     </script>
 </body>
 </html>
