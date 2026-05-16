@@ -743,7 +743,7 @@ const db = initializeFirestore(app, {
             container.innerHTML = "";
             const currentUserId = localStorage.getItem("islamic_user_id");
 
-            // 🔥 GUEST UI STATE (Premium Lock Screen)
+            // 🔥 GUEST UI STATE
             if (!currentUserId) {
                 container.innerHTML = `
                 <div class="premium-lock-container">
@@ -777,8 +777,9 @@ const db = initializeFirestore(app, {
                 else if (statusLower === "rejected") badgeClass = "status-rejected";
                 
                 let actionBtn = "";
+                // 🔥 FIX: Ab onclick par humara naya function call hoga
                 if (statusLower === "approved") {
-                    actionBtn = `<button class="btn" style="padding: 8px 16px; font-size:.8rem; border-radius: 99px; width:auto; background:var(--success); box-shadow: 0 4px 15px rgba(16,185,129,0.3); color:#fff;" onclick="window.open('${book.pdf_link}', '_blank')"><i class="fas fa-download"></i></button>`;
+                    actionBtn = `<button class="btn" style="padding: 8px 16px; font-size:.8rem; border-radius: 99px; width:auto; background:var(--success); box-shadow: 0 4px 15px rgba(16,185,129,0.3); color:#fff;" onclick="window.handleLibraryDownload(this, '${book.id}')"><i class="fas fa-download"></i></button>`;
                 } else if (statusLower === "rejected") {
                     actionBtn = `<span style="font-size: .75rem; color: var(--danger); font-weight: 600;">Failed</span>`; 
                 } else {
@@ -796,6 +797,90 @@ const db = initializeFirestore(app, {
                 </div>`;
             });
         }
+
+        // =========================================================================
+        // 🔒 5. THE GATEKEEPER: SECURE LIBRARY DOWNLOAD FUNCTION 
+        // =========================================================================
+        window.handleLibraryDownload = async (btnElement, ebookId) => {
+            const currentUserId = localStorage.getItem("islamic_user_id");
+            if (!currentUserId) return;
+
+            const originalHTML = btnElement.innerHTML;
+            btnElement.innerHTML = `<i class="fas fa-spinner fa-spin"></i>`;
+            btnElement.disabled = true;
+            window.showToast("Verifying live access...", "info");
+
+            let liveStatus = "pending";
+
+            try {
+                const { getFirestore, doc, getDoc, collection, query, where, getDocs } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
+                const dbInstance = getFirestore();
+
+                // 🚨 STEP 1: Live Payment Check
+                const qPay = query(collection(dbInstance, "payments"), 
+                    where("user_id", "==", currentUserId), 
+                    where("ebook_id", "==", String(ebookId))
+                );
+                const paySnap = await getDocs(qPay);
+                
+                if (!paySnap.empty) liveStatus = paySnap.docs[0].data().status.toLowerCase();
+
+                // Agar Admin ne abhi-abhi reject kiya hai
+                if (liveStatus !== "approved") {
+                    let errorMsg = liveStatus === "rejected" 
+                        ? "Access Denied! Your payment was rejected. Please contact support for more information." 
+                        : `Access Denied! Your payment is currently ${liveStatus}.`;
+                    window.showToast(errorMsg, "error");
+                    
+                    // Cache Update Karo
+                    const cacheKey = `cache_payments_${currentUserId}_data`;
+                    let cachedPayments = JSON.parse(localStorage.getItem(cacheKey)) || [];
+                    const pIndex = cachedPayments.findIndex(p => String(p.ebook_id) === String(ebookId));
+                    if(pIndex > -1) {
+                        cachedPayments[pIndex].status = liveStatus;
+                    } else if (!paySnap.empty) {
+                        cachedPayments.push({id: paySnap.docs[0].id, ...paySnap.docs[0].data()});
+                    }
+                    localStorage.setItem(cacheKey, JSON.stringify(cachedPayments));
+                    window.userPayments = cachedPayments; 
+                    
+                    renderLibrary(); // Hand-to-hand UI update
+
+                    // 2 Second Auto-Refresh!
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2000);
+
+                    return; // Yahin ruk jao
+                }
+
+                // 🚨 STEP 2: Tijori se Link laao
+                const secureDocRef = doc(dbInstance, "secure_links", String(ebookId));
+                const secureDocSnap = await getDoc(secureDocRef);
+
+                if (secureDocSnap.exists() && secureDocSnap.data().pdf_link) {
+                    window.showToast("Access Verified! Opening File...", "success");
+                    window.open(secureDocSnap.data().pdf_link, "_blank");
+                } else {
+                    // Agar Free book hui toh uski link public cache mein hogi
+                    const fallbackBook = ebooksData.find(e => String(e.id) === String(ebookId));
+                    if (fallbackBook && fallbackBook.pdf_link) {
+                        window.open(fallbackBook.pdf_link, "_blank");
+                    } else {
+                        window.showToast("Secure file not found. Please contact admin.", "error");
+                    }
+                }
+            } catch (err) {
+                console.error("Verification Error:", err);
+                window.showToast("Network error during verification.", "error");
+            } finally {
+                // Button ko wapas normal karo (lekin tabhi jab reject na hua ho, kyunki reject hone par toh renderLibrary waise hi button uda dega)
+                if (document.body.contains(btnElement) && liveStatus === "approved") {
+                    btnElement.innerHTML = originalHTML;
+                    btnElement.disabled = false;
+                }
+            }
+        };
 
     </script>
 </body>
