@@ -104,8 +104,6 @@
 
         #loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10,10,15,0.85); backdrop-filter: blur(5px); z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center; }
         .spinner { width: 50px; height: 50px; border: 4px solid var(--surface3); border-top: 4px solid var(--accent); border-radius: 50%; animation: spin 1s cubic-bezier(0.4,0,0.2,1) infinite; }
-        #toast-container { position: fixed; bottom: 85px; right: 28px; z-index: 9998; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
-        .toast { background: var(--surface); color: var(--text); padding: 12px 18px; border-radius: var(--r2); box-shadow: var(--shadow2); border: 1px solid var(--border2); animation: slideUp 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards; display: flex; align-items: center; gap: 10px; font-size: .85rem; font-weight: 500; }
 
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10,10,15,0.85); backdrop-filter: blur(5px); z-index: 99999; display: flex; justify-content: center; align-items: center; animation: fadeIn 0.3s ease; }
         .modal-box { background: var(--surface); padding: 28px 24px; border-radius: var(--r3); width: 90%; max-width: 320px; text-align: center; border: 1px solid var(--border); box-shadow: var(--shadow2); animation: cardIn 0.4s ease both; }
@@ -280,10 +278,6 @@
 .custom-dark-input::placeholder { color: rgba(255, 255, 255, 0.4); }
 .custom-dark-input:focus { border-color: #a855f7; background: rgba(255, 255, 255, 0.1); box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2); }
 
-/* Original Toast Styling */
-#toast-container { position: fixed; bottom: 85px; right: 28px; z-index: 999999 !important; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
-.toast { background: var(--surface); color: var(--text); padding: 12px 18px; border-radius: var(--r2); box-shadow: var(--shadow2); border: 1px solid var(--border2); animation: slideUp 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards; display: flex; align-items: center; gap: 10px; font-size: .85rem; font-weight: 500; }
-
 /* 1. Button ko kisi bhi phone mein dabne (bona hone) se rokne ke liye */
 .action-footer .btn {
     flex-shrink: 0 !important; 
@@ -379,22 +373,7 @@
                 text-align: left !important;
                 padding-bottom: 130px !important; 
             }
-            /* 🍞 TOAST NOTIFICATIONS DESKTOP FIX 🍞 */
-            #toast-container {
-                bottom: 50px !important; 
-                right: 50px !important; /* PC par right kone mein aaram se set hoga */
-            }
-            .toast {
-                padding: 18px 24px !important;
-                font-size: 1.15rem !important; /* Text padhne layak bada kiya */
-                border-radius: 16px !important;
-                gap: 16px !important;
-                min-width: 320px !important; /* PC par thoda lamba toast acha lagta hai */
-                box-shadow: 0 15px 35px rgba(0,0,0,0.5) !important; /* Premium Shadow */
-            }
-            .toast i { 
-                font-size: 1.5rem !important; /* Error/Success wala Icon bhi bada hoga */
-            }
+
             /* 🚀 ALL MODALS DESKTOP FIX (Logout, Change Password) 🚀 */
             .modal-box {
                 max-width: 480px !important; /* Modals ab choude aur premium lagenge */
@@ -444,7 +423,73 @@
             }
 
         }
+/* =========================================================================
+           🚀 UNIVERSAL PREMIUM TOAST NOTIFICATION SYSTEM (Upgraded Position & Size)
+           ========================================================================= */
+        #toast-container {
+            position: fixed;
+            bottom: 100px; /* 🔥 FIX: Mobile par bottom nav (70px) se thoda aur upar kar diya */
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            pointer-events: none;
+            width: 100%;
+            max-width: 400px;
+            padding: 0 20px; /* 🔥 Chhote mobiles me screen ke kono se chipke gaa nahi, automatic fit hoga */
+        }
 
+        .toast {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--surface2, #1f1f30);
+            color: var(--text, #f0f0f8);
+            padding: 14px 22px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            font-family: 'Syne', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            line-height: 1.4;
+            width: fit-content;
+            max-width: 100%;
+            text-align: left;
+            pointer-events: auto;
+            animation: toastEnter 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .toast.success span:first-child { color: var(--success, #10b981); }
+        .toast.error span:first-child { color: var(--danger, #f43f5e); }
+        .toast.info span:first-child { color: var(--accent, #7c6af7); }
+
+        .toast.fade-out {
+            opacity: 0 !important;
+            transform: translateY(20px) scale(0.95) !important;
+        }
+
+        @keyframes toastEnter {
+            0% { opacity: 0; transform: translateY(30px) scale(0.9); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* 🖥️ DESKTOP MODIFICATIONS (PC & BIG SCREENS) */
+        @media (min-width: 768px) {
+            #toast-container { 
+                bottom: 240px; /* 🔥 FIX: PC par isko kaafi upar le aaye hain taaki center field me saaf dikhe */
+                max-width: 550px; /* 🔥 Container thoda chauda kiya desktop ke liye */
+            }
+            .toast { 
+                font-size: 1.25rem; /* 🔥 FIX: Font size pure 30% bada kar diya (.95rem se direct 1.25rem) */
+                padding: 18px 32px; /* 🔥 FIX: Padding badha di taaki dabba bada aur premium lage */
+                border-radius: 16px; 
+                gap: 16px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -704,22 +749,29 @@ window.closeChangePasswordModal = function() {
     document.getElementById("change-password-modal").classList.add("hidden");
 }
 
-// 🔥 Original Home Page Toast Function
+// 🔥 SMART UNIVERSAL TOAST
 window.showToast = function(msg, type = "success") {
     const container = document.getElementById("toast-container");
     if (!container) return;
     
+    container.innerHTML = ""; // Instant clear loader/old toast
+    
     const toast = document.createElement("div");
-    toast.className = "toast";
-    // Yahan original characters '✓' aur '✕' use kiye hain with original inline styling
-    toast.innerHTML = (type === "success" ? '<span style="font-size:1.1rem; color:var(--success)">✓</span>' : '<span style="font-size:1.1rem; color:var(--danger)">✕</span>') + ` <span>${msg}</span>`;
+    toast.className = `toast ${type}`;
+    let iconHTML = '<span>✓</span>';
+    if (type === "error") iconHTML = '<span>✕</span>';
+    if (type === "info") iconHTML = '<i class="fas fa-spinner fa-spin"></i>'; 
+    
+    toast.innerHTML = `<span style="font-size: 1.25rem; display: flex; align-items: center;">${iconHTML}</span> <span>${msg}</span>`;
     container.appendChild(toast);
     
-    setTimeout(() => { 
-        toast.style.transform = "translateX(110%)"; 
-        toast.style.opacity = "0"; 
-        setTimeout(() => toast.remove(), 400); 
-    }, 3000);
+    // Loader (info) par timer mat lagao, success/error ko 3.5s baad hatao
+    if (type !== "info") {
+        setTimeout(() => { 
+            toast.classList.add("fade-out"); 
+            setTimeout(() => toast.remove(), 400); 
+        }, 3500);
+    }
 }
 
 // 🔥 Original Home Page Password Update Logic
@@ -816,56 +868,53 @@ window.executeChangePassword = async function() {
             setTimeout(() => { toast.style.transform = "translateX(110%)"; toast.style.opacity = "0"; setTimeout(() => toast.remove(), 400); }, 3000);
         }
 
-        // 🔥 SMART 5-MINUTE CACHE (Synced with Library & Payments)
-        async function fetchPaymentsFirebase(uid, cacheKey, onDataChange, showBlockingLoader = false) {
-            const now = new Date().getTime();
+        // 🔥 THE BACKGROUND GLOBAL SYNC: Saari payments ek sath check karega agar 5 min ho gaye
+        async function fetchPaymentsFirebase(uid, cacheKey, onDataChange) {
+            const now = Date.now();
             const cachedDataStr = localStorage.getItem(cacheKey + "_data");
-            const cachedTime = localStorage.getItem(cacheKey + "_time"); // Timer nikal liya
-            const CACHE_TIME_LIMIT = 5 * 60 * 1000; // 5 Minutes ka lock
+            const cachedTime = localStorage.getItem(cacheKey + "_time");
+            const CACHE_TIME_LIMIT = 5 * 60 * 1000;
 
             let hasCache = false;
-            
-            // 1. Pehle cache se instant UI update (No delay)
             if (cachedDataStr) { 
                 hasCache = true; 
-                try { 
-                    onDataChange(JSON.parse(cachedDataStr)); 
-                } catch (e) { 
-                    hasCache = false; 
-                } 
+                try { onDataChange(JSON.parse(cachedDataStr)); } catch (e) { hasCache = false; } 
             }
 
-            // 🔥 THE GATEKEEPER: Agar 5 minute nahi hue hain, toh Firebase se mat maango!
+            // Agar 5 min se pehle ka hai, toh request yahin block kar do
             if (hasCache && cachedTime && (now - parseInt(cachedTime)) < CACHE_TIME_LIMIT) {
-                return; // Token aur Speed dono bach gaye!
+                return; 
             }
 
-            // 2. Agar 5 minute cross ho gaye (ya lock payment page se toot gaya), tabhi fetch karo
-            if (!hasCache && showBlockingLoader) showLoader();
-            if (apiLocks[cacheKey]) return;
-            apiLocks[cacheKey] = true;
+            // Ek baar mein multiple requests ko rokne ke liye API lock
+            if (window.apiLocks && window.apiLocks[cacheKey]) return;
+            window.apiLocks = window.apiLocks || {};
+            window.apiLocks[cacheKey] = true;
 
             try {
-                const q = query(collection(db, "payments"), where("user_id", "==", uid));
+                const { getFirestore, collection, query, where, getDocs } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
+                const dbInstance = getFirestore();
+                
+                // 🔥 Saari payments ek hi baar mein fetch kar raha hai
+                const q = query(collection(dbInstance, "payments"), where("user_id", "==", uid));
                 const snapshot = await getDocs(q);
                 const freshData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 
                 const freshDataStr = JSON.stringify(freshData);
                 
-                // Diffing: Agar data sach mein badla hai tabhi re-render karo
+                // Agar server par data badla hai tabhi cache update hoga
                 if (cachedDataStr !== freshDataStr) {
                     localStorage.setItem(cacheKey + "_data", freshDataStr); 
-                    localStorage.setItem(cacheKey + "_time", now.toString()); // Naya Lock lag gaya
-                    onDataChange(freshData); 
+                    localStorage.setItem(cacheKey + "_time", now.toString());
+                    onDataChange(freshData); // Call the callback to update UI
                 } else { 
-                    // Data same hai, bas naya lock laga do agle 5 minute ke liye
+                    // Data same hai, bas lock ka time naya kar do
                     localStorage.setItem(cacheKey + "_time", now.toString()); 
                 }
             } catch (error) {
                 console.error("Firebase fetch error:", error);
             } finally {
-                if (!hasCache && showBlockingLoader) hideLoader(); 
-                delete apiLocks[cacheKey];
+                delete window.apiLocks[cacheKey]; // API lock khol do
             }
         }
 
@@ -895,43 +944,53 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
+        // ⚡ THE INSTANT RENDER ENGINE
         function initBook() {
             const bookDataStr = sessionStorage.getItem("selected_book_data");
             const userId = localStorage.getItem("islamic_user_id");
 
             if(bookDataStr) {
-                currentEbook = JSON.parse(bookDataStr);
-                let currentPayments = [];
-
-                if (userId) {
-                    // Logged in user: cache aur firebase se payment check karo
-                    const cachedPayments = localStorage.getItem(`cache_payments_${userId}_data`);
-                    if(cachedPayments) { try { currentPayments = JSON.parse(cachedPayments); } catch(e) {} }
-                    userPayments = currentPayments;
-
+                window.currentEbook = JSON.parse(bookDataStr);
+                
+                // Guest User: Payment fetch mat karo
+                if (!userId) {
+                    window.userPayments = [];
                     renderDetail();
-                    
-                    fetchPaymentsFirebase(userId, `cache_payments_${userId}`, (data) => {
-                        if (Array.isArray(data)) { userPayments = data; renderDetail(); }
-                    }, false);
-                } else {
-                    // Guest user: payment zero, seedha render karo
-                    userPayments = [];
-                    renderDetail();
+                    return; 
                 }
+
+                // Pehle instant render purane cache se (agar hai)
+                const cacheKey = `cache_payments_${userId}`;
+                const cachedPaymentsStr = localStorage.getItem(cacheKey + "_data");
+                if(cachedPaymentsStr) { 
+                    try { window.userPayments = JSON.parse(cachedPaymentsStr); } catch(e) { window.userPayments = []; } 
+                } else {
+                    window.userPayments = [];
+                }
+                
+                renderDetail(); // ⚡ Instant Show
+                
+                // 🕵️ Background Sync chalao jo 5 min wala logic check karega
+                fetchPaymentsFirebase(userId, cacheKey, (data) => {
+                    if (Array.isArray(data)) { 
+                        window.userPayments = data; 
+                        renderDetail(); // Agar naya data aaya, toh button hand-to-hand update hoga
+                    }
+                });
+
             } else {
                 window.location.replace("/");
             }
         }
 
 // =========================================================================
-// 🔒 SECURE RENDER DETAIL FUNCTION (With Real-Time Status Verification)
+// 🔒 SECURE RENDER DETAIL FUNCTION (With 1-Second Delay & Smart Toasts)
 // =========================================================================
 function renderDetail() {
     document.getElementById("action-footer").classList.remove("hidden");
-    document.getElementById("det-thumb").src = currentEbook.thumbnail;
-    document.getElementById("det-title").innerText = currentEbook.title;
-    document.getElementById("det-desc").innerText = currentEbook.description;
+    document.getElementById("det-thumb").src = window.currentEbook.thumbnail;
+    document.getElementById("det-title").innerText = window.currentEbook.title;
+    document.getElementById("det-desc").innerText = window.currentEbook.description;
 
     if(!document.getElementById("det-arabic-phrase").innerText) {
         if (typeof ARABIC_PHRASES !== 'undefined' && ARABIC_PHRASES.length > 0) {
@@ -939,18 +998,18 @@ function renderDetail() {
         }
     }
 
-    const isFree = String(currentEbook.is_free) === "true";
+    const isFree = String(window.currentEbook.is_free) === "true";
     const priceBox = document.getElementById("det-price-box");
     const footerPrice = document.getElementById("det-footer-price");
     const actionBtn = document.getElementById("det-action-btn");
     
-    const ownedBook = (userPayments || []).find(p => String(p.ebook_id) === String(currentEbook.id) && p.status.toLowerCase() !== "rejected");
+    const ownedBook = (window.userPayments || []).find(p => String(p.ebook_id) === String(window.currentEbook.id) && p.status.toLowerCase() !== "rejected");
 
     if (isFree) {
         priceBox.innerHTML = `<span class="badge-free" style="padding: 6px 16px; font-size: .85rem;">✦ 100% FREE</span>`;
     } else {
-        let pHTML = `₹${currentEbook.discount_price || currentEbook.price}`;
-        if (currentEbook.discount_price && currentEbook.price > currentEbook.discount_price) pHTML += ` <span class="strike-price">₹${currentEbook.price}</span>`;
+        let pHTML = `₹${window.currentEbook.discount_price || window.currentEbook.price}`;
+        if (window.currentEbook.discount_price && window.currentEbook.price > window.currentEbook.discount_price) pHTML += ` <span class="strike-price">₹${window.currentEbook.price}</span>`;
         priceBox.innerHTML = `<span class="price-tag" style="font-size: 1.6rem;">${pHTML}</span>`;
     }
 
@@ -967,7 +1026,8 @@ function renderDetail() {
             actionBtn.onclick = async () => {
                 const currentUserId = localStorage.getItem("islamic_user_id");
                 const originalHTML = actionBtn.innerHTML;
-                window.showToast("Verifying your access...", "info");
+                
+                window.showToast("Verifying your access... Please wait", "info");
                 actionBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Verifying...`;
                 actionBtn.disabled = true;
 
@@ -975,61 +1035,63 @@ function renderDetail() {
                     const { getFirestore, doc, getDoc, collection, query, where, getDocs } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
                     const dbInstance = getFirestore();
                     
-                    // 🚨 STEP 1: Live Payment Check (Kya admin ne abhi reject kiya?)
                     const qPay = query(collection(dbInstance, "payments"), 
                         where("user_id", "==", currentUserId), 
-                        where("ebook_id", "==", String(currentEbook.id))
+                        where("ebook_id", "==", String(window.currentEbook.id))
                     );
                     const paySnap = await getDocs(qPay);
                     
                     let liveStatus = "pending";
                     if (!paySnap.empty) liveStatus = paySnap.docs[0].data().status.toLowerCase();
 
-                    // Agar Live status Approved nahi hai (yani reject kar diya gaya hai)
-if (liveStatus !== "approved") {
-    let errorMsg = liveStatus === "rejected" 
-        ? "Access Denied! Your payment was rejected. Please contact support for more information." 
-        : `Access Denied! Your payment is currently ${liveStatus}.`;
-    window.showToast(errorMsg, "error");
-    
-    // 🧹 CHOR PAKDA GAYA: Local Cache ko turant update karo!
-    const cacheKey = `cache_payments_${currentUserId}_data`;
-    let cachedPayments = JSON.parse(localStorage.getItem(cacheKey)) || [];
-    const pIndex = cachedPayments.findIndex(p => String(p.ebook_id) === String(currentEbook.id));
-    if(pIndex > -1) {
-        cachedPayments[pIndex].status = liveStatus;
-    } else if (!paySnap.empty) {
-        cachedPayments.push({id: paySnap.docs[0].id, ...paySnap.docs[0].data()});
-    }
-    localStorage.setItem(cacheKey, JSON.stringify(cachedPayments));
-    window.userPayments = cachedPayments; // Global state update
-    
-    // 1. Pehle hand-to-hand button ka status update kar do
-    renderDetail(); 
-
-    // 2. 🔥 TERA NAYA IDEA: 2 Second baad Page Auto-Refresh 🔥
-    setTimeout(() => {
-        window.location.reload();
-    }, 3000);
-
-    return; // 🛑 YAHIN RUK JAO, aage link lene mat jao!
-}
+                    // Agar Live status Approved nahi hai (yani reject/pending ho gaya)
+                    if (liveStatus !== "approved") {
+                        let errorMsg = liveStatus === "rejected" 
+                            ? "Access Denied! Your payment was rejected. Please contact support." 
+                            : `Access Denied! Your payment is currently ${liveStatus}.`;
+                        
+                        window.showToast(errorMsg, "error");
+                        
+                        const cacheKey = `cache_payments_${currentUserId}_data`;
+                        let cachedPayments = JSON.parse(localStorage.getItem(cacheKey)) || [];
+                        const pIndex = cachedPayments.findIndex(p => String(p.ebook_id) === String(window.currentEbook.id));
+                        if(pIndex > -1) {
+                            cachedPayments[pIndex].status = liveStatus;
+                        } else if (!paySnap.empty) {
+                            cachedPayments.push({id: paySnap.docs[0].id, ...paySnap.docs[0].data()});
+                        }
+                        localStorage.setItem(cacheKey, JSON.stringify(cachedPayments));
+                        window.userPayments = cachedPayments; 
+                        
+                        renderDetail(); // 🛑 Auto-refresh hata diya, button turant badal jayega
+                        return; 
+                    }
 
                     // 🚨 STEP 2: Access Verified! Ab Tijori se link lao
-                    const secureDocRef = doc(dbInstance, "secure_links", String(currentEbook.id));
+                    const secureDocRef = doc(dbInstance, "secure_links", String(window.currentEbook.id));
                     const secureDocSnap = await getDoc(secureDocRef);
 
                     if (secureDocSnap.exists() && secureDocSnap.data().pdf_link) {
-                        window.showToast("Access Verified! Opening File...", "success");
-                        window.open(secureDocSnap.data().pdf_link, "_blank");
+                        window.showToast("Access Verified! Preparing file download...", "success");
+                        
+                        // 🔥 1-SECOND DELAY 🔥
+                        setTimeout(() => {
+                            window.open(secureDocSnap.data().pdf_link, "_blank");
+                            if (actionBtn.innerHTML.includes("Verifying")) {
+                                actionBtn.innerHTML = originalHTML;
+                                actionBtn.disabled = false;
+                            }
+                        }, 1000);
                     } else {
                         window.showToast("Secure file not found. Please contact admin.", "error");
+                        if (actionBtn.innerHTML.includes("Verifying")) {
+                            actionBtn.innerHTML = originalHTML;
+                            actionBtn.disabled = false;
+                        }
                     }
                 } catch (err) {
                     console.error("Verification Error:", err);
                     window.showToast("Network error during verification.", "error");
-                } finally {
-                    // Button ko wapas normal tabhi karo jab reject nahi hua ho
                     if (actionBtn.innerHTML.includes("Verifying")) {
                         actionBtn.innerHTML = originalHTML;
                         actionBtn.disabled = false;
@@ -1049,8 +1111,8 @@ if (liveStatus !== "approved") {
         footerPrice.innerHTML = "Free";
         actionBtn.innerHTML = `<i class="fas fa-download"></i> Download`;
         actionBtn.onclick = () => {
-            if (currentEbook.pdf_link) {
-                window.open(currentEbook.pdf_link, "_blank");
+            if (window.currentEbook.pdf_link) {
+                window.open(window.currentEbook.pdf_link, "_blank");
             } else {
                 window.showToast("File link is currently unavailable.", "error");
             }
@@ -1058,7 +1120,7 @@ if (liveStatus !== "approved") {
     } 
     // 🛡️ SCENARIO 3: KHARIDNI PADEGI (Buy Now)
     else {
-        footerPrice.innerHTML = `₹${currentEbook.discount_price || currentEbook.price}`;
+        footerPrice.innerHTML = `₹${window.currentEbook.discount_price || window.currentEbook.price}`;
         actionBtn.innerHTML = `Buy Now <i class="fas fa-arrow-right" style="margin-left:6px;"></i>`;
         actionBtn.style.background = "linear-gradient(135deg, #7c6af7, #9f3fbf)"; actionBtn.style.color = "#fff";
         
@@ -1067,7 +1129,7 @@ if (liveStatus !== "approved") {
             if (currentUserId) {
                 window.location.href = '/payments/';
             } else {
-                window.showToast("Please login to purchase premium books", "error");
+                window.showToast("Please login to purchase premium books", "info");
                 const originalHTML = actionBtn.innerHTML;
                 actionBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Redirecting...`;
                 actionBtn.disabled = true;
@@ -1079,7 +1141,7 @@ if (liveStatus !== "approved") {
                         actionBtn.innerHTML = originalHTML;
                         actionBtn.disabled = false;
                     }, 500);
-                }, 2500);
+                }, 1000);
             }
         };
     }
