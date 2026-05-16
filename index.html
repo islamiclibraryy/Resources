@@ -104,8 +104,6 @@
 
         #loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10,10,15,0.85); backdrop-filter: blur(5px); z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center; }
         .spinner { width: 50px; height: 50px; border: 4px solid var(--surface3); border-top: 4px solid var(--accent); border-radius: 50%; animation: spin 1s cubic-bezier(0.4,0,0.2,1) infinite; }
-        #toast-container { position: fixed; bottom: 85px; right: 28px; z-index: 9998; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
-        .toast { background: var(--surface); color: var(--text); padding: 12px 18px; border-radius: var(--r2); box-shadow: var(--shadow2); border: 1px solid var(--border2); animation: slideUp 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards; display: flex; align-items: center; gap: 10px; font-size: .85rem; font-weight: 500; }
 
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10,10,15,0.85); backdrop-filter: blur(5px); z-index: 99999; display: flex; justify-content: center; align-items: center; animation: fadeIn 0.3s ease; }
         .modal-box { background: var(--surface); padding: 28px 24px; border-radius: var(--r3); width: 90%; max-width: 320px; text-align: center; border: 1px solid var(--border); box-shadow: var(--shadow2); animation: cardIn 0.4s ease both; }
@@ -466,22 +464,6 @@
                 font-size: 1.1rem !important;
                 border-radius: 14px !important;
             }
-            /* 🍞 TOAST NOTIFICATIONS DESKTOP FIX 🍞 */
-            #toast-container {
-                bottom: 50px !important; 
-                right: 50px !important; /* PC par right kone mein aaram se set hoga */
-            }
-            .toast {
-                padding: 18px 24px !important;
-                font-size: 1.15rem !important; /* Text padhne layak bada kiya */
-                border-radius: 16px !important;
-                gap: 16px !important;
-                min-width: 320px !important; /* PC par thoda lamba toast acha lagta hai */
-                box-shadow: 0 15px 35px rgba(0,0,0,0.5) !important; /* Premium Shadow */
-            }
-            .toast i { 
-                font-size: 1.5rem !important; /* Error/Success wala Icon bhi bada hoga */
-            }
 
         }
         /* 🔥 GPU Rendering Blink Fix for High-End Phones 🔥 */
@@ -550,6 +532,73 @@
         white-space: normal !important; /* Dropdown me poora naam break hokar dikhega */
     }
 }
+/* =========================================================================
+           🚀 UNIVERSAL PREMIUM TOAST NOTIFICATION SYSTEM (Upgraded Position & Size)
+           ========================================================================= */
+        #toast-container {
+            position: fixed;
+            bottom: 100px; /* 🔥 FIX: Mobile par bottom nav (70px) se thoda aur upar kar diya */
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            pointer-events: none;
+            width: 100%;
+            max-width: 400px;
+            padding: 0 20px; /* 🔥 Chhote mobiles me screen ke kono se chipke gaa nahi, automatic fit hoga */
+        }
+
+        .toast {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--surface2, #1f1f30);
+            color: var(--text, #f0f0f8);
+            padding: 14px 22px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            font-family: 'Syne', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            line-height: 1.4;
+            width: fit-content;
+            max-width: 100%;
+            text-align: left;
+            pointer-events: auto;
+            animation: toastEnter 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .toast.success span:first-child { color: var(--success, #10b981); }
+        .toast.error span:first-child { color: var(--danger, #f43f5e); }
+        .toast.info span:first-child { color: var(--accent, #7c6af7); }
+
+        .toast.fade-out {
+            opacity: 0 !important;
+            transform: translateY(20px) scale(0.95) !important;
+        }
+
+        @keyframes toastEnter {
+            0% { opacity: 0; transform: translateY(30px) scale(0.9); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* 🖥️ DESKTOP MODIFICATIONS (PC & BIG SCREENS) */
+        @media (min-width: 768px) {
+            #toast-container { 
+                bottom: 240px; /* 🔥 FIX: PC par isko kaafi upar le aaye hain taaki center field me saaf dikhe */
+                max-width: 550px; /* 🔥 Container thoda chauda kiya desktop ke liye */
+            }
+            .toast { 
+                font-size: 1.25rem; /* 🔥 FIX: Font size pure 30% bada kar diya (.95rem se direct 1.25rem) */
+                padding: 18px 32px; /* 🔥 FIX: Padding badha di taaki dabba bada aur premium lage */
+                border-radius: 16px; 
+                gap: 16px;
+            }
+        }
 
     </style>
 </head>
@@ -912,11 +961,22 @@ window.executeChangePassword = async function() {
 
         window.showToast = function(msg, type = "success") {
             const container = document.getElementById("toast-container");
-            const toast = document.createElement("div");
-            toast.className = "toast";
-            toast.innerHTML = (type === "success" ? '<span style="font-size:1.1rem; color:var(--success)">✓</span>' : '<span style="font-size:1.1rem; color:var(--danger)">✕</span>') + ` <span>${msg}</span>`;
+            if (!container) return;
+            container.innerHTML = "";
+            const toast = document.createElement("div"); 
+            toast.className = `toast ${type}`;
+            let iconHTML = '<span>✓</span>';
+            if (type === "error") iconHTML = '<span>✕</span>';
+            if (type === "info") iconHTML = '<i class="fas fa-spinner fa-spin"></i>'; 
+            toast.innerHTML = `<span style="font-size: 1.25rem; display: flex; align-items: center;">${iconHTML}</span> <span>${msg}</span>`;
             container.appendChild(toast);
-            setTimeout(() => { toast.style.transform = "translateX(110%)"; toast.style.opacity = "0"; setTimeout(() => toast.remove(), 400); }, 3000);
+            
+            if (type !== "info") {
+                setTimeout(() => { 
+                    toast.classList.add("fade-out"); 
+                    setTimeout(() => toast.remove(), 400); 
+                }, 3500);
+            }
         }
 
 // ✅ PUBLIC INITIALIZATION (Freemium Mode & Redirect Catcher)
@@ -979,29 +1039,27 @@ onAuthStateChanged(auth, (user) => {
             }
             document.getElementById("load-more-btn").classList.add("hidden");
         }
-        // ✅ SMART DIFFING CHECKER
+        // ✅ SMART DIFFING CHECKER & FREE-TO-PAID WIPER
         function isBookDataChanged(oldData, newData) {
             if (!oldData || !newData) return true;
             if (oldData.length !== newData.length) return true;
             
-            // Check if any critical data point is different (like price, title, or order)
+            let changed = false;
             for (let i = 0; i < newData.length; i++) {
                 const oldBook = oldData.find(b => String(b.id) === String(newData[i].id));
                 if (!oldBook) return true;
                 
-                // Compare critical fields
-                if (
-                    oldBook.title !== newData[i].title ||
-                    oldBook.price !== newData[i].price ||
-                    oldBook.discount_price !== newData[i].discount_price ||
-                    oldBook.is_free !== newData[i].is_free ||
-                    oldBook.sort_order !== newData[i].sort_order ||
-                    oldBook.thumbnail !== newData[i].thumbnail
-                ) {
-                    return true;
+                // 🔥 THE WIPER: Agar pehle Free thi aur ab Paid ho gayi, toh purani link cache me se uda do!
+                if (String(oldBook.is_free) === "true" && String(newData[i].is_free) === "false") {
+                    delete newData[i].pdf_link;
+                    changed = true;
+                }
+
+                if (oldBook.title !== newData[i].title || oldBook.price !== newData[i].price || oldBook.discount_price !== newData[i].discount_price || String(oldBook.is_free) !== String(newData[i].is_free) || oldBook.sort_order !== newData[i].sort_order || oldBook.thumbnail !== newData[i].thumbnail) {
+                    changed = true;
                 }
             }
-            return false;
+            return changed;
         }
 
 // ✅ GLOBALS FOR FILTERS (Ensure these are at the top)
@@ -1016,13 +1074,14 @@ async function loadHome() {
     const cachedDataStr = localStorage.getItem("cache_ebooks_data");
     const cachedTime = localStorage.getItem("cache_time_ebooks_fetch"); 
     const userId = localStorage.getItem("islamic_user_id");
+    const lastFetchedUserId = localStorage.getItem("cache_last_fetched_user_id"); // User change detect karne ke liye
     const now = Date.now();
     const CACHE_TIME_BOOKS = 30 * 60 * 1000; // 30 Min Timer
 
     // 1. Fast UI Load
     if (cachedDataStr) { 
         try { 
-            ebooksData = JSON.parse(cachedDataStr); 
+            window.ebooksData = JSON.parse(cachedDataStr); 
             renderGrid(true); 
         } catch (e) { showSkeletons(); } 
     } else {
@@ -1030,7 +1089,7 @@ async function loadHome() {
     }
 
     // =========================================================================
-    // 🚀 FIXED: MEGA INDEX BACKGROUND FETCH (Now Independent of Gatekeeper)
+    // 🚀 FIXED: MEGA INDEX BACKGROUND FETCH (Independent & Cached 30 mins)
     // =========================================================================
     const megaIndexTime = localStorage.getItem("cache_time_mega_index");
     if (!megaIndexTime || (now - parseInt(megaIndexTime)) > CACHE_TIME_BOOKS || !localStorage.getItem("cache_mega_search_index")) {
@@ -1048,20 +1107,20 @@ async function loadHome() {
                 });
 
                 localStorage.setItem("cache_mega_search_index", JSON.stringify(megaSearchIndex));
-                localStorage.setItem("cache_time_mega_index", now.toString()); // Naya timer
-                console.log(`✅ Mega Search Index Updated! Filter bug fixed.`);
+                localStorage.setItem("cache_time_mega_index", now.toString());
                 
-                // 🔥 Naya data aate hi grid ko dobara refresh karo taaki filters chal sakein!
-                if(document.getElementById('ebook-grid')) renderGrid(true); 
+                // Naya data aate hi agar user search kar raha ho toh refresh karo
+                if(document.getElementById('ebook-grid')) renderGrid(false); 
             } catch (err) { console.error("Mega Index Error:", err); }
         })();
     }
 
     // =========================================================================
-    // 🛡️ THE GATEKEEPER FOR 15-BOOKS & PAYMENTS
+    // 🛡️ THE GATEKEEPER FOR 15-BOOKS & PAYMENTS (Login Change Detection)
     // =========================================================================
-    if (cachedTime && cachedDataStr && (now - parseInt(cachedTime)) < CACHE_TIME_BOOKS) {
-        return; // Token saved for ebooks & payments!
+    // Agar time nahi hua aur User bhi wahi same hai, toh Firebase mat jao
+    if (cachedTime && cachedDataStr && (now - parseInt(cachedTime)) < CACHE_TIME_BOOKS && userId === lastFetchedUserId) {
+        return; 
     }
 
     try {
@@ -1071,6 +1130,7 @@ async function loadHome() {
         const ebooksPromise = getDocs(qBooks);
         
         let paymentsPromise = Promise.resolve(null); 
+        // 🔥 SIRF TABHI FETCH KAREGA JAB USER LOGIN HOGA
         if (userId) {
             const qPay = query(collection(db, "payments"), where("user_id", "==", userId));
             paymentsPromise = getDocs(qPay);
@@ -1081,17 +1141,19 @@ async function loadHome() {
         const freshEbooks = [];
         querySnapshot.forEach(doc => freshEbooks.push({ id: doc.id, ...doc.data() }));
 
-        if (isBookDataChanged(ebooksData, freshEbooks)) {
-            ebooksData = freshEbooks;
+        if (isBookDataChanged(window.ebooksData, freshEbooks)) {
+            window.ebooksData = freshEbooks;
             localStorage.setItem("cache_ebooks_data", JSON.stringify(freshEbooks));
             renderGrid(true); 
         }
         localStorage.setItem("cache_time_ebooks_fetch", now.toString());
+        localStorage.setItem("cache_last_fetched_user_id", userId || ""); // Update state
 
         if (paySnapshot) {
             const userPayments = [];
             paySnapshot.forEach(doc => userPayments.push({ id: doc.id, ...doc.data() }));
             localStorage.setItem(`cache_payments_${userId}_data`, JSON.stringify(userPayments));
+            localStorage.setItem(`cache_payments_${userId}_time`, now.toString()); // Force reset 5min clock
         }
     } catch (error) {
         console.error("Firebase error:", error);
@@ -1172,36 +1234,34 @@ async function loadHome() {
             renderGrid(true);
         }
 
-// ✅ 🔥 PHASE 3 FIX: SKELETON CRASH FIXED (loadMoreBtn bug resolved) 🔥
+// ✅ 🔥 PHASE 3 FIX: SKELETON CRASH FIXED & BLINKING REMOVED
+// ✅ 🔥 PAGINATION & 15-BOOKS FIX 🔥
 function renderGrid(reset = false) {
-    if (reset) currentPage = 1;
     const grid = document.getElementById("ebook-grid");
     const loadMoreBtn = document.getElementById("load-more-btn");
-    if (reset) grid.innerHTML = "";
-
-    // 1. LocalStorage se Mega Index data source uthao
-    let booksSource = ebooksData;
-    const megaIndexStr = localStorage.getItem("cache_mega_search_index");
-    if (megaIndexStr) {
-        try {
-            booksSource = JSON.parse(megaIndexStr);
-        } catch (e) {
-            booksSource = ebooksData;
-        }
+    
+    if (reset) {
+        window.currentPage = 1;
+        grid.innerHTML = ""; 
     }
 
-    // 2. Books ko sort_order ke hisaab se sort karo
+    let booksSource = window.ebooksData || [];
+    const megaIndexStr = localStorage.getItem("cache_mega_search_index");
+    if (megaIndexStr) {
+        try { 
+            let parsed = JSON.parse(megaIndexStr);
+            if(parsed.length > 0) booksSource = parsed; 
+        } catch (e) { booksSource = window.ebooksData; }
+    }
+
     booksSource.sort((a, b) => (a.sort_order || 999) - (b.sort_order || 999));
 
-    // 3. Saare filters lagao (Price, Language, Category)
     let filteredBooks = booksSource.filter(eb => {
-        // Price Check
         const isFree = String(eb.is_free) === "true";
         let passPrice = true;
-        if (currentPriceFilter === 'free') passPrice = isFree;
-        if (currentPriceFilter === 'premium') passPrice = !isFree;
+        if (window.currentPriceFilter === 'free' || currentPriceFilter === 'free') passPrice = isFree;
+        if (window.currentPriceFilter === 'premium' || currentPriceFilter === 'premium') passPrice = !isFree;
 
-        // Language Check
         let passLang = true;
         if (currentLangFilter !== 'all') {
             const langData = eb.language || 'none';
@@ -1209,18 +1269,15 @@ function renderGrid(reset = false) {
             passLang = bookLangs.includes(currentLangFilter.toLowerCase());
         }
 
-        // Category Check
         let passCat = true;
-        if (currentCatFilter !== 'all') {
+        if (window.currentCatFilter && window.currentCatFilter !== 'all') {
             const catData = eb.category || 'none';
             let bookCats = Array.isArray(catData) ? catData.map(c => c.toLowerCase().trim()) : String(catData).split(',').map(c => c.toLowerCase().trim());
-            passCat = bookCats.includes(currentCatFilter.toLowerCase());
+            passCat = bookCats.includes(window.currentCatFilter.toLowerCase());
         }
-
         return passPrice && passLang && passCat;
     });
 
-    // 4. Agar koi book na mile toh empty state dikhao
     if (filteredBooks.length === 0) {
         grid.innerHTML = `
             <div class="empty-state">
@@ -1232,17 +1289,25 @@ function renderGrid(reset = false) {
         return; 
     }
 
-    // 5. Local Pagination (15 books ke baad next 10 items show karna)
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
+    // 🔥 THE 15-THEN-10 MATHS FIX 🔥
+    let startIndex = 0;
+    let endIndex = 15; // Pehle page ke liye 15 books
+
+    if (window.currentPage > 1) {
+        // Dusre page se: Pehli 15 hatakar + (pichle bache hue pages * 10)
+        startIndex = 15 + (window.currentPage - 2) * 10;
+        endIndex = startIndex + 10; // Aage ki 10 books uthao
+    }
+
     const booksToShow = filteredBooks.slice(startIndex, endIndex);
 
+    let newHTML = "";
     booksToShow.forEach(eb => {
         const isFree = String(eb.is_free) === "true";
         let priceHTML = isFree ? `<span class="badge-free">✦ FREE</span>` : `₹${eb.discount_price || eb.price}`;
         if(!isFree && eb.discount_price && eb.price > eb.discount_price) priceHTML += `<span class="strike-price">₹${eb.price}</span>`;
 
-        grid.innerHTML += `
+        newHTML += `
         <div class="book-card" onclick="window.openDetail('${eb.id}')">
             <img src="${eb.thumbnail}" class="book-thumb">
             <div class="book-info">
@@ -1252,12 +1317,18 @@ function renderGrid(reset = false) {
         </div>`;
     });
 
-    // 🔥 FIX: yahan classList.toggle kar diya hai jo galti se toot gaya tha
+    if (reset) {
+        grid.innerHTML = newHTML;
+    } else {
+        grid.insertAdjacentHTML('beforeend', newHTML); // Smooth append
+    }
+
+    // Load More button hide karne ka logic
     if(loadMoreBtn) loadMoreBtn.classList.toggle("hidden", filteredBooks.length <= endIndex);
 }
 
         window.loadMoreBooks = function() {
-            currentPage++;
+            window.currentPage++; // 🔥 FIX: Ab ye globally update hoga, same books repeat nahi hongi!
             renderGrid(false);
         }
 
