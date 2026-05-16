@@ -137,6 +137,57 @@
             }
         }
 
+        /* =========================================================
+           📖 ABOUT THE BOOK - DESCRIPTION CARD
+           ========================================================= */
+        .desc-card {
+            background: var(--surface2); /* Halka transparent premium box */
+            border: 1px solid var(--border2);
+            border-radius: var(--r3);
+            padding: 24px;
+            margin-top: 15px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        
+        .desc-heading {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 16px;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-transform: uppercase;
+        }
+        
+        .desc-heading i {
+            color: var(--accent); /* Icon tere brand color mein chamkega */
+            font-size: 1.1rem;
+        }
+        
+        .desc-content {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--text2); /* Thoda soft color aankhon ki shanti ke liye */
+            white-space: pre-wrap; /* 🔥 JADU: Firebase ke paragraphs maintain rakhega */
+        }
+
+        /* 💡 LIGHT MODE ADJUSTMENTS FOR DESCRIPTION CARD */
+        [data-theme="light"] .desc-card {
+            background: #ffffff;
+            border-color: rgba(0,0,0,0.08);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+        }
+        [data-theme="light"] .desc-heading {
+            color: #111827;
+        }
+        [data-theme="light"] .desc-content {
+            color: #495057;
+        }
+
         /* 💡 LIGHT MODE VISIBILITY FIX (Perfected & Sharp) 💡 */
         
         /* 1. PREMIUM PRICE BADGE (Sharp & Bold Look) */
@@ -1073,7 +1124,16 @@ function renderDetail() {
     document.getElementById("action-footer").classList.remove("hidden");
     document.getElementById("det-thumb").src = window.currentEbook.thumbnail;
     document.getElementById("det-title").innerText = window.currentEbook.title;
-    document.getElementById("det-desc").innerText = window.currentEbook.description;
+    // 🔥 NAYA: PREMIUM DESCRIPTION CARD 🔥
+    let bookDesc = window.currentEbook.description || "No description available for this book.";
+    document.getElementById("det-desc").innerHTML = `
+        <div class="desc-card">
+            <div class="desc-heading">
+                <i class="fas fa-book-open"></i> ABOUT THE BOOK
+            </div>
+            <div class="desc-content">${bookDesc}</div>
+        </div>
+    `;
 
     if(!document.getElementById("det-arabic-phrase").innerText) {
         if (typeof ARABIC_PHRASES !== 'undefined' && ARABIC_PHRASES.length > 0) {
@@ -1106,7 +1166,7 @@ function renderDetail() {
     if (ownedBook) {
         if (ownedBook.status.toLowerCase() === "approved") {
             // 🔥 NAYA OWNED BADGE
-            footerPrice.innerHTML = `<span class="badge-premium">Owned ✓</span>`;
+            footerPrice.innerHTML = `<span class="badge-owned">Owned ✓</span>`;
             actionBtn.innerHTML = `<i class="fas fa-download"></i> Download`;
             actionBtn.style.background = "var(--success)"; actionBtn.style.boxShadow = "0 4px 20px rgba(16,185,129,0.3)"; actionBtn.style.color = "#fff";
             
@@ -1191,7 +1251,7 @@ function renderDetail() {
             // Pending in Verification
        
             // 🔥 NAYA PENDING BADGE
-            footerPrice.innerHTML = `<span class="badge-premium">In Verification</span>`;
+            footerPrice.innerHTML = `<span class="badge-pending">In Verification</span>`;
             actionBtn.innerHTML = `<i class="fas fa-hourglass-half spin"></i> Verifying...`;
             actionBtn.disabled = true; actionBtn.onclick = null;
         }
