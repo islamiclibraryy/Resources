@@ -655,6 +655,61 @@
             actionBtn.onclick = window.confirmLogout;
             document.getElementById("confirm-modal").classList.remove("hidden");
         };
+        // 🔥 MODAL OPEN & CLOSE LOGIC
+window.openChangePassword = function() {
+    window.closeProfileDrawer();
+    document.getElementById("change-password-modal").classList.remove("hidden");
+    document.getElementById("user_new_password").value = ""; // Box ko clean karne ke liye
+}
+
+window.closeChangePasswordModal = function() {
+    document.getElementById("change-password-modal").classList.add("hidden");
+}
+
+// 🔥 ASLI FIREBASE PASSWORD UPDATE LOGIC
+window.executeChangePassword = async function() {
+    const newPass = document.getElementById("user_new_password").value.trim();
+    const btn = document.getElementById("update-pass-btn");
+
+    if (newPass.length < 6) {
+        window.showToast("Password must be at least 6 characters!", "error");
+        return;
+    }
+
+    // Firebase Auth se current user nikalo
+    const { getAuth, updatePassword } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js");
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    if (!user) {
+        window.showToast("Session expired. Please login again.", "error");
+        return;
+    }
+
+    try {
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
+        btn.disabled = true;
+
+        // Password update command
+        await updatePassword(user, newPass);
+        
+        window.showToast("Password updated successfully!", "success");
+        window.closeChangePasswordModal();
+
+    } catch (error) {
+        console.error("Password Update Error:", error);
+        
+        // Agar user ne bohot time se login kiya hua hai toh ye error aayega
+        if (error.code === 'auth/requires-recent-login') {
+            window.showToast("Security alert: Please logout and login again to change your password.", "error");
+        } else {
+            window.showToast("Error: " + error.message, "error");
+        }
+    } finally {
+        btn.innerHTML = 'Update Password';
+        btn.disabled = false;
+    }
+}
 
         window.confirmLogout = function() { window.executeLogout(true); };
         
@@ -714,34 +769,25 @@
             return false;
         }
 
-        // ✅ Clean Universal-Ready Toast DOM Injector
-// ✅ THE PERFECT SMART UNIVERSAL TOAST JS
-function showToast(msg, type = "success") {
-    const container = document.getElementById("toast-container");
-    if (!container) return;
-
-    // 🔥 INSTANT CLEAR: Naya toast aate hi purana (chahe loader ho) instantly saaf!
-    container.innerHTML = "";
-
-    const toast = document.createElement("div"); 
-    toast.className = `toast ${type}`;
-    
-    let iconHTML = '✓';
-    if (type === "error") iconHTML = '✕';
-    if (type === "info") iconHTML = '<i class="fas fa-spinner fa-spin"></i>'; 
-
-    toast.innerHTML = `<span style="font-size: 1.1rem; display: flex; align-items: center;">${iconHTML}</span> <span>${msg}</span>`;
-    container.appendChild(toast);
-    
-    // 🔥 SMART TIMER: Loader (info) ko auto-hide mat karo, wo backend response par khud clear hoga.
-    // Success aur Error ko 3.5 second baad smooth fade-out karo taaki user padh sake.
-    if (type !== "info") {
-        setTimeout(() => { 
-            toast.classList.add("fade-out"); // CSS wali animation trigger hogi
-            setTimeout(() => toast.remove(), 400); // DOM se permanent clear
-        }, 3500);
-    }
-}
+        window.showToast = function(msg, type = "success") {
+            const container = document.getElementById("toast-container");
+            if (!container) return;
+            container.innerHTML = "";
+            const toast = document.createElement("div"); 
+            toast.className = `toast ${type}`;
+            let iconHTML = '<span>✓</span>';
+            if (type === "error") iconHTML = '<span>✕</span>';
+            if (type === "info") iconHTML = '<i class="fas fa-spinner fa-spin"></i>'; 
+            toast.innerHTML = `<span style="font-size: 1.25rem; display: flex; align-items: center;">${iconHTML}</span> <span>${msg}</span>`;
+            container.appendChild(toast);
+            
+            if (type !== "info") {
+                setTimeout(() => { 
+                    toast.classList.add("fade-out"); 
+                    setTimeout(() => toast.remove(), 400); 
+                }, 3500);
+            }
+        }
 
         // ✅ 3. SMART TOKENS-SAVER FETCH LIBRARY DATA
         async function fetchLibraryData() {
