@@ -84,17 +84,94 @@
         [data-theme="light"] .custom-dark-input::placeholder {
             color: var(--text3) !important;         /* Dark placeholder */
         }
-            /* 🔥 LIGHT MODE DESKTOP FOOTER FIX (Ye tere code mein already hai, uske neeche ye daal de) 🔥 */
-            [data-theme="light"] #action-footer {
-                background: rgba(255, 255, 255, 0.9) !important;
-                border-top: 1px solid rgba(0,0,0,0.1) !important;
+        /* 🏷️ UNIVERSAL BADGES (Dark Mode Default) */
+        .price-wrapper { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+        
+        /* Top Wale Bade Badges */
+        .badge-premium, .badge-owned { 
+            display: inline-flex; align-items: center; gap: 6px; 
+            padding: 6px 14px; border-radius: 99px; 
+            font-family: 'DM Mono', monospace; font-size: 1rem; font-weight: 700; 
+            background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.4); color: var(--success); 
+        }
+        .badge-pending {
+            display: inline-flex; align-items: center; gap: 6px; 
+            padding: 6px 14px; border-radius: 99px; 
+            font-family: 'DM Mono', monospace; font-size: 1rem; font-weight: 700; 
+            background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.4); color: var(--amber);
+        }
+        .badge-free { 
+            display: inline-flex; align-items: center; gap: 6px; 
+            padding: 6px 14px; border-radius: 99px; 
+            font-family: 'DM Mono', monospace; font-size: 1rem; font-weight: 700; 
+            background: var(--glow2); border: 1px solid rgba(124,106,247,0.3); color: var(--accent3); 
+        }
+
+        .strike-price { font-size: 0.85rem; color: var(--text3); text-decoration: line-through; font-weight: 500; }
+
+        /* 🔥 ACTION FOOTER BADGE SIZE FIX (Mobile View - 20% Chota aur Patla) 🔥 */
+        #action-footer .badge-premium, 
+        #action-footer .badge-free,
+        #action-footer .badge-owned,
+        #action-footer .badge-pending {
+            padding: 6px 12px !important; 
+            font-size: 0.9rem !important;
+            height: auto !important;
+        }
+
+        /* 🖥️ DESKTOP SIZING FIXES */
+        @media screen and (min-width: 768px) {
+            /* Top Title Wale Badges Bada Rakhein */
+            .badge-premium, .badge-free, .badge-owned, .badge-pending {
+                padding: 10px 20px !important; font-size: 1.3rem !important; gap: 8px !important;
             }
+            .strike-price { font-size: 1rem !important; }
             
-            #action-footer .badge-premium, #action-footer .badge-free {
-                 /* Action footer me badge ka size thoda normal rakhna hoga taki button ke sath match ho */
-                 font-size: 1.1rem !important;
-                 padding: 8px 16px !important;
+            /* Footer Wale Badges ko Button ki Motai ke barabar rakhein (-15% height match) */
+            #action-footer .badge-premium, 
+            #action-footer .badge-free,
+            #action-footer .badge-owned,
+            #action-footer .badge-pending {
+                padding: 8px 16px !important; 
+                font-size: 1rem !important; 
             }
+        }
+
+        /* 💡 LIGHT MODE VISIBILITY FIX (Perfected & Sharp) 💡 */
+        
+        /* 1. PREMIUM PRICE BADGE (Sharp & Bold Look) */
+        [data-theme="light"] .badge-premium {
+            background: #ffffff !important; /* Pure White background */
+            border: 1px solid var(--border2) !important; /* Halka border */
+            color: #111827 !important; /* Ekdum Bold Dark Text */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06) !important; /* Premium soft shadow */
+        }
+        
+        /* Kata hua price (Strike-through) */
+        [data-theme="light"] .strike-price {
+            color: #868e96 !important; /* Clear slate grey */
+        }
+
+        /* 2. OWNED BADGE (Fresh Green) */
+        [data-theme="light"] .badge-owned {
+            background: #ecfdf5 !important;
+            border-color: #a7f3d0 !important;
+            color: #047857 !important; 
+        }
+
+        /* 3. PENDING BADGE (Warm Amber) */
+        [data-theme="light"] .badge-pending {
+            background: #fffbeb !important;
+            border-color: #fde68a !important;
+            color: #b45309 !important; 
+        }
+
+        /* 4. FREE BADGE (Vibrant Indigo) */
+        [data-theme="light"] .badge-free {
+            background: #eef2ff !important;
+            border-color: #c7d2fe !important;
+            color: #4f46e5 !important;
+        }
 
         *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; font-size: 16px; }
@@ -253,51 +330,6 @@
 
         .drawer-footer { padding: 20px; border-top: 1px solid var(--border); flex-shrink: 0; padding-bottom: calc(20px + env(safe-area-inset-bottom)); }
 
-        /* 🏷️ UNIVERSAL PREMIUM & FREE BADGES */
-        .price-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 24px;
-        }
-
-        .badge-premium { 
-            display: inline-flex; 
-            align-items: center; 
-            gap: 6px; 
-            padding: 6px 14px; 
-            border-radius: 99px; 
-            /* Tera suggestion: Halka green/success color Premium/Paid books ke liye */
-            background: rgba(16, 185, 129, 0.15); 
-            border: 1px solid rgba(16, 185, 129, 0.4); 
-            font-family: 'DM Mono', monospace;
-            font-size: 1rem; 
-            font-weight: 700; 
-            color: var(--success); /* Green text */
-            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.1);
-        }
-
-        .badge-free { 
-            display: inline-flex; 
-            align-items: center; 
-            gap: 6px; 
-            padding: 6px 14px; 
-            border-radius: 99px; 
-            background: var(--glow2); 
-            border: 1px solid rgba(124,106,247,0.3); 
-            font-family: 'DM Mono', monospace;
-            font-size: 1rem; 
-            font-weight: 700; 
-            color: var(--accent3); 
-        }
-
-        .strike-price { 
-            font-size: 0.85rem; 
-            color: var(--text3); 
-            text-decoration: line-through; 
-            font-weight: 500; 
-        }
-
         /* Details UI */
         .detail-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
         .back-btn, .share-btn { background: var(--surface2); color: var(--text); border: 1px solid var(--border2); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; cursor: pointer; transition: all var(--transition); }
@@ -409,16 +441,6 @@
                 margin: 0 0 25px 0 !important; 
                 display: flex !important; 
                 justify-content: flex-start !important; 
-            }
-
-            /* 🔥 DESKTOP VIEW BADGE FIX 🔥 */
-            .badge-premium, .badge-free {
-                padding: 10px 20px !important;
-                font-size: 1.3rem !important; /* PC pe size bada aur premium lagega */
-                gap: 8px !important;
-            }
-            .strike-price {
-                font-size: 1rem !important; /* Kata hua price bhi pc par clear dikhega */
             }
 
             #det-arabic-phrase { 
@@ -1084,7 +1106,7 @@ function renderDetail() {
     if (ownedBook) {
         if (ownedBook.status.toLowerCase() === "approved") {
             // 🔥 NAYA OWNED BADGE
-            footerPrice.innerHTML = `<span class="badge-premium" style="background: rgba(16,185,129,0.15); border-color: rgba(16,185,129,0.4); color: var(--success);">Owned ✓</span>`;
+            footerPrice.innerHTML = `<span class="badge-premium">Owned ✓</span>`;
             actionBtn.innerHTML = `<i class="fas fa-download"></i> Download`;
             actionBtn.style.background = "var(--success)"; actionBtn.style.boxShadow = "0 4px 20px rgba(16,185,129,0.3)"; actionBtn.style.color = "#fff";
             
@@ -1169,7 +1191,7 @@ function renderDetail() {
             // Pending in Verification
        
             // 🔥 NAYA PENDING BADGE
-            footerPrice.innerHTML = `<span class="badge-premium" style="background: rgba(245,158,11,0.15); border-color: rgba(245,158,11,0.4); color: var(--amber);">In Verification</span>`;
+            footerPrice.innerHTML = `<span class="badge-premium">In Verification</span>`;
             actionBtn.innerHTML = `<i class="fas fa-hourglass-half spin"></i> Verifying...`;
             actionBtn.disabled = true; actionBtn.onclick = null;
         }
