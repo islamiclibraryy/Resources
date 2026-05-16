@@ -221,6 +221,50 @@
 }
 .custom-dark-input::placeholder { color: rgba(255, 255, 255, 0.4); }
 .custom-dark-input:focus { border-color: #a855f7; background: rgba(255, 255, 255, 0.1); box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2); }
+        /* =========================================================
+           🔒 SECURE PAYMENT INSTRUCTION STYLING
+           ========================================================= */
+        .secure-pay-text {
+            font-size: 1.1rem;
+            color: var(--text2);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .secure-pay-text i {
+            font-size: 0.95rem;
+            color: var(--text3); /* Soft grey color for the lock */
+            opacity: 0.8;
+            transition: var(--transition);
+        }
+
+        .highlight-price {
+            font-family: 'DM Mono', monospace;
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--success); /* Dark Mode - Vibrant Green */
+            background: rgba(16, 185, 129, 0.1);
+            padding: 2px 10px;
+            border-radius: 8px;
+            letter-spacing: -0.02em;
+        }
+
+        /* 💡 LIGHT MODE FIX FOR PRICE TEXT */
+        [data-theme="light"] .secure-pay-text {
+            color: #4b5563; /* Slate 600 */
+        }
+        [data-theme="light"] .secure-pay-text i {
+            color: #9ca3af; /* Slate 400 */
+        }
+        [data-theme="light"] .highlight-price {
+            color: #047857 !important; /* Dark Mode se sharp Green */
+            background: #ecfdf5 !important;
+            border: 1px solid #a7f3d0 !important;
+        }
 
         /* 🔥 DESKTOP VIEW FIX (PAYMENTS PAGE) - XL PREMIUM SIZE 🔥 */
         @media screen and (min-width: 768px) {
@@ -533,10 +577,16 @@
                 <h3 style="font-size: 1.2rem; margin:0;">Complete Payment</h3>
             </div>
             
-            <div class="text-center">
-                <p style="color: var(--text2); font-size: .9rem; margin-bottom: 24px;">Pay <strong style="color:var(--accent); font-family: 'DM Mono', monospace; font-size: 1.1rem;" id="pay-amt"></strong> using QR or UPI ID</p>
-                <div class="qr-box"><img id="pay-qr" src=""></div>
-                
+<div class="text-center">
+    
+    <div class="secure-pay-text">
+        <i class="fas fa-lock"></i>
+        <span>Pay <span id="pay-amt" class="highlight-price"></span> using QR or UPI ID</span>
+    </div>
+
+    <div class="qr-box"><img id="pay-qr" src=""></div>
+    
+
                 <div class="upi-box">
                     <div style="text-align: left;">
                         <div style="font-size: .75rem; color: var(--text3); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;">UPI ID</div>
