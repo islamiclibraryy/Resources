@@ -1016,7 +1016,7 @@ window.executeChangePassword = async function() {
             btnElement.disabled = true;
             
             // Premium text update
-            showToast("Verifying your download access... Please wait", "info");
+            showToast("Verifying your access... Please wait", "info");
 
             let liveStatus = "pending";
 
@@ -1054,7 +1054,7 @@ window.executeChangePassword = async function() {
                 const secureDocSnap = await getDoc(doc(db, "secure_links", String(ebookId)));
 
                 if (secureDocSnap.exists() && secureDocSnap.data().pdf_link) {
-                    showToast("Access Verified! Preparing file download...", "success"); 
+                    showToast("Access Verified! Preparing download...", "success"); 
                     
                     // 🔥 THE 1-SECOND WINDOW: User ko success toast dekhne ka moka milega!
                     setTimeout(() => {
@@ -1084,7 +1084,7 @@ window.executeChangePassword = async function() {
                             }
                         }, 1000);
                     } else {
-                        showToast("Secure file not found. Please contact admin.", "error"); 
+                        showToast("Secure file not found. Please contact Support.", "error"); 
                         btnElement.innerHTML = originalHTML;
                         btnElement.disabled = false;
                     }
