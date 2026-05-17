@@ -770,18 +770,20 @@ window.openProfileDrawer = async function() {
     document.getElementById("profile-drawer").classList.add("active");
     document.body.style.overflow = 'hidden';
 
-    // User ID nikal lo (Kyunki tier system ko count check karne ke liye id chahiye)
+    // User ID nikal lo
     const userId = localStorage.getItem("islamic_user_id");
+    
+    // Buttons ke container fetch karo
+    const authActions = document.getElementById("auth-actions");
+    const drawerFooter = document.getElementById("drawer-footer");
 
     // 🔥 AVATAR LOGIC: Google Photo ya Default User Icon
     const avatarContainer = document.querySelector(".drawer-avatar");
     const cachedPhoto = localStorage.getItem("islamic_user_photo");
 
     if (cachedPhoto && cachedPhoto !== "null") {
-        // Agar Google photo available hai toh wo set karega
         avatarContainer.innerHTML = `<img src="${cachedPhoto}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;" onerror="this.outerHTML='<i id=\\'profile-avatar-icon\\' class=\\'fas fa-user\\'></i>'">`;
     } else {
-        // Agar photo nahi hai toh normal icon dikhayega
         avatarContainer.innerHTML = `<i id="profile-avatar-icon" class="fas fa-user"></i>`;
     }
 
@@ -790,13 +792,21 @@ window.openProfileDrawer = async function() {
     document.getElementById("profile-name").innerText = cachedName || "Library User";
     document.getElementById("profile-mobile").innerText = localStorage.getItem("islamic_user_mobile") || "Registered User";
 
+    // 🔥 THE FIX: Change Password aur Log Out buttons wapas laga diye!
+    if (authActions) {
+        authActions.innerHTML = `<button class="btn btn-outline" onclick="window.openChangePassword()"><i class="fas fa-key"></i> Change Password</button>`;
+    }
+    if (drawerFooter) {
+        drawerFooter.innerHTML = `<button class="btn" style="background: rgba(244, 63, 94, 0.1); color: var(--danger); border: 1px solid rgba(244, 63, 94, 0.3); box-shadow: none;" onclick="window.showLogoutModal()"><i class="fas fa-sign-out-alt"></i> Log Out</button>`;
+    }
+
     // 🚀 THE MAGIC: Call the Tier System for Logged-In User
     if (userId) {
         window.initUserTierSystem(userId);
     }
 
     // 🔥 FIX: Agar cache mein naam nahi hai, toh turant Firebase se fetch karke save aur update kar do
-    if (!cachedName) {
+    if (!cachedName && userId) {
         try {
             const { getFirestore, doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
             const dbInstance = getFirestore();
