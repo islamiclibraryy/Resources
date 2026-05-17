@@ -482,6 +482,80 @@
             }
         }
 
+/* =========================================================
+   🚀 GAMIFICATION: TIER BADGES & MODAL CSS
+   ========================================================= */
+
+/* Badge inside Header/Profile */
+.user-tier-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: 99px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text2);
+    margin-top: 4px;
+}
+.user-tier-badge:hover { background: rgba(255, 255, 255, 0.1); }
+.user-tier-badge i { font-size: 0.8rem; color: var(--text3); }
+
+/* Tier Specific Colors */
+.tier-explorer { color: #9ca3af; border-color: #4b5563; }
+.tier-silver { color: #cbd5e1; border-color: #94a3b8; background: rgba(148, 163, 184, 0.1); }
+.tier-gold { color: #fbbf24; border-color: #d97706; background: rgba(251, 191, 36, 0.1); }
+.tier-diamond { color: #38bdf8; border-color: #0284c7; background: rgba(56, 189, 248, 0.1); }
+
+/* Bottom-Sheet Modal for Tier Info - FIXED FOR FLICKER */
+.tier-modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+    z-index: 99999; display: flex; align-items: flex-end; justify-content: center;
+    opacity: 0; visibility: hidden; 
+    /* 🔥 FIX 1: 'all' hata kar specific opacity aur visibility lagayi */
+    transition: opacity 0.3s ease, visibility 0.3s ease; 
+    will-change: opacity; /* GPU ko pehle se alert karne ke liye */
+}
+.tier-modal-overlay.active { opacity: 1; visibility: visible; }
+
+.tier-modal-content {
+    background: var(--surface); width: 100%; max-width: 500px;
+    border-radius: 24px 24px 0 0; padding: 30px 20px 40px;
+    transform: translateY(100%); 
+    transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.15); /* Thoda smoother scale curve */
+    border-top: 1px solid var(--border); box-shadow: 0 -10px 40px rgba(0,0,0,0.5);
+    text-align: center;
+    
+    /* 🔥 FIX 2: Hardware Acceleration active kiya taaki fast mobiles me blink na ho */
+    will-change: transform;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+}
+
+.tier-modal-overlay.active .tier-modal-content { transform: translateY(0); }
+
+@media (min-width: 768px) {
+    .tier-modal-overlay { align-items: center; }
+    .tier-modal-content { border-radius: 24px; border: 1px solid var(--border); padding: 40px; transform: scale(0.9); }
+    .tier-modal-overlay.active .tier-modal-content { transform: scale(1); }
+}
+
+.tier-icon-large { font-size: 3.5rem; margin-bottom: 15px; }
+.tier-title { font-size: 1.5rem; font-family: 'Syne', sans-serif; color: var(--text); margin-bottom: 8px; }
+.tier-desc { font-size: 0.95rem; color: var(--text2); margin-bottom: 25px; line-height: 1.5; }
+
+/* Progress Bar */
+.tier-progress-bg { width: 100%; height: 10px; background: rgba(255,255,255,0.1); border-radius: 99px; overflow: hidden; margin-bottom: 10px; }
+.tier-progress-fill { height: 100%; background: linear-gradient(90deg, #7c6af7, #fbbf24); border-radius: 99px; width: 0%; transition: width 1s ease; }
+.tier-progress-text { font-size: 0.85rem; color: var(--text3); display: flex; justify-content: space-between; font-weight: 600;}
+
     </style>
 </head>
 <body>
@@ -516,13 +590,16 @@
         <div class="drawer-body">
             <div class="drawer-avatar"><i id="profile-avatar-icon" class="fas fa-user"></i></div>
             <div class="drawer-name" id="profile-name">Library User</div>
-            <div class="drawer-mobile" id="profile-mobile">+XX XXXXXXXXXX</div>
-            <div class="drawer-menu">
-                <button class="btn btn-outline" onclick="window.openChangePassword()"><i class="fas fa-key"></i> Change Password</button>
+            <div class="drawer-mobile" id="profile-mobile" style="margin-bottom: 8px;">+XX XXXXXXXXXX</div>
+            
+            <div id="user-tier-container" style="margin-bottom: 30px;"></div>
+            
+            <div class="drawer-menu" id="auth-actions">
+                
             </div>
         </div>
-        <div class="drawer-footer">
-            <button class="btn" style="background: rgba(244, 63, 94, 0.1); color: var(--danger); border: 1px solid rgba(244, 63, 94, 0.3); box-shadow: none;" onmouseover="this.style.background='var(--danger)'; this.style.color='#fff';" onmouseout="this.style.background='rgba(244, 63, 94, 0.1)'; this.style.color='var(--danger)';" onclick="window.showLogoutModal()"><i class="fas fa-sign-out-alt"></i> Log Out</button>
+        <div class="drawer-footer" id="drawer-footer">
+            
         </div>
     </div>
 
@@ -621,6 +698,22 @@
         <a href="/info/" class="nav-item"><i class="fas fa-info-circle"></i><span>Info</span></a>
     </div>
 
+<div class="tier-modal-overlay" id="tierModal" onclick="closeTierModal(event)">
+    <div class="tier-modal-content" onclick="event.stopPropagation()">
+        <div class="tier-icon-large" id="modalTierIcon">🧭</div>
+        <h3 class="tier-title" id="modalTierTitle">You are an Explorer</h3>
+        <p class="tier-desc" id="modalTierDesc">Start your journey by purchasing your first book.</p>
+        
+        <div class="tier-progress-bg">
+            <div class="tier-progress-fill" id="modalTierProgress"></div>
+        </div>
+        <div class="tier-progress-text">
+            <span id="modalCurrentBooks">0 Books</span>
+            <span id="modalNextGoal">1 Book to Silver 🥈</span>
+        </div>
+    </div>
+</div>
+
      <script type="module">
         // ✅ FIREBASE IMPORTS (Updated with Auth)
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
@@ -677,6 +770,9 @@ window.openProfileDrawer = async function() {
     document.getElementById("profile-drawer").classList.add("active");
     document.body.style.overflow = 'hidden';
 
+    // User ID nikal lo (Kyunki tier system ko count check karne ke liye id chahiye)
+    const userId = localStorage.getItem("islamic_user_id");
+
     // 🔥 AVATAR LOGIC: Google Photo ya Default User Icon
     const avatarContainer = document.querySelector(".drawer-avatar");
     const cachedPhoto = localStorage.getItem("islamic_user_photo");
@@ -694,12 +790,17 @@ window.openProfileDrawer = async function() {
     document.getElementById("profile-name").innerText = cachedName || "Library User";
     document.getElementById("profile-mobile").innerText = localStorage.getItem("islamic_user_mobile") || "Registered User";
 
+    // 🚀 THE MAGIC: Call the Tier System for Logged-In User
+    if (userId) {
+        window.initUserTierSystem(userId);
+    }
+
     // 🔥 FIX: Agar cache mein naam nahi hai, toh turant Firebase se fetch karke save aur update kar do
     if (!cachedName) {
         try {
             const { getFirestore, doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
             const dbInstance = getFirestore();
-            const userDoc = await getDoc(doc(dbInstance, "users", localStorage.getItem("islamic_user_id")));
+            const userDoc = await getDoc(doc(dbInstance, "users", userId));
             
             if (userDoc.exists() && userDoc.data().name) {
                 const realName = userDoc.data().name;
@@ -709,6 +810,92 @@ window.openProfileDrawer = async function() {
         } catch(e) { console.log("Name fetch error", e); }
     }
 };
+
+// =========================================================
+// 🚀 GAMIFICATION BACKEND & UI LOGIC (Dynamic Import Maintained)
+// =========================================================
+window.initUserTierSystem = async function(userId) {
+    if (!userId) return;
+
+    let approvedCount = 0;
+    const cachedTier = localStorage.getItem(`user_tier_${userId}`);
+    
+    // 1. CHEAPEST WAY: Check Permanent Cache First
+    if (cachedTier) {
+        approvedCount = parseInt(cachedTier);
+        window.renderTierUI(approvedCount);
+    } else {
+        // 2. TOKEN EFFICIENT WAY: 1 Read Only from Firebase (Using Dynamic Import)
+        try {
+            const { getFirestore, collection, query, where, getCountFromServer } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
+            const dbInstance = getFirestore();
+            const paymentsRef = collection(dbInstance, "payments");
+            const q = query(paymentsRef, where("user_id", "==", userId), where("status", "==", "approved"));
+            
+            const snapshot = await getCountFromServer(q);
+            approvedCount = snapshot.data().count;
+            
+            // Save permanently in cache so it never costs tokens again
+            localStorage.setItem(`user_tier_${userId}`, approvedCount.toString());
+            window.renderTierUI(approvedCount);
+        } catch (error) {
+            console.error("Error fetching tier count:", error);
+        }
+    }
+};
+
+window.renderTierUI = function(booksBought) {
+    let tierName, tierClass, tierIcon, nextGoal, nextName, nextIcon;
+
+    if (booksBought >= 5) {
+        tierName = "Diamond Member"; tierClass = "tier-diamond"; tierIcon = "💎"; nextGoal = null;
+    } else if (booksBought >= 3) {
+        tierName = "Gold Member"; tierClass = "tier-gold"; tierIcon = "🥇"; nextGoal = 5; nextName = "Diamond"; nextIcon = "💎";
+    } else if (booksBought >= 1) {
+        tierName = "Silver Member"; tierClass = "tier-silver"; tierIcon = "🥈"; nextGoal = 3; nextName = "Gold"; nextIcon = "🥇";
+    } else {
+        tierName = "Explorer"; tierClass = "tier-explorer"; tierIcon = "🧭"; nextGoal = 1; nextName = "Silver"; nextIcon = "🥈";
+    }
+
+    // A. Inject Badge into Drawer
+    const badgeContainer = document.getElementById("user-tier-container");
+    if (badgeContainer) {
+        badgeContainer.innerHTML = `
+            <div class="user-tier-badge ${tierClass}" onclick="window.openTierModal()">
+                ${tierIcon} ${tierName} <i class="fas fa-info-circle" style="margin-left: 4px;"></i>
+            </div>
+        `;
+    }
+
+    // B. Setup Modal Content safely (if modal exists on page)
+    if(document.getElementById("modalTierIcon")) {
+        document.getElementById("modalTierIcon").innerText = tierIcon;
+        document.getElementById("modalTierTitle").innerText = `You are a ${tierName}`;
+        
+        if (nextGoal) {
+            let booksNeeded = nextGoal - booksBought;
+            document.getElementById("modalTierDesc").innerText = `You have purchased ${booksBought} book(s). Buy ${booksNeeded} more to unlock ${nextName}!`;
+            let progressPercent = (booksBought / nextGoal) * 100;
+            setTimeout(() => { document.getElementById("modalTierProgress").style.width = `${progressPercent}%`; }, 100);
+            document.getElementById("modalCurrentBooks").innerText = `${booksBought} Books`;
+            document.getElementById("modalNextGoal").innerText = `${nextGoal} for ${nextName} ${nextIcon}`;
+        } else {
+            document.getElementById("modalTierDesc").innerText = `You have unlocked the highest tier! Thank you for your immense support.`;
+            setTimeout(() => { document.getElementById("modalTierProgress").style.width = `100%`; }, 100);
+            document.getElementById("modalCurrentBooks").innerText = `${booksBought} Books`;
+            document.getElementById("modalNextGoal").innerText = `Max Level`;
+        }
+    }
+};
+
+window.openTierModal = function() {
+    document.getElementById("tierModal").classList.add("active");
+}
+window.closeTierModal = function(e) {
+    if (e.target.id === "tierModal" || e.target.classList.contains("close-btn")) {
+        document.getElementById("tierModal").classList.remove("active");
+    }
+}
 
         window.closeProfileDrawer = function() {
             document.getElementById("drawer-overlay").classList.remove("active");
