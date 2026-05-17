@@ -1020,14 +1020,6 @@ window.executeChangePassword = async function() {
                          .catch(() => { if(redirect) window.location.href = "/"; });
         };
 
-        window.showToast = function(msg, type = "success") {
-            const container = document.getElementById("toast-container");
-            const toast = document.createElement("div"); toast.className = "toast";
-            toast.innerHTML = (type === "success" ? '<span style="font-size:1.1rem; color:var(--success)">✓</span>' : '<span style="font-size:1.1rem; color:var(--danger)">✕</span>') + ` <span>${msg}</span>`;
-            container.appendChild(toast);
-            setTimeout(() => { toast.style.transform = "translateX(110%)"; toast.style.opacity = "0"; setTimeout(() => toast.remove(), 400); }, 3000);
-        };
-
         document.addEventListener("DOMContentLoaded", () => {
             window.initTheme();
             initPaymentPage();
