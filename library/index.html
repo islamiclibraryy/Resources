@@ -979,17 +979,27 @@ window.executeChangePassword = async function() {
                 if(!book) return; 
 
                 const statusLower = pay.status.toLowerCase();
-                let badgeClass = "status-pending";
-                if (statusLower === "approved") badgeClass = "status-approved";
-                else if (statusLower === "rejected") badgeClass = "status-rejected";
                 
+                // 🔥 NAYA LOGIC: Status Text ko Customize Karne Ke Liye 🔥
+                let badgeClass = "status-pending";
+                let displayStatus = "In Verification"; // Default Pending ke liye
+
+                if (statusLower === "approved") {
+                    badgeClass = "status-approved";
+                    displayStatus = "Owned ✓"; // Approved ko Owned + Tick kar diya
+                } else if (statusLower === "rejected") {
+                    badgeClass = "status-rejected";
+                    displayStatus = "Rejected ✕"; // Rejected ke aage cross lag gaya
+                }
+                
+                // Action Buttons ka logic wahi purana aur safe rakha hai
                 let actionBtn = "";
                 if (statusLower === "approved") {
                     actionBtn = `<button class="btn" style="padding: 8px 16px; font-size:.8rem; border-radius: 99px; width:auto; background:var(--success); box-shadow: 0 4px 15px rgba(16,185,129,0.3); color:#fff;" onclick="window.handleLibraryDownload(this, '${book.id}')"><i class="fas fa-download"></i></button>`;
                 } else if (statusLower === "rejected") {
                     actionBtn = `<span style="font-size: .75rem; color: var(--danger); font-weight: 600;">Failed</span>`; 
                 } else {
-                    actionBtn = `<span style="font-size: .75rem; color: var(--text3);"><i class="fas fa-hourglass-half spin" style="margin-right:4px;"></i> Verifying</span>`;
+                    actionBtn = `<span style="font-size: .75rem; color: var(--text3);"><i class="fas fa-hourglass-half spin" style="margin-right:4px;"></i> Wait</span>`;
                 }
 
                 container.innerHTML += `
@@ -997,11 +1007,12 @@ window.executeChangePassword = async function() {
                     <img src="${book.thumbnail}" class="lib-thumb">
                     <div class="lib-info">
                         <div style="font-size: .9rem; font-family:'Syne', sans-serif; font-weight:700; color:var(--text); margin-bottom:4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">${book.title}</div>
-                        <div class="status-badge ${badgeClass}">${pay.status.toUpperCase()}</div>
+                        <div class="status-badge ${badgeClass}">${displayStatus}</div>
                     </div>
                     <div>${actionBtn}</div>
                 </div>`;
             });
+
         }
 
         // =========================================================================
