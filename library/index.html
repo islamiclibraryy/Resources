@@ -279,42 +279,48 @@
                 padding-top: 100px !important; /* Naye bade header ko jagah dene ke liye */
             }
 
-            /* 3. Heading ko thoda bada karna PC ke liye */
-            #page-library h3 {
-                font-size: 1.6rem !important;
-                margin-bottom: 24px !important;
-            }
-                     /* 4. 🔥 Library Cards ko Premium aur Bada Banana 🔥 */
-            
-            /* Card ka size aur gap badhana */
-            #library-list > div {
-                padding: 20px 24px !important;  /* Box ko thoda lamba/khula banayega */
-                border-radius: 16px !important;
-                margin-bottom: 20px !important;
-                gap: 24px !important; /* Image aur text ke beech khuli jagah */
-            }
+        /* 3. Heading ko thoda bada karna PC ke liye */
+        #page-library h3 {
+            font-size: 1.6rem !important;
+            margin-bottom: 24px !important;
+        }
+                 /* 4. 🔥 Library Cards ko Premium aur Bada Banana 🔥 */
+        
+        /* Card ka size aur gap badhana */
+        #library-list .lib-card {
+            padding: 20px 24px !important;  /* Box ko thoda lamba/khula banayega */
+            border-radius: 16px !important;
+            margin-bottom: 20px !important;
+            gap: 24px !important; /* Image aur text ke beech khuli jagah */
+        }
 
-            /* Thumbnail Image ko bada karna */
-            #library-list img {
-                width: 80px !important;  /* Image ki chaudai */
-                height: 80px !important; /* Image ki lambaai */
-                border-radius: 12px !important;
-            }
+        /* Thumbnail Image ko bada karna */
+        #library-list .lib-thumb {
+            width: 80px !important;  /* Image ki chaudai */
+            height: 80px !important; /* Image ki lambaai */
+            border-radius: 12px !important;
+        }
 
-            /* Text ko thoda bada karna PC ke liye */
-            #library-list h4, #library-list .book-title { 
-                font-size: 1.25rem !important; 
-                margin-bottom: 6px !important;
-            }
-            #library-list p { 
-                font-size: 0.95rem !important; 
-            }
-            
-            /* 🔥 Desktop Par Badges Bada aur Premium 🔥 */
-            #library-list .status-badge {
-                padding: 6px 15px !important;
-                font-size: 1rem !important;
-            }
+        /* Text ko thoda bada karna PC ke liye */
+        #library-list .book-title { 
+            font-size: 1.25rem !important; 
+            margin-bottom: 6px !important;
+        }
+        #library-list .lib-card p { 
+            font-size: 0.95rem !important; 
+        }
+        
+        /* 🔥 Desktop Par Badges Bada aur Premium 🔥 */
+        #library-list .status-badge {
+            padding: 6px 15px !important;
+            font-size: 1rem !important;
+        }
+
+        /* 🔥 SIRF Library Page ke Empty Text ko bada karega (Login Screen safe rahegi) 🔥 */
+        #library-list .premium-lock-desc {
+            font-size: 1.25rem !important;
+        }
+
             /* 🚀 ALL MODALS DESKTOP FIX (Logout, Change Password) 🚀 */
             .modal-box {
                 max-width: 480px !important; /* Modals ab choude aur premium lagenge */
@@ -481,19 +487,6 @@
                 border-radius: 16px; 
                 gap: 16px;
             }
-        }
-        /* 📦 EMPTY STATE CSS (Default/Mobile) */
-        .empty-state { text-align: center; padding: 40px 20px; animation: fadeIn 0.5s ease; }
-        .empty-state i { font-size: 3rem; color: var(--border2); margin-bottom: 16px; display: block; }
-        .empty-state h4 { font-family: 'Syne', sans-serif; font-size: 1.2rem; color: var(--text); margin-bottom: 8px; }
-        .empty-state p { font-size: 0.9rem; color: var(--text2); }
-
-        /* 🖥️ DESKTOP SCALING FOR EMPTY STATE (After Login) */
-        @media screen and (min-width: 768px) {
-            .empty-state { padding: 80px 20px !important; margin-top: 40px !important; }
-            .empty-state i { font-size: 4rem !important; margin-bottom: 24px !important; }
-            .empty-state h4 { font-size: 1.8rem !important; margin-bottom: 12px !important; }
-            .empty-state p { font-size: 1.1rem !important; }
         }
 
       </style>
@@ -966,11 +959,13 @@ window.executeChangePassword = async function() {
                 if (megaIndexStr) megaIndex = JSON.parse(megaIndexStr);
             } catch(e) {}
 
+            // 🔥 CONSISTENT PREMIUM EMPTY STATE (Perfect Color & Size) 🔥
             if (paymentsArray.length === 0) {
-                container.innerHTML = `<div class="text-center" style="margin-top: 60px; color:var(--text3); animation: fadeUp .5s ease both;">
-                    <div style="width: 80px; height: 80px; border-radius: 50%; background: var(--glow2); border: 1px solid rgba(124,106,247,0.2); display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 16px auto; color: var(--accent2);">📚</div>
-                    <h4 style="font-family:'Syne', sans-serif; color:var(--text2); margin-bottom: 8px;">Library is empty</h4>
-                    <p style="font-size: .85rem;">Your purchased books will appear here.</p>
+                container.innerHTML = `
+                <div class="premium-lock-container">
+                    <div class="premium-lock-icon">📚</div>
+                    <h4 class="premium-lock-title" style="color: var(--text2) !important; font-size: clamp(1.15rem, 3vw, 1.6rem) !important;">Library is empty</h4>
+                    <p class="premium-lock-desc" style="font-size: clamp(0.95rem, 2vw, 1.25rem) !important; max-width: 600px;">Your purchased books will appear here.</p>
                 </div>`;
                 return;
             }
