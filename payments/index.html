@@ -937,7 +937,7 @@ window.showToast = function(msg, type = "success") {
     toast.className = `toast ${type}`;
     let iconHTML = '<span>✓</span>';
     if (type === "error") iconHTML = '<span>✕</span>';
-    if (type === "info") iconHTML = '<i class="fas fa-spinner fa-spin"></i>'; 
+    if (type === "info") iconHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
     
     toast.innerHTML = `<span style="font-size: 1.25rem; display: flex; align-items: center;">${iconHTML}</span> <span>${msg}</span>`;
     container.appendChild(toast);
