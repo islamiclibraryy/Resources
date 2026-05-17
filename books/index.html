@@ -107,7 +107,15 @@
             background: var(--glow2); border: 1px solid rgba(124,106,247,0.3); color: var(--accent3); 
         }
 
-        .strike-price { font-size: 0.85rem; color: var(--text3); text-decoration: line-through; font-weight: 500; }
+        /* 🔥 UPDATED STRIKE PRICE FOR DETAILS PAGE 🔥 */
+        .strike-price { 
+            font-size: 0.85rem; /* Thoda sa bada kiya */
+            color: var(--text2); /* Text3 se Text2 kiya taaki zyada bright ho */
+            text-decoration: line-through; 
+            font-weight: 600; /* Boldness badhayi */
+            margin-left: 3px;
+            opacity: 0.9;
+        }
 
         /* 🔥 ACTION FOOTER BADGE SIZE FIX (Mobile View - 20% Chota aur Patla) 🔥 */
         #action-footer .badge-premium, 
@@ -115,8 +123,17 @@
         #action-footer .badge-owned,
         #action-footer .badge-pending {
             padding: 6px 12px !important; 
-            font-size: 0.9rem !important;
+            font-size: 0.85rem !important;
             height: auto !important;
+        }
+
+        #action-footer .strike-price {
+            font-size: 0.75rem; /* Thoda sa bada kiya */
+            color: var(--text2); /* Contrast better kiya */
+            text-decoration: line-through; 
+            font-weight: 600; /* Boldness badhayi */
+            margin-left: 2.5px; 
+            opacity: 0.9;
         }
 
         /* 🖥️ DESKTOP SIZING FIXES */
@@ -125,7 +142,7 @@
             .badge-premium, .badge-free, .badge-owned, .badge-pending {
                 padding: 10px 20px !important; font-size: 1.3rem !important; gap: 8px !important;
             }
-            .strike-price { font-size: 1rem !important; }
+            .strike-price { font-size: 1.1rem; }
             
             /* Footer Wale Badges ko Button ki Motai ke barabar rakhein (-15% height match) */
             #action-footer .badge-premium, 
@@ -133,7 +150,10 @@
             #action-footer .badge-owned,
             #action-footer .badge-pending {
                 padding: 8px 16px !important; 
-                font-size: 1rem !important; 
+                font-size: 1.05rem !important; 
+            }
+            #action-footer .strike-price {
+            font-size: .9rem;
             }
         }
 
@@ -198,9 +218,10 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06) !important; /* Premium soft shadow */
         }
         
-        /* Kata hua price (Strike-through) */
+        /* LIGHT MODE FIX FOR STRIKE PRICE */
         [data-theme="light"] .strike-price {
-            color: #868e96 !important; /* Clear slate grey */
+            color: #4b5563 !important; /* Slate 600 - Ekdum sharp dark grey contrast ke liye */
+            font-weight: 600;
         }
 
         /* 2. OWNED BADGE (Fresh Green) */
@@ -1258,7 +1279,7 @@ function renderDetail() {
     } 
     // 🛡️ SCENARIO 2: FREE BOOK HAI (Direct Public Link)
     else if (isFree) {
-        footerPrice.innerHTML = `<span class="badge-free">Free</span>`;
+        footerPrice.innerHTML = `<span class="badge-free">✦ FREE</span>`;
 
         actionBtn.innerHTML = `<i class="fas fa-download"></i> Download`;
         actionBtn.onclick = () => {
