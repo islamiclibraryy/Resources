@@ -222,6 +222,45 @@
 .custom-dark-input::placeholder { color: rgba(255, 255, 255, 0.4); }
 .custom-dark-input:focus { border-color: #a855f7; background: rgba(255, 255, 255, 0.1); box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2); }
 
+        /* =========================================================
+           🔒 SECURE PAYMENT INSTRUCTION STYLING (Perfectly Aligned)
+           ========================================================= */
+        .secure-pay-text {
+            font-size: 0.95rem;
+            color: var(--text2);
+            display: flex;
+            align-items: center; /* 🔥 Yeh icon aur text ko hamesha center rakhega */
+            justify-content: center;
+            gap: 6px;
+            margin-bottom: 24px;
+        }
+
+        /* Lock Icon Universal Alignment */
+        .secure-pay-text i {
+            font-size: 0.85rem;
+            color: var(--text3);
+            margin: 0 !important; /* Koi margin nahi chahiye ab */
+            display: flex;
+            align-items: center;
+            line-height: 1; /* Icon ka faltu upar-niche ka space hatayega */
+            opacity: 0.8;
+        }
+
+        .highlight-price {
+            font-family: 'DM Mono', monospace;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--accent); 
+            margin: 0 4px;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        /* 💡 LIGHT MODE FIX FOR CLEAN TEXT */
+        [data-theme="light"] .secure-pay-text { color: #4b5563; }
+        [data-theme="light"] .secure-pay-text i { color: #9ca3af; }
+        [data-theme="light"] .highlight-price { color: var(--accent2) !important; }
+
         /* 🔥 DESKTOP VIEW FIX (PAYMENTS PAGE) - XL PREMIUM SIZE 🔥 */
         @media screen and (min-width: 768px) {
             
@@ -238,6 +277,11 @@
                 padding-top: 120px !important; 
                 padding-bottom: 100px !important;
             }
+
+            .secure-pay-text { font-size: 1.2rem; gap: 8px; }
+            .secure-pay-text i { font-size: 1.05rem; }
+            .highlight-price { font-size: 1.5rem; }
+        }
 
             /* 3. 🔥 Payment container ko 600px se 750px kar diya (Aur chouda) 🔥 */
             #page-payment {
@@ -533,10 +577,16 @@
                 <h3 style="font-size: 1.2rem; margin:0;">Complete Payment</h3>
             </div>
             
-            <div class="text-center">
-                <p style="color: var(--text2); font-size: .9rem; margin-bottom: 24px;">Pay <strong style="color:var(--accent); font-family: 'DM Mono', monospace; font-size: 1.1rem;" id="pay-amt"></strong> using QR or UPI ID</p>
-                <div class="qr-box"><img id="pay-qr" src=""></div>
-                
+<div class="text-center">
+    
+    <div class="secure-pay-text">
+        <i class="fas fa-lock"></i>
+        <span>Pay <span id="pay-amt" class="highlight-price"></span> using QR or UPI ID</span>
+    </div>
+
+    <div class="qr-box"><img id="pay-qr" src=""></div>
+    
+
                 <div class="upi-box">
                     <div style="text-align: left;">
                         <div style="font-size: .75rem; color: var(--text3); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;">UPI ID</div>
