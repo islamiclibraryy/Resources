@@ -222,6 +222,20 @@
 .custom-dark-input::placeholder { color: rgba(255, 255, 255, 0.4); }
 .custom-dark-input:focus { border-color: #a855f7; background: rgba(255, 255, 255, 0.1); box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2); }
 
+        /* =========================================================
+           🔒 SECURE PAYMENT INSTRUCTION STYLING (Refined)
+           ========================================================= */
+        .secure-pay-text {
+            font-size: 0.95rem;
+            color: var(--text2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-bottom: 24px;
+        }
+
+        /* Lock Icon Alignment Fix */
         .secure-pay-text i {
             font-size: 0.85rem;
             color: var(--text3);
@@ -229,10 +243,26 @@
             opacity: 0.8;
         }
 
+        /* Price wapas purane clean style me (No Box) */
+        .highlight-price {
+            font-family: 'DM Mono', monospace;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--accent); /* Wapas tera pyara Purple/Accent color */
+            margin: 0 4px;
+        }
+
+        /* 💡 LIGHT MODE FIX FOR CLEAN TEXT */
+        [data-theme="light"] .secure-pay-text {
+            color: #4b5563; 
+        }
         [data-theme="light"] .secure-pay-text i {
             color: #9ca3af; 
         }
-       
+        [data-theme="light"] .highlight-price {
+            color: var(--accent2) !important; /* Light mode me thoda dark purple */
+        }
+
         /* 🔥 DESKTOP VIEW FIX (PAYMENTS PAGE) - XL PREMIUM SIZE 🔥 */
         @media screen and (min-width: 768px) {
             
