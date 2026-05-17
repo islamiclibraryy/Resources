@@ -283,7 +283,13 @@
             }
 
             .secure-pay-text { font-size: 1.2rem; gap: 8px; }
-            .secure-pay-text i { font-size: 1.05rem; }
+            
+            .secure-pay-text i { 
+                font-size: 1.05rem; 
+                /* 🔥 Desktop par font bada hai, toh nudge bhi thoda bada (2.5px) chahiye */
+                top: 2.5px !important; 
+            }
+            
             .highlight-price { font-size: 1.5rem; }
 
             /* 3. 🔥 Payment container ko 600px se 750px kar diya (Aur chouda) 🔥 */
