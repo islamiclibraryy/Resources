@@ -106,7 +106,6 @@
         .drawer-footer { padding: 20px; border-top: 1px solid var(--border); flex-shrink: 0; padding-bottom: calc(20px + env(safe-area-inset-bottom)); }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } } @keyframes cardIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } } @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } } @keyframes blobFloat { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(20px,-20px) scale(1.05)} 66%{transform:translate(-15px,15px) scale(0.97)} }
         .custom-dark-input { width: 100%; padding: 14px 15px; margin-top: 8px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.15); background: rgba(255, 255, 255, 0.05); color: #ffffff; font-size: 1rem; outline: none; transition: all 0.3s ease; font-family: inherit; } .custom-dark-input::placeholder { color: rgba(255, 255, 255, 0.4); } .custom-dark-input:focus { border-color: #a855f7; background: rgba(255, 255, 255, 0.1); box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2); }
-        #toast-container { position: fixed; bottom: 85px; right: 28px; z-index: 999999 !important; display: flex; flex-direction: column; gap: 10px; pointer-events: none; } .toast { background: var(--surface); color: var(--text); padding: 12px 18px; border-radius: var(--r2); box-shadow: var(--shadow2); border: 1px solid var(--border2); animation: slideUp 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards; display: flex; align-items: center; gap: 10px; font-size: .85rem; font-weight: 500; }
                 /* ===== INSTAGRAM 3D CARD (Wapas aa gaya) ===== */
         .ig-card {
             background: var(--surface2); border-radius: var(--r3); padding: 30px 20px;
@@ -176,7 +175,9 @@
             .step-item { 
                 padding: 10px 24px !important; 
                 font-size: 1rem !important; 
-            }              /* 🔥 HEADER, FOOTER & STEPPER DESKTOP FIX 🔥 */
+            }
+}
+              /* 🔥 HEADER, FOOTER & STEPPER DESKTOP FIX 🔥 */
         @media screen and (min-width: 768px) {
             
             /* 1. Header and Footer spacing */
@@ -237,21 +238,72 @@
                 font-size: 1.1rem !important;
                 border-radius: 14px !important;
             }
-            /* 🍞 TOAST NOTIFICATIONS DESKTOP FIX 🍞 */
-            #toast-container {
-                bottom: 50px !important; 
-                right: 50px !important; /* PC par right kone mein aaram se set hoga */
+}
+/* =========================================================================
+           🚀 UNIVERSAL PREMIUM TOAST NOTIFICATION SYSTEM (Upgraded Position & Size)
+           ========================================================================= */
+        #toast-container {
+            position: fixed;
+            bottom: 100px; /* 🔥 FIX: Mobile par bottom nav (70px) se thoda aur upar kar diya */
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 999999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            pointer-events: none;
+            width: 100%;
+            max-width: 400px;
+            padding: 0 20px; /* 🔥 Chhote mobiles me screen ke kono se chipke gaa nahi, automatic fit hoga */
+        }
+
+        .toast {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--surface2, #1f1f30);
+            color: var(--text, #f0f0f8);
+            padding: 14px 22px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            font-family: 'Syne', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            line-height: 1.4;
+            width: fit-content;
+            max-width: 100%;
+            text-align: left;
+            pointer-events: auto;
+            animation: toastEnter 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .toast.success span:first-child { color: var(--success, #10b981); }
+        .toast.error span:first-child { color: var(--danger, #f43f5e); }
+        .toast.info span:first-child { color: var(--accent, #7c6af7); }
+
+        .toast.fade-out {
+            opacity: 0 !important;
+            transform: translateY(20px) scale(0.95) !important;
+        }
+
+        @keyframes toastEnter {
+            0% { opacity: 0; transform: translateY(30px) scale(0.9); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* 🖥️ DESKTOP MODIFICATIONS (PC & BIG SCREENS) */
+        @media (min-width: 768px) {
+            #toast-container { 
+                bottom: 240px; /* 🔥 FIX: PC par isko kaafi upar le aaye hain taaki center field me saaf dikhe */
+                max-width: 550px; /* 🔥 Container thoda chauda kiya desktop ke liye */
             }
-            .toast {
-                padding: 18px 24px !important;
-                font-size: 1.15rem !important; /* Text padhne layak bada kiya */
-                border-radius: 16px !important;
-                gap: 16px !important;
-                min-width: 320px !important; /* PC par thoda lamba toast acha lagta hai */
-                box-shadow: 0 15px 35px rgba(0,0,0,0.5) !important; /* Premium Shadow */
-            }
-            .toast i { 
-                font-size: 1.5rem !important; /* Error/Success wala Icon bhi bada hoga */
+            .toast { 
+                font-size: 1.25rem; /* 🔥 FIX: Font size pure 30% bada kar diya (.95rem se direct 1.25rem) */
+                padding: 18px 32px; /* 🔥 FIX: Padding badha di taaki dabba bada aur premium lage */
+                border-radius: 16px; 
+                gap: 16px;
             }
         }
 
@@ -482,11 +534,21 @@
         window.showToast = function(msg, type = "success") {
             const container = document.getElementById("toast-container");
             if (!container) return;
-            const toast = document.createElement("div");
-            toast.className = "toast";
-            toast.innerHTML = (type === "success" ? '<span style="font-size:1.1rem; color:var(--success)">✓</span>' : '<span style="font-size:1.1rem; color:var(--danger)">✕</span>') + ` <span>${msg}</span>`;
+            container.innerHTML = "";
+            const toast = document.createElement("div"); 
+            toast.className = `toast ${type}`;
+            let iconHTML = '<span>✓</span>';
+            if (type === "error") iconHTML = '<span>✕</span>';
+            if (type === "info") iconHTML = '<i class="fas fa-spinner fa-spin"></i>'; 
+            toast.innerHTML = `<span style="font-size: 1.25rem; display: flex; align-items: center;">${iconHTML}</span> <span>${msg}</span>`;
             container.appendChild(toast);
-            setTimeout(() => { toast.style.transform = "translateX(110%)"; toast.style.opacity = "0"; setTimeout(() => toast.remove(), 400); }, 3000);
+            
+            if (type !== "info") {
+                setTimeout(() => { 
+                    toast.classList.add("fade-out"); 
+                    setTimeout(() => toast.remove(), 400); 
+                }, 3500);
+            }
         }
 
         window.executeChangePassword = async function() {
