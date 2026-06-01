@@ -1054,7 +1054,7 @@ window.executeChangePassword = async function() {
                 const secureDocSnap = await getDoc(doc(db, "secure_links", String(ebookId)));
 
                 if (secureDocSnap.exists() && secureDocSnap.data().pdf_link) {
-                    showToast("Access Verified! Preparing download...", "success"); 
+                    showToast("Access Verified! Opening Your Book...", "success"); 
                     
                     // 🔥 THE 1-SECOND WINDOW: User ko success toast dekhne ka moka milega!
                     setTimeout(() => {
@@ -1075,7 +1075,7 @@ window.executeChangePassword = async function() {
                     }
 
                     if (fallbackBook && fallbackBook.pdf_link) {
-                        showToast("Access Verified! Opening File...", "success");
+                        showToast("Access Verified! Opening Your Book...", "success");
                         setTimeout(() => {
                             window.open(fallbackBook.pdf_link, "_blank");
                             if (document.body.contains(btnElement)) {
@@ -1084,7 +1084,7 @@ window.executeChangePassword = async function() {
                             }
                         }, 1000);
                     } else {
-                        showToast("Secure file not found. Please contact Support.", "error"); 
+                        showToast("Unable to load the book. Please contact Support.", "error"); 
                         btnElement.innerHTML = originalHTML;
                         btnElement.disabled = false;
                     }
