@@ -88,8 +88,6 @@
         /* ===== LOADER & TOAST ===== */
         #loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10,10,15,0.85); backdrop-filter: blur(5px); z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center; }
         .spinner { width: 50px; height: 50px; border: 4px solid var(--surface3); border-top: 4px solid var(--accent); border-radius: 50%; animation: spin 1s cubic-bezier(0.4,0,0.2,1) infinite; }
-        #toast-container { position: fixed; bottom: 30px; right: 28px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
-        .toast { background: var(--surface); color: var(--text); padding: 12px 18px; border-radius: var(--r2); box-shadow: var(--shadow2); border: 1px solid var(--border2); animation: slideUp 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards; display: flex; align-items: center; gap: 10px; font-size: .85rem; font-weight: 500; }
 
         /* ===== FORMS & BUTTONS ===== */
         .form-group { margin-bottom: 16px; text-align: left; }
@@ -230,24 +228,7 @@
             .auth-footer { padding: 25px 10% !important; }
             .footer-content { flex-direction: row !important; justify-content: space-between !important; max-width: 1400px; margin: 0 auto !important; }
             .footer-content span, .footer-links { font-size: 1.05rem !important; }
-            /* 🍞 TOAST NOTIFICATIONS DESKTOP FIX 🍞 */
-            #toast-container {
-                bottom: 50px !important; 
-                right: 50px !important; /* PC par right kone mein aaram se set hoga */
-            }
-            .toast {
-                padding: 18px 24px !important;
-                font-size: 1.15rem !important; /* Text padhne layak bada kiya */
-                border-radius: 16px !important;
-                gap: 16px !important;
-                min-width: 320px !important; /* PC par thoda lamba toast acha lagta hai */
-                box-shadow: 0 15px 35px rgba(0,0,0,0.5) !important; /* Premium Shadow */
-            }
-            .toast i { 
-                font-size: 1.5rem !important; /* Error/Success wala Icon bhi bada hoga */
-            }
-        }
-
+ }
         /* 🔥 BACK TO HOME BUTTON CSS 🔥 */
         .back-home-badge {
             position: absolute;
@@ -283,6 +264,73 @@
                 padding: 12px 20px;
                 top: 30px;
                 left: 30px;
+            }
+        }
+/* =========================================================================
+           🚀 UNIVERSAL PREMIUM TOAST NOTIFICATION SYSTEM (Upgraded Position & Size)
+           ========================================================================= */
+        #toast-container {
+            position: fixed;
+            bottom: 100px; /* 🔥 FIX: Mobile par bottom nav (70px) se thoda aur upar kar diya */
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            pointer-events: none;
+            width: 100%;
+            max-width: 400px;
+            padding: 0 20px; /* 🔥 Chhote mobiles me screen ke kono se chipke gaa nahi, automatic fit hoga */
+        }
+
+        .toast {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--surface2, #1f1f30);
+            color: var(--text, #f0f0f8);
+            padding: 14px 22px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            font-family: 'Syne', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            line-height: 1.4;
+            width: fit-content;
+            max-width: 100%;
+            text-align: left;
+            pointer-events: auto;
+            animation: toastEnter 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .toast.success span:first-child { color: var(--success, #10b981); }
+        .toast.error span:first-child { color: var(--danger, #f43f5e); }
+        .toast.info span:first-child { color: var(--accent, #7c6af7); }
+
+        .toast.fade-out {
+            opacity: 0 !important;
+            transform: translateY(20px) scale(0.95) !important;
+        }
+
+        @keyframes toastEnter {
+            0% { opacity: 0; transform: translateY(30px) scale(0.9); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* 🖥️ DESKTOP MODIFICATIONS (PC & BIG SCREENS) */
+        @media (min-width: 768px) {
+            #toast-container { 
+                bottom: 240px; /* 🔥 FIX: PC par isko kaafi upar le aaye hain taaki center field me saaf dikhe */
+                max-width: 550px; /* 🔥 Container thoda chauda kiya desktop ke liye */
+            }
+            .toast { 
+                font-size: 1.25rem; /* 🔥 FIX: Font size pure 30% bada kar diya (.95rem se direct 1.25rem) */
+                padding: 18px 32px; /* 🔥 FIX: Padding badha di taaki dabba bada aur premium lage */
+                border-radius: 16px; 
+                gap: 16px;
             }
         }
 
@@ -549,11 +597,22 @@
 
         window.showToast = function(msg, type = "success") {
             const container = document.getElementById("toast-container");
-            const toast = document.createElement("div");
-            toast.className = "toast";
-            toast.innerHTML = (type === "success" ? '<span style="font-size:1.1rem; color:var(--success)">✓</span>' : '<span style="font-size:1.1rem; color:var(--danger)">✕</span>') + ` <span>${msg}</span>`;
+            if (!container) return;
+            container.innerHTML = "";
+            const toast = document.createElement("div"); 
+            toast.className = `toast ${type}`;
+            let iconHTML = '<span>✓</span>';
+            if (type === "error") iconHTML = '<span>✕</span>';
+            if (type === "info") iconHTML = '<i class="fas fa-spinner fa-spin"></i>'; 
+            toast.innerHTML = `<span style="font-size: 1.25rem; display: flex; align-items: center;">${iconHTML}</span> <span>${msg}</span>`;
             container.appendChild(toast);
-            setTimeout(() => { toast.style.transform = "translateX(110%)"; toast.style.opacity = "0"; setTimeout(() => toast.remove(), 400); }, 3000);
+            
+            if (type !== "info") {
+                setTimeout(() => { 
+                    toast.classList.add("fade-out"); 
+                    setTimeout(() => toast.remove(), 400); 
+                }, 3500);
+            }
         }
 
         window.switchAuth = function(view) {
