@@ -14,16 +14,16 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/icons/hikmahlogo.png">
 
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://mysite.pages.dev/books/">
+    <meta property="og:url" content="https://islamiclibrary.pages.dev/books/">
     <meta property="og:title" content="Download & Purchase Islamic eBooks | Islamic Library by Shekh">
     <meta property="og:description" content="View book details and download or purchase authentic Islamic eBooks directly from our library.">
-    <meta property="og:image" content="https://mysite.pages.dev/icons/hikmahlogo.png">
+    <meta property="og:image" content="https://islamiclibrary.pages.dev/icons/hikmahlogo.png">
 
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:url" content="https://mysite.pages.dev/books/">
+    <meta name="twitter:url" content="https://islamiclibrary.pages.dev/books/">
     <meta name="twitter:title" content="Download & Purchase Islamic eBooks | Islamic Library by Shekh">
     <meta name="twitter:description" content="View book details and download or purchase authentic Islamic eBooks directly from our library.">
-    <meta name="twitter:image" content="https://mysite.pages.dev/icons/hikmahlogo.png">
+    <meta name="twitter:image" content="https://islamiclibrary.pages.dev/icons/hikmahlogo.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
@@ -647,9 +647,351 @@
                 gap: 16px;
             }
         }
+
+/* =========================================================
+   🚀 GAMIFICATION: TIER BADGES & MODAL CSS
+   ========================================================= */
+
+/* =========================================================
+   🚀 UPDATED GAMIFICATION: TIER BADGES WITH SHIMMER & FLOAT
+   ========================================================= */
+
+/* Badge inside Header/Profile */
+.user-tier-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: 99px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text2);
+    margin-top: 4px;
+
+    /* 🔥 NEW: Floating aur Shimmer ke liye base settings */
+    position: relative;
+    overflow: hidden;
+    animation: badgeFloat 3.5s ease-in-out infinite;
+}
+
+/* Hover par subtle glow aur brightness badhegi */
+.user-tier-badge:hover { 
+    background: rgba(255, 255, 255, 0.15); 
+    filter: brightness(1.2);
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+}
+
+.user-tier-badge i { font-size: 0.8rem; color: var(--text3); }
+
+/* 🔥 NEW: Metallic Shimmer (Chamak) Effect Pseudo-Element */
+.user-tier-badge::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+        90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.25), 
+        transparent
+    );
+    transform: skewX(-20deg);
+    animation: badgeShimmer 4s infinite ease-in-out;
+}
+
+/* 🔥 NEW: KEYFRAMES FOR ANIMATIONS */
+@keyframes badgeFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); } /* Halka sa upar uthega */
+}
+
+@keyframes badgeShimmer {
+    0% { left: -150%; }
+    25%, 100% { left: 150%; } /* Har 4 second me ek baar chamak guzregi */
+}
+
+/* Tier Specific Colors */
+.tier-explorer { color: #9ca3af; border-color: #4b5563; }
+.tier-silver { color: #cbd5e1; border-color: #94a3b8; background: rgba(148, 163, 184, 0.1); }
+.tier-gold { color: #fbbf24; border-color: #d97706; background: rgba(251, 191, 36, 0.1); }
+.tier-diamond { color: #38bdf8; border-color: #0284c7; background: rgba(56, 189, 248, 0.1); }
+
+/* Bottom-Sheet Modal for Tier Info - FIXED FOR FLICKER */
+.tier-modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+    z-index: 99999; display: flex; align-items: flex-end; justify-content: center;
+    opacity: 0; visibility: hidden; 
+    /* 🔥 FIX 1: 'all' hata kar specific opacity aur visibility lagayi */
+    transition: opacity 0.3s ease, visibility 0.3s ease; 
+    will-change: opacity; /* GPU ko pehle se alert karne ke liye */
+}
+.tier-modal-overlay.active { opacity: 1; visibility: visible; }
+
+.tier-modal-content {
+    background: var(--surface); width: 100%; max-width: 500px;
+    border-radius: 24px 24px 0 0; padding: 30px 20px 40px;
+    transform: translateY(100%); 
+    transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.15); /* Thoda smoother scale curve */
+    border-top: 1px solid var(--border); box-shadow: 0 -10px 40px rgba(0,0,0,0.5);
+    text-align: center;
+    
+    /* 🔥 FIX 2: Hardware Acceleration active kiya taaki fast mobiles me blink na ho */
+    will-change: transform;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+}
+
+.tier-modal-overlay.active .tier-modal-content { transform: translateY(0); }
+
+@media (min-width: 768px) {
+    .tier-modal-overlay { align-items: center; }
+    .tier-modal-content { border-radius: 24px; border: 1px solid var(--border); padding: 40px; transform: scale(0.9); }
+    .tier-modal-overlay.active .tier-modal-content { transform: scale(1); }
+}
+
+.tier-icon-large { font-size: 3.5rem; margin-bottom: 15px; }
+.tier-title { font-size: 1.5rem; font-family: 'Syne', sans-serif; color: var(--text); margin-bottom: 8px; }
+.tier-desc { font-size: 0.95rem; color: var(--text2); margin-bottom: 25px; line-height: 1.5; }
+
+/* Progress Bar */
+.tier-progress-bg { width: 100%; height: 10px; background: rgba(255,255,255,0.1); border-radius: 99px; overflow: hidden; margin-bottom: 10px; }
+.tier-progress-fill { height: 100%; background: linear-gradient(90deg, #7c6af7, #fbbf24); border-radius: 99px; width: 0%; transition: width 1s ease; }
+.tier-progress-text { font-size: 0.85rem; color: var(--text3); display: flex; justify-content: space-between; font-weight: 600;}
+
+/* =========================================================
+   🌞 LIGHT MODE OVERRIDES FOR TIER BADGES
+   ========================================================= */
+
+[data-theme="light"] .user-tier-badge {
+    background: rgba(0, 0, 0, 0.02);
+    border-color: rgba(0, 0, 0, 0.06);
+}
+
+/* 🧭 Explorer Fix */
+[data-theme="light"] .tier-explorer { 
+    color: #374151 !important; 
+    border-color: #9ca3af !important; 
+    background: rgba(0, 0, 0, 0.04) !important;
+}
+
+/* 🥈 Silver Fix */
+[data-theme="light"] .tier-silver { 
+    color: #1e293b !important; 
+    border-color: #94a3b8 !important; 
+    background: rgba(30, 41, 59, 0.06) !important;
+}
+
+/* 🥇 Gold Fix */
+[data-theme="light"] .tier-gold { 
+    color: #b45309 !important; 
+    border-color: #d97706 !important; 
+    background: rgba(180, 83, 9, 0.06) !important;
+}
+
+/* 💎 Diamond Fix */
+[data-theme="light"] .tier-diamond { 
+    color: #0369a1 !important; 
+    border-color: #0284c7 !important; 
+    background: rgba(3, 105, 161, 0.06) !important;
+}
+
+/* Info Icon Color alignment */
+[data-theme="light"] .user-tier-badge i {
+    color: inherit !important;
+    opacity: 0.7;
+}
+
+#premium-announcement-bar {
+    background: #0a0a0f; 
+    border-bottom: 1px solid rgba(245, 158, 11, 0.3); 
+    color: #fbbf24; 
+    /* 🔥 FIX 1: Sticky kiya taaki header ke sath scroll ho */
+    position: sticky;
+    top: 0;
+    overflow: hidden; 
+    max-height: 0; 
+    opacity: 0;
+    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease; 
+    z-index: 1002; 
+    /* 🔥 FIX 2: Gap ko jad se khatam karne ke liye -1px margin */
+    margin-bottom: -1px; 
+}
+
+#premium-announcement-bar.show-banner {
+    max-height: 40px;
+    opacity: 1;
+}
+
+#premium-announcement-bar.closed { 
+    max-height: 0; 
+    opacity: 1; /* 🔥 Fade nahi hoga, seedha upar sarak kar band hoga */
+    border-color: transparent;
+}
+
+/* Light Mode Overrides */
+[data-theme="light"] #premium-announcement-bar {
+    background: linear-gradient(90deg, #fef3c7, #fde68a) !important;
+    border-bottom: 1px solid #f59e0b !important;
+    color: #b45309 !important;
+}
+[data-theme="light"] .ann-text-container { color: #b45309 !important; }
+[data-theme="light"] .ann-close-btn { background: rgba(180, 83, 9, 0.1) !important; color: #b45309 !important; }
+
+/* 🔥 FIX 3: Transform hatakar sticky header ki position shift ki (No Layout Distortion) */
+body.banner-opened header {
+    top: 38px !important; 
+}
+header {
+    transition: top 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* 🔥 FIX 4: Refresh wale jhatke (Jitter) ko khatam karne ka rule */
+body.instant-load #premium-announcement-bar,
+body.instant-load header {
+    transition: none !important;
+}
+
+.announcement-content { display: flex; align-items: center; padding: 6px 24px; max-width: 1400px; margin: 0 auto; }
+.ann-text-container { flex: 1; overflow: hidden; white-space: nowrap; text-decoration: none; color: #fbbf24; position: relative; display: block; }
+.ann-marquee { display: inline-block; padding-left: 100%; animation: marqueeAnim 18s linear infinite; font-weight: 700; font-size: 0.8rem; font-family: 'Syne', sans-serif; letter-spacing: 0.5px; }
+@keyframes marqueeAnim { 0% { transform: translate(0, 0); } 100% { transform: translate(-100%, 0); } }
+#premium-announcement-bar::after { 
+    content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; 
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent); 
+    transform: skewX(-20deg); 
+    animation: shimmerBanner 5s infinite; 
+    pointer-events: none; 
+    /* 🔥 FIX: Shimmer ab refresh hone ke 0.5s baad smoothly shuru hoga */
+    animation-delay: 0.5s !important; 
+}
+@keyframes shimmerBanner { 0% { left: -100%; } 20%, 100% { left: 200%; } }
+.ann-close-btn { background: rgba(245, 158, 11, 0.1); border: none; color: #fbbf24; width: 22px; height: 22px; border-radius: 50%; cursor: pointer; display: flex; justify-content: center; align-items: center; margin-left: 12px; transition: 0.3s; flex-shrink: 0; font-size: 0.75rem; }
+.ann-close-btn:hover { background: rgba(245, 158, 11, 0.25); }
+
+/* =========================================================
+   👑 PREMIUM UNDO TOAST: ROYAL GOLD THEME (Dark & Light)
+   ========================================================= */
+.undo-toast {
+    position: fixed; 
+    bottom: 85px; 
+    left: 50%; 
+    transform: translateX(-50%) translateY(100px);
+    
+    /* 🔥 Dark Mode Theme Style */
+    background: #0a0a0f; 
+    border: 1px solid rgba(245, 158, 11, 0.4);
+    color: #ffffff; 
+    
+    /* 🔥 GOLDEN GLOW SHADOW: Chaaron taraf premium aura dikhega */
+    box-shadow: 0 4px 25px rgba(245, 158, 11, 0.3); 
+
+    padding: 12px 20px; 
+    border-radius: 8px; 
+    display: flex; 
+    align-items: center; 
+    gap: 20px; 
+    z-index: 100005; 
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); 
+    font-size: 0.9rem; 
+    white-space: nowrap;
+    font-family: 'Syne', sans-serif;
+}
+
+.undo-toast.hidden { display: none !important; }
+.undo-toast.show { transform: translateX(-50%) translateY(0); }
+
+/* 🔥 Dark Mode Button */
+.undo-toast button { 
+    background: transparent; 
+    border: none; 
+    color: #fbbf24; /* Pure Gold Button Text */
+    font-weight: 700; 
+    cursor: pointer; 
+    text-transform: uppercase; 
+    font-size: 0.9rem; 
+    letter-spacing: 0.5px;
+    transition: transform 0.2s ease;
+}
+.undo-toast button:hover {
+    transform: scale(1.05);
+}
+
+/* 👑 🌞 LIGHT MODE TOAST OVERRIDES (Banner se matching soft gold) */
+[data-theme="light"] .undo-toast {
+    background: linear-gradient(135deg, #fef3c7, #fde68a) !important;
+    border: 1px solid #f59e0b !important;
+    color: #b45309 !important; /* Dark Amber Text */
+    box-shadow: 0 4px 25px rgba(245, 158, 11, 0.2) !important;
+}
+[data-theme="light"] .undo-toast button {
+    color: #78350f !important; /* Ultra Dark Amber Button */
+}
+
+/* 🔥 Desktop aur Large Screens Par Responsiveness */
+@media (min-width: 1024px) {
+    .undo-toast {
+        bottom: 200px !important; 
+        padding: 18px 30px !important; 
+        font-size: 1.4rem !important; 
+        gap: 32px !important; 
+    }
+    .undo-toast button {
+        font-size: 1.4rem !important; 
+    }
+}
+
+/* 🔥 Desktop aur PC par close button aur content ko kone se andar sarakne ke liye */
+@media (min-width: 1024px) {
+    .announcement-content {
+        padding: 6px 60px !important; /* 24px se badha kar 60px kiya taaki kone se andar rahe */
+    }
+}
+
     </style>
 </head>
 <body>
+
+<script>
+    try {
+        const cachedData = localStorage.getItem('cache_data_settings');
+        if (cachedData) {
+            const data = JSON.parse(cachedData);
+            if (data.announcement && data.announcement.is_active) {
+                const closedVer = localStorage.getItem("closed_banner_version");
+                if (closedVer !== String(data.announcement.version)) {
+                    const lastAnim = localStorage.getItem("banner_anim_time");
+                    
+                    const path = window.location.pathname.toLowerCase();
+                    let pageKey = "home";
+                    if (path.includes("/books")) pageKey = "books"; // 🔥 FIX HERE TOO
+                    else if (path.includes("/library")) pageKey = "library";
+                    else if (path.includes("/info/contact")) pageKey = "contact";
+                    else if (path.includes("/info/privacy")) pageKey = "privacy";
+                    else if (path.includes("/info/terms")) pageKey = "terms";
+                    else if (path.includes("/info")) pageKey = "info";
+                    else if (path.includes("/payments")) pageKey = "payments";
+                    else if (path.includes("/login/support")) pageKey = "support";
+                    else if (path.includes("/login")) pageKey = "login";
+                    else if (path.includes("404")) pageKey = "404";
+
+                    if (data.announcement.show_on.includes(pageKey) && lastAnim && (Date.now() - parseInt(lastAnim)) <= (30 * 60 * 1000)) {
+                        document.body.classList.add("instant-load", "banner-opened");
+                    }
+                }
+            }
+        }
+    } catch(e) {}
+</script>
+
     <div id="change-password-modal" class="modal-overlay hidden">
     <div class="modal-box" style="text-align:left;">
         <h3 style="margin-bottom: 20px;">Change Password</h3>
@@ -671,7 +1013,6 @@
 
     <div id="loader" class="hidden"><div class="spinner"></div></div>
    
-
     <div id="drawer-overlay" class="drawer-overlay" onclick="window.closeProfileDrawer()"></div>
     <div id="profile-drawer" class="profile-drawer">
         <div class="drawer-header">
@@ -679,9 +1020,11 @@
             <i class="fas fa-times" onclick="window.closeProfileDrawer()"></i>
         </div>
         <div class="drawer-body">
-            <div class="drawer-avatar"><i id="profile-avatar-icon" class="fas fa-user-shield"></i></div>
+            <div class="drawer-avatar"><i id="profile-avatar-icon" class="fas fa-user"></i></div>
             <div class="drawer-name" id="profile-name">Library User</div>
-            <div class="drawer-mobile" id="profile-mobile">+XX XXXXXXXXXX</div>
+            <div class="drawer-mobile" id="profile-mobile" style="margin-bottom: 8px;">+XX XXXXXXXXXX</div>
+            
+            <div id="user-tier-container" style="margin-bottom: 30px;"></div>
             
             <div class="drawer-menu" id="auth-actions">
                 
@@ -691,7 +1034,6 @@
             
         </div>
     </div>
-
 
     <div id="confirm-modal" class="modal-overlay hidden">
         <div class="modal-box">
@@ -704,20 +1046,33 @@
         </div>
     </div>
 
-    <header>
-        <div class="flex align-center" style="gap: 12px;">
-            <i class="fas fa-book-open" style="color: var(--accent2); font-size: 1.4rem; text-shadow: 0 0 10px var(--glow);"></i>
-            <div class="header-logo-container">
-                <div class="header-logo">Islamic Library</div>
-                <div class="header-sub">by Shekh</div>
-            </div>
-        </div>
-        <div class="flex align-center" style="gap: 20px;">
-            <i id="theme-toggle-icon" class="fas fa-moon" style="font-size: 1.2rem; color: var(--text2); cursor: pointer;" onclick="window.toggleTheme()" title="Switch Theme"></i>
+<div id="premium-announcement-bar">
+    <div class="announcement-content">
+        <a href="javascript:void(0)" id="ann-link" class="ann-text-container">
+            <span id="ann-text" class="ann-marquee"></span>
+        </a>
+        <button class="ann-close-btn" onclick="window.closeAnnouncement()"><i class="fas fa-times"></i></button>
+    </div>
+</div>
 
-<i class="fas fa-user-circle" style="font-size: 1.3rem; color: var(--text2); cursor: pointer;" onclick="window.openProfileDrawer()" title="Profile"></i>
+<header>
+    <div class="flex align-center" style="gap: 12px;">
+        <i class="fas fa-book-open" style="color: var(--accent2); font-size: 1.4rem; text-shadow: 0 0 10px var(--glow);"></i>
+        <div class="header-logo-container">
+            <div class="header-logo">Islamic Library</div>
+            <div class="header-sub">by Shekh</div>
         </div>
-    </header>
+    </div>
+    <div class="flex align-center" style="gap: 20px;">
+        <i id="theme-toggle-icon" class="fas fa-moon" style="font-size: 1.2rem; color: var(--text2); cursor: pointer;" onclick="window.toggleTheme()" title="Switch Theme"></i>
+        <i class="fas fa-user-circle" style="font-size: 1.3rem; color: var(--text2); cursor: pointer;" onclick="window.openProfileDrawer()" title="Profile"></i>
+    </div>
+</header>
+
+<div id="ann-undo-toast" class="undo-toast hidden">
+    <span>Banner dismissed</span>
+    <button onclick="window.undoAnnouncement()">UNDO</button>
+</div>
 
         <script>
             (function() {
@@ -760,6 +1115,22 @@
         <a href="/info/" class="nav-item"><i class="fas fa-info-circle"></i><span>Info</span></a>
     </div>
 <div id="toast-container" style="z-index: 999999 !important;"></div>
+
+<div class="tier-modal-overlay" id="tierModal" onclick="closeTierModal(event)">
+    <div class="tier-modal-content" onclick="event.stopPropagation()">
+        <div class="tier-icon-large" id="modalTierIcon">🧭</div>
+        <h3 class="tier-title" id="modalTierTitle">You are an Explorer</h3>
+        <p class="tier-desc" id="modalTierDesc">Start your journey by purchasing your first book.</p>
+        
+        <div class="tier-progress-bg">
+            <div class="tier-progress-fill" id="modalTierProgress"></div>
+        </div>
+        <div class="tier-progress-text">
+            <span id="modalCurrentBooks">0 Books</span>
+            <span id="modalNextGoal">1 Book to Silver 🥈</span>
+        </div>
+    </div>
+</div>
 
     <script type="module">
         // ✅ FIREBASE IMPORTS (Updated with Auth)
@@ -821,20 +1192,19 @@ const db = initializeFirestore(app, {
             window.initTheme();
         };
 
-                 // ✅ 2. SIDEBAR / DRAWER FIX (Guest + Shield Icon)
-        window.openProfileDrawer = async function() {
-            document.getElementById("drawer-overlay").classList.add("active");
-            document.getElementById("profile-drawer").classList.add("active");
-            document.body.style.overflow = 'hidden';
+window.openProfileDrawer = async function() {
+    document.getElementById("drawer-overlay").classList.add("active");
+    document.getElementById("profile-drawer").classList.add("active");
+    document.body.style.overflow = 'hidden';
 
-            const userId = localStorage.getItem("islamic_user_id");
-            const authActions = document.getElementById("auth-actions");
-            const drawerFooter = document.getElementById("drawer-footer");
-            const loginPath = '/login/';
+    const userId = localStorage.getItem("islamic_user_id");
+    const authActions = document.getElementById("auth-actions");
+    const drawerFooter = document.getElementById("drawer-footer");
+    
+    const loginPath = '/login/';
 
-            if (userId) {
-                // Logged-in user: Normal Icon
-                        // 🔥 Naya Avatar Logic start
+    if (userId) {
+        // 🔥 Logged-in user ke liye Normal Icon
         const avatarContainer = document.querySelector(".drawer-avatar");
         const cachedPhoto = localStorage.getItem("islamic_user_photo");
 
@@ -843,37 +1213,125 @@ const db = initializeFirestore(app, {
         } else {
             avatarContainer.innerHTML = `<i id="profile-avatar-icon" class="fas fa-user"></i>`;
         }
-        // 🔥 Naya Avatar Logic end
-                
-                let cachedName = localStorage.getItem("islamic_user_name");
-                document.getElementById("profile-name").innerText = cachedName || "Library User";
-                document.getElementById("profile-mobile").innerText = localStorage.getItem("islamic_user_mobile") || "Registered User";
-                
-                authActions.innerHTML = `<button class="btn btn-outline" onclick="window.openChangePassword()"><i class="fas fa-key"></i> Change Password</button>`;
-                drawerFooter.innerHTML = `<button class="btn" style="background: rgba(244, 63, 94, 0.1); color: var(--danger); border: 1px solid rgba(244, 63, 94, 0.3); box-shadow: none;" onclick="window.showLogoutModal()"><i class="fas fa-sign-out-alt"></i> Log Out</button>`;
+        
+        let cachedName = localStorage.getItem("islamic_user_name");
+        document.getElementById("profile-name").innerText = cachedName || "Library User";
+        document.getElementById("profile-mobile").innerText = localStorage.getItem("islamic_user_mobile") || "Registered User";
+        
+        authActions.innerHTML = `<button class="btn btn-outline" onclick="window.openChangePassword()"><i class="fas fa-key"></i> Change Password</button>`;
+        drawerFooter.innerHTML = `<button class="btn" style="background: rgba(244, 63, 94, 0.1); color: var(--danger); border: 1px solid rgba(244, 63, 94, 0.3); box-shadow: none;" onclick="window.showLogoutModal()"><i class="fas fa-sign-out-alt"></i> Log Out</button>`;
 
-                if (!cachedName) {
-                    try {
-                        const { getFirestore, doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
-                        const dbInstance = getFirestore();
-                        const userDoc = await getDoc(doc(dbInstance, "users", userId));
-                        if (userDoc.exists() && userDoc.data().name) {
-                            localStorage.setItem("islamic_user_name", userDoc.data().name);
-                            document.getElementById("profile-name").innerText = userDoc.data().name;
-                        }
-                    } catch(e) {}
+        // 🚀 THE MAGIC: Call the Tier System (Token Efficient)
+        window.initUserTierSystem(userId);
+
+        if (!cachedName) {
+            try {
+                const { getFirestore, doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
+                const dbInstance = getFirestore();
+                const userDoc = await getDoc(doc(dbInstance, "users", userId));
+                if (userDoc.exists() && userDoc.data().name) {
+                    localStorage.setItem("islamic_user_name", userDoc.data().name);
+                    document.getElementById("profile-name").innerText = userDoc.data().name;
                 }
-            } else {
-                // Guest user: Shield Icon 🛡️
-                document.getElementById("profile-avatar-icon").className = "fas fa-user-shield";
-                
-                document.getElementById("profile-name").innerText = "Guest User";
-                document.getElementById("profile-mobile").innerText = "Welcome to Islamic Library";
-                authActions.innerHTML = ``;
-                drawerFooter.innerHTML = `<button class="btn" onclick="window.location.href='${loginPath}'"><i class="fas fa-sign-in-alt"></i> Login / Sign Up</button>`;
-            }
-        };
+            } catch(e) {}
+        }
+    } else {
+        // 🔥 Guest user ke liye Shield Icon 🛡️
+        document.getElementById("profile-avatar-icon").className = "fas fa-user-shield";
+        
+        document.getElementById("profile-name").innerText = "Guest User";
+        document.getElementById("profile-mobile").innerText = "Welcome to Islamic Library";
+        document.getElementById("user-tier-container").innerHTML = ``; // Hide badge for guests
+        authActions.innerHTML = ``;
+        drawerFooter.innerHTML = `<button class="btn" onclick="window.location.href='${loginPath}'"><i class="fas fa-sign-in-alt"></i> Login / Sign Up</button>`;
+    }
+};
 
+// =========================================================
+// 🚀 GAMIFICATION BACKEND & UI LOGIC (Copy this exactly)
+// =========================================================
+window.initUserTierSystem = async function(userId) {
+    if (!userId) return;
+
+    let approvedCount = 0;
+    const cachedTier = localStorage.getItem(`user_tier_${userId}`);
+    
+    // 1. CHEAPEST WAY: Check Permanent Cache First
+    if (cachedTier) {
+        approvedCount = parseInt(cachedTier);
+        window.renderTierUI(approvedCount);
+    } else {
+        // 2. TOKEN EFFICIENT WAY: 1 Read Only from Firebase
+        try {
+            const { getFirestore, collection, query, where, getCountFromServer } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
+            const dbInstance = getFirestore();
+            const paymentsRef = collection(dbInstance, "payments");
+            const q = query(paymentsRef, where("user_id", "==", userId), where("status", "==", "approved"));
+            
+            const snapshot = await getCountFromServer(q);
+            approvedCount = snapshot.data().count;
+            
+            // Save permanently in cache so it never costs tokens again
+            localStorage.setItem(`user_tier_${userId}`, approvedCount.toString());
+            window.renderTierUI(approvedCount);
+        } catch (error) {
+            console.error("Error fetching tier count:", error);
+        }
+    }
+};
+
+window.renderTierUI = function(booksBought) {
+    let tierName, tierClass, tierIcon, nextGoal, nextName, nextIcon;
+
+    if (booksBought >= 5) {
+        tierName = "Diamond Member"; tierClass = "tier-diamond"; tierIcon = "💎"; nextGoal = null;
+    } else if (booksBought >= 3) {
+        tierName = "Gold Member"; tierClass = "tier-gold"; tierIcon = "🥇"; nextGoal = 5; nextName = "Diamond"; nextIcon = "💎";
+    } else if (booksBought >= 1) {
+        tierName = "Silver Member"; tierClass = "tier-silver"; tierIcon = "🥈"; nextGoal = 3; nextName = "Gold"; nextIcon = "🥇";
+    } else {
+        tierName = "Explorer"; tierClass = "tier-explorer"; tierIcon = "🧭"; nextGoal = 1; nextName = "Silver"; nextIcon = "🥈";
+    }
+
+    // A. Inject Badge into Drawer
+    const badgeContainer = document.getElementById("user-tier-container");
+    if (badgeContainer) {
+        badgeContainer.innerHTML = `
+            <div class="user-tier-badge ${tierClass}" onclick="window.openTierModal()">
+                ${tierIcon} ${tierName} <i class="fas fa-info-circle" style="margin-left: 4px;"></i>
+            </div>
+        `;
+    }
+
+    // B. Setup Modal Content safely (if modal exists on page)
+    if(document.getElementById("modalTierIcon")) {
+        document.getElementById("modalTierIcon").innerText = tierIcon;
+        document.getElementById("modalTierTitle").innerText = `You are a ${tierName}`;
+        
+        if (nextGoal) {
+            let booksNeeded = nextGoal - booksBought;
+            document.getElementById("modalTierDesc").innerText = `You have purchased ${booksBought} book(s). Buy ${booksNeeded} more to unlock ${nextName}!`;
+            let progressPercent = (booksBought / nextGoal) * 100;
+            setTimeout(() => { document.getElementById("modalTierProgress").style.width = `${progressPercent}%`; }, 100);
+            document.getElementById("modalCurrentBooks").innerText = `${booksBought} Books`;
+            document.getElementById("modalNextGoal").innerText = `${nextGoal} for ${nextName} ${nextIcon}`;
+        } else {
+            document.getElementById("modalTierDesc").innerText = `You have unlocked the highest tier! Thank you for your immense support.`;
+            setTimeout(() => { document.getElementById("modalTierProgress").style.width = `100%`; }, 100);
+            document.getElementById("modalCurrentBooks").innerText = `${booksBought} Books`;
+            document.getElementById("modalNextGoal").innerText = `Max Level`;
+        }
+    }
+};
+
+window.openTierModal = function() {
+    document.getElementById("tierModal").classList.add("active");
+}
+window.closeTierModal = function(e) {
+    if (e.target.id === "tierModal" || e.target.classList.contains("close-btn")) {
+        document.getElementById("tierModal").classList.remove("active");
+    }
+}
 
         window.closeProfileDrawer = function() {
             document.getElementById("drawer-overlay").classList.remove("active");
@@ -989,17 +1447,40 @@ window.executeChangePassword = async function() {
         };
 
         window.shareBook = function() {
-            if (!currentEbook) return;
-            const siteUrl = window.location.origin + window.location.pathname.replace('books/', '/');
-            const shareText = `📚 Check out this Islamic eBook: "${currentEbook.title}" on Islamic Library by Shekh.\n\n${siteUrl}`;
+            // 🔥 Fix 1: Properly access the global book data
+            const bookData = window.currentEbook; 
+            if (!bookData) {
+                console.log("Book data not found for sharing");
+                return;
+            }
+            
+            // 🔥 Fix 2: Exact same URL rakha hai, replace() hata diya gaya hai
+            const siteUrl = window.location.href; 
+            
+            const shareText = `📚 Check out this Book: "${bookData.title}" on Islamic Library by Shekh.\n\n${siteUrl}`;
+            
             if (navigator.share) {
-                navigator.share({ title: currentEbook.title, text: shareText }).catch((error) => console.log('Error sharing:', error));
+                navigator.share({ title: bookData.title, text: shareText }).catch((error) => console.log('Error sharing:', error));
             } else {
                 if (navigator.clipboard && window.isSecureContext) { 
-                    navigator.clipboard.writeText(shareText).then(() => showToast("Link copied to clipboard!")); 
+                    // 🔥 Fix 3: Added window.showToast to prevent reference errors
+                    navigator.clipboard.writeText(shareText).then(() => {
+                        if (window.showToast) window.showToast("Link copied to clipboard!", "success");
+                    }); 
                 } else {
-                    let textArea = document.createElement("textarea"); textArea.value = shareText; textArea.style.position = "fixed"; document.body.appendChild(textArea); textArea.focus(); textArea.select();
-                    try { document.execCommand('copy'); showToast("Link copied to clipboard!"); } catch (err) { showToast("Failed to copy link", "error"); } textArea.remove();
+                    let textArea = document.createElement("textarea"); 
+                    textArea.value = shareText; 
+                    textArea.style.position = "fixed"; 
+                    document.body.appendChild(textArea); 
+                    textArea.focus(); 
+                    textArea.select();
+                    try { 
+                        document.execCommand('copy'); 
+                        if (window.showToast) window.showToast("Link copied to clipboard!", "success"); 
+                    } catch (err) { 
+                        if (window.showToast) window.showToast("Failed to copy link", "error"); 
+                    } 
+                    textArea.remove();
                 }
             }
         };
@@ -1047,6 +1528,7 @@ window.executeChangePassword = async function() {
             window.apiLocks = window.apiLocks || {};
             window.apiLocks[cacheKey] = true;
 
+            // === IS WALE TRY BLOCK KO DHOUNDHO AUR REPLACE KARO ===
             try {
                 const { getFirestore, collection, query, where, getDocs } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
                 const dbInstance = getFirestore();
@@ -1056,6 +1538,14 @@ window.executeChangePassword = async function() {
                 const snapshot = await getDocs(q);
                 const freshData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 
+                // 🔥 TIER CACHE SYNC: Fresh data aate hi bina token ke badge update karo
+                const freshApprovedCount = freshData.filter(p => p.status && p.status.toLowerCase() === "approved").length;
+                localStorage.setItem(`user_tier_${uid}`, freshApprovedCount.toString());
+                
+                if (typeof window.renderTierUI === "function") {
+                    window.renderTierUI(freshApprovedCount);
+                }
+
                 const freshDataStr = JSON.stringify(freshData);
                 
                 // Agar server par data badla hai tabhi cache update hoga
@@ -1242,7 +1732,7 @@ function renderDetail() {
                     const secureDocSnap = await getDoc(secureDocRef);
 
                     if (secureDocSnap.exists() && secureDocSnap.data().pdf_link) {
-                        window.showToast("Access Verified! Preparing file download...", "success");
+                        window.showToast("Access Verified! Opening Your Book...", "success");
                         
                         // 🔥 1-SECOND DELAY 🔥
                         setTimeout(() => {
@@ -1253,7 +1743,7 @@ function renderDetail() {
                             }
                         }, 1000);
                     } else {
-                        window.showToast("Secure file not found. Please contact admin.", "error");
+                        window.showToast("Unable to load the book. Please contact Support.", "error");
                         if (actionBtn.innerHTML.includes("Verifying")) {
                             actionBtn.innerHTML = originalHTML;
                             actionBtn.disabled = false;
@@ -1287,7 +1777,7 @@ function renderDetail() {
             if (window.currentEbook.pdf_link) {
                 window.open(window.currentEbook.pdf_link, "_blank");
             } else {
-                window.showToast("File link is currently unavailable.", "error");
+                window.showToast("Unable to load the book. Please contact Support.", "error");
             }
         };
     } 
@@ -1307,7 +1797,7 @@ function renderDetail() {
         actionBtn.onclick = () => {
             const currentUserId = localStorage.getItem("islamic_user_id");
             if (currentUserId) {
-                window.location.href = '/payments/';
+                window.location.href = '../payments/index.html';
             } else {
                 window.showToast("Please login to purchase premium books", "info");
                 const originalHTML = actionBtn.innerHTML;
@@ -1334,6 +1824,199 @@ function renderDetail() {
         };
     }
 }
+
+// 📂 1. AUTOMATIC URL & FOLDER DETECTOR
+function getCleanPageName() {
+    const path = window.location.pathname.toLowerCase();
+    
+    if (path.includes("/books")) return "books"; // 🔥 FIX: Sirf books folder check karega
+    if (path.includes("/library")) return "library";
+    if (path.includes("/info/contact")) return "contact";
+    if (path.includes("/info/privacy")) return "privacy";
+    if (path.includes("/info/terms")) return "terms";
+    if (path.includes("/info")) return "info"; 
+    if (path.includes("/payments")) return "payments";
+    if (path.includes("/login/support")) return "support";
+    if (path.includes("/login")) return "login";
+    if (path.includes("404")) return "404";
+    
+    if (path === "/" || path.endsWith("/index.html") || path === "") return "home";
+    return "home";
+}
+const currentPageName = getCleanPageName();
+
+// 🔥 2. REFRESH CHECK (0.1s Jhatka Khatam)
+try {
+    const cachedData = localStorage.getItem('cache_data_settings');
+    if (cachedData) {
+        const data = JSON.parse(cachedData);
+        if (data.announcement && data.announcement.is_active && data.announcement.show_on.includes(currentPageName)) {
+            const closedVer = localStorage.getItem("closed_banner_version");
+            if (closedVer !== String(data.announcement.version)) {
+                const lastAnim = localStorage.getItem("banner_anim_time");
+                
+                if (lastAnim && (Date.now() - parseInt(lastAnim)) <= (30 * 60 * 1000)) {
+                    document.body.classList.add("instant-load", "banner-opened");
+                    
+                    document.addEventListener("DOMContentLoaded", () => {
+                        const bar = document.getElementById("premium-announcement-bar");
+                        const textEl = document.getElementById("ann-text");
+                        if (textEl) textEl.innerText = data.announcement.text;
+                        
+                        const linkEl = document.getElementById("ann-link");
+                        if (linkEl && data.announcement.link_url) {
+                            linkEl.href = data.announcement.link_url;
+                            linkEl.target = "_blank";
+                            linkEl.style.pointerEvents = "auto";
+                        }
+                        if (bar) {
+                            bar.classList.add("show-banner");
+                            bar.dataset.version = data.announcement.version;
+                        }
+                        setTimeout(() => { document.body.classList.remove("instant-load"); }, 100);
+                    });
+                }
+            }
+        }
+    }
+} catch(e) {}
+
+// ✅ 3. USER PANEL: Firebase se Master Categories aur Languages (60 Min Cache)
+document.addEventListener("DOMContentLoaded", () => {
+    setTimeout(async () => {
+        try {
+            const CACHE_TIME_LIMIT = 60 * 60 * 1000; // 60 Minutes
+            const now = Date.now();
+            const savedTime = localStorage.getItem('cache_time_settings');
+            const savedDataStr = localStorage.getItem('cache_data_settings');
+
+            let data;
+
+            if (savedTime && savedDataStr && (now - parseInt(savedTime)) < CACHE_TIME_LIMIT) {
+                data = JSON.parse(savedDataStr); 
+            } else {
+                const { getFirestore, doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
+                const dbInstance = getFirestore();
+                const docRef = doc(dbInstance, "settings", "app_data");
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    data = docSnap.data();
+                    localStorage.setItem('cache_data_settings', JSON.stringify(data));
+                    localStorage.setItem('cache_time_settings', now.toString());
+                }
+            }
+
+            if (data) {
+                // 1. Categories Dropdown update
+                if (data.categories) {
+                    const catContainer = document.getElementById('cat-options');
+                    if (catContainer) {
+                        data.categories.forEach(cat => {
+                            const lowerCat = cat.toLowerCase();
+                            const exists = Array.from(catContainer.children).some(el => el.innerText.trim().toLowerCase() === lowerCat);
+                            if (!exists) {
+                                const newDiv = document.createElement('div');
+                                newDiv.className = 'f-option'; newDiv.innerText = cat; 
+                                newDiv.onclick = (e) => window.setCatFilter(lowerCat, cat, e);
+                                catContainer.appendChild(newDiv);
+                            }
+                        });
+                    }
+                }
+
+                // 2. Languages Dropdown update
+                if (data.languages) {
+                    const langContainer = document.getElementById('lang-options');
+                    if (langContainer) {
+                        data.languages.forEach(lang => {
+                            const lowerLang = lang.toLowerCase();
+                            const exists = Array.from(langContainer.children).some(el => el.innerText.trim().toLowerCase() === lowerLang);
+                            if (!exists) {
+                                const newDiv = document.createElement('div');
+                                newDiv.className = 'f-option'; newDiv.innerText = lang; 
+                                newDiv.onclick = (e) => window.setLangFilter(lowerLang, lang, e);
+                                langContainer.appendChild(newDiv);
+                            }
+                        });
+                    }
+                }
+
+                // 3. ANNOUNCEMENT BANNER LOGIC (First-time Animation Control)
+                if (data.announcement && data.announcement.is_active && data.announcement.show_on.includes(currentPageName)) {
+                    const annData = data.announcement;
+                    const closedVer = localStorage.getItem("closed_banner_version");
+                    if (closedVer !== String(annData.version)) {
+                        const bar = document.getElementById("premium-announcement-bar");
+                        
+                        const textEl = document.getElementById("ann-text");
+                        if (textEl && textEl.innerText === "") textEl.innerText = annData.text;
+                        
+                        const linkEl = document.getElementById("ann-link");
+                        if (linkEl && !linkEl.getAttribute("href").includes("http")) {
+                            if (annData.link_url) {
+                                linkEl.href = annData.link_url; linkEl.target = "_blank"; linkEl.style.pointerEvents = "auto";
+                            } else {
+                                linkEl.href = "javascript:void(0)"; linkEl.removeAttribute("target"); linkEl.style.pointerEvents = "none";
+                            }
+                        }
+                        
+                        if (bar) bar.dataset.version = annData.version;
+
+                        const lastAnim = localStorage.getItem("banner_anim_time");
+                        if (!lastAnim || (now - parseInt(lastAnim)) > (30 * 60 * 1000)) {
+                            setTimeout(() => {
+                                document.body.classList.add("banner-opened");
+                                if (bar) bar.classList.add("show-banner"); 
+                                localStorage.setItem("banner_anim_time", Date.now().toString());
+                            }, 1000);
+                        }
+                    }
+                }
+
+            }
+        } catch (error) { console.error("User Panel Master Tags Load Error:", error); }
+    }, 500); 
+});
+
+// 🔴 GLOBAL CLOSE AND UNDO MANAGEMENT
+let undoTimeout;
+window.closeAnnouncement = function() {
+    const bar = document.getElementById("premium-announcement-bar");
+    if (!bar) return;
+    
+    localStorage.setItem("closed_banner_version", bar.dataset.version);
+    bar.classList.add("closed");
+    document.body.classList.remove("banner-opened");
+    
+    const toast = document.getElementById("ann-undo-toast");
+    if (toast) {
+        toast.classList.remove("hidden");
+        setTimeout(() => toast.classList.add("show"), 10);
+    }
+    
+    undoTimeout = setTimeout(() => {
+        if (toast) {
+            toast.classList.remove("show");
+            setTimeout(() => toast.classList.add("hidden"), 400); 
+        }
+    }, 4000);
+};
+
+window.undoAnnouncement = function() {
+    clearTimeout(undoTimeout);
+    localStorage.removeItem("closed_banner_version"); 
+    
+    const bar = document.getElementById("premium-announcement-bar");
+    if (bar) bar.classList.remove("closed");
+    document.body.classList.add("banner-opened");
+    
+    const toast = document.getElementById("ann-undo-toast");
+    if (toast) {
+        toast.classList.remove("show");
+        setTimeout(() => toast.classList.add("hidden"), 400);
+    }
+};
 
     </script>
 
