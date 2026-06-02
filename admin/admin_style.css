@@ -38,7 +38,7 @@ h1, h2, h3 { font-family: 'Syne', sans-serif; color: var(--text); font-weight: 7
 
 /* ===== DECORATIVE ELEMENTS ===== */
 body::before { content:''; position:fixed; inset:0; pointer-events:none; z-index:9999; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E"); opacity:0.4; }
-.hero-bg { position:fixed; inset:0; pointer-events:none; z-index:-2; background: radial-gradient(ellipse 80% 50% at 50% -10%,rgba(124,106,247,0.2) 0%,transparent 70%), radial-gradient(ellipse 50% 40% at 80% 60%,rgba(168,85,247,0.12) 0%,transparent 60%), radial-gradient(ellipse 40% 30% at 20% 70%,rgba(99,102,241,0.1) 0%,transparent 60%); }
+.hero-bg { position:fixed; inset:0; pointer-events:none; z-index:-2; background: radial-gradient(ellipse 80% 50% at 50% -10%,rgba(124,106,247,0.2) 0%,transparent 70%), radial-gradient(ellipse 50% 40% at 80% 60%,rgba(168,85,247,0.12) 0%,transparent 60%), radial-gradient(ellipse 40% 30% at 20% 70%,rgba(99,102,241,0.1) 0%,transparent 60%); will-change: transform; }
 .hero-grid { position:fixed; inset:0; pointer-events:none; z-index:-1; background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px); background-size:48px 48px; mask-image:radial-gradient(ellipse 100% 100% at 50% 50%,black 40%,transparent 100%); opacity:0.6; }
 .blob { position:fixed; border-radius:50%; filter:blur(80px); pointer-events:none; animation:blobFloat 8s ease-in-out infinite; z-index:-1; }
 .blob1 { width:400px; height:400px; background:rgba(124,106,247,0.18); top:-100px; left:-100px; animation-delay:0s; }
@@ -69,8 +69,27 @@ label, .form-group label { display: block; margin-bottom: 6px; font-size: .78rem
 .btn::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,0.15),transparent); opacity:0; transition:opacity var(--transition); }
 .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(124,106,247,0.5); }
 .btn:hover:not(:disabled)::before { opacity: 1; } .btn:active { transform: translateY(0) scale(0.98); }
-.btn-outline { background: transparent; color: var(--text2); border: 1px solid var(--border2); box-shadow: none; }
-.btn-outline:hover:not(:disabled) { border-color: var(--accent); color: var(--accent2); background: var(--glow2); box-shadow: none; transform: translateY(-2px); }
+        /* 🔥 UNIVERSAL OUTLINE BUTTON GLOW FIX (Sabhi pages ke liye) 🔥 */
+        .btn-outline { 
+            background: transparent; 
+            color: var(--text2); 
+            border: 1px solid var(--border2); 
+            padding: 10px 20px; 
+            border-radius: 99px; 
+            font-weight: 500; 
+            font-size: .85rem; 
+            transition: var(--transition); 
+            cursor: pointer; 
+            /* Yahan se 'box-shadow: none;' permanently hata diya gaya hai taaki original glow aaye */
+        }
+        
+        .btn-outline:hover { 
+            border-color: var(--accent); 
+            color: var(--accent2); 
+            background: var(--glow2); 
+            transform: translateY(-2px); /* Hover par thoda sa upar uthega */
+            box-shadow: 0 8px 30px rgba(124, 106, 247, 0.4); /* 🔥 Ekdum premium hover glow 🔥 */
+        }
 .btn-danger { background: rgba(244, 63, 94, 0.1); color: var(--danger); border: 1px solid rgba(244, 63, 94, 0.3); box-shadow: none; }
 .btn-danger:hover:not(:disabled) { background: var(--danger); color: #fff; box-shadow: 0 4px 20px rgba(244, 63, 94, 0.4); }
 .btn-success { background: rgba(16, 185, 129, 0.1); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.3); box-shadow: none; }
@@ -154,3 +173,17 @@ main { padding: 24px 20px 90px; max-width: 1400px; margin: 0 auto; animation: fa
 @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
 @keyframes cardIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
 @keyframes blobFloat { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(20px,-20px) scale(1.05)} 66%{transform:translate(-15px,15px) scale(0.97)} }
+
+/* ===== CUSTOM PREMIUM CHECKBOXES FOR SETTINGS ===== */
+.checkbox-group { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 20px; }
+.custom-checkbox { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.9rem; color: var(--text2); }
+.custom-checkbox input { display: none; }
+.custom-checkbox .checkmark { width: 20px; height: 20px; border: 1px solid var(--border2); border-radius: 6px; background: var(--surface3); display: flex; align-items: center; justify-content: center; transition: var(--transition); }
+.custom-checkbox input:checked + .checkmark { background: var(--accent); border-color: var(--accent); }
+.custom-checkbox .checkmark::after { content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: #fff; font-size: 0.7rem; opacity: 0; transform: scale(0.5); transition: var(--transition); }
+.custom-checkbox input:checked + .checkmark::after { opacity: 1; transform: scale(1); }
+.custom-checkbox:hover .checkmark { border-color: var(--accent2); }
+
+/* Premium Coming Soon Overlay for Coupons */
+.coming-soon-overlay { position: relative; opacity: 0.6; pointer-events: none; }
+.coming-soon-badge { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--glow); border: 1px solid var(--accent); color: var(--accent2); padding: 8px 16px; border-radius: 99px; font-weight: 700; z-index: 10; backdrop-filter: blur(5px); box-shadow: 0 0 20px var(--glow2); }
