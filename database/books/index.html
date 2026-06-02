@@ -1457,7 +1457,7 @@ window.executeChangePassword = async function() {
             // 🔥 Fix 2: Exact same URL rakha hai, replace() hata diya gaya hai
             const siteUrl = window.location.href; 
             
-            const shareText = `📚 Check out this Islamic eBook: "${bookData.title}" on Islamic Library by Shekh.\n\n${siteUrl}`;
+            const shareText = `📚 Check out this Book: "${bookData.title}" on Islamic Library by Shekh.\n\n${siteUrl}`;
             
             if (navigator.share) {
                 navigator.share({ title: bookData.title, text: shareText }).catch((error) => console.log('Error sharing:', error));
