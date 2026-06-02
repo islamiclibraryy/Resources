@@ -15,16 +15,16 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/icons/hikmahlogo.png">
 
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://mysite.pages.dev/login/">
+    <meta property="og:url" content="https://islamiclibrary.pages.dev/login/">
     <meta property="og:title" content="Login to Your Account | Islamic Library by Shekh">
     <meta property="og:description" content="Sign in to access your personal Islamic eBook collection.">
-    <meta property="og:image" content="https://mysite.pages.dev/icons/hikmahlogo.png">
+    <meta property="og:image" content="https://islamiclibrary.pages.dev/icons/hikmahlogo.png">
 
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:url" content="https://mysite.pages.dev/login/">
+    <meta name="twitter:url" content="https://islamiclibrary.pages.dev/login/">
     <meta name="twitter:title" content="Login to Your Account | Islamic Library by Shekh">
     <meta name="twitter:description" content="Sign in to access your personal Islamic eBook collection.">
-    <meta name="twitter:image" content="https://mysite.pages.dev/icons/hikmahlogo.png">
+    <meta name="twitter:image" content="https://islamiclibrary.pages.dev/icons/hikmahlogo.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
@@ -334,9 +334,210 @@
             }
         }
 
+#premium-announcement-bar {
+    background: #0a0a0f; 
+    border-bottom: 1px solid rgba(245, 158, 11, 0.3); 
+    color: #fbbf24; 
+    /* 🔥 FIX 1: Sticky kiya taaki header ke sath scroll ho */
+    position: sticky;
+    top: 0;
+    overflow: hidden; 
+    max-height: 0; 
+    opacity: 0;
+    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease; 
+    z-index: 1002; 
+    /* 🔥 FIX 2: Gap ko jad se khatam karne ke liye -1px margin */
+    margin-bottom: -1px; 
+}
+
+#premium-announcement-bar.show-banner {
+    max-height: 40px;
+    opacity: 1;
+}
+
+#premium-announcement-bar.closed { 
+    max-height: 0; 
+    opacity: 1; /* 🔥 Fade nahi hoga, seedha upar sarak kar band hoga */
+    border-color: transparent;
+}
+
+/* Light Mode Overrides */
+[data-theme="light"] #premium-announcement-bar {
+    background: linear-gradient(90deg, #fef3c7, #fde68a) !important;
+    border-bottom: 1px solid #f59e0b !important;
+    color: #b45309 !important;
+}
+[data-theme="light"] .ann-text-container { color: #b45309 !important; }
+[data-theme="light"] .ann-close-btn { background: rgba(180, 83, 9, 0.1) !important; color: #b45309 !important; }
+
+/* 🔥 FIX 3: Transform hatakar sticky header ki position shift ki (No Layout Distortion) */
+body.banner-opened header {
+    top: 38px !important; 
+}
+header {
+    transition: top 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* 🔥 FIX 4: Refresh wale jhatke (Jitter) ko khatam karne ka rule */
+body.instant-load #premium-announcement-bar,
+body.instant-load header {
+    transition: none !important;
+}
+
+.announcement-content { display: flex; align-items: center; padding: 6px 24px; max-width: 1400px; margin: 0 auto; }
+.ann-text-container { flex: 1; overflow: hidden; white-space: nowrap; text-decoration: none; color: #fbbf24; position: relative; display: block; }
+.ann-marquee { display: inline-block; padding-left: 100%; animation: marqueeAnim 18s linear infinite; font-weight: 700; font-size: 0.8rem; font-family: 'Syne', sans-serif; letter-spacing: 0.5px; }
+@keyframes marqueeAnim { 0% { transform: translate(0, 0); } 100% { transform: translate(-100%, 0); } }
+#premium-announcement-bar::after { 
+    content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; 
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent); 
+    transform: skewX(-20deg); 
+    animation: shimmerBanner 5s infinite; 
+    pointer-events: none; 
+    /* 🔥 FIX: Shimmer ab refresh hone ke 0.5s baad smoothly shuru hoga */
+    animation-delay: 0.5s !important; 
+}
+@keyframes shimmerBanner { 0% { left: -100%; } 20%, 100% { left: 200%; } }
+.ann-close-btn { background: rgba(245, 158, 11, 0.1); border: none; color: #fbbf24; width: 22px; height: 22px; border-radius: 50%; cursor: pointer; display: flex; justify-content: center; align-items: center; margin-left: 12px; transition: 0.3s; flex-shrink: 0; font-size: 0.75rem; }
+.ann-close-btn:hover { background: rgba(245, 158, 11, 0.25); }
+
+/* =========================================================
+   👑 PREMIUM UNDO TOAST: ROYAL GOLD THEME (Dark & Light)
+   ========================================================= */
+.undo-toast {
+    position: fixed; 
+    bottom: 85px; 
+    left: 50%; 
+    transform: translateX(-50%) translateY(100px);
+    
+    /* 🔥 Dark Mode Theme Style */
+    background: #0a0a0f; 
+    border: 1px solid rgba(245, 158, 11, 0.4);
+    color: #ffffff; 
+    
+    /* 🔥 GOLDEN GLOW SHADOW: Chaaron taraf premium aura dikhega */
+    box-shadow: 0 4px 25px rgba(245, 158, 11, 0.3); 
+
+    padding: 12px 20px; 
+    border-radius: 8px; 
+    display: flex; 
+    align-items: center; 
+    gap: 20px; 
+    z-index: 100005; 
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); 
+    font-size: 0.9rem; 
+    white-space: nowrap;
+    font-family: 'Syne', sans-serif;
+}
+
+.undo-toast.hidden { display: none !important; }
+.undo-toast.show { transform: translateX(-50%) translateY(0); }
+
+/* 🔥 Dark Mode Button */
+.undo-toast button { 
+    background: transparent; 
+    border: none; 
+    color: #fbbf24; /* Pure Gold Button Text */
+    font-weight: 700; 
+    cursor: pointer; 
+    text-transform: uppercase; 
+    font-size: 0.9rem; 
+    letter-spacing: 0.5px;
+    transition: transform 0.2s ease;
+}
+.undo-toast button:hover {
+    transform: scale(1.05);
+}
+
+/* 👑 🌞 LIGHT MODE TOAST OVERRIDES (Banner se matching soft gold) */
+[data-theme="light"] .undo-toast {
+    background: linear-gradient(135deg, #fef3c7, #fde68a) !important;
+    border: 1px solid #f59e0b !important;
+    color: #b45309 !important; /* Dark Amber Text */
+    box-shadow: 0 4px 25px rgba(245, 158, 11, 0.2) !important;
+}
+[data-theme="light"] .undo-toast button {
+    color: #78350f !important; /* Ultra Dark Amber Button */
+}
+
+/* 🔥 Desktop aur Large Screens Par Responsiveness */
+@media (min-width: 1024px) {
+    .undo-toast {
+        bottom: 200px !important; 
+        padding: 18px 30px !important; 
+        font-size: 1.4rem !important; 
+        gap: 32px !important; 
+    }
+    .undo-toast button {
+        font-size: 1.4rem !important; 
+    }
+}
+
+/* 🔥 Desktop aur PC par close button aur content ko kone se andar sarakne ke liye */
+@media (min-width: 1024px) {
+    .announcement-content {
+        padding: 6px 60px !important; /* 24px se badha kar 60px kiya taaki kone se andar rahe */
+    }
+}
+/* =========================================================
+   🔥 FIX: BANNER OPEN HONE PAR SUB-HEADER STICKY BOUNDARY 🔥
+   ========================================================= */
+
+/* 📱 Mobile Par: Jab banner khula ho, toh sub-header ko 38px aur niche stick karo */
+body.banner-opened .stepper-wrap {
+    top: 106px !important; /* 68px + 38px (Banner Height) */
+}
+
+/* 🖥️ Desktop Par: Jab banner khula ho, toh sub-header ko 38px aur niche stick karo */
+@media screen and (min-width: 768px) {
+    body.banner-opened .stepper-wrap {
+        top: 123px !important; /* 85px + 38px (Banner Height) */
+    }
+}
+/* 🔥 STEPPER SMOOTH SLIDE FIX 🔥 */
+.stepper-wrap {
+    transition: top 0.5s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease, border-color 0.3s ease !important;
+}
+
+body.instant-load .stepper-wrap {
+    transition: none !important;
+}
+
     </style>
 </head>
 <body>
+
+<script>
+    try {
+        const cachedData = localStorage.getItem('cache_data_settings');
+        if (cachedData) {
+            const data = JSON.parse(cachedData);
+            if (data.announcement && data.announcement.is_active) {
+                const closedVer = localStorage.getItem("closed_banner_version");
+                if (closedVer !== String(data.announcement.version)) {
+                    const lastAnim = localStorage.getItem("banner_anim_time");
+                    
+                    const path = window.location.pathname.toLowerCase();
+                    let pageKey = "home";
+                    if (path.includes("/books")) pageKey = "books"; // 🔥 FIX HERE TOO
+                    else if (path.includes("/library")) pageKey = "library";
+                    else if (path.includes("/info/contact")) pageKey = "contact";
+                    else if (path.includes("/info/privacy")) pageKey = "privacy";
+                    else if (path.includes("/info/terms")) pageKey = "terms";
+                    else if (path.includes("/info")) pageKey = "info";
+                    else if (path.includes("/payments")) pageKey = "payments";
+                    else if (path.includes("/login/support")) pageKey = "support";
+                    else if (path.includes("/login")) pageKey = "login";
+                    else if (path.includes("404")) pageKey = "404";
+
+                    if (data.announcement.show_on.includes(pageKey) && lastAnim && (Date.now() - parseInt(lastAnim)) <= (30 * 60 * 1000)) {
+                        document.body.classList.add("instant-load", "banner-opened");
+                    }
+                }
+            }
+        }
+    } catch(e) {}
+</script>
 
     <div class="hero-bg"></div>
     <div class="hero-grid"></div>
@@ -366,6 +567,15 @@
     </div>
 </div>
 
+<div id="premium-announcement-bar">
+    <div class="announcement-content">
+        <a href="javascript:void(0)" id="ann-link" class="ann-text-container">
+            <span id="ann-text" class="ann-marquee"></span>
+        </a>
+        <button class="ann-close-btn" onclick="window.closeAnnouncement()"><i class="fas fa-times"></i></button>
+    </div>
+</div>
+
 <header>
     <div class="flex align-center" style="gap: 12px;">
         <i class="fas fa-book-open" style="color: var(--accent2); font-size: 1.4rem; text-shadow: 0 0 10px var(--glow);"></i>
@@ -376,10 +586,14 @@
     </div>
     <div class="flex align-center" style="gap: 20px;">
         <i id="theme-toggle-icon" class="fas fa-moon" style="font-size: 1.2rem; color: var(--text2); cursor: pointer;" onclick="window.toggleTheme()" title="Switch Theme"></i>
-
-<i class="fas fa-user-circle" style="font-size: 1.3rem; color: var(--text2); cursor: pointer;" onclick="window.openProfileDrawer()" title="Profile"></i>
+        <i class="fas fa-user-circle" style="font-size: 1.3rem; color: var(--text2); cursor: pointer;" onclick="window.openProfileDrawer()" title="Profile"></i>
     </div>
 </header>
+
+<div id="ann-undo-toast" class="undo-toast hidden">
+    <span>Banner dismissed</span>
+    <button onclick="window.undoAnnouncement()">UNDO</button>
+</div>
 
         <script>
             (function() {
@@ -1076,6 +1290,198 @@ document.addEventListener('DOMContentLoaded', () => {
     if (icon) icon.className = savedTheme === 'light' ? 'fas fa-sun' : 'fas fa-moon';
 });
 
+// 📂 1. AUTOMATIC URL & FOLDER DETECTOR
+function getCleanPageName() {
+    const path = window.location.pathname.toLowerCase();
+    
+    if (path.includes("/books")) return "books"; // 🔥 FIX: Sirf books folder check karega
+    if (path.includes("/library")) return "library";
+    if (path.includes("/info/contact")) return "contact";
+    if (path.includes("/info/privacy")) return "privacy";
+    if (path.includes("/info/terms")) return "terms";
+    if (path.includes("/info")) return "info"; 
+    if (path.includes("/payments")) return "payments";
+    if (path.includes("/login/support")) return "support";
+    if (path.includes("/login")) return "login";
+    if (path.includes("404")) return "404";
+    
+    if (path === "/" || path.endsWith("/index.html") || path === "") return "home";
+    return "home";
+}
+const currentPageName = getCleanPageName();
+
+// 🔥 2. REFRESH CHECK (0.1s Jhatka Khatam)
+try {
+    const cachedData = localStorage.getItem('cache_data_settings');
+    if (cachedData) {
+        const data = JSON.parse(cachedData);
+        if (data.announcement && data.announcement.is_active && data.announcement.show_on.includes(currentPageName)) {
+            const closedVer = localStorage.getItem("closed_banner_version");
+            if (closedVer !== String(data.announcement.version)) {
+                const lastAnim = localStorage.getItem("banner_anim_time");
+                
+                if (lastAnim && (Date.now() - parseInt(lastAnim)) <= (30 * 60 * 1000)) {
+                    document.body.classList.add("instant-load", "banner-opened");
+                    
+                    document.addEventListener("DOMContentLoaded", () => {
+                        const bar = document.getElementById("premium-announcement-bar");
+                        const textEl = document.getElementById("ann-text");
+                        if (textEl) textEl.innerText = data.announcement.text;
+                        
+                        const linkEl = document.getElementById("ann-link");
+                        if (linkEl && data.announcement.link_url) {
+                            linkEl.href = data.announcement.link_url;
+                            linkEl.target = "_blank";
+                            linkEl.style.pointerEvents = "auto";
+                        }
+                        if (bar) {
+                            bar.classList.add("show-banner");
+                            bar.dataset.version = data.announcement.version;
+                        }
+                        setTimeout(() => { document.body.classList.remove("instant-load"); }, 100);
+                    });
+                }
+            }
+        }
+    }
+} catch(e) {}
+
+// ✅ 3. USER PANEL: Firebase se Master Categories aur Languages (60 Min Cache)
+document.addEventListener("DOMContentLoaded", () => {
+    setTimeout(async () => {
+        try {
+            const CACHE_TIME_LIMIT = 60 * 60 * 1000; // 60 Minutes
+            const now = Date.now();
+            const savedTime = localStorage.getItem('cache_time_settings');
+            const savedDataStr = localStorage.getItem('cache_data_settings');
+
+            let data;
+
+            if (savedTime && savedDataStr && (now - parseInt(savedTime)) < CACHE_TIME_LIMIT) {
+                data = JSON.parse(savedDataStr); 
+            } else {
+                const { getFirestore, doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
+                const dbInstance = getFirestore();
+                const docRef = doc(dbInstance, "settings", "app_data");
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    data = docSnap.data();
+                    localStorage.setItem('cache_data_settings', JSON.stringify(data));
+                    localStorage.setItem('cache_time_settings', now.toString());
+                }
+            }
+
+            if (data) {
+                // 1. Categories Dropdown update
+                if (data.categories) {
+                    const catContainer = document.getElementById('cat-options');
+                    if (catContainer) {
+                        data.categories.forEach(cat => {
+                            const lowerCat = cat.toLowerCase();
+                            const exists = Array.from(catContainer.children).some(el => el.innerText.trim().toLowerCase() === lowerCat);
+                            if (!exists) {
+                                const newDiv = document.createElement('div');
+                                newDiv.className = 'f-option'; newDiv.innerText = cat; 
+                                newDiv.onclick = (e) => window.setCatFilter(lowerCat, cat, e);
+                                catContainer.appendChild(newDiv);
+                            }
+                        });
+                    }
+                }
+
+                // 2. Languages Dropdown update
+                if (data.languages) {
+                    const langContainer = document.getElementById('lang-options');
+                    if (langContainer) {
+                        data.languages.forEach(lang => {
+                            const lowerLang = lang.toLowerCase();
+                            const exists = Array.from(langContainer.children).some(el => el.innerText.trim().toLowerCase() === lowerLang);
+                            if (!exists) {
+                                const newDiv = document.createElement('div');
+                                newDiv.className = 'f-option'; newDiv.innerText = lang; 
+                                newDiv.onclick = (e) => window.setLangFilter(lowerLang, lang, e);
+                                langContainer.appendChild(newDiv);
+                            }
+                        });
+                    }
+                }
+
+                // 3. ANNOUNCEMENT BANNER LOGIC (First-time Animation Control)
+                if (data.announcement && data.announcement.is_active && data.announcement.show_on.includes(currentPageName)) {
+                    const annData = data.announcement;
+                    const closedVer = localStorage.getItem("closed_banner_version");
+                    if (closedVer !== String(annData.version)) {
+                        const bar = document.getElementById("premium-announcement-bar");
+                        
+                        const textEl = document.getElementById("ann-text");
+                        if (textEl && textEl.innerText === "") textEl.innerText = annData.text;
+                        
+                        const linkEl = document.getElementById("ann-link");
+                        if (linkEl && !linkEl.getAttribute("href").includes("http")) {
+                            if (annData.link_url) {
+                                linkEl.href = annData.link_url; linkEl.target = "_blank"; linkEl.style.pointerEvents = "auto";
+                            } else {
+                                linkEl.href = "javascript:void(0)"; linkEl.removeAttribute("target"); linkEl.style.pointerEvents = "none";
+                            }
+                        }
+                        
+                        if (bar) bar.dataset.version = annData.version;
+
+                        const lastAnim = localStorage.getItem("banner_anim_time");
+                        if (!lastAnim || (now - parseInt(lastAnim)) > (30 * 60 * 1000)) {
+                            setTimeout(() => {
+                                document.body.classList.add("banner-opened");
+                                if (bar) bar.classList.add("show-banner"); 
+                                localStorage.setItem("banner_anim_time", Date.now().toString());
+                            }, 1000);
+                        }
+                    }
+                }
+
+            }
+        } catch (error) { console.error("User Panel Master Tags Load Error:", error); }
+    }, 500); 
+});
+
+// 🔴 GLOBAL CLOSE AND UNDO MANAGEMENT
+let undoTimeout;
+window.closeAnnouncement = function() {
+    const bar = document.getElementById("premium-announcement-bar");
+    if (!bar) return;
+    
+    localStorage.setItem("closed_banner_version", bar.dataset.version);
+    bar.classList.add("closed");
+    document.body.classList.remove("banner-opened");
+    
+    const toast = document.getElementById("ann-undo-toast");
+    if (toast) {
+        toast.classList.remove("hidden");
+        setTimeout(() => toast.classList.add("show"), 10);
+    }
+    
+    undoTimeout = setTimeout(() => {
+        if (toast) {
+            toast.classList.remove("show");
+            setTimeout(() => toast.classList.add("hidden"), 400); 
+        }
+    }, 4000);
+};
+
+window.undoAnnouncement = function() {
+    clearTimeout(undoTimeout);
+    localStorage.removeItem("closed_banner_version"); 
+    
+    const bar = document.getElementById("premium-announcement-bar");
+    if (bar) bar.classList.remove("closed");
+    document.body.classList.add("banner-opened");
+    
+    const toast = document.getElementById("ann-undo-toast");
+    if (toast) {
+        toast.classList.remove("show");
+        setTimeout(() => toast.classList.add("hidden"), 400);
+    }
+};
 
     </script>
 
