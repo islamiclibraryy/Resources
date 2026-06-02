@@ -1446,45 +1446,45 @@ window.executeChangePassword = async function() {
                          .catch(() => { if(redirect) window.location.href = "/books/"; });
         };
 
-window.shareBook = async function () {
+        window.shareBook = function() {
+            // 🔥 Fix 1: Properly access the global book data
+            const bookData = window.currentEbook; 
+            if (!bookData) {
+                console.log("Book data not found for sharing");
+                return;
+            }
+            
+            // 🔥 Fix 2: Exact same URL rakha hai, replace() hata diya gaya hai
+            const siteUrl = window.location.href; 
+            
+            const shareText = `📚 Check out this Islamic eBook: "${bookData.title}" on Islamic Library by Shekh.\n\n${siteUrl}`;
+            
+            if (navigator.share) {
+                navigator.share({ title: bookData.title, text: shareText }).catch((error) => console.log('Error sharing:', error));
+            } else {
+                if (navigator.clipboard && window.isSecureContext) { 
+                    // 🔥 Fix 3: Added window.showToast to prevent reference errors
+                    navigator.clipboard.writeText(shareText).then(() => {
+                        if (window.showToast) window.showToast("Link copied to clipboard!", "success");
+                    }); 
+                } else {
+                    let textArea = document.createElement("textarea"); 
+                    textArea.value = shareText; 
+                    textArea.style.position = "fixed"; 
+                    document.body.appendChild(textArea); 
+                    textArea.focus(); 
+                    textArea.select();
+                    try { 
+                        document.execCommand('copy'); 
+                        if (window.showToast) window.showToast("Link copied to clipboard!", "success"); 
+                    } catch (err) { 
+                        if (window.showToast) window.showToast("Failed to copy link", "error"); 
+                    } 
+                    textArea.remove();
+                }
+            }
+        };
 
-    console.log("clicked");
-
-    if (!currentEbook) {
-        console.error("currentEbook missing");
-        return;
-    }
-
-    const shareText =
-        `📚 Check out this: "${currentEbook.title}"\n\n${window.location.href}`;
-
-    try {
-
-        if (navigator.share) {
-
-            await navigator.share({
-                title: currentEbook.title,
-                text: shareText,
-                url: window.location.href
-            });
-
-        } else if (navigator.clipboard) {
-
-            await navigator.clipboard.writeText(shareText);
-            showToast("Link copied!");
-
-        } else {
-
-            showToast("Sharing not supported", "error");
-
-        }
-
-    } catch (err) {
-
-        console.error(err);
-
-    }
-};
         // SWIPE GESTURE
         let touchstartX = 0; let touchstartY = 0; let touchendX = 0; let touchendY = 0;
         document.addEventListener('touchstart', e => { touchstartX = e.changedTouches[0].screenX; touchstartY = e.changedTouches[0].screenY; }, {passive: true});
