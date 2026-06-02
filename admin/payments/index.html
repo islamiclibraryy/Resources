@@ -6,59 +6,55 @@
     
     <title>Manage Payments - Islamic Library by Shekh</title>
 
-    <!-- Favicon -->
-    <link rel="icon" href="../hikmahadminlogonew.png">
+    <link rel="icon" href="/admin/icons/hikmahadminlogonew.png">
 
-    <!-- Open Graph -->
-    <meta property="og:title" content="Admin Dashboard - Islamic Library by Shekh">
-    <meta property="og:description" content="Admin Dashboard for managing Islamic Library by Shekh">
-    <meta property="og:image" content="https://islamiclibraryy.github.io/Resources/admin/hikmahadminlogonew.png">
-    <meta property="og:url" content="https://islamiclibraryy.github.io/Resources/admin/">
-    <meta property="og:type" content="website">
-
-    <!-- Google Fonts & Font Awesome -->
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Main Stylesheet -->
-    <link rel="stylesheet" href="../admin_style.css">
+    <link rel="stylesheet" href="/admin/admin_style.css">
+
+    <style>
+        .modal-overlay { transition: opacity 0.3s ease, visibility 0.3s ease; opacity: 1; visibility: visible; }
+        .modal-overlay.hidden { display: flex !important; opacity: 0; visibility: hidden; pointer-events: none; }
+        
+        /* 🔥 Nayi CSS Copy Buttons aur Search Bar ke liye 🔥 */
+        .copy-icon { cursor: pointer; color: var(--accent2); margin-left: 8px; font-size: 0.9rem; transition: 0.2s; }
+        .copy-icon:hover { color: white; transform: scale(1.1); }
+        .search-container { position: relative; margin-bottom: 20px; }
+        .search-container i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text2); }
+        .search-input { width: 100%; padding: 12px 15px 12px 40px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-size: 0.95rem; }
+    </style>
 </head>
 <body>
-    <script>
-        if (localStorage.getItem("admin_logged_in") !== "true") {
-            window.location.replace('../');
-        }
-    </script>
     <div class="hero-bg"></div><div class="hero-grid"></div><div class="blob blob1"></div><div class="blob blob2"></div>
     <div id="loader" class="hidden"><div class="spinner"></div></div>
     <div id="toast-container"></div>
-    <div id="confirm-overlay" class="hidden">
+    
+    <div id="confirm-overlay" class="modal-overlay hidden">
         <div class="confirm-box">
             <h3 id="confirm-title" style="margin-bottom: 10px; color:var(--text);">Confirm Action</h3>
             <p id="confirm-msg" style="font-size: .9rem; color: var(--text2);">Are you sure?</p>
             <div class="confirm-actions">
-                <button class="btn btn-outline" onclick="closeConfirm()">Cancel</button>
+                <button class="btn btn-outline" onclick="window.closeConfirm()">Cancel</button>
                 <button class="btn" id="confirm-yes-btn">Yes &#10022;</button>
             </div>
         </div>
     </div>
 
-    <!-- Custom Change Password Modal -->
     <div id="change-password-modal" class="modal-overlay hidden">
         <div class="modal-box" style="text-align:left;">
             <h3 style="margin-bottom: 20px;">Change Admin Password</h3>
-            <form id="changePasswordForm" onsubmit="event.preventDefault(); handleChangePassword();">
+            <form id="changePasswordForm" onsubmit="event.preventDefault(); window.handleChangePassword();">
                 <div class="form-group"><label>New Password</label><input type="password" id="new_admin_password" required minlength="6" placeholder="Enter new strong password"></div>
                 <div class="modal-actions" style="margin-top:20px;">
-                    <button type="button" class="btn btn-outline" onclick="closeChangePasswordModal()">Cancel</button>
+                    <button type="button" class="btn btn-outline" onclick="window.closeChangePasswordModal()">Cancel</button>
                     <button type="submit" class="btn">Update Password</button>
                 </div>
             </form>
         </div>
     </div>
     
-    <div id="login-view" class="hidden"> <!-- Kept hidden for script compatibility --> </div>
     <div id="app-view" class="hidden">
         <header>
             <div class="flex align-center" style="gap: 12px;">
@@ -66,50 +62,53 @@
                 <h2>Manage Payments</h2>
             </div>
             <div class="flex align-center" style="gap: 20px;">
-                <i id="theme-toggle-icon" class="fas fa-moon" style="font-size: 1.2rem; color: var(--text2); cursor: pointer;" onclick="toggleTheme()" title="Switch Theme"></i>
-                <i class="fas fa-user-circle" style="font-size: 1.3rem; color: var(--text2); cursor: pointer;" onclick="openProfileDrawer()" title="Profile"></i>
+                <i id="theme-toggle-icon" class="fas fa-moon" style="font-size: 1.2rem; color: var(--text2); cursor: pointer;" onclick="window.toggleTheme()" title="Switch Theme"></i>
+                <i class="fas fa-user-circle" style="font-size: 1.3rem; color: var(--text2); cursor: pointer;" onclick="window.openProfileDrawer()" title="Profile"></i>
             </div>
         </header>
 
-        <div id="drawer-overlay" class="drawer-overlay" onclick="closeProfileDrawer()"></div>
+        <div id="drawer-overlay" class="drawer-overlay" onclick="window.closeProfileDrawer()"></div>
         <div id="profile-drawer" class="profile-drawer">
-            <div class="drawer-header"><h3>Admin Profile</h3><i class="fas fa-times" onclick="closeProfileDrawer()"></i></div>
+            <div class="drawer-header"><h3>Admin Profile</h3><i class="fas fa-times" onclick="window.closeProfileDrawer()"></i></div>
             <div class="drawer-body">
                 <div class="drawer-avatar"><i class="fas fa-crown"></i></div>
-                <div class="drawer-name">Admin</div>
-                <div class="drawer-mobile">Main Administrator</div>
-                <div class="drawer-menu"><button class="btn btn-outline" onclick="openChangePassword()"><i class="fas fa-key"></i> Change Password</button></div>
+                <div class="drawer-name" id="profile-name">Admin</div>
+                <div class="drawer-mobile" id="profile-email">Administration</div>
+                <div class="drawer-menu">
+                    <button class="btn btn-outline" onclick="window.location.href='/admin/settings/'"><i class="fas fa-sliders-h"></i> Settings</button>
+                    <button class="btn btn-outline" onclick="window.openChangePassword()"><i class="fas fa-key"></i> Change Password</button>
+                </div>
             </div>
-            <div class="drawer-footer"><button class="btn btn-danger" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Log Out</button></div>
+            <div class="drawer-footer"><button class="btn btn-danger" onclick="window.logout()"><i class="fas fa-sign-out-alt"></i> Log Out</button></div>
         </div>
 
         <main>
-            <div class="flex justify-between align-center" style="margin-bottom: 24px;">
+            <div class="flex justify-between align-center" style="margin-bottom: 15px;">
                 <h3 style="font-size: 1.2rem;">All Payments</h3>
-                <button class="action-btn-sm" id="refresh-payments-btn" onclick="forceFetchPayments()" title="Refresh Payments"><i class="fas fa-sync-alt"></i></button>
+                <button class="action-btn-sm" id="refresh-payments-btn" onclick="window.forceFetchPayments()" title="Refresh Payments"><i class="fas fa-sync-alt"></i></button>
             </div>
+
+            <div class="search-container">
+                <i class="fas fa-search"></i>
+                <input type="text" id="payment-search-input" class="search-input" placeholder="Search by Txn ID or User ID..." onkeyup="window.filterPayments()">
+            </div>
+
             <div id="payments-list"></div>
         </main>
 
         <nav class="bottom-nav">
-            <a href="../" class="nav-item"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a>
-            <a href="../books/" class="nav-item"><i class="fas fa-book"></i><span>Books</span></a>
-            <a href="../users/" class="nav-item"><i class="fas fa-users"></i><span>Users</span></a>
-            <a href="./" class="nav-item active"><i class="fas fa-wallet"></i><span>Payments</span></a>
-            <a href="../new-ebook/" class="nav-item add-btn"><i class="fas fa-plus"></i><span>Add</span></a>
+            <a href="/admin/" class="nav-item"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a>
+            <a href="/admin/books/" class="nav-item"><i class="fas fa-book"></i><span>Books</span></a>
+            <a href="/admin/users/" class="nav-item"><i class="fas fa-users"></i><span>Users</span></a>
+            <a href="/admin/payments/" class="nav-item active"><i class="fas fa-wallet"></i><span>Payments</span></a>
+            <a href="/admin/new-ebook/" class="nav-item add-btn"><i class="fas fa-plus"></i><span>Add</span></a>
         </nav>
     </div>
 
-    <script src="../admin_script.js"></script>
+    <script type="module" src="/admin/admin_script.js"></script>
+    
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            if (isAdminLoggedIn()) {
-                renderPaymentsSkeletons();
-                fetchPayments(false);
-            }
-        });
-
-        function renderPaymentsSkeletons() {
+        window.renderPaymentsSkeletons = function() {
             const container = document.getElementById("payments-list");
             container.innerHTML = "";
             for (let i = 0; i < 4; i++) {
@@ -129,7 +128,7 @@
             }
         }
 
-        function renderPayments(data) {
+        window.renderPayments = function(data) {
             const container = document.getElementById("payments-list");
             
             if(data === null) {
@@ -153,27 +152,83 @@
                 
                 if (statusText === "PENDING") {
                     actionButtons += `
-                        <button class="btn btn-success" style="padding:10px; font-size:.8rem; border-radius:10px; flex:1;" onclick="handlePaymentStatus('${pay.id}', 'approved')"><i class="fas fa-check"></i> Approve</button>
-                        <button class="btn btn-danger" style="padding:10px; font-size:.8rem; border-radius:10px; flex:1;" onclick="handlePaymentStatus('${pay.id}', 'rejected')"><i class="fas fa-times"></i> Reject</button>`;
+                        <button class="btn btn-success" style="padding:10px; font-size:.8rem; border-radius:10px; flex:1;" onclick="window.handlePaymentStatus('${pay.id}', 'approved')"><i class="fas fa-check"></i> Approve</button>
+                        <button class="btn btn-danger" style="padding:10px; font-size:.8rem; border-radius:10px; flex:1;" onclick="window.handlePaymentStatus('${pay.id}', 'rejected')"><i class="fas fa-times"></i> Reject</button>`;
                 } else if (statusText === "APPROVED") {
-                    actionButtons += `<button class="btn btn-outline" style="padding:10px; font-size:.8rem; border-radius:10px; flex:1; color: var(--danger); border-color: rgba(244, 63, 94, 0.4);" onclick="handlePaymentStatus('${pay.id}', 'rejected')"><i class="fas fa-undo" style="margin-right:6px;"></i> Change to Reject</button>`;
+                    actionButtons += `<button class="btn btn-outline" style="padding:10px; font-size:.8rem; border-radius:10px; flex:1; color: var(--danger); border-color: rgba(244, 63, 94, 0.4);" onclick="window.handlePaymentStatus('${pay.id}', 'rejected')"><i class="fas fa-undo" style="margin-right:6px;"></i> Change to Reject</button>`;
                 } else if (statusText === "REJECTED") {
-                    actionButtons += `<button class="btn btn-outline" style="padding:10px; font-size:.8rem; border-radius:10px; flex:1; color: var(--success); border-color: rgba(16, 185, 129, 0.4);" onclick="handlePaymentStatus('${pay.id}', 'approved')"><i class="fas fa-undo" style="margin-right:6px;"></i> Change to Approve</button>`;
+                    actionButtons += `<button class="btn btn-outline" style="padding:10px; font-size:.8rem; border-radius:10px; flex:1; color: var(--success); border-color: rgba(16, 185, 129, 0.4);" onclick="window.handlePaymentStatus('${pay.id}', 'approved')"><i class="fas fa-undo" style="margin-right:6px;"></i> Change to Approve</button>`;
                 }
                 actionButtons += `</div>`;
 
+                // 🔥 FIX: Added classes for searching and Delete/Copy buttons
                 container.innerHTML += `
-                <div class="card" style="flex-direction:column; gap:6px; cursor: default;">
+                <div class="card payment-card-item" style="flex-direction:column; gap:6px; cursor: default;">
                     <div class="flex justify-between align-center">
-                        <div class="card-title" style="margin:0; font-family:'DM Mono', monospace; font-size:1.05rem;">Txn: ${pay.txn_id}</div>
+                        <div class="card-title txn-field" style="margin:0; font-family:'DM Mono', monospace; font-size:1.05rem; display:flex; align-items:center;">
+                            <span>Txn: ${pay.txn_id}</span>
+                            <i class="fas fa-copy copy-icon" onclick="window.copyToClipboard('${pay.txn_id}')" title="Copy Txn ID"></i>
+                        </div>
                         <span class="badge ${badgeClass}">${statusText}</span>
                     </div>
-                    <div class="card-sub" style="margin:0;"><strong>User ID:</strong> ${pay.user_id}</div>
-                    <div class="card-sub" style="margin:0;"><strong>Ebook ID:</strong> ${pay.ebook_id}</div>
+                    <div class="card-sub user-field" style="margin:0; display:flex; align-items:center;">
+                        <strong>User ID:</strong> <span style="margin-left:4px;">${pay.user_id}</span>
+                        <i class="fas fa-copy copy-icon" onclick="window.copyToClipboard('${pay.user_id}')" title="Copy User ID"></i>
+                    </div>
+                    <div class="card-sub" style="margin:0; display:flex; align-items:center;">
+                        <strong>Ebook ID:</strong> <span style="margin-left:4px;">${pay.ebook_id}</span>
+                        <i class="fas fa-copy copy-icon" onclick="window.copyToClipboard('${pay.ebook_id}')" title="Copy Ebook ID"></i>
+                    </div>
                     ${actionButtons}
+                    
+                    <div style="margin-top: 5px; width: 100%;">
+                        <button class="btn btn-outline" style="width: 100%; padding: 8px; font-size:0.8rem; border-color:var(--danger); color:var(--danger); border-radius:10px;" onclick="window.initiatePaymentDelete('${pay.id}')">
+                            <i class="fas fa-trash-alt"></i> Delete Payment
+                        </button>
+                    </div>
                 </div>`;
             });
+        }
+
+        // 🔥 CHHOTI JS FUNCTIONS (Copy aur Search ke liye) 🔥
+        window.filterPayments = function() {
+            const query = document.getElementById('payment-search-input').value.toLowerCase();
+            const cards = document.querySelectorAll('.payment-card-item');
+            
+            cards.forEach(card => {
+                const txn = card.querySelector('.txn-field').innerText.toLowerCase();
+                const user = card.querySelector('.user-field').innerText.toLowerCase();
+                
+                if(txn.includes(query) || user.includes(query)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        window.copyToClipboard = function(text) {
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text).then(() => window.showToast("Copied!", "success"))
+                .catch(() => window.showToast("Failed to copy", "error"));
+            } else {
+                let textArea = document.createElement("textarea");
+                textArea.value = text;
+                textArea.style.position = "fixed"; 
+                textArea.style.left = "-999999px"; 
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    window.showToast("Copied!", "success");
+                } catch (err) {
+                    window.showToast("Failed to copy", "error");
+                }
+                textArea.remove();
+            }
         }
     </script>
 </body>
 </html>
+,
