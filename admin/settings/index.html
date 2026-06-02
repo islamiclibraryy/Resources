@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <title>Settings & Announcements - Islamic Library</title>
+    <link rel="icon" href="/admin/icons/hikmahadminlogonew.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="/admin/admin_style.css">
+
+    <style>
+        /* 🔥 PREMIUM TAB SYSTEM CSS 🔥 */
+        .settings-tabs {
+            display: flex;
+            background: var(--surface2);
+            padding: 6px;
+            border-radius: 99px;
+            margin-bottom: 24px;
+            border: 1px solid var(--border2);
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .tab-btn-pill {
+            flex: 1;
+            text-align: center;
+            padding: 12px 20px;
+            border-radius: 99px;
+            cursor: pointer;
+            color: var(--text2);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            background: transparent;
+            font-family: 'DM Sans', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .tab-btn-pill.active {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(124, 106, 247, 0.4);
+        }
+        .tab-btn-pill:hover:not(.active) {
+            color: var(--text);
+            background: var(--surface3);
+        }
+        
+        /* Smooth Content Fade */
+        .tab-content {
+            animation: fadeUp 0.4s ease both;
+        }
+
+        /* Improved Card Header */
+        .setting-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px dashed var(--border2);
+        }
+        .icon-box {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            margin-right: 12px;
+        }
+        .icon-announcement { background: rgba(124, 106, 247, 0.15); color: var(--accent2); border: 1px solid rgba(124, 106, 247, 0.3); }
+        .icon-coupon { background: rgba(245, 158, 11, 0.15); color: var(--amber); border: 1px solid rgba(245, 158, 11, 0.3); }
+
+        /* =========================================================
+           👑 PREMIUM COMPACT BUTTONS SYSTEM (No More Stretching)
+           ========================================================= */
+        .checkbox-group {
+            display: flex !important;
+            flex-wrap: wrap !important; /* 🔥 Automatic line change karega agar screen choti hogi */
+            gap: 10px !important;
+            margin-top: 14px;
+        }
+
+        .custom-checkbox {
+            display: inline-flex !important; /* 🔥 Sirf text ke jitni width lega, faltu lamba nahi hoga */
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 8px 16px; /* Perfect button padding */
+            background: var(--surface3); 
+            border: 1px solid var(--border2);
+            border-radius: 99px; /* 🔥 Pure Pill-Shape real buttons look */
+            font-size: 0.88rem;
+            font-weight: 500;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            user-select: none;
+        }
+
+        /* Hover Effect: Halka sa border chamkega */
+        .custom-checkbox:hover {
+            background: var(--surface2);
+            border-color: var(--accent, #7c6af7);
+            transform: translateY(-1px); /* Halka sa upar lift hoga capsule button */
+        }
+
+        /* Checkbox ke andar ka tick-box align rakhne ke liye */
+        .custom-checkbox input[type="checkbox"] {
+            margin: 0;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="hero-bg"></div><div class="hero-grid"></div><div class="blob blob1"></div><div class="blob blob2"></div>
+    
+    <div id="toast-container"></div>
+    
+    <div id="change-password-modal" class="modal-overlay hidden">
+        <div class="modal-box" style="text-align:left;">
+            <h3 style="margin-bottom: 20px;">Change Admin Password</h3>
+            <form id="changePasswordForm" onsubmit="event.preventDefault(); window.handleChangePassword();">
+                <div class="form-group"><label>New Password</label><input type="password" id="new_admin_password" required minlength="6" placeholder="Enter new strong password"></div>
+                <div class="modal-actions" style="margin-top:20px;">
+                    <button type="button" class="btn btn-outline" onclick="window.closeChangePasswordModal()">Cancel</button>
+                    <button type="submit" class="btn">Update Password</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="app-view" class="hidden">
+        <header>
+            <div class="flex align-center" style="gap: 12px;">
+                <i class="fas fa-sliders-h" style="color: var(--accent2); font-size: 1.2rem; text-shadow: 0 0 10px var(--glow);"></i>
+                <h2>App Settings</h2>
+            </div>
+            <div class="flex align-center" style="gap: 20px;">
+                <i id="theme-toggle-icon" class="fas fa-moon" style="font-size: 1.2rem; color: var(--text2); cursor: pointer;" onclick="window.toggleTheme()" title="Switch Theme"></i>
+                <i class="fas fa-user-circle" style="font-size: 1.3rem; color: var(--text2); cursor: pointer;" onclick="window.openProfileDrawer()" title="Profile"></i>
+            </div>
+        </header>
+
+        <div id="drawer-overlay" class="drawer-overlay" onclick="window.closeProfileDrawer()"></div>
+        <div id="profile-drawer" class="profile-drawer">
+            <div class="drawer-header"><h3>Admin Profile</h3><i class="fas fa-times" onclick="window.closeProfileDrawer()"></i></div>
+            <div class="drawer-body">
+                <div class="drawer-avatar"><i class="fas fa-crown"></i></div>
+                <div class="drawer-name" id="profile-name">Admin</div>
+                <div class="drawer-mobile" id="profile-email">Administration</div>
+                <div class="drawer-menu">
+                    <button class="btn btn-outline" onclick="window.location.href='/admin/settings/'"><i class="fas fa-sliders-h"></i> Settings</button>
+                    <button class="btn btn-outline" onclick="window.openChangePassword()"><i class="fas fa-key"></i> Change Password</button>
+                </div>
+            </div>
+            <div class="drawer-footer"><button class="btn btn-danger" onclick="window.logout()"><i class="fas fa-sign-out-alt"></i> Log Out</button></div>
+        </div>
+
+        <main>
+            <div class="settings-tabs">
+                <button class="tab-btn-pill active" id="tab-btn-ann" onclick="window.switchSettingsTab('announcement')">
+                    <i class="fas fa-bullhorn"></i> Banner
+                </button>
+                <button class="tab-btn-pill" id="tab-btn-coup" onclick="window.switchSettingsTab('coupons')">
+                    <i class="fas fa-ticket-alt"></i> Coupons
+                </button>
+            </div>
+
+            <div id="content-announcement" class="tab-content card" style="flex-direction: column; padding: 24px;">
+                <div class="setting-header">
+                    <div class="flex align-center">
+                        <div class="icon-box icon-announcement"><i class="fas fa-bolt"></i></div>
+                        <div>
+                            <h3 style="font-size: 1.2rem;">Live Announcement</h3>
+                            <p style="font-size: 0.85rem; color: var(--text2); margin-top: 2px;">Manage the top scrolling banner</p>
+                        </div>
+                    </div>
+                    <label class="switch" title="Turn Banner ON/OFF">
+                        <input type="checkbox" id="ann_active">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label>Banner Text / Message</label>
+                    <input type="text" id="ann_text" placeholder="e.g., EID MUBARAK! Get 50% Off on all premium books.">
+                </div>
+
+                <div class="form-group">
+                    <label>Click Action URL (Optional)</label>
+                    <input type="text" id="ann_link" placeholder="e.g., /books-details/ (Leave empty for no click action)">
+                </div>
+
+<div class="form-group">
+    <label>Display Target Pages</label>
+    <div class="checkbox-group" style="background: var(--surface2); padding: 15px; border-radius: 12px; border: 1px solid var(--border2); display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px;">
+        
+        <label class="custom-checkbox">
+            <input type="checkbox" id="page_home" value="home">
+            <span class="checkmark"></span> Home Page
+        </label>
+        <label class="custom-checkbox">
+            <input type="checkbox" id="page_library" value="library">
+            <span class="checkmark"></span> Library
+        </label>
+        <label class="custom-checkbox">
+            <input type="checkbox" id="page_details" value="books">
+            <span class="checkmark"></span> Books
+        </label>
+        <label class="custom-checkbox">
+            <input type="checkbox" id="page_info" value="info">
+            <span class="checkmark"></span> About Info
+        </label>
+        <label class="custom-checkbox">
+            <input type="checkbox" id="page_contact" value="contact">
+            <span class="checkmark"></span> Contact
+        </label>
+        <label class="custom-checkbox">
+            <input type="checkbox" id="page_privacy" value="privacy">
+            <span class="checkmark"></span> Privacy
+        </label>
+        <label class="custom-checkbox">
+            <input type="checkbox" id="page_terms" value="terms">
+            <span class="checkmark"></span> Terms
+        </label>
+        <label class="custom-checkbox">
+            <input type="checkbox" id="page_payments" value="payments">
+            <span class="checkmark"></span> Payments
+        </label>
+        <label class="custom-checkbox">
+            <input type="checkbox" id="page_login" value="login">
+            <span class="checkmark"></span> Login
+        </label>
+        <label class="custom-checkbox">
+            <input type="checkbox" id="page_support" value="support">
+            <span class="checkmark"></span> Login Support
+        </label>
+        <label class="custom-checkbox">
+            <input type="checkbox" id="page_404" value="404">
+            <span class="checkmark"></span> 404 Page
+        </label>
+
+    </div>
+</div>
+
+                <button class="btn" id="save-ann-btn" onclick="saveAnnouncement()" style="margin-top: 10px;">
+                    <i class="fas fa-save"></i> Save & Publish
+                </button>
+            </div>
+
+            <div id="content-coupons" class="tab-content card hidden" style="flex-direction: column; padding: 24px;">
+                <div class="setting-header" style="border-bottom: none; margin-bottom: 10px;">
+                    <div class="flex align-center">
+                        <div class="icon-box icon-coupon"><i class="fas fa-tags"></i></div>
+                        <div>
+                            <h3 style="font-size: 1.2rem;">Promo Codes</h3>
+                            <p style="font-size: 0.85rem; color: var(--text2); margin-top: 2px;">Create and manage discount coupons</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="coming-soon-overlay" style="background: var(--surface2); padding: 20px; border-radius: 16px; border: 1px solid var(--border2);">
+                    <div class="coming-soon-badge">Phase 3: Coming Soon</div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label>Coupon Code</label>
+                            <input type="text" placeholder="e.g., EID50" disabled style="background: var(--surface3);">
+                        </div>
+                        <div class="form-group">
+                            <label>Discount Amount (₹)</label>
+                            <input type="number" placeholder="50" disabled style="background: var(--surface3);">
+                        </div>
+                    </div>
+                    <button class="btn btn-outline" disabled style="opacity: 0.5; width: 100%;">Add New Coupon</button>
+                </div>
+            </div>
+        </main>
+
+        <nav class="bottom-nav">
+            <a href="/admin/" class="nav-item"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a>
+            <a href="/admin/books/" class="nav-item"><i class="fas fa-book"></i><span>Books</span></a>
+            <a href="/admin/users/" class="nav-item"><i class="fas fa-users"></i><span>Users</span></a>
+            <a href="/admin/payments/" class="nav-item"><i class="fas fa-wallet"></i><span>Payments</span></a>
+            <a href="/admin/new-ebook/" class="nav-item add-btn"><i class="fas fa-plus"></i><span>Add</span></a>
+        </nav>
+    </div>
+
+    <script type="module" src="/admin/admin_script.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if (localStorage.getItem("islamic_admin_auth") === "true") {
+                document.getElementById('app-view').classList.remove('hidden');
+                loadSettings();
+            } else {
+                window.location.replace('/admin/');
+            }
+        });
+
+        // 🟢 TAB SWITCHING LOGIC
+        window.switchSettingsTab = function(tabName) {
+            // Remove active classes
+            document.getElementById('tab-btn-ann').classList.remove('active');
+            document.getElementById('tab-btn-coup').classList.remove('active');
+            document.getElementById('content-announcement').classList.add('hidden');
+            document.getElementById('content-coupons').classList.add('hidden');
+
+            // Add active class to selected
+            if (tabName === 'announcement') {
+                document.getElementById('tab-btn-ann').classList.add('active');
+                document.getElementById('content-announcement').classList.remove('hidden');
+            } else {
+                document.getElementById('tab-btn-coup').classList.add('active');
+                document.getElementById('content-coupons').classList.remove('hidden');
+            }
+        };
+
+        // 🟢 LOAD SETTINGS FROM FIREBASE
+        async function loadSettings() {
+            try {
+                const { getFirestore, doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
+                const dbInstance = getFirestore();
+                const docSnap = await getDoc(doc(dbInstance, "settings", "app_data"));
+
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    if (data.announcement) {
+                        const ann = data.announcement;
+                        document.getElementById("ann_active").checked = ann.is_active === true;
+                        document.getElementById("ann_text").value = ann.text || "";
+                        document.getElementById("ann_link").value = ann.link_url || "";
+                        
+                        // 🔥 Saare 11 checkboxes ko loop chalakar dhang se tick (check) karo
+                        const pages = ann.show_on || [];
+                        document.getElementById("page_home").checked = pages.includes("home");
+                        document.getElementById("page_library").checked = pages.includes("library");
+                        document.getElementById("page_details").checked = pages.includes("books"); // Maps to "books" in DB
+                        document.getElementById("page_info").checked = pages.includes("info");
+                        document.getElementById("page_contact").checked = pages.includes("contact");
+                        document.getElementById("page_privacy").checked = pages.includes("privacy");
+                        document.getElementById("page_terms").checked = pages.includes("terms");
+                        document.getElementById("page_payments").checked = pages.includes("payments");
+                        document.getElementById("page_login").checked = pages.includes("login");
+                        document.getElementById("page_support").checked = pages.includes("support");
+                        document.getElementById("page_404").checked = pages.includes("404");
+                    }
+                }
+            } catch (error) {
+                console.error("Error loading settings:", error);
+                if (window.showToast) window.showToast("Failed to load settings.", "error");
+            }
+        }
+
+        // 🔵 SAVE SETTINGS TO FIREBASE (With Version Timestamp)
+        window.saveAnnouncement = async function() {
+            const btn = document.getElementById("save-ann-btn");
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Saving...`;
+            btn.disabled = true;
+
+            const isActive = document.getElementById("ann_active").checked;
+            const text = document.getElementById("ann_text").value.trim();
+            const link = document.getElementById("ann_link").value.trim();
+            
+            // 🔥 Saare checked boxes ki values array me push karo
+            const showOn = [];
+            if (document.getElementById("page_home").checked) showOn.push("home");
+            if (document.getElementById("page_library").checked) showOn.push("library");
+            if (document.getElementById("page_details").checked) showOn.push("books");
+            if (document.getElementById("page_info").checked) showOn.push("info");
+            if (document.getElementById("page_contact").checked) showOn.push("contact");
+            if (document.getElementById("page_privacy").checked) showOn.push("privacy");
+            if (document.getElementById("page_terms").checked) showOn.push("terms");
+            if (document.getElementById("page_payments").checked) showOn.push("payments");
+            if (document.getElementById("page_login").checked) showOn.push("login");
+            if (document.getElementById("page_support").checked) showOn.push("support");
+            if (document.getElementById("page_404").checked) showOn.push("404");
+
+            // Timestamp version for User Panel Undo/Close logic
+            const payload = {
+                announcement: {
+                    is_active: isActive,
+                    text: text,
+                    link_url: link,
+                    show_on: showOn,
+                    version: Date.now() 
+                }
+            };
+
+            try {
+                const { getFirestore, doc, setDoc } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
+                const dbInstance = getFirestore();
+                const docRef = doc(dbInstance, "settings", "app_data");
+                
+                await setDoc(docRef, payload, { merge: true });
+                
+                if (window.showToast) window.showToast("Settings saved successfully!", "success");
+            } catch (error) {
+                console.error("Firebase save error:", error);
+                if (window.showToast) window.showToast("Error saving settings.", "error");
+            } finally {
+                btn.innerHTML = originalHTML;
+                btn.disabled = false;
+            }
+        };
+
+    </script>
+</body>
+</html>
