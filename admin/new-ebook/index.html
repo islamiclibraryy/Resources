@@ -6,19 +6,19 @@
     
     <title>Manage Ebook - Islamic Library by Shekh</title>
 
-    <link rel="icon" href="../hikmahadminlogonew.png">
+    <link rel="icon" href="/admin/icons/hikmahadminlogonew.png">
 
     <meta property="og:title" content="Admin Dashboard - Islamic Library by Shekh">
     <meta property="og:description" content="Admin Dashboard for managing Islamic Library by Shekh">
-    <meta property="og:image" content="https://islamiclibraryy.github.io/Resources/admin/hikmahadminlogonew.png">
-    <meta property="og:url" content="https://islamiclibraryy.github.io/Resources/admin/">
+    <meta property="og:image" content="https://mysite.github.io/Resources/admin/icons/hikmahadminlogonew.png">
+    <meta property="og:url" content="https://mysite.github.io/Resources/admin/">
     <meta property="og:type" content="website">
 
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <link rel="stylesheet" href="../admin_style.css">
+    <link rel="stylesheet" href="/admin/admin_style.css">
 
     <style>
         .multi-select-container { position: relative; width: 100%; }
@@ -30,23 +30,30 @@
         .multi-select-option:hover { background: var(--surface3); }
         .multi-select-option:last-child { border-bottom: none; }
         .multi-select-option input[type="checkbox"] { accent-color: var(--accent); width: 18px; height: 18px; cursor: pointer; }
+        .modal-overlay { transition: opacity 0.3s ease, visibility 0.3s ease; opacity: 1; visibility: visible; }
+        .modal-overlay.hidden { display: flex !important; opacity: 0; visibility: hidden; pointer-events: none; }
+        /* 🔥 Dropdowns ke beech exact spacing ke liye 🔥 */
+        .multi-select-container { 
+    margin-top: 8px; 
+    margin-bottom: 18px; 
+    position: relative; 
+    width: 100%; 
+}
+
+
     </style>
 </head>
 <body>
-    <script>
-        if (localStorage.getItem("admin_logged_in") !== "true") {
-            window.location.replace('../');
-        }
-    </script>
     <div class="hero-bg"></div><div class="hero-grid"></div><div class="blob blob1"></div><div class="blob blob2"></div>
     <div id="loader" class="hidden"><div class="spinner"></div></div>
     <div id="toast-container"></div>
-    <div id="confirm-overlay" class="hidden">
+    
+    <div id="confirm-overlay" class="modal-overlay hidden">
         <div class="confirm-box">
             <h3 id="confirm-title" style="margin-bottom: 10px; color:var(--text);">Confirm Action</h3>
             <p id="confirm-msg" style="font-size: .9rem; color: var(--text2);">Are you sure?</p>
             <div class="confirm-actions">
-                <button class="btn btn-outline" onclick="closeConfirm()">Cancel</button>
+                <button class="btn btn-outline" onclick="window.closeConfirm()">Cancel</button>
                 <button class="btn" id="confirm-yes-btn">Yes &#10022;</button>
             </div>
         </div>
@@ -55,17 +62,29 @@
     <div id="change-password-modal" class="modal-overlay hidden">
         <div class="modal-box" style="text-align:left;">
             <h3 style="margin-bottom: 20px;">Change Admin Password</h3>
-            <form id="changePasswordForm" onsubmit="event.preventDefault(); handleChangePassword();">
+            <form id="changePasswordForm" onsubmit="event.preventDefault(); window.handleChangePassword();">
                 <div class="form-group"><label>New Password</label><input type="password" id="new_admin_password" required minlength="6" placeholder="Enter new strong password"></div>
                 <div class="modal-actions" style="margin-top:20px;">
-                    <button type="button" class="btn btn-outline" onclick="closeChangePasswordModal()">Cancel</button>
+                    <button type="button" class="btn btn-outline" onclick="window.closeChangePasswordModal()">Cancel</button>
                     <button type="submit" class="btn">Update Password</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <div id="login-view" class="hidden"></div>
+    <div id="add-tag-modal" class="modal-overlay hidden">
+        <div class="modal-box" style="text-align:left;">
+            <h3 id="add-tag-title" style="margin-bottom: 20px;">Add New</h3>
+            <div class="form-group">
+                <input type="text" id="new-tag-input" class="custom-dark-input" placeholder="Enter name here" autocomplete="off">
+            </div>
+            <div class="modal-actions" style="margin-top:24px;">
+                <button type="button" class="btn btn-outline" onclick="window.closeAddTagModal()">Cancel</button>
+                <button type="button" class="btn" onclick="window.confirmAddTag()">Add <i class="fas fa-plus" style="margin-left: 5px;"></i></button>
+            </div>
+        </div>
+    </div>
+
     <div id="app-view" class="hidden">
         <header>
             <div class="flex align-center" style="gap: 12px;">
@@ -73,26 +92,35 @@
                 <h2 id="form-title">Add New Ebook</h2>
             </div>
             <div class="flex align-center" style="gap: 20px;">
-                <i id="theme-toggle-icon" class="fas fa-moon" style="font-size: 1.2rem; color: var(--text2); cursor: pointer;" onclick="toggleTheme()" title="Switch Theme"></i>
-                <i class="fas fa-user-circle" style="font-size: 1.3rem; color: var(--text2); cursor: pointer;" onclick="openProfileDrawer()" title="Profile"></i>
+                <i id="theme-toggle-icon" class="fas fa-moon" style="font-size: 1.2rem; color: var(--text2); cursor: pointer;" onclick="window.toggleTheme()" title="Switch Theme"></i>
+                <i class="fas fa-user-circle" style="font-size: 1.3rem; color: var(--text2); cursor: pointer;" onclick="window.openProfileDrawer()" title="Profile"></i>
             </div>
         </header>
 
-        <div id="drawer-overlay" class="drawer-overlay" onclick="closeProfileDrawer()"></div>
+        <div id="drawer-overlay" class="drawer-overlay" onclick="window.closeProfileDrawer()"></div>
         <div id="profile-drawer" class="profile-drawer">
-            <div class="drawer-header"><h3>Admin Profile</h3><i class="fas fa-times" onclick="closeProfileDrawer()"></i></div>
+            <div class="drawer-header"><h3>Admin Profile</h3><i class="fas fa-times" onclick="window.closeProfileDrawer()"></i></div>
             <div class="drawer-body">
                 <div class="drawer-avatar"><i class="fas fa-crown"></i></div>
-                <div class="drawer-name">Admin</div>
-                <div class="drawer-mobile">Main Administrator</div>
-                <div class="drawer-menu"><button class="btn btn-outline" onclick="openChangePassword()"><i class="fas fa-key"></i> Change Password</button></div>
+                <div class="drawer-name" id="profile-name">Admin</div>
+                <div class="drawer-mobile" id="profile-email">Administration</div>
+                <div class="drawer-menu">
+                    <button class="btn btn-outline" onclick="window.location.href='/admin/settings/'"><i class="fas fa-sliders-h"></i> Settings</button>
+                    <button class="btn btn-outline" onclick="window.openChangePassword()"><i class="fas fa-key"></i> Change Password</button>
+                </div>
             </div>
-            <div class="drawer-footer"><button class="btn btn-danger" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Log Out</button></div>
+            <div class="drawer-footer"><button class="btn btn-danger" onclick="window.logout()"><i class="fas fa-sign-out-alt"></i> Log Out</button></div>
         </div>
 
         <main>
-            <div id="phrase-ebook" class="bismillah arabic-text text-center" style="margin-bottom: 24px;"></div>
-            <form id="ebookForm" onsubmit="event.preventDefault(); handleEbookSubmit();">
+                    <div id="phrase-ebook" class="bismillah arabic-text text-center" style="margin-bottom: 24px; min-height: 40px;">سُبْحَانَ اللَّهِ</div>
+        
+        <script>
+            const randomPhrases = ["سُبْحَانَ اللَّهِ", "الْحَمْدُ لِلَّهِ", "اللَّهُ أَكْبَرُ", "لَا إِلَٰهَ إِلَّا اللَّهُ", "مَا شَاءَ اللَّهُ", "بَارَكَ اللَّهُ فِيكَ"];
+            document.getElementById('phrase-ebook').innerText = randomPhrases[Math.floor(Math.random() * randomPhrases.length)];
+        </script>
+
+            <form id="ebookForm" onsubmit="event.preventDefault(); window.handleEbookSubmit();">
                 <input type="hidden" id="ebook_id">
                 <div class="form-group"><label>Ebook Title</label><input type="text" id="eb_title" required placeholder="e.g., The Sealed Nectar"></div>
                 <div class="form-group"><label>Description</label><textarea id="eb_desc" rows="3" required placeholder="Short description..."></textarea></div>
@@ -100,22 +128,91 @@
                 <div class="form-group"><label>Thumbnail Image URL (1:1 Ratio)</label><input type="url" id="eb_thumb" required placeholder="https://imgur.com/...png"></div>
                 
                 <div class="form-group">
-                    <label>Languages (Select Multiple)</label>
+                    <div class="flex justify-between align-center" style="margin-bottom: 8px;">
+                        <label style="margin: 0;">Languages (Select Multiple)</label>
+                        <span style="font-size: 0.8rem; color: var(--accent2); cursor: pointer; font-weight: 600;" onclick="window.addNewTag('language')"><i class="fas fa-plus"></i> Add New</span>
+                    </div>
                     <div class="multi-select-container">
-                        <div class="multi-select-header" onclick="toggleMultiSelect()">
+                        <div class="multi-select-header" onclick="toggleDropdown('lang-dropdown')">
                             <span id="selected-langs-text">Select Languages</span>
                             <i class="fas fa-chevron-down"></i>
                         </div>
                         <div class="multi-select-dropdown" id="lang-dropdown">
-                            <label class="multi-select-option"><input type="checkbox" value="English" onchange="updateSelectedLangs()"> English</label>
-                            <label class="multi-select-option"><input type="checkbox" value="Urdu" onchange="updateSelectedLangs()"> Urdu</label>
-                            <label class="multi-select-option"><input type="checkbox" value="Hindi" onchange="updateSelectedLangs()"> Hindi</label>
-                            <label class="multi-select-option"><input type="checkbox" value="Arabic" onchange="updateSelectedLangs()"> Arabic</label>
-                            <label class="multi-select-option"><input type="checkbox" value="Roman Urdu / Hindi" onchange="updateSelectedLangs()"> Roman Urdu / Hindi</label>
+                            <div style="padding: 10px; border-bottom: 1px solid var(--border2); position: sticky; top: 0; background: var(--surface2); z-index: 2;">
+                                <input type="text" class="custom-dark-input" style="padding: 8px 12px; margin-top: 0; font-size: 0.85rem;" placeholder="Search language..." onkeyup="filterOptions(this, 'lang-options')">
+                            </div>
+                            <div id="lang-options">
+                                <label class="multi-select-option"><input type="checkbox" value="English" onchange="updateSelected('lang')"> English</label>
+                                <label class="multi-select-option"><input type="checkbox" value="Urdu" onchange="updateSelected('lang')"> Urdu</label>
+                                <label class="multi-select-option"><input type="checkbox" value="Hindi" onchange="updateSelected('lang')"> Hindi</label>
+                                <label class="multi-select-option"><input type="checkbox" value="Arabic" onchange="updateSelected('lang')"> Arabic</label>
+                                <label class="multi-select-option"><input type="checkbox" value="Roman Urdu / Hindi" onchange="updateSelected('lang')"> Roman Urdu / Hindi</label>
+                            </div>
                         </div>
                     </div>
                     <input type="hidden" id="eb_language" required>
                 </div>
+
+                <div class="form-group">
+                    <div class="flex justify-between align-center" style="margin-bottom: 8px;">
+                        <label style="margin: 0;">Categories (Select Multiple)</label>
+                        <span style="font-size: 0.8rem; color: var(--accent2); cursor: pointer; font-weight: 600;" onclick="window.addNewTag('category')"><i class="fas fa-plus"></i> Add New</span>
+                    </div>
+                    <div class="multi-select-container">
+                        <div class="multi-select-header" onclick="toggleDropdown('cat-dropdown')">
+                            <span id="selected-cats-text">Select Categories</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="multi-select-dropdown" id="cat-dropdown">
+                            <div style="padding: 10px; border-bottom: 1px solid var(--border2); position: sticky; top: 0; background: var(--surface2); z-index: 2;">
+                                <input type="text" class="custom-dark-input" style="padding: 8px 12px; margin-top: 0; font-size: 0.85rem;" placeholder="Search category..." onkeyup="filterOptions(this, 'cat-options')">
+                            </div>
+                            <div id="cat-options">
+                                <label class="multi-select-option"><input type="checkbox" value="Quran" onchange="updateSelected('cat')"> Quran</label>
+                                <label class="multi-select-option"><input type="checkbox" value="Hadith" onchange="updateSelected('cat')"> Hadith</label>
+                                <label class="multi-select-option"><input type="checkbox" value="Seerah" onchange="updateSelected('cat')"> Seerah</label>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="eb_category" required>
+                </div>
+
+   
+                        <div class="form-group" style="margin-top: 16px; margin-bottom: 16px;">
+    <label>Book Position (Number)</label>
+    <input type="number" id="eb_sort_order" placeholder="E.g. 1, 2, 3..." required>
+</div>
+
+<script>
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            const ebookId = document.getElementById("ebook_id") ? document.getElementById("ebook_id").value : "";
+            const cache = localStorage.getItem("admin_cache_ebooks");
+            
+            if (cache) {
+                const books = JSON.parse(cache);
+                
+                if (ebookId) { 
+                    // ✏️ EDIT MODE: Purani book ka asli number dhoondh kar fill karo
+                    const currentBook = books.find(b => b.id === ebookId);
+                    if (currentBook && currentBook.sort_order !== undefined) {
+                        document.getElementById("eb_sort_order").value = currentBook.sort_order;
+                    }
+                } else {
+                    // ➕ NEW EBOOK: Agla available number auto-fill karo
+                    const maxOrder = books.reduce((max, b) => Math.max(max, (b.sort_order || 0)), 0);
+                    document.getElementById("eb_sort_order").value = maxOrder + 1;
+                }
+            } else if (!ebookId) {
+                document.getElementById("eb_sort_order").value = 1;
+            }
+        }, 1000); // Thoda delay taaki baaki fields pehle load ho jayein
+    });
+</script>
+
+
+
+
 
                 <div class="flex align-center justify-between mt-1" style="margin-bottom: 16px; padding: 12px; background: var(--surface3); border-radius: var(--r); border: 1px solid var(--border2);">
                     <label style="margin:0; font-size:.9rem; color:var(--text); text-transform:none; font-weight:600;">Is this Ebook FREE?</label>
@@ -124,8 +221,8 @@
 
                 <div id="price-fields">
                     <div class="flex" style="gap: 16px;">
-                        <div class="form-group" style="flex: 1;"><label>Regular Price ( )</label><input type="number" step="0.01" id="eb_price" placeholder="0.00"></div>
-                        <div class="form-group" style="flex: 1;"><label>Discount Price ( )</label><input type="number" step="0.01" id="eb_discount" placeholder="0.00"></div>
+                        <div class="form-group" style="flex: 1;"><label>Regular Price (₹)</label><input type="number" step="0.01" id="eb_price" placeholder="0.00"></div>
+                        <div class="form-group" style="flex: 1;"><label>Discount Price (₹)</label><input type="number" step="0.01" id="eb_discount" placeholder="0.00"></div>
                     </div>
                 </div>
 
@@ -135,28 +232,158 @@
         </main>
 
         <nav class="bottom-nav">
-            <a href="../" class="nav-item"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a>
-            <a href="../books/" class="nav-item"><i class="fas fa-book"></i><span>Books</span></a>
-            <a href="../users/" class="nav-item"><i class="fas fa-users"></i><span>Users</span></a>
-            <a href="../payments/" class="nav-item"><i class="fas fa-wallet"></i><span>Payments</span></a>
-            <a href="./" class="nav-item add-btn active"><i class="fas fa-plus"></i><span>Add</span></a>
+            <a href="/admin/" class="nav-item"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a>
+            <a href="/admin/books/" class="nav-item"><i class="fas fa-book"></i><span>Books</span></a>
+            <a href="/admin/users/" class="nav-item"><i class="fas fa-users"></i><span>Users</span></a>
+            <a href="/admin/payments/" class="nav-item"><i class="fas fa-wallet"></i><span>Payments</span></a>
+            <a href="/admin/new-ebook/" class="nav-item add-btn active"><i class="fas fa-plus"></i><span>Add</span></a>
         </nav>
     </div>
 
-    <script src="../admin_script.js"></script>
+    <script type="module" src="/admin/admin_script.js"></script>
     
     <script>
-        function toggleMultiSelect() {
-            document.getElementById('lang-dropdown').classList.toggle('active');
+        // ✅ Jhatka-Free Dropdown Toggle
+        function toggleDropdown(id) {
+            const dropdown = document.getElementById(id);
+            const isClosing = dropdown.classList.contains('active');
+            
+            document.querySelectorAll('.multi-select-dropdown').forEach(d => d.classList.remove('active'));
+            
+            if (!isClosing) {
+                dropdown.classList.add('active');
+                const searchInput = dropdown.querySelector('input[type="text"]');
+                if (searchInput) { 
+                    searchInput.value = ''; 
+                    filterOptions(searchInput, id.replace('dropdown', 'options')); 
+                    // 🔥 focus() yahan se hata diya hai taaki page left me na bhage
+                }
+            }
+        }
+        // ✅ Firebase se Master Languages aur Categories load karne ka function
+        async function loadMasterTags() {
+            try {
+                const { getFirestore, doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
+                const dbInstance = getFirestore();
+                const docRef = doc(dbInstance, "settings", "app_data");
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    
+                    // 1. Languages load karo
+                    if (data.languages) {
+                        const langContainer = document.getElementById('lang-options');
+                        data.languages.forEach(lang => {
+                            // Check karo ki kahin ye pehle se HTML mein toh nahi hai?
+                            if (!langContainer.querySelector(`input[value="${lang}"]`)) {
+                                const html = `<label class="multi-select-option"><input type="checkbox" value="${lang}" onchange="updateSelected('lang')"> ${lang}</label>`;
+                                langContainer.insertAdjacentHTML('beforeend', html);
+                            }
+                        });
+                    }
+
+                    // 2. Categories load karo
+                    if (data.categories) {
+                        const catContainer = document.getElementById('cat-options');
+                        data.categories.forEach(cat => {
+                            if (!catContainer.querySelector(`input[value="${cat}"]`)) {
+                                const html = `<label class="multi-select-option"><input type="checkbox" value="${cat}" onchange="updateSelected('cat')"> ${cat}</label>`;
+                                catContainer.insertAdjacentHTML('beforeend', html);
+                            }
+                        });
+                    }
+                }
+            } catch (error) {
+                console.error("Error loading master tags:", error);
+            }
         }
 
-        function updateSelectedLangs() {
+
+let currentTagType = ''; 
+
+window.addNewTag = function(type) {
+    currentTagType = type;
+    const label = type === 'language' ? 'Language' : 'Category';
+    document.getElementById('add-tag-title').innerText = `Add New ${label}`;
+    document.getElementById('new-tag-input').value = ''; 
+    document.getElementById('add-tag-modal').classList.remove('hidden');
+    setTimeout(() => document.getElementById('new-tag-input').focus(), 100); 
+};
+
+window.closeAddTagModal = function() {
+    document.getElementById('add-tag-modal').classList.add('hidden');
+};
+
+        // ✅ Confirm & Add Tag (Instant UI + Permanent Firebase Save)
+        window.confirmAddTag = async function() {
+            const inputVal = document.getElementById('new-tag-input').value.trim();
+            const label = currentTagType === 'language' ? 'Language' : 'Category';
+            const valId = currentTagType === 'language' ? 'lang' : 'cat';
+            const optionsContainer = document.getElementById(`${valId}-options`);
+            
+            if (inputVal !== '') {
+                // STEP 1: UI mein turant add karo aur select karo (No waiting)
+                const newOptionHTML = `<label class="multi-select-option"><input type="checkbox" value="${inputVal}" onchange="updateSelected('${valId}')" checked> ${inputVal}</label>`;
+                optionsContainer.insertAdjacentHTML('beforeend', newOptionHTML);
+                updateSelected(valId);
+                window.closeAddTagModal();
+                
+                if (window.showToast) window.showToast(`Saving ${label} to database...`);
+
+                // STEP 2: Firebase ki Master List mein hamesha ke liye save karo
+                try {
+                    // ReferenceError se bachne ke liye Firebase import
+                    const { getFirestore, doc, setDoc, arrayUnion } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
+                    const dbInstance = getFirestore();
+                    
+                    // Firebase mein 'settings' collection ke andar 'app_data' document banayenge
+                    const docRef = doc(dbInstance, "settings", "app_data");
+                    
+                    // 'arrayUnion' ka fayda: Agar language pehle se hai toh dobara add nahi karega
+                    const updateData = currentTagType === 'language' 
+                        ? { languages: arrayUnion(inputVal) } 
+                        : { categories: arrayUnion(inputVal) };
+                    
+                    // setDoc (merge: true) use kiya taaki pehli baar mein file automatic create ho jaye
+                    await setDoc(docRef, updateData, { merge: true });
+                    
+                    if (window.showToast) window.showToast(`${label} saved permanently!`);
+                } catch (error) {
+                    console.error("Firebase save error:", error);
+                    // Agar internet gaya toh bhi UI mein toh rahega hi
+                    if (window.showToast) window.showToast(`Saved to dropdown, but Firebase failed.`, "error");
+                }
+            } else {
+                if (window.showToast) window.showToast("Please enter a name first", "error");
+            }
+        };
+
+        // ✅ 2. Live Search Filter Logic
+        function filterOptions(inputElement, optionsContainerId) {
+            const filter = inputElement.value.toLowerCase();
+            const options = document.getElementById(optionsContainerId).getElementsByTagName('label');
+            
+            for (let i = 0; i < options.length; i++) {
+                const text = options[i].textContent || options[i].innerText;
+                if (text.toLowerCase().indexOf(filter) > -1) {
+                    options[i].style.display = "";
+                } else {
+                    options[i].style.display = "none";
+                }
+            }
+        }
+
+        // ✅ 3. Universal Selection Updater (Dono ke liye kaam karega)
+        function updateSelected(type) {
             let selected = [];
-            document.querySelectorAll('.multi-select-option input:checked').forEach(chk => {
+            document.querySelectorAll(`#${type}-options input:checked`).forEach(chk => {
                 selected.push(chk.value);
             });
-            const hiddenInput = document.getElementById('eb_language');
-            const textDisplay = document.getElementById('selected-langs-text');
+            
+            const hiddenInput = type === 'lang' ? document.getElementById('eb_language') : document.getElementById('eb_category');
+            const textDisplay = type === 'lang' ? document.getElementById('selected-langs-text') : document.getElementById('selected-cats-text');
+            const defaultText = type === 'lang' ? 'Select Languages' : 'Select Categories';
             
             hiddenInput.value = selected.join(', ');
             
@@ -164,12 +391,34 @@
                 textDisplay.innerText = selected.join(', ');
                 textDisplay.style.color = 'var(--text)';
             } else {
-                textDisplay.innerText = 'Select Languages';
+                textDisplay.innerText = defaultText;
                 textDisplay.style.color = 'var(--text3)';
             }
         }
 
-        // Close dropdown when clicking outside
+        // Dropdown ke bahar click karne par usko band karna
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.multi-select-container')) {
+                document.querySelectorAll('.multi-select-dropdown').forEach(d => d.classList.remove('active'));
+            }
+        });
+
+        function togglePriceFields() {
+            const isFreeCheckbox = document.getElementById("eb_isfree");
+            if (!isFreeCheckbox) return;
+            const isFree = isFreeCheckbox.checked;
+            const priceDiv = document.getElementById("price-fields");
+            if(priceDiv) {
+                priceDiv.style.display = isFree ? "none" : "block";
+                document.getElementById("eb_price").required = !isFree;
+            }
+        }
+
+        function cancelEdit() {
+            sessionStorage.removeItem('edit_ebook_id');
+            window.location.href = '/admin/books/';
+        }
+
         document.addEventListener('click', (e) => {
             if (!e.target.closest('.multi-select-container')) {
                 const dropdown = document.getElementById('lang-dropdown');
@@ -177,58 +426,184 @@
             }
         });
 
-        document.addEventListener("DOMContentLoaded", () => {
-            if (isAdminLoggedIn()) {
+        // ✅ FULLY OPTIMIZED SWR DOMContentLoaded WORKFLOW
+        document.addEventListener("DOMContentLoaded", async () => {
+            if (localStorage.getItem("islamic_admin_auth") === "true") {
+                document.getElementById('app-view').classList.remove('hidden');
+                
                 const editId = sessionStorage.getItem('edit_ebook_id');
                 const submitBtn = document.getElementById('submit-ebook-btn');
+                let cachedBook = null;
 
+                // ==========================================
+                // 🟢 STEP 1: SABSE PEHLE CACHE LOAD (0 Delay)
+                // ==========================================
                 if (editId) {
                     document.getElementById('form-title').innerText = "Edit Ebook";
-                    submitBtn.innerHTML = "Update Ebook &#10022;";
-                    submitBtn.disabled = true;
-                    document.getElementById('cancel-edit-btn').classList.remove('hidden');
+                    if(submitBtn) submitBtn.innerHTML = "Update Ebook &#10022;";
+                    if(document.getElementById('cancel-edit-btn')) document.getElementById('cancel-edit-btn').classList.remove('hidden');
 
-                    fetchEbooks(false).then(() => { 
-                        const ebook = window.ebooksData.find(e => String(e.id) === String(editId));
-                        if(ebook) {
-                            document.getElementById("ebook_id").value = ebook.id;
-                            document.getElementById("eb_title").value = ebook.title;
-                            document.getElementById("eb_desc").value = ebook.description;
-                            document.getElementById("eb_pdf").value = ebook.pdf_link;
-                            document.getElementById("eb_thumb").value = ebook.thumbnail;
-                            document.getElementById("eb_isfree").checked = ebook.is_free === true || String(ebook.is_free).toLowerCase() === "true";
-                            document.getElementById("eb_price").value = ebook.price || "";
-                            document.getElementById("eb_discount").value = ebook.discount_price || "";
-                            
-                            // ✅ Auto-fill Language Selection
-                            if (ebook.language) {
-                                document.getElementById("eb_language").value = ebook.language;
-                                let langsArray = ebook.language.split(',').map(l => l.trim());
-                                document.querySelectorAll('.multi-select-option input').forEach(chk => {
-                                    chk.checked = langsArray.includes(chk.value);
-                                });
-                                updateSelectedLangs(); // Update text display
+                    const cachedData = localStorage.getItem("admin_cache_ebooks");
+                    if(cachedData) {
+                        try {
+                            const books = JSON.parse(cachedData);
+                            cachedBook = books.find(e => String(e.id) === String(editId));
+
+                            if(cachedBook) {
+                                // Turant saari fields fill karo bina kisi wait ke
+                                document.getElementById("ebook_id").value = cachedBook.id;
+                                document.getElementById("eb_title").value = cachedBook.title || "";
+                                document.getElementById("eb_desc").value = cachedBook.description || "";
+                                document.getElementById("eb_pdf").value = cachedBook.pdf_link || "";
+                                document.getElementById("eb_thumb").value = cachedBook.thumbnail || "";
+                                document.getElementById("eb_isfree").checked = cachedBook.is_free === true || String(cachedBook.is_free).toLowerCase() === "true";
+                                document.getElementById("eb_price").value = cachedBook.price || "";
+                                document.getElementById("eb_discount").value = cachedBook.discount_price || "";
+                                
+                                if (cachedBook.language) {
+                                    document.getElementById("eb_language").value = cachedBook.language;
+                                    let langsArray = cachedBook.language.split(',').map(l => l.trim());
+                                    document.querySelectorAll('#lang-options input').forEach(chk => { chk.checked = langsArray.includes(chk.value); });
+                                    updateSelected('lang'); 
+                                }
+
+                                if (cachedBook.category) {
+                                    document.getElementById("eb_category").value = cachedBook.category;
+                                    let catsArray = cachedBook.category.split(',').map(l => l.trim());
+                                    document.querySelectorAll('#cat-options input').forEach(chk => { chk.checked = catsArray.includes(chk.value); });
+                                    updateSelected('cat'); 
+                                }
                             }
-
-                            togglePriceFields();
-                            submitBtn.disabled = false;
-                        } else {
-                            showToast("Could not find book to edit.", "error");
-                            cancelEdit();
-                        }
-                    });
+                        } catch(e) { console.error("Cache read error:", e); }
+                    }
+                    togglePriceFields();
                 } else {
+                    // Naya Ebook add hone wala default UI setup
                     document.getElementById('form-title').innerText = "Add New Ebook";
                     togglePriceFields();
                 }
-                document.getElementById('phrase-ebook').innerText = ARABIC_PHRASES[Math.floor(Math.random() * ARABIC_PHRASES.length)];
+
+                // ==========================================
+                // 🔵 STEP 2: AB NETWORK SE MASTER TAGS LOAD KARO
+                // ==========================================
+                // Cache load hone ke baad ab ye dropdown ke naye options layega
+                await loadMasterTags(); 
+
+                // Master tags load hone par agar koi naya checkbox bana hai, toh use dobara tick mark kar do
+                if (editId && cachedBook) {
+                    if (cachedBook.language) {
+                        let langsArray = cachedBook.language.split(',').map(l => l.trim());
+                        document.querySelectorAll('#lang-options input').forEach(chk => { chk.checked = langsArray.includes(chk.value); });
+                        updateSelected('lang');
+                    }
+                    if (cachedBook.category) {
+                        let catsArray = cachedBook.category.split(',').map(l => l.trim());
+                        document.querySelectorAll('#cat-options input').forEach(chk => { chk.checked = catsArray.includes(chk.value); });
+                        updateSelected('cat');
+                    }
+                }
+
+                // ==========================================
+                // 🟠 STEP 3: SILENT BACKGROUND FIREBASE CHECK
+                // ==========================================
+                if (editId) {
+                    (async () => {
+                        try {
+                            const { getFirestore, doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
+                            const dbInstance = getFirestore();
+                            
+                            // 1. Pehle Public Data Fetch Karo
+                            const docSnap = await getDoc(doc(dbInstance, "ebooks", editId));
+                            
+                            if (docSnap.exists()) {
+                                const freshBook = docSnap.data();
+                                
+                                if (document.getElementById("eb_title").value !== freshBook.title) document.getElementById("eb_title").value = freshBook.title || "";
+                                if (document.getElementById("eb_desc").value !== freshBook.description) document.getElementById("eb_desc").value = freshBook.description || "";
+                                if (document.getElementById("eb_thumb").value !== freshBook.thumbnail) document.getElementById("eb_thumb").value = freshBook.thumbnail || "";
+                                
+                                const freshIsFree = freshBook.is_free === true || String(freshBook.is_free).toLowerCase() === "true";
+                                if (document.getElementById("eb_isfree").checked !== freshIsFree) {
+                                    document.getElementById("eb_isfree").checked = freshIsFree;
+                                    togglePriceFields();
+                                }
+                                if (document.getElementById("eb_price").value != (freshBook.price || "")) document.getElementById("eb_price").value = freshBook.price || "";
+                                if (document.getElementById("eb_discount").value != (freshBook.discount_price || "")) document.getElementById("eb_discount").value = freshBook.discount_price || "";
+                                
+                                if (document.getElementById("eb_language").value !== freshBook.language) {
+                                    document.getElementById("eb_language").value = freshBook.language || "";
+                                    let langsArray = (freshBook.language || "").split(',').map(l => l.trim());
+                                    document.querySelectorAll('#lang-options input').forEach(chk => { chk.checked = langsArray.includes(chk.value); });
+                                    updateSelected('lang');
+                                }
+                                if (document.getElementById("eb_category").value !== freshBook.category) {
+                                    document.getElementById("eb_category").value = freshBook.category || "";
+                                    let catsArray = (freshBook.category || "").split(',').map(l => l.trim());
+                                    document.querySelectorAll('#cat-options input').forEach(chk => { chk.checked = catsArray.includes(chk.value); });
+                                    updateSelected('cat');
+                                }
+
+                                // 🔥 THE FIX: Vault Check for Paid Books (Yahan Magic Hoga)
+                                let finalPdfLink = freshBook.pdf_link || ""; 
+                                
+                                // Agar link khali hai aur book Free nahi hai, toh tijori mein dhoondho!
+                                if (finalPdfLink === "" && !freshIsFree) {
+                                    try {
+                                        const secureSnap = await getDoc(doc(dbInstance, "secure_links", editId));
+                                        if (secureSnap.exists() && secureSnap.data().pdf_link) {
+                                            finalPdfLink = secureSnap.data().pdf_link;
+                                        }
+                                    } catch(err) { console.log("Secure Vault Check Error:", err); }
+                                }
+
+                                // Finally, PDF Box update karo
+                                if (document.getElementById("eb_pdf").value !== finalPdfLink) {
+                                    document.getElementById("eb_pdf").value = finalPdfLink;
+                                }
+                            }
+                        } catch (err) { console.log("Background Edit SWR Error:", err); }
+                    })();
+                } else {
+
+                    // Nayi Book ke liye Auto-Position system (Instant Cache + Background Firebase)
+                    const orderInput = document.getElementById("eb_sort_order");
+                    let nextNumber = 1;
+
+                    const cachedData = localStorage.getItem("admin_cache_ebooks");
+                    if (cachedData) {
+                        try {
+                            const books = JSON.parse(cachedData);
+                            if (books && books.length > 0) {
+                                const maxOrder = books.reduce((max, b) => Math.max(max, (Number(b.sort_order) || 0)), 0);
+                                nextNumber = maxOrder + 1;
+                            }
+                        } catch(e) { console.error("Cache read error:", e); }
+                    }
+                    if(orderInput) orderInput.value = nextNumber;
+
+                    (async () => {
+                        try {
+                            const { getFirestore, collection, getDocs } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
+                            const dbInstance = getFirestore();
+                            const snapshot = await getDocs(collection(dbInstance, "ebooks"));
+                            const allBooks = snapshot.docs.map(doc => doc.data());
+                            
+                            if (allBooks.length > 0) {
+                                const realMaxOrder = allBooks.reduce((max, b) => Math.max(max, (Number(b.sort_order) || 0)), 0);
+                                const realNextNumber = realMaxOrder + 1;
+                                if (realNextNumber !== nextNumber && orderInput) {
+                                    orderInput.value = realNextNumber;
+                                }
+                            }
+                        } catch (error) { console.log("Position check error:", error); }
+                    })();
+                }
+
+            } else {
+                window.location.replace('/admin/new-ebook/');
             }
         });
 
-        function cancelEdit() {
-            sessionStorage.removeItem('edit_ebook_id');
-            window.location.href = '../books/';
-        }
     </script>
 </body>
 </html>
