@@ -3,21 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Login - Islamic Library by Shekh</title>
+    <meta name="robots" content="noindex, nofollow">
 
-    <meta name="description" content="Islamic Library by Shekh – Download Islamic eBooks, Quran PDFs, and Hadith books.">
-    <meta name="keywords" content="Islamic Library by Shekh, Islamic ebooks, Quran PDF, Hadith books">
-    <meta name="author" content="Islamic Library by Shekh">
+    <title>Login to Your Account | Islamic Library by Shekh</title>
+    <meta name="title" content="Login to Your Account | Islamic Library by Shekh">
+    <meta name="description" content="Sign in to your Islamic Library by Shekh account to manage your purchased eBooks and explore our full collection of Islamic resources.">
+    <meta name="keywords" content="Islamic Library login, user account, sign in, member access">
 
-    <link rel="icon" type="image/png" sizes="32x32" href="../hikmahlogo.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="../hikmahlogo.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="../hikmahlogo.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/hikmahlogo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/hikmahlogo.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/hikmahlogo.png">
 
-    <meta property="og:title" content="Islamic Library by Shekh">
-    <meta property="og:description" content="Free & Paid Islamic eBooks, Quran PDFs, Hadith books available.">
-    <meta property="og:image" content="https://mysite.github.io/Resources/hikmahlogo.png">
-    <meta property="og:url" content="https://mysite.github.io/Resources/">
     <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mysite.pages.dev/login/">
+    <meta property="og:title" content="Login to Your Account | Islamic Library by Shekh">
+    <meta property="og:description" content="Sign in to access your personal Islamic eBook collection.">
+    <meta property="og:image" content="https://mysite.pages.dev/icons/hikmahlogo.png">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:url" content="https://mysite.pages.dev/login/">
+    <meta name="twitter:title" content="Login to Your Account | Islamic Library by Shekh">
+    <meta name="twitter:description" content="Sign in to access your personal Islamic eBook collection.">
+    <meta name="twitter:image" content="https://mysite.pages.dev/icons/hikmahlogo.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
@@ -81,8 +88,6 @@
         /* ===== LOADER & TOAST ===== */
         #loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10,10,15,0.85); backdrop-filter: blur(5px); z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center; }
         .spinner { width: 50px; height: 50px; border: 4px solid var(--surface3); border-top: 4px solid var(--accent); border-radius: 50%; animation: spin 1s cubic-bezier(0.4,0,0.2,1) infinite; }
-        #toast-container { position: fixed; bottom: 30px; right: 28px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
-        .toast { background: var(--surface); color: var(--text); padding: 12px 18px; border-radius: var(--r2); box-shadow: var(--shadow2); border: 1px solid var(--border2); animation: slideUp 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards; display: flex; align-items: center; gap: 10px; font-size: .85rem; font-weight: 500; }
 
         /* ===== FORMS & BUTTONS ===== */
         .form-group { margin-bottom: 16px; text-align: left; }
@@ -116,7 +121,7 @@
         .auth-card { background: var(--surface); padding: 32px 28px; border-radius: var(--r3); width: 100%; max-width: 400px; box-shadow: 0 2px 10px rgba(0,0,0,0.5); border: 1px solid var(--border); text-align: center; animation: cardIn .5s ease both; transition: var(--transition); position: relative; }
         .auth-card:hover { border-color: var(--border2); }
         
-        .help-badge { position: absolute; top: 15px; right: 15px; background: var(--glow2); color: var(--accent2); border: 1px solid var(--border); padding: 6px 12px; border-radius: 99px; font-size: 0.67rem; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 6px; transition: var(--transition); z-index: 10; }
+        .help-badge { position: absolute; top: 15px; right: 15px; background: var(--glow2); color: var(--accent2); border: 1px solid var(--border); padding: 6px 12px; border-radius: 99px; font-size: 0.55rem; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 6px; transition: var(--transition); z-index: 10; }
         .help-badge:hover { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: 0 4px 15px var(--glow); transform: translateY(-2px); }
 
         /* ===== 3 INITIAL GATEWAY BUTTONS ===== */
@@ -182,7 +187,6 @@
         .header-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(1rem, 5vw, 1.25rem); background: linear-gradient(135deg, var(--accent2), #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; letter-spacing: -0.02em; white-space: nowrap; }
         .header-sub { font-family: 'DM Mono', monospace; font-size: .7rem; font-weight: 500; color: var(--accent2); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 4px; white-space: nowrap; }
         [data-theme="light"] header { background: rgba(255, 255, 255, 0.95) !important; border-bottom: 1px solid rgba(0,0,0,0.1) !important; }
-        [data-theme="light"] .header-logo { background: linear-gradient(135deg, var(--accent2), var(--accent)) !important; -webkit-background-clip: text !important; -webkit-text-fill-color: transparent !important; }
 
         /* ===== ANIMATIONS ===== */
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } } 
@@ -224,27 +228,316 @@
             .auth-footer { padding: 25px 10% !important; }
             .footer-content { flex-direction: row !important; justify-content: space-between !important; max-width: 1400px; margin: 0 auto !important; }
             .footer-content span, .footer-links { font-size: 1.05rem !important; }
-            /* 🍞 TOAST NOTIFICATIONS DESKTOP FIX 🍞 */
-            #toast-container {
-                bottom: 50px !important; 
-                right: 50px !important; /* PC par right kone mein aaram se set hoga */
-            }
-            .toast {
-                padding: 18px 24px !important;
-                font-size: 1.15rem !important; /* Text padhne layak bada kiya */
-                border-radius: 16px !important;
-                gap: 16px !important;
-                min-width: 320px !important; /* PC par thoda lamba toast acha lagta hai */
-                box-shadow: 0 15px 35px rgba(0,0,0,0.5) !important; /* Premium Shadow */
-            }
-            .toast i { 
-                font-size: 1.5rem !important; /* Error/Success wala Icon bhi bada hoga */
+ }
+        /* 🔥 BACK TO HOME BUTTON CSS 🔥 */
+        .back-home-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-size: 0.55rem;
+            font-weight: 600;
+            color: var(--accent2);
+            text-decoration: none;
+            background: var(--glow2);
+            padding: 6px 12px;
+            border-radius: 99px;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            z-index: 10;
+        }
+        .back-home-badge:hover {
+            color: #fff; /* Hover par tera main theme color aayega */
+            border-color: var(--accent);
+            background: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px var(--glow);
+        }
+        
+        /* Desktop & Tablet View Scaling */
+        @media (min-width: 768px) {
+            .back-home-badge {
+                font-size: 1rem;
+                padding: 12px 20px;
+                top: 30px;
+                left: 30px;
             }
         }
+/* =========================================================================
+           🚀 UNIVERSAL PREMIUM TOAST NOTIFICATION SYSTEM (Upgraded Position & Size)
+           ========================================================================= */
+        #toast-container {
+            position: fixed;
+            bottom: 100px; /* 🔥 FIX: Mobile par bottom nav (70px) se thoda aur upar kar diya */
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            pointer-events: none;
+            width: 100%;
+            max-width: 400px;
+            padding: 0 20px; /* 🔥 Chhote mobiles me screen ke kono se chipke gaa nahi, automatic fit hoga */
+        }
+
+        .toast {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--surface2, #1f1f30);
+            color: var(--text, #f0f0f8);
+            padding: 14px 22px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            font-family: 'Syne', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            line-height: 1.4;
+            width: fit-content;
+            max-width: 100%;
+            text-align: left;
+            pointer-events: auto;
+            animation: toastEnter 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .toast.success span:first-child { color: var(--success, #10b981); }
+        .toast.error span:first-child { color: var(--danger, #f43f5e); }
+        .toast.info span:first-child { color: var(--accent, #7c6af7); }
+
+        .toast.fade-out {
+            opacity: 0 !important;
+            transform: translateY(20px) scale(0.95) !important;
+        }
+
+        @keyframes toastEnter {
+            0% { opacity: 0; transform: translateY(30px) scale(0.9); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* 🖥️ DESKTOP MODIFICATIONS (PC & BIG SCREENS) */
+        @media (min-width: 768px) {
+            #toast-container { 
+                bottom: 240px; /* 🔥 FIX: PC par isko kaafi upar le aaye hain taaki center field me saaf dikhe */
+                max-width: 550px; /* 🔥 Container thoda chauda kiya desktop ke liye */
+            }
+            .toast { 
+                font-size: 1.25rem; /* 🔥 FIX: Font size pure 30% bada kar diya (.95rem se direct 1.25rem) */
+                padding: 18px 32px; /* 🔥 FIX: Padding badha di taaki dabba bada aur premium lage */
+                border-radius: 16px; 
+                gap: 16px;
+            }
+        }
+
+#premium-announcement-bar {
+    background: #0a0a0f; 
+    border-bottom: 1px solid rgba(245, 158, 11, 0.3); 
+    color: #fbbf24; 
+    /* 🔥 FIX 1: Sticky kiya taaki header ke sath scroll ho */
+    position: sticky;
+    top: 0;
+    overflow: hidden; 
+    max-height: 0; 
+    opacity: 0;
+    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease; 
+    z-index: 1002; 
+    /* 🔥 FIX 2: Gap ko jad se khatam karne ke liye -1px margin */
+    margin-bottom: -1px; 
+}
+
+#premium-announcement-bar.show-banner {
+    max-height: 40px;
+    opacity: 1;
+}
+
+#premium-announcement-bar.closed { 
+    max-height: 0; 
+    opacity: 1; /* 🔥 Fade nahi hoga, seedha upar sarak kar band hoga */
+    border-color: transparent;
+}
+
+/* Light Mode Overrides */
+[data-theme="light"] #premium-announcement-bar {
+    background: linear-gradient(90deg, #fef3c7, #fde68a) !important;
+    border-bottom: 1px solid #f59e0b !important;
+    color: #b45309 !important;
+}
+[data-theme="light"] .ann-text-container { color: #b45309 !important; }
+[data-theme="light"] .ann-close-btn { background: rgba(180, 83, 9, 0.1) !important; color: #b45309 !important; }
+
+/* 🔥 FIX 3: Transform hatakar sticky header ki position shift ki (No Layout Distortion) */
+body.banner-opened header {
+    top: 38px !important; 
+}
+header {
+    transition: top 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* 🔥 FIX 4: Refresh wale jhatke (Jitter) ko khatam karne ka rule */
+body.instant-load #premium-announcement-bar,
+body.instant-load header {
+    transition: none !important;
+}
+
+.announcement-content { display: flex; align-items: center; padding: 6px 24px; max-width: 1400px; margin: 0 auto; }
+.ann-text-container { flex: 1; overflow: hidden; white-space: nowrap; text-decoration: none; color: #fbbf24; position: relative; display: block; }
+.ann-marquee { display: inline-block; padding-left: 100%; animation: marqueeAnim 18s linear infinite; font-weight: 700; font-size: 0.8rem; font-family: 'Syne', sans-serif; letter-spacing: 0.5px; }
+@keyframes marqueeAnim { 0% { transform: translate(0, 0); } 100% { transform: translate(-100%, 0); } }
+#premium-announcement-bar::after { 
+    content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; 
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent); 
+    transform: skewX(-20deg); 
+    animation: shimmerBanner 5s infinite; 
+    pointer-events: none; 
+    /* 🔥 FIX: Shimmer ab refresh hone ke 0.5s baad smoothly shuru hoga */
+    animation-delay: 0.5s !important; 
+}
+@keyframes shimmerBanner { 0% { left: -100%; } 20%, 100% { left: 200%; } }
+.ann-close-btn { background: rgba(245, 158, 11, 0.1); border: none; color: #fbbf24; width: 22px; height: 22px; border-radius: 50%; cursor: pointer; display: flex; justify-content: center; align-items: center; margin-left: 12px; transition: 0.3s; flex-shrink: 0; font-size: 0.75rem; }
+.ann-close-btn:hover { background: rgba(245, 158, 11, 0.25); }
+
+/* =========================================================
+   👑 PREMIUM UNDO TOAST: ROYAL GOLD THEME (Dark & Light)
+   ========================================================= */
+.undo-toast {
+    position: fixed; 
+    bottom: 85px; 
+    left: 50%; 
+    transform: translateX(-50%) translateY(100px);
+    
+    /* 🔥 Dark Mode Theme Style */
+    background: #0a0a0f; 
+    border: 1px solid rgba(245, 158, 11, 0.4);
+    color: #ffffff; 
+    
+    /* 🔥 GOLDEN GLOW SHADOW: Chaaron taraf premium aura dikhega */
+    box-shadow: 0 4px 25px rgba(245, 158, 11, 0.3); 
+
+    padding: 12px 20px; 
+    border-radius: 8px; 
+    display: flex; 
+    align-items: center; 
+    gap: 20px; 
+    z-index: 100005; 
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); 
+    font-size: 0.9rem; 
+    white-space: nowrap;
+    font-family: 'Syne', sans-serif;
+}
+
+.undo-toast.hidden { display: none !important; }
+.undo-toast.show { transform: translateX(-50%) translateY(0); }
+
+/* 🔥 Dark Mode Button */
+.undo-toast button { 
+    background: transparent; 
+    border: none; 
+    color: #fbbf24; /* Pure Gold Button Text */
+    font-weight: 700; 
+    cursor: pointer; 
+    text-transform: uppercase; 
+    font-size: 0.9rem; 
+    letter-spacing: 0.5px;
+    transition: transform 0.2s ease;
+}
+.undo-toast button:hover {
+    transform: scale(1.05);
+}
+
+/* 👑 🌞 LIGHT MODE TOAST OVERRIDES (Banner se matching soft gold) */
+[data-theme="light"] .undo-toast {
+    background: linear-gradient(135deg, #fef3c7, #fde68a) !important;
+    border: 1px solid #f59e0b !important;
+    color: #b45309 !important; /* Dark Amber Text */
+    box-shadow: 0 4px 25px rgba(245, 158, 11, 0.2) !important;
+}
+[data-theme="light"] .undo-toast button {
+    color: #78350f !important; /* Ultra Dark Amber Button */
+}
+
+/* 🔥 Desktop aur Large Screens Par Responsiveness */
+@media (min-width: 1024px) {
+    .undo-toast {
+        bottom: 200px !important; 
+        padding: 18px 30px !important; 
+        font-size: 1.4rem !important; 
+        gap: 32px !important; 
+    }
+    .undo-toast button {
+        font-size: 1.4rem !important; 
+    }
+}
+
+/* 🔥 Desktop aur PC par close button aur content ko kone se andar sarakne ke liye */
+@media (min-width: 1024px) {
+    .announcement-content {
+        padding: 6px 60px !important; /* 24px se badha kar 60px kiya taaki kone se andar rahe */
+    }
+}
+/* =========================================================
+   🔥 FIX: BANNER OPEN HONE PAR SUB-HEADER STICKY BOUNDARY 🔥
+   ========================================================= */
+
+/* 📱 Mobile Par: Jab banner khula ho, toh sub-header ko 38px aur niche stick karo */
+body.banner-opened .stepper-wrap {
+    top: 106px !important; /* 68px + 38px (Banner Height) */
+}
+
+/* 🖥️ Desktop Par: Jab banner khula ho, toh sub-header ko 38px aur niche stick karo */
+@media screen and (min-width: 768px) {
+    body.banner-opened .stepper-wrap {
+        top: 123px !important; /* 85px + 38px (Banner Height) */
+    }
+}
+/* 🔥 STEPPER SMOOTH SLIDE FIX 🔥 */
+.stepper-wrap {
+    transition: top 0.5s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease, border-color 0.3s ease !important;
+}
+
+body.instant-load .stepper-wrap {
+    transition: none !important;
+}
 
     </style>
 </head>
 <body>
+
+<script>
+    try {
+        const cachedData = localStorage.getItem('cache_data_settings');
+        if (cachedData) {
+            const data = JSON.parse(cachedData);
+            if (data.announcement && data.announcement.is_active) {
+                const closedVer = localStorage.getItem("closed_banner_version");
+                if (closedVer !== String(data.announcement.version)) {
+                    const lastAnim = localStorage.getItem("banner_anim_time");
+                    
+                    const path = window.location.pathname.toLowerCase();
+                    let pageKey = "home";
+                    if (path.includes("/books")) pageKey = "books"; // 🔥 FIX HERE TOO
+                    else if (path.includes("/library")) pageKey = "library";
+                    else if (path.includes("/info/contact")) pageKey = "contact";
+                    else if (path.includes("/info/privacy")) pageKey = "privacy";
+                    else if (path.includes("/info/terms")) pageKey = "terms";
+                    else if (path.includes("/info")) pageKey = "info";
+                    else if (path.includes("/payments")) pageKey = "payments";
+                    else if (path.includes("/login/support")) pageKey = "support";
+                    else if (path.includes("/login")) pageKey = "login";
+                    else if (path.includes("404")) pageKey = "404";
+
+                    if (data.announcement.show_on.includes(pageKey) && lastAnim && (Date.now() - parseInt(lastAnim)) <= (30 * 60 * 1000)) {
+                        document.body.classList.add("instant-load", "banner-opened");
+                    }
+                }
+            }
+        }
+    } catch(e) {}
+</script>
 
     <div class="hero-bg"></div>
     <div class="hero-grid"></div>
@@ -267,10 +560,19 @@
         <div class="drawer-mobile">Login to access Your Library</div>
         
         <div class="drawer-menu">
-            <button class="btn btn-outline" onclick="window.location.href='../info/'"><i class="fas fa-info-circle"></i> About Us</button>
-            <button class="btn btn-outline" onclick="window.location.href='../info/privacy/'"><i class="fas fa-user-secret"></i> Privacy Policy</button>
-            <button class="btn btn-outline" onclick="window.location.href='support/'"><i class="fas fa-question-circle"></i> Login Help</button>
+            <button class="btn btn-outline" onclick="window.location.href='/info/'"><i class="fas fa-info-circle"></i> About Us</button>
+            <button class="btn btn-outline" onclick="window.location.href='/info/privacy/'"><i class="fas fa-user-secret"></i> Privacy Policy</button>
+            <button class="btn btn-outline" onclick="window.location.href='/login/support/'"><i class="fas fa-question-circle"></i> Login Help</button>
         </div>
+    </div>
+</div>
+
+<div id="premium-announcement-bar">
+    <div class="announcement-content">
+        <a href="javascript:void(0)" id="ann-link" class="ann-text-container">
+            <span id="ann-text" class="ann-marquee"></span>
+        </a>
+        <button class="ann-close-btn" onclick="window.closeAnnouncement()"><i class="fas fa-times"></i></button>
     </div>
 </div>
 
@@ -283,15 +585,35 @@
         </div>
     </div>
     <div class="flex align-center" style="gap: 20px;">
-        <i id="theme-toggle-icon" class="fas fa-moon" style="font-size: 1.2rem; color: var(--text2); cursor: pointer;" onclick="window.toggleTheme()"></i>
-        <i class="fas fa-user-circle" style="font-size: 1.3rem; color: var(--text2); cursor: pointer;" onclick="window.openProfileDrawer()"></i>
+        <i id="theme-toggle-icon" class="fas fa-moon" style="font-size: 1.2rem; color: var(--text2); cursor: pointer;" onclick="window.toggleTheme()" title="Switch Theme"></i>
+        <i class="fas fa-user-circle" style="font-size: 1.3rem; color: var(--text2); cursor: pointer;" onclick="window.openProfileDrawer()" title="Profile"></i>
     </div>
 </header>
 
+<div id="ann-undo-toast" class="undo-toast hidden">
+    <span>Banner dismissed</span>
+    <button onclick="window.undoAnnouncement()">UNDO</button>
+</div>
+
+        <script>
+            (function() {
+                const currentTheme = localStorage.getItem('islamic_theme') || 'dark';
+                const icon = document.getElementById("theme-toggle-icon");
+                if(icon) {
+                    // Agar light theme hai toh direct Sun laga do, Moon dikhne hi mat do
+                    icon.className = currentTheme === "light" ? "fas fa-sun" : "fas fa-moon";
+                }
+            })();
+        </script>
+
     <div id="auth-views">
     <div id="initial-options-view" class="auth-container">
-        <div class="auth-card">
-            <a href="support/" class="help-badge" title="Need Help?"><i class="fas fa-headset"></i> Help</a>
+        <div class="auth-card" style="position: relative;">
+            
+            <a href="/" class="back-home-badge" title="Back to Home"><i class="fas fa-arrow-left"></i> Home</a>
+            
+            <a href="/login/support/" class="help-badge" title="Need Help?"><i class="fas fa-headset"></i> Help</a>
+            
             <div class="bismillah" style="margin-bottom: 16px;">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
             <h2 style="margin-bottom: 6px;">Welcome to Library</h2>
             <p style="color: var(--text2); font-size: .85rem; margin-bottom: 24px;">Choose how you want to continue</p>
@@ -312,14 +634,14 @@
             </div>
 
             <div class="legal-text">
-                By continuing, you agree to our <a href="../info/terms/">Terms of Service</a> and <a href="../info/privacy/">Privacy Policy</a>.
+                By continuing, you agree to our <a href="/info/terms/">Terms of Service</a> and <a href="/info/privacy/">Privacy Policy</a>.
             </div>
         </div>
     </div>
 
     <div id="login-view" class="auth-container hidden">
         <div class="auth-card" style="position: relative;">
-            <i class="fas fa-arrow-left back-icon" onclick="goBackToInitial()"></i> <a href="support/" class="help-badge" title="Need Help?"><i class="fas fa-headset"></i> Help</a>
+            <i class="fas fa-arrow-left back-icon" onclick="goBackToInitial()"></i> <a href="/login/support/" class="help-badge" title="Need Help?"><i class="fas fa-headset"></i> Help</a>
             
             <h2 style="margin-bottom: 6px; margin-top: 15px;">Login</h2>
             <p style="color: var(--text2); font-size: .85rem; margin-bottom: 24px;">Sign in to access your library</p>
@@ -349,7 +671,7 @@
 
     <div id="signup-view" class="auth-container hidden">
         <div class="auth-card" style="position: relative;">
-            <i class="fas fa-arrow-left back-icon" onclick="goBackToInitial()"></i> <a href="support/" class="help-badge" title="Need Help?"><i class="fas fa-headset"></i> Help</a>
+            <i class="fas fa-arrow-left back-icon" onclick="goBackToInitial()"></i> <a href="/login/support/" class="help-badge" title="Need Help?"><i class="fas fa-headset"></i> Help</a>
             
             <h2 style="margin-bottom: 6px; margin-top: 15px;">Create Account</h2>
             <p style="color: var(--text2); font-size: .85rem; margin-bottom: 24px;">Join our Islamic eBook community</p>
@@ -373,7 +695,7 @@
     <div id="reset-view" class="auth-container hidden">
         <div class="auth-card" style="position: relative;">
             <i class="fas fa-arrow-left back-icon" onclick="switchAuth('login')"></i>
-            <a href="support/" class="help-badge" title="Need Help?"><i class="fas fa-headset"></i> Help</a>
+            <a href="/login/support/" class="help-badge" title="Need Help?"><i class="fas fa-headset"></i> Help</a>
             
             <h2 style="margin-bottom: 6px; margin-top: 15px;">Reset Password</h2>
             <p id="reset-desc" style="color: var(--text2); font-size: .85rem; margin-bottom: 24px;">Get a reset link via email</p>
@@ -387,7 +709,7 @@
                         <p style="color: #ffc107; font-size: 0.85rem; margin-bottom: 12px; line-height: 1.4;">
                             <i class="fas fa-exclamation-triangle"></i> You cannot change a mobile account password from here. Please Contact Support.
                         </p>
-                        <a href="support/" class="btn" style="display: inline-block; padding: 10px 20px; font-size: 0.85rem; text-decoration: none; color: white; border-radius: 99px;">
+                        <a href="/login/support/" class="btn" style="display: inline-block; padding: 10px 20px; font-size: 0.85rem; text-decoration: none; color: white; border-radius: 99px;">
                             Contact Support
                         </a>
                     </div>
@@ -408,7 +730,7 @@
             </div>
             <div style="display: flex; flex-direction: column; gap: 15px;">
                 <button onclick="closeResetSuccess()" class="btn" style="padding: 12px; font-weight: 600;">Back to Login</button>
-                <a href="support/" style="color: var(--text2); text-decoration: none; font-size: 0.85rem; transition: 0.3s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text2)'">
+                <a href="/login/support/" style="color: var(--text2); text-decoration: none; font-size: 0.85rem; transition: 0.3s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text2)'">
                     Didn't receive a link? <span style="color: var(--primary); font-weight: 600;">Contact Support</span>
                 </a>
             </div>
@@ -422,9 +744,9 @@
     <div class="footer-content">
         <span>&copy; 2026 <b>Islamic Library by Shekh</b></span>
         <div class="footer-links">
-            <a href="support/">Support</a>
+            <a href="/login/support/">Support</a>
             <span class="sep">|</span>
-            <a href="../info/privacy/">Privacy</a>
+            <a href="/info/privacy/">Privacy</a>
         </div>
     </div>
 </footer>
@@ -475,7 +797,7 @@
 
         document.addEventListener("DOMContentLoaded", () => {
             if (localStorage.getItem("islamic_user_id")) {
-                window.location.href = '../';
+                window.location.href = '/';
                 return;
             }
             if (sessionStorage.getItem('open_reset_tab') === 'true') {
@@ -489,11 +811,22 @@
 
         window.showToast = function(msg, type = "success") {
             const container = document.getElementById("toast-container");
-            const toast = document.createElement("div");
-            toast.className = "toast";
-            toast.innerHTML = (type === "success" ? '<span style="font-size:1.1rem; color:var(--success)">✓</span>' : '<span style="font-size:1.1rem; color:var(--danger)">✕</span>') + ` <span>${msg}</span>`;
+            if (!container) return;
+            container.innerHTML = "";
+            const toast = document.createElement("div"); 
+            toast.className = `toast ${type}`;
+            let iconHTML = '<span>✓</span>';
+            if (type === "error") iconHTML = '<span>✕</span>';
+            if (type === "info") iconHTML = '<i class="fas fa-spinner fa-spin"></i>'; 
+            toast.innerHTML = `<span style="font-size: 1.25rem; display: flex; align-items: center;">${iconHTML}</span> <span>${msg}</span>`;
             container.appendChild(toast);
-            setTimeout(() => { toast.style.transform = "translateX(110%)"; toast.style.opacity = "0"; setTimeout(() => toast.remove(), 400); }, 3000);
+            
+            if (type !== "info") {
+                setTimeout(() => { 
+                    toast.classList.add("fade-out"); 
+                    setTimeout(() => toast.remove(), 400); 
+                }, 3500);
+            }
         }
 
         window.switchAuth = function(view) {
@@ -610,7 +943,7 @@ window.loginWithGoogle = async function(btnId) {
     try {
         const result = await signInWithPopup(auth, googleProvider);
         
-        // 🎉 SUCCESS MILITY HI TIMER CLEAR KARO
+        // 🎉 SUCCESS MILTE HI TIMER CLEAR KARO
         if (googleAuthTimeout) clearTimeout(googleAuthTimeout);
         window.removeEventListener('focus', window.handleGoogleFocus);
 
@@ -618,13 +951,20 @@ window.loginWithGoogle = async function(btnId) {
         const userRef = doc(db, "users", user.uid);
         const userSnap = await getDoc(userRef);
 
+        // 🔥 FIX: Agar user naya hai toh setDoc, agar purana hai toh photo update karo
         if (!userSnap.exists()) {
             await setDoc(userRef, {
                 uid: user.uid,
                 name: user.displayName || "Google User",
                 loginType: 'google',
                 displayId: user.email,
+                photoURL: user.photoURL || null, 
                 createdAt: new Date().toISOString()
+            });
+        } else {
+            // Agar user pehle se hai, toh uski photo update kar do (taki Email login mein dikhe)
+            await updateDoc(userRef, {
+                photoURL: user.photoURL || null
             });
 
             try {
@@ -635,9 +975,12 @@ window.loginWithGoogle = async function(btnId) {
         localStorage.setItem("islamic_user_id", user.uid);
         localStorage.setItem("islamic_user_name", userSnap.exists() && userSnap.data().name ? userSnap.data().name : (user.displayName || "Google User"));
         localStorage.setItem("islamic_user_mobile", user.email);
+        
+        // 🔥 NAYA CHANGE 2: Local Storage mein photo link save kar liya (Drawer isko use karega)
+        localStorage.setItem("islamic_user_photo", user.photoURL); 
 
         window.showToast("Google Login Successful!");
-        setTimeout(() => { window.location.href = '../'; }, 200);
+        setTimeout(() => { window.location.href = '/'; }, 200);
 
     } catch (error) {
         // 🚀 THE MAGIC LINE: Agar user ne dobara click kiya hai, toh is purane error ko IGNORE kar do!
@@ -658,7 +1001,6 @@ window.loginWithGoogle = async function(btnId) {
         }
     }
 };
-
 
         // ✅ LOGIN (FIREBASE)
         document.getElementById("loginForm").addEventListener("submit", async (e) => {
@@ -682,19 +1024,33 @@ window.loginWithGoogle = async function(btnId) {
                 const userCredential = await signInWithEmailAndPassword(auth, firebaseEmail, password);
                 const uid = userCredential.user.uid;
                 
-                // SECURE CHECK: Yahan naam laya jaayega
+                // SECURE CHECK: Yahan naam aur photo dono laye jayenge
                 try {
                     const userDoc = await getDoc(doc(db, "users", uid));
-                    if (userDoc.exists() && userDoc.data().name) localStorage.setItem("islamic_user_name", userDoc.data().name);
-                } catch(err) { console.log("Name fetch error on login"); }
+                    if (userDoc.exists()) {
+                        const data = userDoc.data();
+                        if (data.name) localStorage.setItem("islamic_user_name", data.name);
+                        
+                        // 🔥 NAYA JUGAAAD: Database check karo ki photo hai ya nahi
+                        if (data.photoURL) {
+                            localStorage.setItem("islamic_user_photo", data.photoURL); // Photo mil gayi toh save karo
+                        } else {
+                            localStorage.removeItem("islamic_user_photo"); // Photo nahi mili toh catch saaf karo
+                        }
+                    }
+                } catch(err) { 
+                    console.log("Data fetch error on login"); 
+                    localStorage.removeItem("islamic_user_photo"); // Error aane par bhi kachra saaf kar do
+                }
 
                 localStorage.setItem("islamic_user_id", uid); 
                 localStorage.setItem("islamic_user_mobile", inputValue); 
-                
+                // Niche se wo akela 'removeItem' wali line HATA DENA, kyunki ab humne usko upar intelligently handle kar liya hai.
+
                 window.showToast("Login Successful! Redirecting..."); 
                 
                 // 🚀 FAST REDIRECT: 800ms se 150ms
-                setTimeout(() => { window.location.href = '../'; }, 150);
+                setTimeout(() => { window.location.href = '/'; }, 150);
             } catch (error) {
                 let msg = "Login failed. Please try again.";
                 if (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential') msg = "Incorrect details or password.";
@@ -750,12 +1106,14 @@ window.loginWithGoogle = async function(btnId) {
                 localStorage.setItem("islamic_user_id", user.uid); 
                 localStorage.setItem("islamic_user_name", nameVal); 
                 localStorage.setItem("islamic_user_mobile", inputVal); 
-                
+                // Naye login par purani photo ka kachra saaf kar do
+                localStorage.removeItem("islamic_user_photo"); 
+
                 window.startCooldown('signup-btn', 'cooldown_signup', 'Sign Up ✦');
                 window.showToast("Account Created! Redirecting..."); 
                 
                 // 🚀 FAST REDIRECT: 800ms se 150ms
-                setTimeout(() => { window.location.href = '../'; }, 150);
+                setTimeout(() => { window.location.href = '/'; }, 150);
             } catch (error) {
                 let msg = "Signup failed.";
                 if (error.code === 'auth/email-already-in-use') msg = "Account already exists! Please login.";
@@ -763,6 +1121,44 @@ window.loginWithGoogle = async function(btnId) {
                 btn.disabled = false; btn.innerHTML = `Sign Up ✦`;
             }
         });
+
+// 🔥 THE BFCache FIX FOR LOGIN/SIGNUP PAGE (Perfected for your HTML) 🔥
+window.addEventListener("pageshow", (event) => {
+    if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+        
+        // 1. Dono forms (Login aur Signup) ko reset (khali) karo
+        const loginForm = document.getElementById("loginForm");
+        if (loginForm) loginForm.reset();
+
+        const signupForm = document.getElementById("signupForm");
+        if (signupForm) signupForm.reset();
+
+        // 2. Login aur Google Buttons ko ghoomne (spinner) se rok kar normal karo
+        const loginBtn = document.getElementById("login-btn");
+        if (loginBtn) {
+            loginBtn.disabled = false;
+            loginBtn.innerHTML = `Login ✦`;
+        }
+
+        const googleBtn = document.getElementById("google-login-btn");
+        if (googleBtn) {
+            googleBtn.disabled = false;
+            googleBtn.innerHTML = `<img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google"> <span>Continue with Google</span>`;
+        }
+
+        // 🚀 3. VIEW RESET: User ko wapas Main Selection Screen par bhejo
+        // Pehle Login aur Signup views ko chhupa do (hide kardo)
+        const loginView = document.getElementById("login-view");
+        const signupView = document.getElementById("signup-view");
+        
+        if (loginView) loginView.classList.add("hidden");
+        if (signupView) signupView.classList.add("hidden");
+
+        // Ab "Continue with Email/Mobile/Google" wale main view ko dikha do
+        const initialView = document.getElementById("initial-options-view");
+        if (initialView) initialView.classList.remove("hidden");
+    }
+});
 
         // ✅ RESET SUBMIT (FIREBASE)
         document.getElementById("resetForm").addEventListener("submit", async (e) => {
@@ -894,6 +1290,198 @@ document.addEventListener('DOMContentLoaded', () => {
     if (icon) icon.className = savedTheme === 'light' ? 'fas fa-sun' : 'fas fa-moon';
 });
 
+// 📂 1. AUTOMATIC URL & FOLDER DETECTOR
+function getCleanPageName() {
+    const path = window.location.pathname.toLowerCase();
+    
+    if (path.includes("/books")) return "books"; // 🔥 FIX: Sirf books folder check karega
+    if (path.includes("/library")) return "library";
+    if (path.includes("/info/contact")) return "contact";
+    if (path.includes("/info/privacy")) return "privacy";
+    if (path.includes("/info/terms")) return "terms";
+    if (path.includes("/info")) return "info"; 
+    if (path.includes("/payments")) return "payments";
+    if (path.includes("/login/support")) return "support";
+    if (path.includes("/login")) return "login";
+    if (path.includes("404")) return "404";
+    
+    if (path === "/" || path.endsWith("/index.html") || path === "") return "home";
+    return "home";
+}
+const currentPageName = getCleanPageName();
+
+// 🔥 2. REFRESH CHECK (0.1s Jhatka Khatam)
+try {
+    const cachedData = localStorage.getItem('cache_data_settings');
+    if (cachedData) {
+        const data = JSON.parse(cachedData);
+        if (data.announcement && data.announcement.is_active && data.announcement.show_on.includes(currentPageName)) {
+            const closedVer = localStorage.getItem("closed_banner_version");
+            if (closedVer !== String(data.announcement.version)) {
+                const lastAnim = localStorage.getItem("banner_anim_time");
+                
+                if (lastAnim && (Date.now() - parseInt(lastAnim)) <= (30 * 60 * 1000)) {
+                    document.body.classList.add("instant-load", "banner-opened");
+                    
+                    document.addEventListener("DOMContentLoaded", () => {
+                        const bar = document.getElementById("premium-announcement-bar");
+                        const textEl = document.getElementById("ann-text");
+                        if (textEl) textEl.innerText = data.announcement.text;
+                        
+                        const linkEl = document.getElementById("ann-link");
+                        if (linkEl && data.announcement.link_url) {
+                            linkEl.href = data.announcement.link_url;
+                            linkEl.target = "_blank";
+                            linkEl.style.pointerEvents = "auto";
+                        }
+                        if (bar) {
+                            bar.classList.add("show-banner");
+                            bar.dataset.version = data.announcement.version;
+                        }
+                        setTimeout(() => { document.body.classList.remove("instant-load"); }, 100);
+                    });
+                }
+            }
+        }
+    }
+} catch(e) {}
+
+// ✅ 3. USER PANEL: Firebase se Master Categories aur Languages (60 Min Cache)
+document.addEventListener("DOMContentLoaded", () => {
+    setTimeout(async () => {
+        try {
+            const CACHE_TIME_LIMIT = 60 * 60 * 1000; // 60 Minutes
+            const now = Date.now();
+            const savedTime = localStorage.getItem('cache_time_settings');
+            const savedDataStr = localStorage.getItem('cache_data_settings');
+
+            let data;
+
+            if (savedTime && savedDataStr && (now - parseInt(savedTime)) < CACHE_TIME_LIMIT) {
+                data = JSON.parse(savedDataStr); 
+            } else {
+                const { getFirestore, doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
+                const dbInstance = getFirestore();
+                const docRef = doc(dbInstance, "settings", "app_data");
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    data = docSnap.data();
+                    localStorage.setItem('cache_data_settings', JSON.stringify(data));
+                    localStorage.setItem('cache_time_settings', now.toString());
+                }
+            }
+
+            if (data) {
+                // 1. Categories Dropdown update
+                if (data.categories) {
+                    const catContainer = document.getElementById('cat-options');
+                    if (catContainer) {
+                        data.categories.forEach(cat => {
+                            const lowerCat = cat.toLowerCase();
+                            const exists = Array.from(catContainer.children).some(el => el.innerText.trim().toLowerCase() === lowerCat);
+                            if (!exists) {
+                                const newDiv = document.createElement('div');
+                                newDiv.className = 'f-option'; newDiv.innerText = cat; 
+                                newDiv.onclick = (e) => window.setCatFilter(lowerCat, cat, e);
+                                catContainer.appendChild(newDiv);
+                            }
+                        });
+                    }
+                }
+
+                // 2. Languages Dropdown update
+                if (data.languages) {
+                    const langContainer = document.getElementById('lang-options');
+                    if (langContainer) {
+                        data.languages.forEach(lang => {
+                            const lowerLang = lang.toLowerCase();
+                            const exists = Array.from(langContainer.children).some(el => el.innerText.trim().toLowerCase() === lowerLang);
+                            if (!exists) {
+                                const newDiv = document.createElement('div');
+                                newDiv.className = 'f-option'; newDiv.innerText = lang; 
+                                newDiv.onclick = (e) => window.setLangFilter(lowerLang, lang, e);
+                                langContainer.appendChild(newDiv);
+                            }
+                        });
+                    }
+                }
+
+                // 3. ANNOUNCEMENT BANNER LOGIC (First-time Animation Control)
+                if (data.announcement && data.announcement.is_active && data.announcement.show_on.includes(currentPageName)) {
+                    const annData = data.announcement;
+                    const closedVer = localStorage.getItem("closed_banner_version");
+                    if (closedVer !== String(annData.version)) {
+                        const bar = document.getElementById("premium-announcement-bar");
+                        
+                        const textEl = document.getElementById("ann-text");
+                        if (textEl && textEl.innerText === "") textEl.innerText = annData.text;
+                        
+                        const linkEl = document.getElementById("ann-link");
+                        if (linkEl && !linkEl.getAttribute("href").includes("http")) {
+                            if (annData.link_url) {
+                                linkEl.href = annData.link_url; linkEl.target = "_blank"; linkEl.style.pointerEvents = "auto";
+                            } else {
+                                linkEl.href = "javascript:void(0)"; linkEl.removeAttribute("target"); linkEl.style.pointerEvents = "none";
+                            }
+                        }
+                        
+                        if (bar) bar.dataset.version = annData.version;
+
+                        const lastAnim = localStorage.getItem("banner_anim_time");
+                        if (!lastAnim || (now - parseInt(lastAnim)) > (30 * 60 * 1000)) {
+                            setTimeout(() => {
+                                document.body.classList.add("banner-opened");
+                                if (bar) bar.classList.add("show-banner"); 
+                                localStorage.setItem("banner_anim_time", Date.now().toString());
+                            }, 1000);
+                        }
+                    }
+                }
+
+            }
+        } catch (error) { console.error("User Panel Master Tags Load Error:", error); }
+    }, 500); 
+});
+
+// 🔴 GLOBAL CLOSE AND UNDO MANAGEMENT
+let undoTimeout;
+window.closeAnnouncement = function() {
+    const bar = document.getElementById("premium-announcement-bar");
+    if (!bar) return;
+    
+    localStorage.setItem("closed_banner_version", bar.dataset.version);
+    bar.classList.add("closed");
+    document.body.classList.remove("banner-opened");
+    
+    const toast = document.getElementById("ann-undo-toast");
+    if (toast) {
+        toast.classList.remove("hidden");
+        setTimeout(() => toast.classList.add("show"), 10);
+    }
+    
+    undoTimeout = setTimeout(() => {
+        if (toast) {
+            toast.classList.remove("show");
+            setTimeout(() => toast.classList.add("hidden"), 400); 
+        }
+    }, 4000);
+};
+
+window.undoAnnouncement = function() {
+    clearTimeout(undoTimeout);
+    localStorage.removeItem("closed_banner_version"); 
+    
+    const bar = document.getElementById("premium-announcement-bar");
+    if (bar) bar.classList.remove("closed");
+    document.body.classList.add("banner-opened");
+    
+    const toast = document.getElementById("ann-undo-toast");
+    if (toast) {
+        toast.classList.remove("show");
+        setTimeout(() => toast.classList.add("hidden"), 400);
+    }
+};
 
     </script>
 
