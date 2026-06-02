@@ -1446,22 +1446,45 @@ window.executeChangePassword = async function() {
                          .catch(() => { if(redirect) window.location.href = "/books/"; });
         };
 
-        window.shareBook = function() {
-            if (!currentEbook) return;
-            const siteUrl = window.location.origin + window.location.pathname.replace('books/', '/');
-            const shareText = `📚 Check out this Islamic eBook: "${currentEbook.title}" on Islamic Library by Shekh.\n\n${siteUrl}`;
-            if (navigator.share) {
-                navigator.share({ title: currentEbook.title, text: shareText }).catch((error) => console.log('Error sharing:', error));
-            } else {
-                if (navigator.clipboard && window.isSecureContext) { 
-                    navigator.clipboard.writeText(shareText).then(() => showToast("Link copied to clipboard!")); 
-                } else {
-                    let textArea = document.createElement("textarea"); textArea.value = shareText; textArea.style.position = "fixed"; document.body.appendChild(textArea); textArea.focus(); textArea.select();
-                    try { document.execCommand('copy'); showToast("Link copied to clipboard!"); } catch (err) { showToast("Failed to copy link", "error"); } textArea.remove();
-                }
-            }
-        };
+window.shareBook = async function () {
 
+    console.log("clicked");
+
+    if (!currentEbook) {
+        console.error("currentEbook missing");
+        return;
+    }
+
+    const shareText =
+        `📚 Check out this: "${currentEbook.title}"\n\n${window.location.href}`;
+
+    try {
+
+        if (navigator.share) {
+
+            await navigator.share({
+                title: currentEbook.title,
+                text: shareText,
+                url: window.location.href
+            });
+
+        } else if (navigator.clipboard) {
+
+            await navigator.clipboard.writeText(shareText);
+            showToast("Link copied!");
+
+        } else {
+
+            showToast("Sharing not supported", "error");
+
+        }
+
+    } catch (err) {
+
+        console.error(err);
+
+    }
+};
         // SWIPE GESTURE
         let touchstartX = 0; let touchstartY = 0; let touchendX = 0; let touchendY = 0;
         document.addEventListener('touchstart', e => { touchstartX = e.changedTouches[0].screenX; touchstartY = e.changedTouches[0].screenY; }, {passive: true});
