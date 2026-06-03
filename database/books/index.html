@@ -14,16 +14,16 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/icons/hikmahlogo.png">
 
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://mysite.pages.dev/books/">
+    <meta property="og:url" content="https://islamiclibrary.pages.dev/books/">
     <meta property="og:title" content="Download & Purchase Islamic eBooks | Islamic Library by Shekh">
     <meta property="og:description" content="View book details and download or purchase authentic Islamic eBooks directly from our library.">
-    <meta property="og:image" content="https://mysite.pages.dev/icons/hikmahlogo.png">
+    <meta property="og:image" content="https://islamiclibrary.pages.dev/icons/hikmahlogo.png">
 
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:url" content="https://mysite.pages.dev/books/">
+    <meta name="twitter:url" content="https://islamiclibrary.pages.dev/books/">
     <meta name="twitter:title" content="Download & Purchase Islamic eBooks | Islamic Library by Shekh">
     <meta name="twitter:description" content="View book details and download or purchase authentic Islamic eBooks directly from our library.">
-    <meta name="twitter:image" content="https://mysite.pages.dev/icons/hikmahlogo.png">
+    <meta name="twitter:image" content="https://islamiclibrary.pages.dev/icons/hikmahlogo.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
@@ -1099,6 +1099,29 @@ body.instant-load header {
             <h2 id="det-title" style="font-size: 1.6rem; margin-bottom: 12px;"></h2>
             <div id="det-price-box" style="margin-bottom: 20px;"></div>
             
+            <div id="promo-container" style="display: none; max-width: 320px; margin: 0 auto 22px auto; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 12px; box-shadow: var(--shadow);">
+                <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px;">
+                    <i class="fas fa-ticket-alt" style="color: var(--accent2); font-size: 0.9rem;"></i>
+                    <span style="font-size: 0.85rem; color: var(--text); font-weight: 600;">Have a promo code?</span>
+                </div>
+                
+                <div id="promo-input-mode" style="display: flex; gap: 6px; background: var(--surface2); padding: 4px; border-radius: 8px; border: 1px solid var(--border2); transition: 0.3s;">
+                    <input type="text" id="promo-code-input" placeholder="ENTER CODE" oninput="this.value = this.value.replace(/\s/g, '').toUpperCase()" style="flex: 1; background: transparent; border: none; padding: 6px 10px; color: var(--text); font-size: 0.9rem; font-family: 'DM Mono', monospace; font-weight: 700; outline: none; letter-spacing: 1px; text-align: center;">
+                    <button id="promo-apply-btn" onclick="window.applyPromoCode()" style="background: var(--accent); color: #fff; border: none; padding: 6px 16px; border-radius: 6px; font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: 0.2s;">Apply</button>
+                </div>
+
+                <div id="promo-success-mode" class="hidden" style="display: flex; justify-content: space-between; align-items: center; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); padding: 8px 12px; border-radius: 8px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-check-circle" style="color: var(--success); font-size: 1.2rem;"></i>
+                        <div>
+                            <div style="color: var(--success); font-weight: 600; font-size: 0.8rem;">Promo Applied!</div>
+                            <div style="color: var(--text2); font-size: 0.75rem; font-family: 'DM Mono', monospace; margin-top: 2px;" id="promo-applied-code">CODE (-₹0)</div>
+                        </div>
+                    </div>
+                    <button onclick="window.removePromoCode()" style="background: var(--surface2); border: 1px solid var(--border2); color: var(--danger); font-size: 0.9rem; cursor: pointer; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: 0.2s;"><i class="fas fa-times"></i></button>
+                </div>
+            </div>
+            
             <p id="det-arabic-phrase" class="arabic-text text-center" style="color:var(--accent2); font-size: 26px; margin-bottom: 20px; font-weight: bold; text-shadow: 0 0 10px var(--glow);"></p>
             
             <p id="det-desc" style="font-size: .95rem; color: var(--text2); line-height: 1.8; padding-bottom: 110px;"></p>
@@ -1782,48 +1805,251 @@ function renderDetail() {
         };
     } 
     // 🛡️ SCENARIO 3: KHARIDNI PADEGI (Buy Now)
-    // 🛡️ SCENARIO 3: KHARIDNI PADEGI (Buy Now)
     else {
-        let priceNum = window.currentEbook.discount_price || window.currentEbook.price;
-        let pHTML = `₹${priceNum}`;
-        if (window.currentEbook.discount_price && window.currentEbook.price > window.currentEbook.discount_price) {
-            pHTML += `<span class="strike-price">₹${window.currentEbook.price}</span>`;
-        }
-        // 🔥 NAYA FOOTER PRICE BADGE
-        footerPrice.innerHTML = `<span class="badge-premium">${pHTML}</span>`;
-        actionBtn.innerHTML = `Buy Now <i class="fas fa-arrow-right" style="margin-left:6px;"></i>`;
-        actionBtn.style.background = "linear-gradient(135deg, #7c6af7, #9f3fbf)"; actionBtn.style.color = "#fff";
+        // Naya Promo box sirf tab dikhega jab book paid ho
+        const promoContainer = document.getElementById("promo-container");
+        if (promoContainer) promoContainer.style.display = "block";
         
-        actionBtn.onclick = () => {
-            const currentUserId = localStorage.getItem("islamic_user_id");
-            if (currentUserId) {
-                window.location.href = '../payments/index.html';
-            } else {
-                window.showToast("Please login to purchase premium books", "info");
-                const originalHTML = actionBtn.innerHTML;
-                actionBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Redirecting...`;
-                actionBtn.disabled = true;
-                localStorage.setItem('islamic_redirect_after_login', window.location.href);
-                
-                setTimeout(() => {
-    // 🔥 1. Toast clear karne wali line (Jo humne add ki)
-    const tContainer = document.getElementById("toast-container");
-    if(tContainer) tContainer.innerHTML = ""; 
+        // Pura UI handle karne ka kaam naye Promo Engine ko de do
+        if (typeof window.updatePriceDisplayAfterPromo === "function") {
+            window.updatePriceDisplayAfterPromo();
+        }
+    }
+} // <-- renderDetail function yahan end hota hai
 
-    // 2. Tera purana redirect logic
-    window.location.href = '/login/';
+// =========================================================
+// 🚀 PROMO CODE ENGINE (1-READ VALIDATION & CACHING)
+// =========================================================
+
+window.appliedCouponData = null; // Global state for current book
+
+window.applyPromoCode = async function() {
+    const inputField = document.getElementById("promo-code-input");
+    const applyBtn = document.getElementById("promo-apply-btn");
+    const code = inputField.value.trim().toUpperCase();
+
+    if (!code) return; // Do nothing if empty
+
+    const originalBtnText = applyBtn.innerHTML;
+    applyBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i>`;
+    applyBtn.disabled = true;
+    inputField.disabled = true;
+
+    try {
+        const { getFirestore, doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
+        const cpnSnap = await getDoc(doc(getFirestore(), "coupons", code));
+        
+        if (!cpnSnap.exists()) throw new Error("Invalid promo code.");
+
+        const cpn = cpnSnap.data();
+        if (!cpn.is_active) throw new Error("Invalid promo code.");
+        
+        const today = new Date().toISOString().split('T')[0];
+        if (cpn.valid_until < today) throw new Error("This promo code has expired.");
+        if (cpn.current_uses >= cpn.max_uses) throw new Error("Coupon limit reached.");
+        
+        // Target Books Check
+        if (!cpn.target_books.includes("ALL") && !cpn.target_books.includes(String(window.currentEbook.id))) {
+            throw new Error("Code not applicable on this book.");
+        }
+
+        // Math Logic (Charm Pricing)
+        let originalPrice = window.currentEbook.discount_price || window.currentEbook.price;
+        let discountAmount = cpn.type === "flat" ? cpn.value : (originalPrice * cpn.value) / 100;
+        let tempPrice = originalPrice - discountAmount;
+        let finalPrice = tempPrice > 0 ? (Math.floor(tempPrice / 10) * 10 + 9) : 0; 
+        const actualDiscountGot = originalPrice - finalPrice;
+
+        // Save to temporary RAM
+        window.appliedCouponData = {
+            code: code,
+            original_price: originalPrice,
+            discount_amount: actualDiscountGot,
+            final_price: finalPrice
+        };
+
+        // UI Update
+        document.getElementById("promo-input-mode").style.display = "none";
+        document.getElementById("promo-success-mode").classList.remove("hidden");
+        document.getElementById("promo-applied-code").innerText = `${code} (-₹${actualDiscountGot})`;
+        
+        if(window.showToast) window.showToast("Coupon Applied!", "success");
+        window.updatePriceDisplayAfterPromo();
+
+    } catch (error) {
+        if(window.showToast) window.showToast(error.message, "error"); // Short toasts
+        inputField.disabled = false;
+        applyBtn.disabled = false;
+        applyBtn.innerHTML = originalBtnText;
+    }
+};
+
+window.removePromoCode = function() {
+    window.appliedCouponData = null;
+    document.getElementById("promo-code-input").value = "";
+    document.getElementById("promo-code-input").disabled = false;
     
-    // 3. Tera purana button reset logic (Ise bilkul mat hatana)
-    setTimeout(() => {
+    const applyBtn = document.getElementById("promo-apply-btn");
+    applyBtn.disabled = false;
+    applyBtn.innerHTML = "Apply";
+    
+    document.getElementById("promo-success-mode").classList.add("hidden");
+    document.getElementById("promo-input-mode").style.display = "flex";
+
+    if(window.showToast) window.showToast("Promo code removed", "success");
+    window.updatePriceDisplayAfterPromo();
+};
+
+window.updatePriceDisplayAfterPromo = function() {
+    const priceBox = document.getElementById("det-price-box");
+    const footerPrice = document.getElementById("det-footer-price");
+    const actionBtn = document.getElementById("det-action-btn");
+    
+    let basePrice = window.currentEbook.discount_price || window.currentEbook.price;
+
+    if (!window.appliedCouponData) {
+        // DEFAULT PAID UI (No Coupon)
+        let pHTML = `₹${basePrice}`;
+        if (window.currentEbook.discount_price && window.currentEbook.price > window.currentEbook.discount_price) {
+            pHTML += ` <span class="strike-price">₹${window.currentEbook.price}</span>`;
+        }
+        priceBox.innerHTML = `<div class="price-wrapper"><span class="badge-premium">${pHTML}</span></div>`;
+        footerPrice.innerHTML = `<span class="badge-premium">${pHTML}</span>`;
+        
+        actionBtn.innerHTML = `Buy Now <i class="fas fa-arrow-right" style="margin-left:6px;"></i>`;
+        actionBtn.style.background = "linear-gradient(135deg, #7c6af7, #9f3fbf)";
+        actionBtn.style.color = "#fff";
+        actionBtn.style.boxShadow = "";
+        actionBtn.onclick = window.handleBuyNowClick;
+        return;
+    }
+
+    if (window.appliedCouponData.final_price === 0) {
+        // 100% FREE UI MAGIC
+        priceBox.innerHTML = `
+            <div class="price-wrapper" style="gap: 8px;">
+                <span class="badge-free">✦ 100% FREE</span>
+                <span class="strike-price" style="font-size:0.9rem;">₹${basePrice}</span>
+            </div>`;
+        footerPrice.innerHTML = `<span class="badge-free">✦ FREE</span>`;
+        
+        actionBtn.innerHTML = `Claim for Free <i class="fas fa-gift" style="margin-left:6px;"></i>`;
+        actionBtn.style.background = "var(--success)";
+        actionBtn.style.color = "#fff";
+        actionBtn.style.boxShadow = "0 5px 20px rgba(16,185,129,0.4)";
+        actionBtn.onclick = window.handleFreeClaimClick;
+    } else {
+        // DISCOUNTED PAID UI
+        priceBox.innerHTML = `
+            <div class="price-wrapper" style="gap: 8px;">
+                <span class="badge-premium">₹${window.appliedCouponData.final_price}</span>
+                <span class="strike-price" style="font-size:0.9rem;">₹${basePrice}</span>
+            </div>`;
+        footerPrice.innerHTML = `<span class="badge-premium">Pay: ₹${window.appliedCouponData.final_price}</span>`;
+        
+        actionBtn.innerHTML = `Buy Now (₹${window.appliedCouponData.final_price}) <i class="fas fa-arrow-right" style="margin-left:6px;"></i>`;
+        actionBtn.style.background = "linear-gradient(135deg, #7c6af7, #9f3fbf)";
+        actionBtn.style.color = "#fff";
+        actionBtn.style.boxShadow = "";
+        actionBtn.onclick = window.handleBuyNowClick;
+    }
+};
+
+// 🔒 REUSABLE LOGIN GATEKEEPER (Your original logic safely extracted)
+window.checkUserLoginForAction = function(actionBtnElement, originalHTML) {
+    const currentUserId = localStorage.getItem("islamic_user_id");
+    if (!currentUserId) {
+        if(window.showToast) window.showToast("Please login to continue", "info");
+        actionBtnElement.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Redirecting...`;
+        actionBtnElement.disabled = true;
+        localStorage.setItem('islamic_redirect_after_login', window.location.href);
+        setTimeout(() => {
+            const tContainer = document.getElementById("toast-container");
+            if(tContainer) tContainer.innerHTML = ""; 
+            window.location.href = '/login/';
+            setTimeout(() => { actionBtnElement.innerHTML = originalHTML; actionBtnElement.disabled = false; }, 500);
+        }, 1500);
+        return false; // Blocks further execution
+    }
+    return true; // Allows execution
+};
+
+window.handleBuyNowClick = () => {
+    const actionBtn = document.getElementById("det-action-btn");
+    if (!window.checkUserLoginForAction(actionBtn, actionBtn.innerHTML)) return;
+
+    // Cache the coupon for the Payment Page ONLY if they click Buy Now
+    if (window.appliedCouponData) {
+        localStorage.setItem("checkout_coupon_data", JSON.stringify(window.appliedCouponData));
+    } else {
+        localStorage.removeItem("checkout_coupon_data");
+    }
+    window.location.href = '../payments/index.html';
+};
+
+window.handleFreeClaimClick = async () => {
+    const actionBtn = document.getElementById("det-action-btn");
+    if (!window.checkUserLoginForAction(actionBtn, actionBtn.innerHTML)) return;
+
+    const originalHTML = actionBtn.innerHTML;
+    actionBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Processing...`;
+    actionBtn.disabled = true;
+    
+    try {
+        const { getFirestore, doc, setDoc, updateDoc, increment } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
+        const db = getFirestore();
+        const currentUserId = localStorage.getItem("islamic_user_id");
+        
+        const customPaymentId = `${currentUserId}_${window.currentEbook.id}`;
+        
+        // 1. Direct Approved Payload
+        const payload = {
+            user_id: currentUserId,
+            ebook_id: window.currentEbook.id,
+            txn_id: "FREE_CLAIM", 
+            amount: 0,
+            original_price: window.currentEbook.discount_price || window.currentEbook.price,
+            status: "approved",
+            createdAt: new Date().toISOString()
+        };
+
+        if (window.appliedCouponData) {
+            payload.coupon_applied = window.appliedCouponData.code;
+            payload.discount_amount = window.appliedCouponData.discount_amount;
+        }
+
+        // 2. Save directly to Firebase
+        await setDoc(doc(db, "payments", customPaymentId), payload);
+
+        // 3. 🔒 Atomic Increment for Coupon Limit (Security)
+        if (window.appliedCouponData) {
+            try {
+                await updateDoc(doc(db, "coupons", window.appliedCouponData.code), { current_uses: increment(1) });
+            } catch(e) { console.error("Limit update fail", e); }
+        }
+        
+        // 4. Update Local Cache silently
+        let currentPayments = [];
+        const cacheKey = `cache_payments_${currentUserId}_data`;
+        const cachedStr = localStorage.getItem(cacheKey);
+        if (cachedStr) { try { currentPayments = JSON.parse(cachedStr); } catch(e){} }
+        currentPayments.push({id: customPaymentId, ...payload});
+        
+        localStorage.setItem(cacheKey, JSON.stringify(currentPayments));
+        localStorage.removeItem(`cache_payments_${currentUserId}_time`); // Forces library refresh
+        localStorage.removeItem("checkout_coupon_data"); // Clear ghost cache
+        
+        if(window.showToast) window.showToast("Book added to Library!", "success");
+        
+        // Auto-refresh to show Owned UI
+        setTimeout(() => window.location.reload(), 1200);
+
+    } catch(err) {
+        if(window.showToast) window.showToast("Network error. Try again.", "error");
         actionBtn.innerHTML = originalHTML;
         actionBtn.disabled = false;
-    }, 500);
-}, 1500);
-
-            }
-        };
     }
-}
+};
 
 // 📂 1. AUTOMATIC URL & FOLDER DETECTOR
 function getCleanPageName() {
