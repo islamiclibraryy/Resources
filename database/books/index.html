@@ -1814,17 +1814,17 @@ function renderDetail() {
 } // <-- renderDetail function yahan end hota hai
 
 // =========================================================
-// 🚀 PROMO CODE ENGINE (1-READ VALIDATION & CACHING)
+// 🚀 PROMO CODE ENGINE (FAST, NO REFRESH, CRASH-FREE)
 // =========================================================
 
-window.appliedCouponData = null; // Global state for current book
+window.appliedCouponData = null; 
 
 window.applyPromoCode = async function() {
     const inputField = document.getElementById("promo-code-input");
     const applyBtn = document.getElementById("promo-apply-btn");
     const code = inputField.value.trim().toUpperCase();
 
-    if (!code) return; // Do nothing if empty
+    if (!code) return; 
 
     const originalBtnText = applyBtn.innerHTML;
     applyBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i>`;
@@ -1844,19 +1844,16 @@ window.applyPromoCode = async function() {
         if (cpn.valid_until < today) throw new Error("This promo code has expired.");
         if (cpn.current_uses >= cpn.max_uses) throw new Error("Coupon limit reached.");
         
-        // Target Books Check
         if (!cpn.target_books.includes("ALL") && !cpn.target_books.includes(String(window.currentEbook.id))) {
             throw new Error("Code not applicable on this book.");
         }
 
-        // Math Logic (Charm Pricing)
         let originalPrice = window.currentEbook.discount_price || window.currentEbook.price;
         let discountAmount = cpn.type === "flat" ? cpn.value : (originalPrice * cpn.value) / 100;
         let tempPrice = originalPrice - discountAmount;
         let finalPrice = tempPrice > 0 ? (Math.floor(tempPrice / 10) * 10 + 9) : 0; 
         const actualDiscountGot = originalPrice - finalPrice;
 
-        // Save to temporary RAM
         window.appliedCouponData = {
             code: code,
             original_price: originalPrice,
@@ -1864,7 +1861,6 @@ window.applyPromoCode = async function() {
             final_price: finalPrice
         };
 
-        // UI Update
         document.getElementById("promo-input-mode").style.display = "none";
         document.getElementById("promo-success-mode").classList.remove("hidden");
         document.getElementById("promo-applied-code").innerText = `${code} (-₹${actualDiscountGot})`;
@@ -1873,7 +1869,7 @@ window.applyPromoCode = async function() {
         window.updatePriceDisplayAfterPromo();
 
     } catch (error) {
-        if(window.showToast) window.showToast(error.message, "error"); // Short toasts
+        if(window.showToast) window.showToast(error.message, "error"); 
         inputField.disabled = false;
         applyBtn.disabled = false;
         applyBtn.innerHTML = originalBtnText;
@@ -1904,14 +1900,13 @@ window.updatePriceDisplayAfterPromo = function() {
     let basePrice = window.currentEbook.discount_price || window.currentEbook.price;
 
     if (!window.appliedCouponData) {
-        // DEFAULT PAID UI (No Coupon)
+        // DEFAULT PAID UI - Old price perfectly inside the premium badge
         let pHTML = `<span style="font-weight:bold;">₹${basePrice}</span>`;
         if (window.currentEbook.discount_price && window.currentEbook.price > window.currentEbook.discount_price) {
-            pHTML += ` <span class="strike-price" style="text-decoration: line-through; opacity: 0.75; font-size: 0.85em; margin-left: 6px;">₹${window.currentEbook.price}</span>`;
+            pHTML += `<span class="strike-price" style="text-decoration: line-through; opacity: 0.75; font-size: 0.85em;">₹${window.currentEbook.price}</span>`;
         }
-        // 🔥 Dekh bhai, badge-premium ke theek andar display flex lagaya hai taaki dono ek sath rahein
-        priceBox.innerHTML = `<div class="price-wrapper"><span class="badge-premium" style="display:inline-flex; align-items:center;">${pHTML}</span></div>`;
-        footerPrice.innerHTML = `<span class="badge-premium">${pHTML}</span>`;
+        priceBox.innerHTML = `<div class="price-wrapper"><span class="badge-premium" style="display:inline-flex; align-items:center; gap: 6px;">${pHTML}</span></div>`;
+        footerPrice.innerHTML = `<span class="badge-premium" style="display:inline-flex; align-items:center; gap: 6px;">${pHTML}</span>`;
         
         actionBtn.innerHTML = `Buy Now <i class="fas fa-arrow-right" style="margin-left:6px;"></i>`;
         actionBtn.style.background = "linear-gradient(135deg, #7c6af7, #9f3fbf)";
@@ -1921,7 +1916,7 @@ window.updatePriceDisplayAfterPromo = function() {
     }
 
     if (window.appliedCouponData.final_price === 0) {
-        // 🔥 100% FREE UI - Purana price gayab, sirf badge
+        // 100% FREE UI - No old price, just pure Free badge
         priceBox.innerHTML = `<div class="price-wrapper"><span class="badge-free">✦ 100% FREE</span></div>`;
         footerPrice.innerHTML = `<span class="badge-free">✦ FREE</span>`;
         
@@ -1931,9 +1926,9 @@ window.updatePriceDisplayAfterPromo = function() {
         actionBtn.style.boxShadow = "0 5px 20px rgba(16,185,129,0.4)";
         actionBtn.onclick = window.handleFreeClaimClick;
     } else {
-        // DISCOUNTED PAID UI - Dono price badge ke andar lock hain
-        let pHTML = `<span style="font-weight:bold;">₹${window.appliedCouponData.final_price}</span> <span class="strike-price" style="text-decoration: line-through; opacity: 0.75; font-size: 0.85em; margin-left: 6px;">₹${basePrice}</span>`;
-        priceBox.innerHTML = `<div class="price-wrapper"><span class="badge-premium" style="display:inline-flex; align-items:center;">${pHTML}</span></div>`;
+        // DISCOUNTED UI - Both prices cleanly inside the premium badge
+        let pHTML = `<span style="font-weight:bold;">₹${window.appliedCouponData.final_price}</span> <span class="strike-price" style="text-decoration: line-through; opacity: 0.75; font-size: 0.85em;">₹${basePrice}</span>`;
+        priceBox.innerHTML = `<div class="price-wrapper"><span class="badge-premium" style="display:inline-flex; align-items:center; gap: 6px;">${pHTML}</span></div>`;
         footerPrice.innerHTML = `<span class="badge-premium">Pay: ₹${window.appliedCouponData.final_price}</span>`;
         
         actionBtn.innerHTML = `Buy Now (₹${window.appliedCouponData.final_price}) <i class="fas fa-arrow-right" style="margin-left:6px;"></i>`;
@@ -1943,7 +1938,6 @@ window.updatePriceDisplayAfterPromo = function() {
     }
 };
 
-// 🔒 REUSABLE LOGIN GATEKEEPER (Your original logic safely extracted)
 window.checkUserLoginForAction = function(actionBtnElement, originalHTML) {
     const currentUserId = localStorage.getItem("islamic_user_id");
     if (!currentUserId) {
@@ -1957,16 +1951,15 @@ window.checkUserLoginForAction = function(actionBtnElement, originalHTML) {
             window.location.href = '/login/';
             setTimeout(() => { actionBtnElement.innerHTML = originalHTML; actionBtnElement.disabled = false; }, 500);
         }, 1500);
-        return false; // Blocks further execution
+        return false; 
     }
-    return true; // Allows execution
+    return true; 
 };
 
 window.handleBuyNowClick = () => {
     const actionBtn = document.getElementById("det-action-btn");
     if (!window.checkUserLoginForAction(actionBtn, actionBtn.innerHTML)) return;
 
-    // Cache the coupon for the Payment Page ONLY if they click Buy Now
     if (window.appliedCouponData) {
         localStorage.setItem("checkout_coupon_data", JSON.stringify(window.appliedCouponData));
     } else {
@@ -1989,13 +1982,14 @@ window.handleFreeClaimClick = async () => {
         const currentUserId = localStorage.getItem("islamic_user_id");
         const customPaymentId = `${currentUserId}_${window.currentEbook.id}`;
         
+        // Wapas "approved" set kar diya hai taaki user ko turant book mile
         const payload = {
             user_id: currentUserId,
             ebook_id: window.currentEbook.id,
             txn_id: "FREE_CLAIM", 
             amount: 0,
             original_price: window.currentEbook.discount_price || window.currentEbook.price,
-            status: "approved",
+            status: "approved", 
             createdAt: new Date().toISOString()
         };
 
@@ -2004,6 +1998,7 @@ window.handleFreeClaimClick = async () => {
             payload.discount_amount = window.appliedCouponData.discount_amount;
         }
 
+        // 🚀 FAST SPEED: Promise.all() se ek sath kaam hoga
         const dbTasks = [ setDoc(doc(db, "payments", customPaymentId), payload) ];
         if (window.appliedCouponData) {
             dbTasks.push(updateDoc(doc(db, "coupons", window.appliedCouponData.code), { current_uses: increment(1) }).catch(e => console.log(e)));
@@ -2028,10 +2023,10 @@ window.handleFreeClaimClick = async () => {
         const promoBox = document.getElementById("promo-container");
         if(promoBox) promoBox.style.display = "none";
 
-        // 🔥 NO RELOAD AT ALL. Sirf detail render function call ho raha hai!
+        // 🔥 YAHAN KOI RELOAD NAHI HAI. Sirf DOM update hoga!
         setTimeout(() => {
             if(typeof window.renderDetail === "function") window.renderDetail();
-        }, 1000); // Toast ko padhne ka poora 1 second ka time
+        }, 1000); 
 
     } catch(err) {
         if(window.showToast) window.showToast("Network error. Try again.", "error");
