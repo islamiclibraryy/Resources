@@ -1904,12 +1904,13 @@ window.updatePriceDisplayAfterPromo = function() {
     let basePrice = window.currentEbook.discount_price || window.currentEbook.price;
 
     if (!window.appliedCouponData) {
-        // DEFAULT PAID UI (No Coupon) - Both prices inside the badge
-        let pHTML = `₹${basePrice}`;
+        // DEFAULT PAID UI (No Coupon)
+        let pHTML = `<span style="font-weight:bold;">₹${basePrice}</span>`;
         if (window.currentEbook.discount_price && window.currentEbook.price > window.currentEbook.discount_price) {
-            pHTML += ` <span class="strike-price" style="text-decoration: line-through; opacity: 0.8; font-size: 0.85em; margin-left: 5px;">₹${window.currentEbook.price}</span>`;
+            pHTML += ` <span class="strike-price" style="text-decoration: line-through; opacity: 0.75; font-size: 0.85em; margin-left: 6px;">₹${window.currentEbook.price}</span>`;
         }
-        priceBox.innerHTML = `<div class="price-wrapper"><span class="badge-premium">${pHTML}</span></div>`;
+        // 🔥 Dekh bhai, badge-premium ke theek andar display flex lagaya hai taaki dono ek sath rahein
+        priceBox.innerHTML = `<div class="price-wrapper"><span class="badge-premium" style="display:inline-flex; align-items:center;">${pHTML}</span></div>`;
         footerPrice.innerHTML = `<span class="badge-premium">${pHTML}</span>`;
         
         actionBtn.innerHTML = `Buy Now <i class="fas fa-arrow-right" style="margin-left:6px;"></i>`;
@@ -1920,7 +1921,7 @@ window.updatePriceDisplayAfterPromo = function() {
     }
 
     if (window.appliedCouponData.final_price === 0) {
-        // 🔥 100% FREE UI - No original price shown, just the badge
+        // 🔥 100% FREE UI - Purana price gayab, sirf badge
         priceBox.innerHTML = `<div class="price-wrapper"><span class="badge-free">✦ 100% FREE</span></div>`;
         footerPrice.innerHTML = `<span class="badge-free">✦ FREE</span>`;
         
@@ -1930,9 +1931,9 @@ window.updatePriceDisplayAfterPromo = function() {
         actionBtn.style.boxShadow = "0 5px 20px rgba(16,185,129,0.4)";
         actionBtn.onclick = window.handleFreeClaimClick;
     } else {
-        // DISCOUNTED PAID UI - Old price strictly inside the badge
-        let pHTML = `₹${window.appliedCouponData.final_price} <span class="strike-price" style="text-decoration: line-through; opacity: 0.8; font-size: 0.85em; margin-left: 5px;">₹${basePrice}</span>`;
-        priceBox.innerHTML = `<div class="price-wrapper"><span class="badge-premium">${pHTML}</span></div>`;
+        // DISCOUNTED PAID UI - Dono price badge ke andar lock hain
+        let pHTML = `<span style="font-weight:bold;">₹${window.appliedCouponData.final_price}</span> <span class="strike-price" style="text-decoration: line-through; opacity: 0.75; font-size: 0.85em; margin-left: 6px;">₹${basePrice}</span>`;
+        priceBox.innerHTML = `<div class="price-wrapper"><span class="badge-premium" style="display:inline-flex; align-items:center;">${pHTML}</span></div>`;
         footerPrice.innerHTML = `<span class="badge-premium">Pay: ₹${window.appliedCouponData.final_price}</span>`;
         
         actionBtn.innerHTML = `Buy Now (₹${window.appliedCouponData.final_price}) <i class="fas fa-arrow-right" style="margin-left:6px;"></i>`;
@@ -2003,14 +2004,12 @@ window.handleFreeClaimClick = async () => {
             payload.discount_amount = window.appliedCouponData.discount_amount;
         }
 
-        // 🚀 SPEED BOOST: Execute Payment save & Coupon update simultaneously!
         const dbTasks = [ setDoc(doc(db, "payments", customPaymentId), payload) ];
         if (window.appliedCouponData) {
             dbTasks.push(updateDoc(doc(db, "coupons", window.appliedCouponData.code), { current_uses: increment(1) }).catch(e => console.log(e)));
         }
-        await Promise.all(dbTasks); // Waits for both to finish together
+        await Promise.all(dbTasks);
         
-        // Update Local Cache silently
         let currentPayments = [];
         const cacheKey = `cache_payments_${currentUserId}_data`;
         const cachedStr = localStorage.getItem(cacheKey);
@@ -2021,18 +2020,18 @@ window.handleFreeClaimClick = async () => {
         localStorage.removeItem(`cache_payments_${currentUserId}_time`); 
         localStorage.removeItem("checkout_coupon_data"); 
         
-        window.appliedCouponData = null; // Clear Coupon from RAM
-        window.userPayments = currentPayments; // Update global state
+        window.appliedCouponData = null; 
+        window.userPayments = currentPayments; 
         
         if(window.showToast) window.showToast("Book added to Library!", "success");
         
-        // 🚀 NO-REFRESH UX: Hide Promo Box and re-render the button smoothly after 800ms
         const promoBox = document.getElementById("promo-container");
         if(promoBox) promoBox.style.display = "none";
 
+        // 🔥 NO RELOAD AT ALL. Sirf detail render function call ho raha hai!
         setTimeout(() => {
             if(typeof window.renderDetail === "function") window.renderDetail();
-        }, 800);
+        }, 1000); // Toast ko padhne ka poora 1 second ka time
 
     } catch(err) {
         if(window.showToast) window.showToast("Network error. Try again.", "error");
