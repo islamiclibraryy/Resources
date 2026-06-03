@@ -15,16 +15,16 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/icons/hikmahlogo.png">
 
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://mysite.pages.dev/library/">
+    <meta property="og:url" content="https://islamiclibrary.pages.dev/library/">
     <meta property="og:title" content="My Library | Islamic Library by Shekh">
     <meta property="og:description" content="Access your personal collection of purchased Islamic eBooks and premium resources.">
-    <meta property="og:image" content="https://mysite.pages.dev/icons/hikmahlogo.png">
+    <meta property="og:image" content="https://islamiclibrary.pages.dev/icons/hikmahlogo.png">
 
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:url" content="https://mysite.pages.dev/library/">
+    <meta name="twitter:url" content="https://islamiclibrary.pages.dev/library/">
     <meta name="twitter:title" content="My Library | Islamic Library by Shekh">
     <meta name="twitter:description" content="Access your personal collection of purchased Islamic eBooks and premium resources.">
-    <meta name="twitter:image" content="https://mysite.pages.dev/icons/hikmahlogo.png">
+    <meta name="twitter:image" content="https://islamiclibrary.pages.dev/icons/hikmahlogo.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
@@ -1468,12 +1468,32 @@ window.executeChangePassword = async function() {
                     actionBtn = `<span style="font-size: .75rem; color: var(--text3);"><i class="fas fa-hourglass-half spin" style="margin-right:4px;"></i> Processing...</span>`;
                 }
 
+                // 🔥 NEW: PURCHASE DETAILS (Price Paid & Coupon Used)
+                let purchaseDetailsHTML = "";
+                if (pay.amount !== undefined) { 
+                    if (pay.coupon_applied) {
+                        purchaseDetailsHTML = `
+                        <div style="margin-top: 6px; display: flex; align-items: center; gap: 6px;">
+                            <span style="font-size: 0.75rem; color: var(--text2); font-family: 'DM Mono', monospace; font-weight: 600;">Paid: ₹${pay.amount}</span>
+                            <span style="font-size: 0.65rem; background: rgba(124, 106, 247, 0.15); color: var(--accent2); padding: 2px 8px; border-radius: 6px; border: 1px solid rgba(124, 106, 247, 0.3); font-weight: 700;"><i class="fas fa-tag"></i> ${pay.coupon_applied}</span>
+                        </div>`;
+                    } else {
+                        purchaseDetailsHTML = `
+                        <div style="margin-top: 6px;">
+                            <span style="font-size: 0.75rem; color: var(--text2); font-family: 'DM Mono', monospace; font-weight: 600;">Paid: ₹${pay.amount}</span>
+                        </div>`;
+                    }
+                }
+
                 container.innerHTML += `
                 <div class="lib-card">
                     <img src="${book.thumbnail}" class="lib-thumb">
                     <div class="lib-info">
                         <div style="font-size: .9rem; font-family:'Syne', sans-serif; font-weight:700; color:var(--text); margin-bottom:4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">${book.title}</div>
-                        <div class="status-badge ${badgeClass}">${pay.status.toUpperCase()}</div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <div class="status-badge ${badgeClass}">${pay.status.toUpperCase()}</div>
+                        </div>
+                        ${purchaseDetailsHTML}
                     </div>
                     <div>${actionBtn}</div>
                 </div>`;
@@ -1497,12 +1517,18 @@ window.executeChangePassword = async function() {
             let liveStatus = "pending";
 
             try {
-                const qPay = query(collection(db, "payments"), 
-                    where("user_id", "==", currentUserId), 
-                    where("ebook_id", "==", String(ebookId))
-                );
-                const paySnap = await getDocs(qPay);
+                const { getFirestore, doc, getDoc, collection, query, where, getDocs } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
+                const dbInstance = getFirestore();
                 
+                // 🚀 SPEED BOOST: Parallel Fetching
+                const qPay = query(collection(dbInstance, "payments"), where("user_id", "==", currentUserId), where("ebook_id", "==", String(ebookId)));
+                
+                const [paySnap, secureDocSnap] = await Promise.all([
+                    getDocs(qPay),
+                    getDoc(doc(dbInstance, "secure_links", String(ebookId)))
+                ]);
+
+                let liveStatus = "pending";
                 if (!paySnap.empty) liveStatus = paySnap.docs[0].data().status.toLowerCase();
 
                 if (liveStatus !== "approved") {
@@ -1527,21 +1553,10 @@ window.executeChangePassword = async function() {
                     return; 
                 }
 
-                const secureDocSnap = await getDoc(doc(db, "secure_links", String(ebookId)));
-
+                // Tijori se link fetch karo
+                let finalLink = null;
                 if (secureDocSnap.exists() && secureDocSnap.data().pdf_link) {
-                    showToast("Access Verified! Opening Your Book...", "success"); 
-                    
-                    // 🔥 THE 1-SECOND WINDOW: User ko success toast dekhne ka moka milega!
-                    setTimeout(() => {
-                        window.open(secureDocSnap.data().pdf_link, "_blank");
-                        // Link khulne ke baad loader/button wapas normal reset ho jaye background me
-                        if (document.body.contains(btnElement)) {
-                            btnElement.innerHTML = originalHTML;
-                            btnElement.disabled = false;
-                        }
-                    }, 1000);
-                    
+                    finalLink = secureDocSnap.data().pdf_link;
                 } else {
                     let fallbackBook = (window.ebooksData || []).find(e => String(e.id) === String(ebookId));
                     if (!fallbackBook) {
@@ -1549,18 +1564,21 @@ window.executeChangePassword = async function() {
                         try { mIndex = JSON.parse(localStorage.getItem("cache_mega_search_index") || "[]"); } catch(e){}
                         fallbackBook = mIndex.find(e => String(e.id) === String(ebookId));
                     }
+                    if (fallbackBook && fallbackBook.pdf_link) finalLink = fallbackBook.pdf_link;
+                }
 
-                    if (fallbackBook && fallbackBook.pdf_link) {
-                        showToast("Access Verified! Opening Your Book...", "success");
-                        setTimeout(() => {
-                            window.open(fallbackBook.pdf_link, "_blank");
-                            if (document.body.contains(btnElement)) {
-                                btnElement.innerHTML = originalHTML;
-                                btnElement.disabled = false;
-                            }
-                        }, 1000);
-                    } else {
-                        showToast("Unable to load the book. Please contact Support.", "error"); 
+                if (finalLink) {
+                    showToast("Access Verified! Opening Your Book...", "success"); 
+                    setTimeout(() => {
+                        window.open(finalLink, "_blank");
+                        if (document.body.contains(btnElement)) {
+                            btnElement.innerHTML = originalHTML;
+                            btnElement.disabled = false;
+                        }
+                    }, 1000);
+                } else {
+                    showToast("Unable to load the book. Please contact Support.", "error"); 
+                    if (document.body.contains(btnElement)) {
                         btnElement.innerHTML = originalHTML;
                         btnElement.disabled = false;
                     }
@@ -1571,7 +1589,6 @@ window.executeChangePassword = async function() {
                 btnElement.innerHTML = originalHTML;
                 btnElement.disabled = false;
             }
-        };
 
 // 📂 1. AUTOMATIC URL & FOLDER DETECTOR
 function getCleanPageName() {
