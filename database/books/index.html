@@ -1757,14 +1757,14 @@ function renderDetail() {
                     }
 
                     if (finalPdfLink) {
-                        window.showToast("Access Verified! Opening book...", "success");
+                        window.showToast("Access Verified! Opening Your Book...", "success");
                         setTimeout(() => {
                             window.open(finalPdfLink, "_blank");
                             actionBtn.innerHTML = originalHTML;
                             actionBtn.disabled = false;
                         }, 1000);
                     } else {
-                        window.showToast("This book not found. Please contact support.", "error");
+                        window.showToast("Unable to load the book. Please contact Support.", "error");
                         actionBtn.innerHTML = originalHTML;
                         actionBtn.disabled = false;
                     }
@@ -1981,7 +1981,6 @@ window.handleFreeClaimClick = async () => {
         const currentUserId = localStorage.getItem("islamic_user_id");
         const customPaymentId = `${currentUserId}_${window.currentEbook.id}`;
         
-        // Wapas "approved" set kar diya hai taaki user ko turant book mile
         const payload = {
             user_id: currentUserId,
             ebook_id: window.currentEbook.id,
@@ -1997,7 +1996,6 @@ window.handleFreeClaimClick = async () => {
             payload.discount_amount = window.appliedCouponData.discount_amount;
         }
 
-        // 🚀 FAST SPEED: Promise.all() se ek sath kaam hoga
         const dbTasks = [ setDoc(doc(db, "payments", customPaymentId), payload) ];
         if (window.appliedCouponData) {
             dbTasks.push(updateDoc(doc(db, "coupons", window.appliedCouponData.code), { current_uses: increment(1) }).catch(e => console.log(e)));
@@ -2022,10 +2020,25 @@ window.handleFreeClaimClick = async () => {
         const promoBox = document.getElementById("promo-container");
         if(promoBox) promoBox.style.display = "none";
 
-        // 🔥 YAHAN KOI RELOAD NAHI HAI. Sirf DOM update hoga!
+        // 🔥 THE FIX: Manual fallback + Direct Scope Call
+        // Pehle UI ko manually turant Download state me laa rahe hain taaki button kabhi atke nahi
+        actionBtn.innerHTML = `<i class="fas fa-download"></i> Download`;
+        actionBtn.style.background = "var(--success)";
+        actionBtn.style.color = "#fff";
+        actionBtn.style.boxShadow = "0 4px 20px rgba(16,185,129,0.3)";
+        actionBtn.disabled = false;
+        
+        const footerPrice = document.getElementById("det-footer-price");
+        if(footerPrice) footerPrice.innerHTML = `<span class="badge-owned">Owned ✓</span>`;
+
+        // Phir background me renderDetail() chalayenge fresh binding ke liye
         setTimeout(() => {
-            if(typeof window.renderDetail === "function") window.renderDetail();
-        }, 1000); 
+            try {
+                renderDetail(); 
+            } catch(e) {
+                console.log("Scope binding issue, but UI is already updated manually.");
+            }
+        }, 200); 
 
     } catch(err) {
         if(window.showToast) window.showToast("Network error. Try again.", "error");
