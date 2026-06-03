@@ -1342,8 +1342,6 @@ window.executeChangePassword = async function() {
                 window.activeCheckoutCoupon = JSON.parse(couponDataStr);
                 amt = window.activeCheckoutCoupon.final_price; // UI par naya price dikhega
             } catch(e) {}
-            // 🧹 Safai: Jaise hi read kiya, local storage se turant uda diya (No ghost cache!)
-            localStorage.removeItem("checkout_coupon_data");
         }
         
         // Book ka naam nikalna
@@ -1485,7 +1483,7 @@ document.getElementById("paymentForm").addEventListener("submit", async (e) => {
 
     } catch (error) {
         console.error("Error submitting payment:", error);
-        window.showToast("Failed to submit payment. Try again.", "error");
+        window.showToast("Something went wrong. Please try again later.", "error");
         submitBtn.innerHTML = originalText;
         submitBtn.disabled = false;
     }
