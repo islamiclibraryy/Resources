@@ -2041,7 +2041,7 @@ window.handleFreeClaimClick = async () => {
         }, 200); 
 
     } catch(err) {
-        if(window.showToast) window.showToast("Network error. Try again.", "error");
+        if(window.showToast) window.showToast("Something went wrong. Please try again later.", "error");
         actionBtn.innerHTML = originalHTML;
         actionBtn.disabled = false;
     }
