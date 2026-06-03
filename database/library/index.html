@@ -1461,29 +1461,30 @@ window.executeChangePassword = async function() {
                 
                 let actionBtn = "";
                 if (statusLower === "approved") {
-                    actionBtn = `<button class="btn" style="padding: 8px 16px; font-size:.8rem; border-radius: 99px; width:auto; background:var(--success); box-shadow: 0 4px 15px rgba(16,185,129,0.3); color:#fff;" onclick="window.handleLibraryDownload(this, '${book.id}')"><i class="fas fa-download"></i></button>`;
+                    actionBtn = `<button class="btn" style="padding: 7px 14px; font-size: 0.75rem; border-radius: 99px; width: auto; background: var(--success); box-shadow: 0 4px 12px rgba(16,185,129,0.25); color: #fff;" onclick="window.handleLibraryDownload(this, '${book.id}')"><i class="fas fa-download"></i></button>`;
                 } else if (statusLower === "rejected") {
-                    actionBtn = `<span style="font-size: .75rem; color: var(--danger); font-weight: 600;">Failed</span>`; 
+                    actionBtn = `<span style="font-size: 0.7rem; color: var(--danger); font-weight: 600; letter-spacing: 0.3px;">Failed</span>`; 
                 } else {
-                    actionBtn = `<span style="font-size: .75rem; color: var(--text3);"><i class="fas fa-hourglass-half spin" style="margin-right:4px;"></i> Processing...</span>`;
+                    // 🔥 Processing text aur icon ka size ekdum crisp aur clean kar diya
+                    actionBtn = `<span style="font-size: 0.68rem; color: var(--text3); font-weight: 500; display: inline-flex; align-items: center; white-space: nowrap;"><i class="fas fa-hourglass-half spin" style="margin-right: 3px; font-size: 0.65rem; color: var(--amber);"></i> Processing...</span>`;
                 }
 
-                // 🔥 UPDATED: PURCHASE DETAILS (Layout Alignment & Consistent Colors Fix)
+                // 🔥 UPDATED: PURCHASE DETAILS (Ultra-Compact Fonts & Flexible Wrapping)
                 let purchaseDetailsHTML = "";
                 if (pay.amount !== undefined) { 
                     let originalPrice = pay.original_price || book.discount_price || book.price;
                     
                     if (pay.coupon_applied) {
                         purchaseDetailsHTML = `
-                        <div style="margin-top: 6px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
-                            <span style="font-size: 0.75rem; color: var(--text2); font-family: 'DM Mono', monospace; font-weight: 600;">Paid: <span style="color: var(--text); font-weight: 700; font-size: 0.8rem;">₹${pay.amount}</span></span>
-                            <span style="font-size: 0.65rem; color: var(--text3); text-decoration: line-through; opacity: 0.75; font-family: 'DM Mono', monospace;">₹${originalPrice}</span>
-                            <span style="font-size: 0.55rem; background: rgba(124, 106, 247, 0.1); color: var(--accent2); padding: 2px 6px; border-radius: 4px; border: 1px solid rgba(124, 106, 247, 0.2); font-weight: 700; letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 3px;"><i class="fas fa-tag" style="font-size: 0.5rem;"></i> ${pay.coupon_applied}</span>
+                        <div style="margin-top: 4px; display: flex; align-items: center; gap: 5px; flex-wrap: wrap;">
+                            <span style="font-size: 0.7rem; color: var(--text2); font-family: 'DM Mono', monospace;">Paid: <span style="color: var(--text); font-weight: 700; font-size: 0.75rem;">₹${pay.amount}</span></span>
+                            <span style="font-size: 0.6rem; color: var(--text3); text-decoration: line-through; opacity: 0.65; font-family: 'DM Mono', monospace;">₹${originalPrice}</span>
+                            <span style="font-size: 0.52rem; background: rgba(124, 106, 247, 0.08); color: var(--accent2); padding: 1px 4px; border-radius: 4px; border: 1px solid rgba(124, 106, 247, 0.15); font-weight: 700; letter-spacing: 0.3px; display: inline-flex; align-items: center; gap: 2px;"><i class="fas fa-tag" style="font-size: 0.45rem;"></i> ${pay.coupon_applied}</span>
                         </div>`;
                     } else {
                         purchaseDetailsHTML = `
-                        <div style="margin-top: 6px; display: flex; align-items: center; flex-wrap: nowrap; white-space: nowrap;">
-                            <span style="font-size: 0.75rem; color: var(--text2); font-family: 'DM Mono', monospace; font-weight: 600;">Paid: <span style="color: var(--text); font-weight: 700; font-size: 0.8rem;">₹${pay.amount}</span></span>
+                        <div style="margin-top: 4px; display: flex; align-items: center;">
+                            <span style="font-size: 0.7rem; color: var(--text2); font-family: 'DM Mono', monospace;">Paid: <span style="color: var(--text); font-weight: 700; font-size: 0.75rem;">₹${pay.amount}</span></span>
                         </div>`;
                     }
                 }
