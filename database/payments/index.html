@@ -15,16 +15,16 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/icons/hikmahlogo.png">
 
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://mysite.pages.dev/payments/">
+    <meta property="og:url" content="https://islamiclibrary.pages.dev/payments/">
     <meta property="og:title" content="Secure Checkout | Islamic Library by Shekh">
     <meta property="og:description" content="Finalize your order and start reading your premium Islamic books today.">
-    <meta property="og:image" content="https://mysite.pages.dev/icons/hikmahlogo.png">
+    <meta property="og:image" content="https://islamiclibrary.pages.dev/icons/hikmahlogo.png">
 
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:url" content="https://mysite.pages.dev/payments/">
+    <meta name="twitter:url" content="https://islamiclibrary.pages.dev/payments/">
     <meta name="twitter:title" content="Secure Checkout | Islamic Library by Shekh">
     <meta name="twitter:description" content="Finalize your order and start reading your premium Islamic books today.">
-    <meta name="twitter:image" content="https://mysite.pages.dev/icons/hikmahlogo.png">
+    <meta name="twitter:image" content="https://islamiclibrary.pages.dev/icons/hikmahlogo.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
@@ -1331,7 +1331,20 @@ window.executeChangePassword = async function() {
             } catch(e) {}
         }
 
-        const amt = currentEbook.discount_price || currentEbook.price;
+        // 🔥 COUPON CACHE: READ & INSTANT DELETE 🔥
+        let baseAmt = currentEbook.discount_price || currentEbook.price;
+        let amt = baseAmt;
+        window.activeCheckoutCoupon = null; // Save in RAM
+        
+        const couponDataStr = localStorage.getItem("checkout_coupon_data");
+        if (couponDataStr) {
+            try {
+                window.activeCheckoutCoupon = JSON.parse(couponDataStr);
+                amt = window.activeCheckoutCoupon.final_price; // UI par naya price dikhega
+            } catch(e) {}
+            // 🧹 Safai: Jaise hi read kiya, local storage se turant uda diya (No ghost cache!)
+            localStorage.removeItem("checkout_coupon_data");
+        }
         
         // Book ka naam nikalna
         const bookName = currentEbook.title || currentEbook.name || "Islamic Ebook";
@@ -1406,14 +1419,24 @@ document.getElementById("paymentForm").addEventListener("submit", async (e) => {
     submitBtn.disabled = true;
     window.showToast("Processing your payment request... Please wait", "info");
 
+    let baseAmt = currentEbook.discount_price || currentEbook.price;
+    let finalAmt = window.activeCheckoutCoupon ? window.activeCheckoutCoupon.final_price : baseAmt;
+
     const payload = { 
         user_id: userId, 
         ebook_id: currentEbook.id, 
         txn_id: document.getElementById("pay-txn").value.trim(), 
-        amount: currentEbook.discount_price || currentEbook.price,
+        amount: finalAmt,
+        original_price: baseAmt, // Admin verification ke liye
         status: "pending",
         createdAt: new Date().toISOString()
     };
+
+    // 🔥 Secretly attach coupon details for Admin Panel
+    if (window.activeCheckoutCoupon) {
+        payload.coupon_applied = window.activeCheckoutCoupon.code;
+        payload.discount_amount = window.activeCheckoutCoupon.discount_amount;
+    }
 
     try {
         // 🔥 CUSTOM ID SETTING MAGIC: Import `setDoc` aur document ka address decide karo
@@ -1423,8 +1446,15 @@ document.getElementById("paymentForm").addEventListener("submit", async (e) => {
         // Custom ID: userId_ebookId
         const customPaymentId = `${userId}_${currentEbook.id}`;
         
-        // 🔒 The Execution: `addDoc` hata kar `setDoc` lagaya gaya hai
+        // 🔒 The Execution: Payment Firebase me save
         await setDoc(doc(dbInstance, "payments", customPaymentId), payload);
+        
+        // 🔥 ATOMIC INCREMENT (Coupon used count + 1)
+        if (window.activeCheckoutCoupon) {
+            try {
+                await updateDoc(doc(dbInstance, "coupons", window.activeCheckoutCoupon.code), { current_uses: increment(1) });
+            } catch (cpnErr) { console.log("Limit update issue:", cpnErr); }
+        }
         
         // Stats Update
         try {
