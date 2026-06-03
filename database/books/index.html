@@ -1718,67 +1718,63 @@ function renderDetail() {
                     const { getFirestore, doc, getDoc, collection, query, where, getDocs } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
                     const dbInstance = getFirestore();
                     
-                    const qPay = query(collection(dbInstance, "payments"), 
-                        where("user_id", "==", currentUserId), 
-                        where("ebook_id", "==", String(window.currentEbook.id))
-                    );
-                    const paySnap = await getDocs(qPay);
+                    // 🚀 SPEED BOOST: Fetch Payment Verification AND Secure Link at the EXACT same time
+                    const qPay = query(collection(dbInstance, "payments"), where("user_id", "==", currentUserId), where("ebook_id", "==", String(window.currentEbook.id)));
+                    
+                    const [paySnap, secureDocSnap] = await Promise.all([
+                        getDocs(qPay),
+                        getDoc(doc(dbInstance, "secure_links", String(window.currentEbook.id)))
+                    ]);
                     
                     let liveStatus = "pending";
                     if (!paySnap.empty) liveStatus = paySnap.docs[0].data().status.toLowerCase();
 
-                    // Agar Live status Approved nahi hai (yani reject/pending ho gaya)
+                    // Agar Live status Approved nahi hai
                     if (liveStatus !== "approved") {
-                        let errorMsg = liveStatus === "rejected" 
-                            ? "Access Denied! Your payment was rejected. Please contact support." 
-                            : `Access Denied! Your payment is currently ${liveStatus}.`;
-                        
+                        let errorMsg = liveStatus === "rejected" ? "Access Denied! Your payment was rejected." : `Access Denied! Your payment is currently ${liveStatus}.`;
                         window.showToast(errorMsg, "error");
                         
                         const cacheKey = `cache_payments_${currentUserId}_data`;
                         let cachedPayments = JSON.parse(localStorage.getItem(cacheKey)) || [];
                         const pIndex = cachedPayments.findIndex(p => String(p.ebook_id) === String(window.currentEbook.id));
-                        if(pIndex > -1) {
-                            cachedPayments[pIndex].status = liveStatus;
-                        } else if (!paySnap.empty) {
-                            cachedPayments.push({id: paySnap.docs[0].id, ...paySnap.docs[0].data()});
-                        }
+                        if(pIndex > -1) cachedPayments[pIndex].status = liveStatus;
                         localStorage.setItem(cacheKey, JSON.stringify(cachedPayments));
                         window.userPayments = cachedPayments; 
                         
-                        renderDetail(); // 🛑 Auto-refresh hata diya, button turant badal jayega
+                        renderDetail(); 
                         return; 
                     }
 
-                    // 🚨 STEP 2: Access Verified! Ab Tijori se link lao
-                    const secureDocRef = doc(dbInstance, "secure_links", String(window.currentEbook.id));
-                    const secureDocSnap = await getDoc(secureDocRef);
-
-                    if (secureDocSnap.exists() && secureDocSnap.data().pdf_link) {
-                        window.showToast("Access Verified! Opening Your Book...", "success");
-                        
-                        // 🔥 1-SECOND DELAY 🔥
-                        setTimeout(() => {
-                            window.open(secureDocSnap.data().pdf_link, "_blank");
-                            if (actionBtn.innerHTML.includes("Verifying")) {
-                                actionBtn.innerHTML = originalHTML;
-                                actionBtn.disabled = false;
-                            }
-                        }, 1000);
+                    // 🚨 STEP 2: Access Verified! Tijori (ya Free stash) se link assign karo
+                    let finalPdfLink = null;
+                    if (isFree && window.currentEbook.pdf_link) {
+                        finalPdfLink = window.currentEbook.pdf_link;
+                    } else if (secureDocSnap.exists() && secureDocSnap.data().pdf_link) {
+                        finalPdfLink = secureDocSnap.data().pdf_link;
                     } else {
-                        window.showToast("Unable to load the book. Please contact Support.", "error");
-                        if (actionBtn.innerHTML.includes("Verifying")) {
+                        const pubDoc = await getDoc(doc(dbInstance, "ebooks", String(window.currentEbook.id)));
+                        if (pubDoc.exists() && pubDoc.data().pdf_link) finalPdfLink = pubDoc.data().pdf_link;
+                    }
+
+                    if (finalPdfLink) {
+                        window.showToast("Access Verified! Opening book...", "success");
+                        setTimeout(() => {
+                            window.open(finalPdfLink, "_blank");
                             actionBtn.innerHTML = originalHTML;
                             actionBtn.disabled = false;
-                        }
+                        }, 1000);
+                    } else {
+                        window.showToast("This book not found. Please contact support.", "error");
+                        actionBtn.innerHTML = originalHTML;
+                        actionBtn.disabled = false;
                     }
                 } catch (err) {
                     console.error("Verification Error:", err);
                     window.showToast("Network error during verification.", "error");
-                    if (actionBtn.innerHTML.includes("Verifying")) {
-                        actionBtn.innerHTML = originalHTML;
-                        actionBtn.disabled = false;
-                    }
+                    actionBtn.innerHTML = originalHTML;
+                    actionBtn.disabled = false;
+                }
+
                 }
             };
             
@@ -1908,10 +1904,10 @@ window.updatePriceDisplayAfterPromo = function() {
     let basePrice = window.currentEbook.discount_price || window.currentEbook.price;
 
     if (!window.appliedCouponData) {
-        // DEFAULT PAID UI (No Coupon)
+        // DEFAULT PAID UI (No Coupon) - Both prices inside the badge
         let pHTML = `₹${basePrice}`;
         if (window.currentEbook.discount_price && window.currentEbook.price > window.currentEbook.discount_price) {
-            pHTML += ` <span class="strike-price">₹${window.currentEbook.price}</span>`;
+            pHTML += ` <span class="strike-price" style="text-decoration: line-through; opacity: 0.8; font-size: 0.85em; margin-left: 5px;">₹${window.currentEbook.price}</span>`;
         }
         priceBox.innerHTML = `<div class="price-wrapper"><span class="badge-premium">${pHTML}</span></div>`;
         footerPrice.innerHTML = `<span class="badge-premium">${pHTML}</span>`;
@@ -1919,18 +1915,13 @@ window.updatePriceDisplayAfterPromo = function() {
         actionBtn.innerHTML = `Buy Now <i class="fas fa-arrow-right" style="margin-left:6px;"></i>`;
         actionBtn.style.background = "linear-gradient(135deg, #7c6af7, #9f3fbf)";
         actionBtn.style.color = "#fff";
-        actionBtn.style.boxShadow = "";
         actionBtn.onclick = window.handleBuyNowClick;
         return;
     }
 
     if (window.appliedCouponData.final_price === 0) {
-        // 100% FREE UI MAGIC
-        priceBox.innerHTML = `
-            <div class="price-wrapper" style="gap: 8px;">
-                <span class="badge-free">✦ 100% FREE</span>
-                <span class="strike-price" style="font-size:0.9rem;">₹${basePrice}</span>
-            </div>`;
+        // 🔥 100% FREE UI - No original price shown, just the badge
+        priceBox.innerHTML = `<div class="price-wrapper"><span class="badge-free">✦ 100% FREE</span></div>`;
         footerPrice.innerHTML = `<span class="badge-free">✦ FREE</span>`;
         
         actionBtn.innerHTML = `Claim for Free <i class="fas fa-gift" style="margin-left:6px;"></i>`;
@@ -1939,18 +1930,14 @@ window.updatePriceDisplayAfterPromo = function() {
         actionBtn.style.boxShadow = "0 5px 20px rgba(16,185,129,0.4)";
         actionBtn.onclick = window.handleFreeClaimClick;
     } else {
-        // DISCOUNTED PAID UI
-        priceBox.innerHTML = `
-            <div class="price-wrapper" style="gap: 8px;">
-                <span class="badge-premium">₹${window.appliedCouponData.final_price}</span>
-                <span class="strike-price" style="font-size:0.9rem;">₹${basePrice}</span>
-            </div>`;
+        // DISCOUNTED PAID UI - Old price strictly inside the badge
+        let pHTML = `₹${window.appliedCouponData.final_price} <span class="strike-price" style="text-decoration: line-through; opacity: 0.8; font-size: 0.85em; margin-left: 5px;">₹${basePrice}</span>`;
+        priceBox.innerHTML = `<div class="price-wrapper"><span class="badge-premium">${pHTML}</span></div>`;
         footerPrice.innerHTML = `<span class="badge-premium">Pay: ₹${window.appliedCouponData.final_price}</span>`;
         
         actionBtn.innerHTML = `Buy Now (₹${window.appliedCouponData.final_price}) <i class="fas fa-arrow-right" style="margin-left:6px;"></i>`;
         actionBtn.style.background = "linear-gradient(135deg, #7c6af7, #9f3fbf)";
         actionBtn.style.color = "#fff";
-        actionBtn.style.boxShadow = "";
         actionBtn.onclick = window.handleBuyNowClick;
     }
 };
@@ -1999,10 +1986,8 @@ window.handleFreeClaimClick = async () => {
         const { getFirestore, doc, setDoc, updateDoc, increment } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
         const db = getFirestore();
         const currentUserId = localStorage.getItem("islamic_user_id");
-        
         const customPaymentId = `${currentUserId}_${window.currentEbook.id}`;
         
-        // 1. Direct Approved Payload
         const payload = {
             user_id: currentUserId,
             ebook_id: window.currentEbook.id,
@@ -2018,17 +2003,14 @@ window.handleFreeClaimClick = async () => {
             payload.discount_amount = window.appliedCouponData.discount_amount;
         }
 
-        // 2. Save directly to Firebase
-        await setDoc(doc(db, "payments", customPaymentId), payload);
-
-        // 3. 🔒 Atomic Increment for Coupon Limit (Security)
+        // 🚀 SPEED BOOST: Execute Payment save & Coupon update simultaneously!
+        const dbTasks = [ setDoc(doc(db, "payments", customPaymentId), payload) ];
         if (window.appliedCouponData) {
-            try {
-                await updateDoc(doc(db, "coupons", window.appliedCouponData.code), { current_uses: increment(1) });
-            } catch(e) { console.error("Limit update fail", e); }
+            dbTasks.push(updateDoc(doc(db, "coupons", window.appliedCouponData.code), { current_uses: increment(1) }).catch(e => console.log(e)));
         }
+        await Promise.all(dbTasks); // Waits for both to finish together
         
-        // 4. Update Local Cache silently
+        // Update Local Cache silently
         let currentPayments = [];
         const cacheKey = `cache_payments_${currentUserId}_data`;
         const cachedStr = localStorage.getItem(cacheKey);
@@ -2036,13 +2018,21 @@ window.handleFreeClaimClick = async () => {
         currentPayments.push({id: customPaymentId, ...payload});
         
         localStorage.setItem(cacheKey, JSON.stringify(currentPayments));
-        localStorage.removeItem(`cache_payments_${currentUserId}_time`); // Forces library refresh
-        localStorage.removeItem("checkout_coupon_data"); // Clear ghost cache
+        localStorage.removeItem(`cache_payments_${currentUserId}_time`); 
+        localStorage.removeItem("checkout_coupon_data"); 
+        
+        window.appliedCouponData = null; // Clear Coupon from RAM
+        window.userPayments = currentPayments; // Update global state
         
         if(window.showToast) window.showToast("Book added to Library!", "success");
         
-        // Auto-refresh to show Owned UI
-        setTimeout(() => window.location.reload(), 1200);
+        // 🚀 NO-REFRESH UX: Hide Promo Box and re-render the button smoothly after 800ms
+        const promoBox = document.getElementById("promo-container");
+        if(promoBox) promoBox.style.display = "none";
+
+        setTimeout(() => {
+            if(typeof window.renderDetail === "function") window.renderDetail();
+        }, 800);
 
     } catch(err) {
         if(window.showToast) window.showToast("Network error. Try again.", "error");
