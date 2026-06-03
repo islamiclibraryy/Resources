@@ -1475,7 +1475,7 @@ window.executeChangePassword = async function() {
                     
                     if (pay.coupon_applied) {
                         purchaseDetailsHTML = `
-                        <div style="margin-top: 6px; display: flex; align-items: center; gap: 6px; flex-wrap: nowrap; white-space: nowrap;">
+                        <div style="margin-top: 6px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
                             <span style="font-size: 0.75rem; color: var(--text2); font-family: 'DM Mono', monospace; font-weight: 600;">Paid: <span style="color: var(--text); font-weight: 700; font-size: 0.8rem;">₹${pay.amount}</span></span>
                             <span style="font-size: 0.65rem; color: var(--text3); text-decoration: line-through; opacity: 0.75; font-family: 'DM Mono', monospace;">₹${originalPrice}</span>
                             <span style="font-size: 0.55rem; background: rgba(124, 106, 247, 0.1); color: var(--accent2); padding: 2px 6px; border-radius: 4px; border: 1px solid rgba(124, 106, 247, 0.2); font-weight: 700; letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 3px;"><i class="fas fa-tag" style="font-size: 0.5rem;"></i> ${pay.coupon_applied}</span>
