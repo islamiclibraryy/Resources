@@ -10,21 +10,25 @@
     </script>
 
     <style>
-        /* Raw page ko hide karo */
-        html { visibility: hidden; opacity: 0; }
-        /* Load hone ke baad smooth fade-in */
-        html.fonts-ready { visibility: visible; opacity: 1; transition: opacity 0.2s ease-in; }
+        /* Body ka background dikhega (No White Flash), par andar ka header/footer/text hide rahega jab tak sab load na ho */
+        body > * { 
+            opacity: 0; 
+            transition: opacity 0.3s ease; 
+        }
     </style>
     <script>
-        // System ko wait karne bolo jab tak fonts ready na ho jayein
-        document.fonts.ready.then(function() {
-            document.documentElement.classList.add("fonts-ready");
-        });
+        // Jab CSS, FontAwesome, aur Google Fonts 100% load ho jayenge, tabhi ek sath sab dikhega
+        function revealPage() {
+            var children = document.body.children;
+            for(var i = 0; i < children.length; i++) {
+                children[i].style.opacity = "1";
+            }
+        }
         
-        // Fallback: Agar connection bohot slow hai toh 2 sec baad dikha do
-        setTimeout(function() {
-            document.documentElement.classList.add("fonts-ready");
-        }, 2000);
+        window.addEventListener('load', revealPage);
+        
+        // Fallback: Agar kisi user ka internet bohot slow hai, toh max 1 second baad dikha hi do
+        setTimeout(revealPage, 1000);
     </script>
     
     <meta charset="UTF-8">
@@ -1634,8 +1638,6 @@ onAuthStateChanged(auth, (user) => {
                 bookId = window.location.pathname.split('/id/')[1].replace(/\//g, '');
             }
             const userId = localStorage.getItem("islamic_user_id");
-
-            if (!bookId) { window.location.replace("/"); return; }
 
             let foundBook = null;
             const mainCacheStr = localStorage.getItem("cache_ebooks_data");
