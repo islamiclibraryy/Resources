@@ -4,30 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <title>Islamic Library by Shekh | Free & Premium Islamic eBooks</title>
-    <meta name="title" content="Islamic Library by Shekh | Free & Premium Islamic eBooks">
-    <meta name="description" content="Welcome to Islamic Library by Shekh. Explore, read, and download top-quality free and premium Islamic eBooks, Quran PDFs, Hadith, and Seerah collections in multiple languages.">
-    <meta name="keywords" content="Islamic Library by Shekh, Islamic eBooks, free Islamic books, Quran PDF, Hadith books, Seerah, online Islamic library, read Islamic books">
-    <meta name="author" content="Islamic Library by Shekh">
+    <title>Download & Purchase Islamic eBooks | Islamic Library by Shekh</title>
+    <meta name="title" content="Download & Purchase Islamic eBooks | Islamic Library by Shekh">
+    <meta name="description" content="Get full access to your favorite Islamic eBooks. View details, read descriptions, and download or purchase premium collections instantly. Start your journey with Islamic Library by Shekh.">
+    <meta name="keywords" content="Download Islamic Books, Buy Islamic eBooks, Quran PDF Download, Premium Islamic Resources, Islamic Library by Shekh Books">
 
     <link rel="icon" type="image/png" sizes="32x32" href="/icons/hikmahlogo.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/icons/hikmahlogo.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/icons/hikmahlogo.png">
 
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://islamiclibrary.pages.dev/">
-    <meta property="og:title" content="Islamic Library by Shekh | Free & Premium Islamic eBooks">
-    <meta property="og:description" content="Explore, read, and download top-quality free and premium Islamic eBooks, Quran PDFs, Hadith, and Seerah collections.">
+    <meta property="og:url" content="https://islamiclibrary.pages.dev/books/">
+    <meta property="og:title" content="Download & Purchase Islamic eBooks | Islamic Library by Shekh">
+    <meta property="og:description" content="View book details and download or purchase authentic Islamic eBooks directly from our library.">
     <meta property="og:image" content="https://islamiclibrary.pages.dev/icons/hikmahlogo.png">
 
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:url" content="https://islamiclibrary.pages.dev/">
-    <meta name="twitter:title" content="Islamic Library by Shekh | Free & Premium Islamic eBooks">
-    <meta name="twitter:description" content="Explore, read, and download top-quality free and premium Islamic eBooks, Quran PDFs, Hadith, and Seerah collections.">
+    <meta name="twitter:url" content="https://islamiclibrary.pages.dev/books/">
+    <meta name="twitter:title" content="Download & Purchase Islamic eBooks | Islamic Library by Shekh">
+    <meta name="twitter:description" content="View book details and download or purchase authentic Islamic eBooks directly from our library.">
     <meta name="twitter:image" content="https://islamiclibrary.pages.dev/icons/hikmahlogo.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script>
@@ -38,6 +38,7 @@
     </script>
 
     <style>
+        /* ===== CSS VARIABLES (DARK MODE DEFAULT) ===== */
         :root {
             --bg: #0a0a0f; --bg2: #0f0f18; --bg3: #13131e;
             --surface: #1a1a28; --surface2: #1f1f30; --surface3: #252538;
@@ -49,12 +50,9 @@
             --r: 12px; --r2: 16px; --r3: 20px;
             --shadow: 0 4px 24px rgba(0,0,0,0.4); --shadow2: 0 8px 40px rgba(0,0,0,0.5);
             --transition: 0.2s cubic-bezier(0.4,0,0.2,1);
-            --drop-shadow: rgba(255, 255, 255, 0.15);
-            --scroll-thumb: rgba(255, 255, 255, 0.12); /* Dark mode me halki white line */
---scroll-thumb-hover: rgba(255, 255, 255, 0.25);
-
         }
 
+        /* ===== LIGHT MODE VARIABLES ===== */
         [data-theme="light"] {
             --bg: #f4f6f8; --bg2: #e9ecef; --bg3: #dee2e6;
             --surface: #ffffff; --surface2: #f8f9fa; --surface3: #e9ecef;
@@ -63,16 +61,11 @@
             --accent: #6366f1; --accent2: #4f46e5; --accent3: #4338ca;
             --glow: rgba(99,102,241,0.15); --glow2: rgba(99,102,241,0.08);
             --shadow: 0 4px 20px rgba(0,0,0,0.06); --shadow2: 0 8px 30px rgba(0,0,0,0.1);
-            --drop-shadow: rgba(0, 0, 0, 0.45);
---scroll-thumb: rgba(0, 0, 0, 0.15); /* Light mode me halki dark/gray line */
---scroll-thumb-hover: rgba(0, 0, 0, 0.3);
-
         }
         
         [data-theme="light"] .blob { opacity: 0.5; }
-        [data-theme="light"] header, [data-theme="light"] .bottom-nav { background: rgba(255, 255, 255, 0.9); border-bottom-color: rgba(0,0,0,0.1); border-top-color: rgba(0,0,0,0.1); }
-        [data-theme="light"] .search-input { background: rgba(255, 255, 255, 0.8); }
-        [data-theme="light"] .search-dropdown { background: rgba(255, 255, 255, 0.95); }
+        [data-theme="light"] header, [data-theme="light"] .action-footer { background: rgba(255, 255, 255, 0.9); border-bottom-color: rgba(0,0,0,0.1); border-top-color: rgba(0,0,0,0.1); }
+        [data-theme="light"] .bottom-nav { background: rgba(255, 255, 255, 0.9); border-top-color: rgba(0,0,0,0.1); }
         [data-theme="light"] .profile-drawer { background: #fff; }
         /* 🔥 LIGHT MODE PASSWORD INPUT FIX 🔥 */
         [data-theme="light"] .custom-dark-input {
@@ -82,6 +75,167 @@
         }
         [data-theme="light"] .custom-dark-input::placeholder {
             color: var(--text3) !important;         /* Dark placeholder */
+        }
+        /* 🏷️ UNIVERSAL BADGES (Dark Mode Default) */
+        .price-wrapper { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+        
+        /* Top Wale Bade Badges */
+        .badge-premium, .badge-owned { 
+            display: inline-flex; align-items: center; gap: 6px; 
+            padding: 6px 14px; border-radius: 99px; 
+            font-family: 'DM Mono', monospace; font-size: 1rem; font-weight: 700; 
+            background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.4); color: var(--success); 
+        }
+        .badge-pending {
+            display: inline-flex; align-items: center; gap: 6px; 
+            padding: 6px 14px; border-radius: 99px; 
+            font-family: 'DM Mono', monospace; font-size: 1rem; font-weight: 700; 
+            background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.4); color: var(--amber);
+        }
+        .badge-free { 
+            display: inline-flex; align-items: center; gap: 6px; 
+            padding: 6px 14px; border-radius: 99px; 
+            font-family: 'DM Mono', monospace; font-size: 1rem; font-weight: 700; 
+            background: var(--glow2); border: 1px solid rgba(124,106,247,0.3); color: var(--accent3); 
+        }
+
+        /* 🔥 UPDATED STRIKE PRICE FOR DETAILS PAGE 🔥 */
+        .strike-price { 
+            font-size: 0.85rem; /* Thoda sa bada kiya */
+            color: var(--text2); /* Text3 se Text2 kiya taaki zyada bright ho */
+            text-decoration: line-through; 
+            font-weight: 600; /* Boldness badhayi */
+            margin-left: 3px;
+            opacity: 0.9;
+        }
+
+        /* 🔥 ACTION FOOTER BADGE SIZE FIX (Mobile View - 20% Chota aur Patla) 🔥 */
+        #action-footer .badge-premium, 
+        #action-footer .badge-free,
+        #action-footer .badge-owned,
+        #action-footer .badge-pending {
+            padding: 4px 10px !important; 
+            font-size: 0.85rem !important;
+            height: auto !important;
+            gap: 6px;
+        }
+
+        #action-footer .strike-price {
+            font-size: 0.75rem; /* Thoda sa bada kiya */
+            color: var(--text2); /* Contrast better kiya */
+            text-decoration: line-through; 
+            font-weight: 600; /* Boldness badhayi */
+            margin-left: 2.5px; 
+            opacity: 0.9;
+        }
+
+        /* 🖥️ DESKTOP SIZING FIXES */
+        @media screen and (min-width: 768px) {
+            /* Top Title Wale Badges Bada Rakhein */
+            .badge-premium, .badge-free, .badge-owned, .badge-pending {
+                padding: 10px 20px !important; font-size: 1.3rem !important; gap: 8px !important;
+            }
+            .strike-price { font-size: 1.1rem; }
+            
+            /* Footer Wale Badges ko Button ki Motai ke barabar rakhein (-15% height match) */
+            #action-footer .badge-premium, 
+            #action-footer .badge-free,
+            #action-footer .badge-owned,
+            #action-footer .badge-pending {
+                padding: 6px 14px !important; 
+                font-size: 1.05rem !important; 
+            }
+            #action-footer .strike-price {
+            font-size: .9rem;
+            }
+        }
+
+        /* =========================================================
+           📖 ABOUT THE BOOK - DESCRIPTION CARD
+           ========================================================= */
+        .desc-card {
+            background: var(--surface2); /* Halka transparent premium box */
+            border: 1px solid var(--border2);
+            border-radius: var(--r3);
+            padding: 24px;
+            margin-top: 15px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        
+        .desc-heading {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 16px;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-transform: uppercase;
+        }
+        
+        .desc-heading i {
+            color: var(--accent); /* Icon tere brand color mein chamkega */
+            font-size: 1.1rem;
+        }
+        
+        .desc-content {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--text2); /* Thoda soft color aankhon ki shanti ke liye */
+            white-space: pre-wrap; /* 🔥 JADU: Firebase ke paragraphs maintain rakhega */
+        }
+
+        /* 💡 LIGHT MODE ADJUSTMENTS FOR DESCRIPTION CARD */
+        [data-theme="light"] .desc-card {
+            background: #ffffff;
+            border-color: rgba(0,0,0,0.08);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+        }
+        [data-theme="light"] .desc-heading {
+            color: #111827;
+        }
+        [data-theme="light"] .desc-content {
+            color: #495057;
+        }
+
+        /* 💡 LIGHT MODE VISIBILITY FIX (Perfected & Sharp) 💡 */
+        
+        /* 1. PREMIUM PRICE BADGE (Sharp & Bold Look) */
+        [data-theme="light"] .badge-premium {
+            background: #ffffff !important; /* Pure White background */
+            border: 1px solid var(--border2) !important; /* Halka border */
+            color: #111827 !important; /* Ekdum Bold Dark Text */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06) !important; /* Premium soft shadow */
+        }
+        
+        /* LIGHT MODE FIX FOR STRIKE PRICE */
+        [data-theme="light"] .strike-price {
+            color: #4b5563 !important; /* Slate 600 - Ekdum sharp dark grey contrast ke liye */
+            font-weight: 600;
+        }
+
+        /* 2. OWNED BADGE (Fresh Green) */
+        [data-theme="light"] .badge-owned {
+            background: #ecfdf5 !important;
+            border-color: #a7f3d0 !important;
+            color: #047857 !important; 
+        }
+
+        /* 3. PENDING BADGE (Warm Amber) */
+        [data-theme="light"] .badge-pending {
+            background: #fffbeb !important;
+            border-color: #fde68a !important;
+            color: #b45309 !important; 
+        }
+
+        /* 4. FREE BADGE (Vibrant Indigo) */
+        [data-theme="light"] .badge-free {
+            background: #eef2ff !important;
+            border-color: #c7d2fe !important;
+            color: #4f46e5 !important;
         }
 
         *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -98,9 +252,8 @@
         .blob3 { width:250px; height:250px; background:rgba(99,102,241,0.1); top:40%; right:10%; animation-delay:5s; }
 
         .arabic-text { font-family: 'Amiri', serif; }
-        .bismillah { font-family: 'Amiri', serif; color: var(--accent2); font-size: 26px; text-shadow: 0 0 12px var(--glow); animation: fadeUp .6s ease both; }
         h1, h2, h3 { font-family: 'Syne', sans-serif; font-weight: 700; letter-spacing: -0.02em; color: var(--text); }
-        .hidden { display: none !important; } .flex { display: flex; } .align-center { align-items: center; } .justify-between { justify-content: space-between; } .text-center { text-align: center; } .mt-1 { margin-top: 10px; } .mt-2 { margin-top: 20px; } .mb-2 { margin-bottom: 20px; }
+        .hidden { display: none !important; } .flex { display: flex; } .align-center { align-items: center; } .text-center { text-align: center; } .mt-1 { margin-top: 10px; } .mt-2 { margin-top: 20px; } .mb-2 { margin-bottom: 20px; }
 
         #loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10,10,15,0.85); backdrop-filter: blur(5px); z-index: 99999; display: flex; flex-direction: column; justify-content: center; align-items: center; }
         .spinner { width: 50px; height: 50px; border: 4px solid var(--surface3); border-top: 4px solid var(--accent); border-radius: 50%; animation: spin 1s cubic-bezier(0.4,0,0.2,1) infinite; }
@@ -108,24 +261,82 @@
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10,10,15,0.85); backdrop-filter: blur(5px); z-index: 99999; display: flex; justify-content: center; align-items: center; animation: fadeIn 0.3s ease; }
         .modal-box { background: var(--surface); padding: 28px 24px; border-radius: var(--r3); width: 90%; max-width: 320px; text-align: center; border: 1px solid var(--border); box-shadow: var(--shadow2); animation: cardIn 0.4s ease both; }
         .modal-title { font-size: 1.3rem; margin-bottom: 8px; color: var(--text); }
-        .modal-desc { font-size: 0.9rem; color: var(--text2); margin-bottom: 24px; }
+        .modal-desc { font-size: 0.9rem; color: var(--text2); margin-bottom: 24px; line-height: 1.5; }
         .modal-actions { display: flex; gap: 12px; }
         .modal-actions button { flex: 1; padding: 12px; font-size: 0.9rem; }
         .btn-danger { background: rgba(244, 63, 94, 0.1); color: var(--danger); border: 1px solid rgba(244, 63, 94, 0.3); }
         .btn-danger:hover { background: var(--danger); color: #fff; box-shadow: 0 4px 20px rgba(244, 63, 94, 0.4); }
+        /* 🔥 Change Password Modal Button Wrap Fix 🔥 */
+        .modal-actions .btn {
+            white-space: normal !important; /* Nowak override kiya taki wrap ho sake */
+            flex-direction: row !important; /* Stacking override kiya taki natural wrap safe ho sake */
+        }
 
-        .btn { background: linear-gradient(135deg, #7c6af7, #9f3fbf); color: #fff; border: none; padding: 14px 20px; border-radius: 99px; font-weight: 600; font-family: 'DM Sans', sans-serif; width: 100%; cursor: pointer; transition: var(--transition); font-size: 1rem; display: block; text-align: center; position: relative; overflow: hidden; box-shadow: 0 4px 20px rgba(124,106,247,0.4); }
-        .btn::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,0.15),transparent); opacity:0; transition:opacity var(--transition); }
-        .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(124,106,247,0.5); } .btn:hover::before { opacity: 1; } .btn:active { transform: translateY(0) scale(0.98); }
-        .btn-outline { background: transparent; color: var(--text2); border: 1px solid var(--border2); padding: 10px 20px; border-radius: 99px; font-weight: 500; font-size: .85rem; transition: var(--transition); cursor: pointer; }
-        .btn-outline:hover { border-color: var(--accent); color: var(--accent2); background: var(--glow2); }
+        /* ===== SKELETON LOADERS ===== */
+        .skeleton { background: linear-gradient(90deg, var(--surface3) 25%, var(--surface2) 50%, var(--surface3) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite linear; border-radius: 4px; }
+        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
 
+/* 🔥 UPDATED .btn CLASS 🔥 */
+.btn { 
+    background: linear-gradient(135deg, #7c6af7, #9f3fbf); 
+    color: #fff; 
+    border: none; 
+    padding: 14px 20px; 
+    border-radius: 99px; 
+    font-weight: 600; 
+    font-family: 'DM Sans', sans-serif; 
+    width: 100%; 
+    cursor: pointer; 
+    transition: var(--transition); 
+    font-size: 1rem; 
+    
+    /* 🔥 YAHAN JADOO HAI (Icon aur Text hamesha ek line me rahenge) 🔥 */
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    gap: 8px; 
+    white-space: nowrap; 
+    
+    position: relative; 
+    overflow: hidden; 
+    box-shadow: 0 4px 20px rgba(124,106,247,0.4); 
+}
+
+/* Ye purana wala hi hai, isko chhedne ki zaroorat nahi bas as it is rakhna */
+.btn::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,0.15),transparent); opacity:0; transition:opacity var(--transition); }
+.btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(124,106,247,0.5); } 
+.btn:hover::before { opacity: 1; } 
+.btn:active { transform: translateY(0) scale(0.98); }
+        /* 🔥 UNIVERSAL OUTLINE BUTTON GLOW FIX (Sabhi pages ke liye) 🔥 */
+        .btn-outline { 
+            background: transparent; 
+            color: var(--text2); 
+            border: 1px solid var(--border2); 
+            padding: 10px 20px; 
+            border-radius: 99px; 
+            font-weight: 500; 
+            font-size: .85rem; 
+            transition: var(--transition); 
+            cursor: pointer; 
+            /* Yahan se 'box-shadow: none;' permanently hata diya gaya hai taaki original glow aaye */
+        }
+        
+        .btn-outline:hover { 
+            border-color: var(--accent); 
+            color: var(--accent2); 
+            background: var(--glow2); 
+            transform: translateY(-2px); /* Hover par thoda sa upar uthega */
+            box-shadow: 0 8px 30px rgba(124, 106, 247, 0.4); /* 🔥 Ekdum premium hover glow 🔥 */
+        }
+
+        /* ✅ FIXED HEADER - EXACT MATCH */
         header { 
             position: fixed; top: 0; left: 0; right: 0; z-index: 1000; 
             padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; 
             background: rgba(10,10,15,0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
             border-bottom: 1px solid var(--border); 
             transition: background-color 0.3s ease, border-color 0.3s ease; 
+            transform: translateZ(0); 
         }
         .header-logo-container { display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
         
@@ -154,8 +365,9 @@
             white-space: nowrap; 
         }
 
-        .main-content { padding: 90px 20px 90px; max-width: 1400px; margin: 0 auto; animation: fadeIn .5s ease both; transition: padding-top 0.3s ease; }
-
+        .main-content { padding: 90px 20px 90px; max-width: 1400px; margin: 0 auto; animation: fadeIn .5s ease both; }
+        
+        /* ✅ PROFILE DRAWER UI (BUG FIXED: SCROLL & HEIGHT) */
         .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 10001; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; backdrop-filter: blur(3px); }
         .drawer-overlay.active { opacity: 1; pointer-events: all; }
         
@@ -173,192 +385,30 @@
         
         .drawer-menu .btn-outline { width: 100%; text-align: left; padding: 14px 20px; margin-bottom: 12px; display: flex; align-items: center; gap: 12px; font-size: 0.95rem; border-color: var(--border); }
         .drawer-menu .btn-outline i { width: 20px; text-align: center; font-size: 1.1rem; }
-        
+                /* 🔥 Sidebar Pill Button Left Alignment Fix 🔥 */
+        .drawer-menu .btn-outline {
+            justify-content: flex-start !important; /* pill shaped button elements specific left align overwrites safe ho sake */
+            text-align: left !important;             /* specific text left align overwrite safe ho sake */
+            padding-left: 20px !important;            /* specific pill shaped button left margins override safe ho sake */
+            gap: 15px !important;                     /* key icon aur text ke beech specific specific gap overwrits safe ho sake */
+        }
+
         .drawer-footer { padding: 20px; border-top: 1px solid var(--border); flex-shrink: 0; padding-bottom: calc(20px + env(safe-area-inset-bottom)); }
 
-        .search-container { position: relative; margin-bottom: 16px; z-index: 900; }
-        .search-input-wrapper { position: relative; display: flex; align-items: center; }
-        .search-input-wrapper .fa-search { position: absolute; left: 18px; color: var(--text3); font-size: 1.1rem; pointer-events: none; }
-        .search-input-wrapper .fa-times { position: absolute; right: 18px; color: var(--text3); font-size: 1.2rem; cursor: pointer; padding: 5px; }
-        .search-input { width: 100%; background: var(--surface); color: var(--text); border: 1px solid var(--border2); padding: 14px 45px 14px 48px; border-radius: 99px; font-size: .95rem; transition: var(--transition); box-shadow: var(--shadow); }
-        .search-input:focus { border-color: var(--accent); outline: none; background: var(--surface2); box-shadow: 0 0 0 3px var(--glow2); }
-        .search-input::placeholder { color: var(--text3); }
+        /* Details UI */
+        .detail-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+        .back-btn, .share-btn { background: var(--surface2); color: var(--text); border: 1px solid var(--border2); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; cursor: pointer; transition: all var(--transition); }
+        .back-btn:hover { border-color: var(--accent); color: var(--accent2); background: var(--glow2); transform: rotate(-5deg) scale(1.05); }
+        .share-btn:hover { border-color: var(--accent); color: var(--accent2); background: var(--glow2); transform: scale(1.05); }
         
-        .search-dropdown { position: absolute; top: 100%; left: 0; right: 0; margin-top: 8px; background: var(--surface2); border: 1px solid var(--border); border-radius: var(--r2); box-shadow: var(--shadow2); max-height: 350px; overflow-y: auto; display: none; flex-direction: column; z-index: 1000; }
-        .search-dropdown.active { display: flex; }
-        .search-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--border2); cursor: pointer; transition: background var(--transition); }
-        .search-item:last-child { border-bottom: none; }
-        .search-item:hover { background: var(--surface3); }
-        .search-thumb { width: 45px; height: 45px; border-radius: 8px; object-fit: cover; background: var(--surface3); border: 1px solid var(--border); flex-shrink: 0; }
-        .search-info { flex: 1; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
-        .search-title { font-family: 'Syne', sans-serif; font-size: .95rem; font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; }
-        .search-desc { font-size: .75rem; color: var(--text3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .detail-thumb { width: 100%; max-width: 250px; aspect-ratio: 1/1; border-radius: var(--r3); object-fit: cover; margin: 0 auto 24px auto; display: block; border: 1px solid var(--border); box-shadow: var(--shadow); animation: cardIn .5s ease both; }
+/* Ye line normal CSS mein dalo taki mobile par bhi dikhe */
+.detail-thumb {
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4) !important;
+    border: 1px solid rgba(255,255,255,0.1) !important; /* Halka sa border taki shadow aur khul kar aaye */
+}
 
-        /* ✅ COMPACT DROPDOWN FILTER UI */
-        .filters-wrapper { display: flex; gap: 12px; margin-bottom: 24px; z-index: 800; position: relative; }
-        .custom-filter { position: relative; flex: 1; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; color: var(--text2); font-size: 0.85rem; font-weight: 600; box-shadow: var(--shadow); transition: var(--transition); user-select: none; }
-        .custom-filter:hover { border-color: var(--accent); color: var(--text); }
-        .custom-filter.active-filter { border-color: var(--accent); color: var(--accent2); background: var(--glow2); }
-        .custom-filter .fa-chevron-down { font-size: 0.75rem; transition: transform 0.3s ease; }
-        .custom-filter.open .fa-chevron-down { transform: rotate(180deg); }
-        
-        /* ✅ DROPDOWN INTERNAL SCROLL SYSTEM WITH PREMIER DEPTH (GENERAL CSS) */
-        .filter-options { 
-            position: absolute; 
-            top: calc(100% + 8px); 
-            left: 0; 
-            right: 0; 
-            background: var(--surface2); 
-            border: 1px solid var(--border); 
-            border-radius: var(--r); 
-            opacity: 0; 
-            pointer-events: none; 
-            transform: translateY(-10px); 
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
-            z-index: 1000; 
-
-            /* Scroll setting same rakhi hai */
-            max-height: 250px !important; 
-            overflow-y: auto !important;  
-        }
-
-        /* ✅ DROPDOWN CONTAINER (FIXED FOR MODERN BROWSERS) */
-        .filter-options { 
-            position: absolute; 
-            top: calc(100% + 8px); 
-            left: 0; 
-            right: 0; 
-            background: var(--surface2); 
-            border: 1px solid var(--border); 
-            border-radius: var(--r); 
-            box-shadow: var(--shadow2); 
-            opacity: 0; 
-            pointer-events: none; 
-            transform: translateY(-10px); 
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
-            z-index: 1000; 
-
-            max-height: 250px !important; 
-            overflow-y: auto !important; /* Standard property jo har browser me chalegi */
-
-            /* Dropdown ke main rounded corners se scrollbar ko bahar nikalne se rokega */
-            overflow-x: hidden !important; 
-
-            /* Dynamic Shadows Code */
-            background-image:
-                linear-gradient(var(--surface2) 30%, transparent),
-                linear-gradient(transparent, var(--surface2) 70%),
-                linear-gradient(to bottom, var(--drop-shadow), transparent),
-                linear-gradient(to top, var(--drop-shadow), transparent);
-            background-position: 0 0, 0 100%, 0 0, 0 100%;
-            background-repeat: no-repeat;
-            background-size: 100% 24px, 100% 24px, 100% 14px, 100% 14px;
-            background-attachment: local, local, scroll, scroll;
-        }
-
-        /* 🔥 DIVIDER LINES FIX: Yeh line un divider lines ko zabardasti right wall tak kheench degi */
-        .f-option { 
-            padding: 12px 16px; 
-            color: var(--text2); 
-            font-size: 0.85rem; 
-            transition: background 0.2s, color 0.2s; 
-            border-bottom: 1px solid var(--border); 
-            
-            /* Magic Lines: Dandi ke area (7px) ke andar tak borders ko badhayega aur text ko safe rakhega */
-            margin-right: -7px !important; 
-            padding-right: 23px !important; /* 16px original + 7px dandi ki space */
-        }
-        .f-option:last-child { border-bottom: none; }
-        .f-option:hover { background: var(--surface3); color: var(--text); }
-        .f-option.selected { background: var(--glow2); color: var(--accent2); font-weight: 700; border-left: 3px solid var(--accent); padding-left: 13px; }
-
-        /* 🔥 SCROLLBAR MASTER CLEANUP (NO CORNER LEAKING) 🔥 */
-        .filter-options::-webkit-scrollbar {
-            width: 7px; 
-        }
-        
-        .filter-options::-webkit-scrollbar-track {
-            background: transparent;
-            /* Parent ke right-top aur right-bottom corners se match kiya taaki dandi bahar na bhage */
-            border-radius: 0 var(--r) var(--r) 0; 
-        }
-        
-        .filter-options::-webkit-scrollbar-thumb {
-            background: var(--scroll-thumb) !important;
-            border-radius: 10px;
-            /* 1px transparent border pading-box ke sath thumb ko dabba ke andar hi rakhta hai */
-            border: 1px solid transparent;
-            background-clip: padding-box;
-        }
-        .filter-options::-webkit-scrollbar-thumb:hover {
-            background: var(--scroll-thumb-hover) !important;
-        }
-        .custom-filter.open .filter-options { opacity: 1; pointer-events: all; transform: translateY(0); }
-        
-        .f-option { padding: 12px 16px; color: var(--text2); font-size: 0.85rem; transition: background 0.2s, color 0.2s; border-bottom: 1px solid var(--border); }
-        .f-option:last-child { border-bottom: none; }
-        .f-option:hover { background: var(--surface3); color: var(--text); }
-        .f-option.selected { background: var(--glow2); color: var(--accent2); font-weight: 700; border-left: 3px solid var(--accent); padding-left: 13px; }
-        
-        .empty-state { text-align: center; padding: 40px 20px; grid-column: 1 / -1; animation: fadeIn 0.5s ease; }
-        .empty-state i { font-size: 3rem; color: var(--border2); margin-bottom: 16px; display: block; }
-        .empty-state h4 { font-family: 'Syne', sans-serif; font-size: 1.2rem; color: var(--text); margin-bottom: 8px; }
-        .empty-state p { font-size: 0.9rem; color: var(--text2); }
-
-        .skeleton { background: linear-gradient(90deg, var(--surface3) 25%, var(--surface2) 50%, var(--surface3) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite linear; border-radius: 4px; }
-        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
-
-        .grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 20px; }
-        .book-card { background: var(--surface); border-radius: var(--r2); overflow: hidden; border: 1px solid var(--border); display: flex; flex-direction: column; cursor: pointer; box-shadow: var(--shadow); transition: all var(--transition); animation: cardIn .4s ease both; }
-        .book-card:hover { border-color: var(--border2); transform: translateY(-4px); box-shadow: var(--shadow2); }
-        .book-thumb { width: 100%; aspect-ratio: 1/1; object-fit: cover; background: var(--surface3); border-bottom: 1px solid var(--border); }
-        .book-info { padding: 16px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; gap: 8px; }
-        .book-title { font-family: 'Syne', sans-serif; font-size: .95rem; font-weight: 700; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-        /* 🏷️ HOME PAGE: UNIVERSAL PREMIUM BADGES (Grid View) */
-        .price-wrapper { display: flex; align-items: center; gap: 8px; margin-top: auto; }
-
-        .badge-premium { 
-            display: inline-flex; align-items: center; gap: 4px; 
-            padding: 4px 10px; border-radius: 99px; 
-            font-family: 'DM Mono', monospace; font-size: 0.85rem; font-weight: 700; 
-            background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.4); color: var(--success); 
-        }
-
-        .badge-free { 
-            display: inline-flex; align-items: center; gap: 4px; 
-            padding: 4px 10px; border-radius: 99px; 
-            background: var(--glow2); border: 1px solid rgba(124,106,247,0.3); 
-            font-family: 'DM Mono', monospace; font-size: 0.85rem; font-weight: 700; color: var(--accent3); 
-        }
-
-        /* 🔥 UPDATED STRIKE PRICE FOR HOME PAGE 🔥 */
-        .strike-price { 
-            font-size: 0.75rem; /* Thoda sa bada kiya */
-            color: var(--text2); /* Contrast better kiya */
-            text-decoration: line-through; 
-            font-weight: 600; /* Boldness badhayi */
-            margin-left: 2.5px; 
-            opacity: 0.9;
-        }
-
-        /* LIGHT MODE FIX FOR STRIKE PRICE */
-        [data-theme="light"] .strike-price { 
-            color: #4b5563 !important; /* Sharp Dark Grey */
-            font-weight: 600 !important;
-        }
-
-        /* 💡 LIGHT MODE FIX FOR HOME PAGE GRID BADGES */
-        [data-theme="light"] .badge-premium {
-            background: #ffffff !important; border: 1px solid var(--border2) !important; color: #111827 !important; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04) !important;
-        }
-        [data-theme="light"] .badge-free {
-            background: #eef2ff !important; border-color: #c7d2fe !important; color: #4f46e5 !important;
-        }
-        /* LIGHT MODE FIX FOR STRIKE PRICE */
-        [data-theme="light"] .strike-price { 
-            color: #4b5563 !important; /* Sharp Dark Grey */
-            font-weight: 600 !important;
-        }
+        .action-footer { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(10,10,15,0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); padding: 16px 24px; border-top: 1px solid var(--border); z-index: 1000; display: flex; justify-content: space-between; align-items: center; transition: background-color 0.3s ease, border-color 0.3s ease; white-space: nowrap; gap: 12px; }
 
         .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 70px; background: rgba(10,10,15,0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--border); z-index: 999; transition: background-color 0.3s ease, border-color 0.3s ease; }
         .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text3); font-size: .75rem; font-weight: 500; gap: 6px; cursor: pointer; flex: 1; height: 100%; transition: all var(--transition); text-decoration: none; }
@@ -367,119 +417,112 @@
         .nav-item.active i { background: var(--glow2); padding: 8px; border-radius: 50%; box-shadow: 0 0 15px var(--glow); transform: translateY(-4px); color: var(--accent); }
         .nav-item:hover:not(.active) { color: var(--text2); }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } } 
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } } 
-        @keyframes cardIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } } 
-        @keyframes slideUp { from { opacity: 0; transform: translateY(10px) scaleY(0.95); } to { opacity: 1; transform: translateY(0) scaleY(1); } } 
-        @keyframes spin { to { transform: rotate(360deg); } } 
-        @keyframes blobFloat { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(20px,-20px) scale(1.05)} 66%{transform:translate(-15px,15px) scale(0.97)} }
-       
-    /* Nayi CSS sirf is password box ke liye */
-    .custom-dark-input {
-        width: 100%;
-        padding: 14px 15px;
-        margin-top: 8px;
-        border-radius: 12px;
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        background: rgba(255, 255, 255, 0.05); /* Subtle dark transparent background */
-        color: #ffffff;
-        font-size: 1rem;
-        outline: none;
-        transition: all 0.3s ease;
-        font-family: inherit;
-    }
-    .custom-dark-input::placeholder {
-        color: rgba(255, 255, 255, 0.4); /* Placeholder text color */
-    }
-    .custom-dark-input:focus {
-        border-color: #a855f7; /* Tumhare Update button se match karta hua Purple glow */
-        background: rgba(255, 255, 255, 0.1);
-        box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2);
-
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } } @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } } @keyframes cardIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } } @keyframes spin { to { transform: rotate(360deg); } }
+/* Custom Dark Input for Password Box */
+.custom-dark-input {
+    width: 100%; padding: 14px 15px; margin-top: 8px; border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.15); background: rgba(255, 255, 255, 0.05);
+    color: #ffffff; font-size: 1rem; outline: none; transition: all 0.3s ease; font-family: inherit;
 }
-                /* 🔥 DESKTOP VIEW FIX (HOME PAGE) - ALIGNED WITH INFO PAGES 🔥 */
+.custom-dark-input::placeholder { color: rgba(255, 255, 255, 0.4); }
+.custom-dark-input:focus { border-color: #a855f7; background: rgba(255, 255, 255, 0.1); box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2); }
+
+/* 1. Button ko kisi bhi phone mein dabne (bona hone) se rokne ke liye */
+.action-footer .btn {
+    flex-shrink: 0 !important; 
+}
+
+/* 2. SIRF aur SIRF chhote phones (400px ya usse kam) ke liye rule */
+@media screen and (max-width: 400px) {
+    .action-footer > *:first-child {
+        font-size: 0.95rem !important; /* Halka sa adjust hoga taki button ko jagah mile */
+    }
+}        /* 🔥 BOOK DETAILS TITLE - RESPONSIVE & CONSISTENT 🔥 */
+        #det-title {
+            /* 1. Alignment & Natural Flow */
+            text-align: left !important;
+            white-space: normal !important;
+            word-break: break-word !important;
+            overflow-wrap: break-word !important;
+            line-height: 1.35 !important;
+            margin-bottom: 12px !important;
+            
+            /* 2. Consistent Sizing (Screen ke hisaab se, Title ki length se farq nahi padega) */
+            /* Minimum 1.15rem, Preferred 5vw (5% of screen width), Max 1.8rem */
+            font-size: clamp(1.15rem, 5vw, 1.8rem) !important; 
+            
+            /* 3. Appearance */
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        /* 🔥 DESKTOP VIEW FIX (BOOK DETAILS) - FINAL PERFECTED 🔥 */
         @media screen and (min-width: 768px) {
             
-            /* 1. Header aur Footer ko Info pages se match karna */
-            header {
-                padding: 20px 10% !important; 
-            }
-            .bottom-nav {
-                padding: 0 10% !important;
-                height: 80px !important;
-            }
-
+            /* 1. Header/Nav alignment fix */
+            header { padding: 20px 10% !important; }
             .header-logo { font-size: 1.6rem !important; }
             .fa-moon, .fa-user-circle { font-size: 1.6rem !important; margin-left: 20px !important; }
-            .nav-item i { font-size: 1.4rem !important; }
-            .nav-item span { font-size: 0.9rem !important; }
 
-            /* 2. Main Content Area ko Center aur 900px pe limit karna */
+            .bottom-nav { padding: 0 10% !important; height: 80px !important; }
+
+            /* 2. Action Footer alignment - Download button profile icon ki seedh mein */
+            #action-footer {
+                padding-left: 10% !important;
+                padding-right: 10% !important;
+                background: rgba(10,10,15,0.95) !important;
+                backdrop-filter: blur(20px) !important;
+            }
+
+            /* 3. Main content area */
             .main-content {
                 max-width: 900px !important;
                 margin: 0 auto !important;
-                padding-top: 100px !important; /* Header ki vajah se thoda aur niche kiya */
+                padding-top: 100px !important; 
             }
 
-            /* 3. Search Bar aur Filters ko thoda chouda aur attractive banana */
-            .search-container {
-                max-width: 600px !important; /* PC pe search bar thoda lamba acha lagta hai */
-                margin: 0 auto 20px auto !important; 
+            /* 4. 🔥 IMAGE SIZE FIX (Max-width ko hataya) 🔥 */
+            #det-thumb {
+                display: block !important;
+                margin: 0 auto 40px auto !important; 
+                width: 500px !important;      /* Ab ye sach mein bada hoga */
+                max-width: none !important;    /* Purani 250px wali limit khatam */
+                height: auto !important;
+                border-radius: 24px !important;
+                box-shadow: 0 25px 60px rgba(0,0,0,0.6) !important;
             }
-            .search-input {
-                font-size: 1.1rem !important;
-                padding: 16px 20px 16px 50px !important; /* Bada Search Bar */
+
+            /* 🔥 Title & Tag: Left side par shift (Aur Badge Bada) 🔥 */
+            #det-title { 
+                max-width: 800px !important;
+                margin: 0 0 15px 0 !important;
+                font-size: 2.4rem !important; 
+                text-align: left !important; 
             }
             
-            /* Filters ko bada karna aur Center mein lana */
-            .filters-wrapper {
-                justify-content: center !important;
-                gap: 20px !important;
-                margin-bottom: 40px !important;
-            }
-            /* 1. Filters ka purana code dhoondho aur usme white-space jod do */
-            .custom-filter {
-                width: 250px !important; 
-                padding: 14px 20px !important;
-                font-size: 1rem !important;
-                
-                /* 🔥 YEH LINE ADD KARO: PC par bhi text ko niche tootne se rokegi */
-                white-space: nowrap !important; 
+            #det-price-box { 
+                max-width: 800px !important;
+                margin: 0 0 25px 0 !important; 
+                display: flex !important; 
+                justify-content: flex-start !important; 
             }
 
-            /* 🔥 YEH NAYA RULE USKE THEEK NEECHE PASTE KARO 🔥 */
-            .custom-filter span {
-                display: inline-block !important;
-                max-width: calc(100% - 25px) !important; /* PC ke chevron icon ke hisab se width safe ki */
-                overflow: hidden !important;
-                text-overflow: ellipsis !important; /* Lamba naam hone par '...' lagayega */
-                white-space: nowrap !important;
-                vertical-align: middle !important;
+            #det-arabic-phrase { 
+                font-size: 36px !important; 
+                text-align: center !important; /* Arabic phrase center me hi pyara lagta hai */
+                margin-bottom: 35px !important; 
+            }
+            
+            #det-desc { 
+                max-width: 850px !important;
+                margin: 0 0 !important; /* Isko bhi left shift kiya */
+                font-size: 1.15rem !important; 
+                line-height: 1.9 !important; 
                 text-align: left !important;
+                padding-bottom: 130px !important; 
             }
 
-            /* 4. 🔥 Books Grid: PC par Books Premium dikhengi 🔥 */
-            .grid-container {
-                display: grid !important;
-                /* Badi screen par 1 line mein sirf 3 ya max 4 books taaki sizes aache aayen */
-                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important;
-                gap: 24px !important; /* Books ke beech mein khali jagah (gap) */
-            }
-            /* Desktop par badges ko thoda bada aur crisp dikhana hai */
-            .badge-premium, .badge-free {
-                padding: 6px 14px !important; 
-                font-size: 1.05rem !important; 
-            }
-            .strike-price {
-                font-size: 0.9rem !important;
-            }
-            .book-title {
-                 font-size: 1.1rem !important; /* PC par book title bhi thoda better padhne layk hoga */
-                 margin-bottom: 8px !important;
-            }
-
-            /* Bismillah text resize for PC */
-            .bismillah { font-size: 36px !important; margin-bottom: 30px !important; }
             /* 🚀 ALL MODALS DESKTOP FIX (Logout, Change Password) 🚀 */
             .modal-box {
                 max-width: 480px !important; /* Modals ab choude aur premium lagenge */
@@ -518,74 +561,17 @@
                 font-size: 1.1rem !important;
                 border-radius: 14px !important;
             }
+            /* 🔥 LIGHT MODE DESKTOP FOOTER FIX 🔥 */
+            [data-theme="light"] #action-footer {
+                background: rgba(255, 255, 255, 0.9) !important; /* Safed background */
+                border-top: 1px solid rgba(0,0,0,0.1) !important; /* Halka gray border */
+            }
+            
+            [data-theme="light"] #action-footer .price-tag {
+                color: var(--accent2) !important; /* Price tag ka color dark theme jaisa na reh jaye */
+            }
 
         }
-        /* 🔥 GPU Rendering Blink Fix for High-End Phones 🔥 */
-        .search-container, 
-        .filters-wrapper, 
-        .custom-filter,
-        .filter-options {
-            transform: translateZ(0);
-            -webkit-transform: translateZ(0);
-            backface-visibility: hidden;
-            -webkit-backface-visibility: hidden;
-            perspective: 1000px;
-            /* Ye text aur border ko animation ke time blur hone se rokta hai */
-            -webkit-font-smoothing: antialiased; 
-        }
-/* ========================================================
-   🔥 TRULY RESPONSIVE UNIVERSAL MOBILE FIX (UP TO 767px) 🔥
-   ======================================================== */
-@media screen and (max-width: 767px) {
-    
-    /* Filters container ka gap tight rakha taaki teeno samane aa sakein */
-    .filters-wrapper { 
-        gap: 6px !important; 
-        margin-bottom: 20px !important;
-        display: flex !important;
-    }
-    
-    /* Main filter box setup */
-    .custom-filter { 
-        position: relative;
-        flex: 1 !important; 
-        
-        /* 🔥 THE MAGIC LINE: Yeh dabba ko lamba hokar side me ghusne se rokega */
-        min-width: 0 !important; 
-        
-        padding: 12px 6px !important; /* Mobile ke liye padding balanced ki */
-        font-size: 0.76rem !important; 
-        border-radius: 12px !important; 
-        white-space: nowrap !important; 
-        display: flex !important;
-        justify-content: space-between !important;
-        align-items: center !important;
-    }
-
-    /* 🔥 DYNAMIC SMART ELLIPSIS: Roman Urdu poora dikhega, par jo bohot lamba hoga sirf wahi dot-dot hoga */
-    .custom-filter span {
-        display: inline-block !important;
-        max-width: calc(100% - 12px) !important; /* Dabba ki width ke andar hi text ko simat kar rakhega */
-        overflow: hidden !important;
-        text-overflow: ellipsis !important; 
-        white-space: nowrap !important;
-        vertical-align: middle !important;
-    }
-
-    /* Chevron arrow icon adjustment */
-    .custom-filter .fa-chevron-down {
-        font-size: 0.6rem !important;
-        margin-left: 2px !important;
-        flex-shrink: 0 !important; /* Arrow ko pichakne se rokega */
-    }
-    
-    /* Dropdown options view */
-    .f-option {
-        padding: 12px 14px !important;
-        font-size: 0.82rem !important;
-        white-space: normal !important; /* Dropdown me poora naam break hokar dikhega */
-    }
-}
 /* =========================================================================
            🚀 UNIVERSAL PREMIUM TOAST NOTIFICATION SYSTEM (Upgraded Position & Size)
            ========================================================================= */
@@ -653,6 +639,7 @@
                 gap: 16px;
             }
         }
+
 /* =========================================================
    🚀 GAMIFICATION: TIER BADGES & MODAL CSS
    ========================================================= */
@@ -1012,15 +999,12 @@ body.instant-load header {
         </form>
     </div>
 </div>
+
     <div class="hero-bg"></div>
     <div class="hero-grid"></div>
-    <div class="blob blob1"></div>
-    <div class="blob blob2"></div>
-    <div class="blob blob3"></div>
 
     <div id="loader" class="hidden"><div class="spinner"></div></div>
-    
-
+   
     <div id="drawer-overlay" class="drawer-overlay" onclick="window.closeProfileDrawer()"></div>
     <div id="profile-drawer" class="profile-drawer">
         <div class="drawer-header">
@@ -1048,15 +1032,12 @@ body.instant-load header {
             <h3 class="modal-title" id="modal-title-text">Log Out</h3>
             <p class="modal-desc" id="modal-desc-text">Are you sure you want to log out of your account?</p>
             <div class="modal-actions">
-                <button class="btn btn-outline" onclick="window.closeModal()">Cancel</button>
+                <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
                 <button class="btn" id="modal-action-btn">Yes</button>
             </div>
         </div>
     </div>
 
-
-    <div id="app-views">
-        
 <div id="premium-announcement-bar">
     <div class="announcement-content">
         <a href="javascript:void(0)" id="ann-link" class="ann-text-container">
@@ -1096,75 +1077,60 @@ body.instant-load header {
             })();
         </script>
 
-        <div class="main-content">
-            <div id="page-home">
-                <div class="bismillah text-center" style="margin-top: 5px; margin-bottom: 24px;">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
+    <div class="main-content">
+        <div id="page-detail">
+            <div class="detail-header">
+                <div class="flex align-center" style="gap: 16px;">
+                    <button class="back-btn" onclick="window.location.href='/'"><i class="fas fa-arrow-left"></i></button>
+                    <h3 style="font-size: 1.2rem; margin:0;">Book Details</h3>
+                </div>
+                <button class="share-btn" onclick="shareBook()" title="Share this Book"><i class="fas fa-share-alt"></i></button>
+            </div>
+            
+            <img src="" id="det-thumb" class="detail-thumb">
+            <h2 id="det-title" style="font-size: 1.6rem; margin-bottom: 12px;"></h2>
+            <div id="det-price-box" style="margin-bottom: 20px;"></div>
+            
+            <div id="promo-container" style="display: none; max-width: 320px; margin: 0 auto 22px auto; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 12px; box-shadow: var(--shadow);">
+                <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px;">
+                    <i class="fas fa-ticket-alt" style="color: var(--accent2); font-size: 0.9rem;"></i>
+                    <span style="font-size: 0.85rem; color: var(--text); font-weight: 600;">Have a promo code?</span>
+                </div>
                 
-                <div class="search-container">
-                    <div class="search-input-wrapper">
-                        <i class="fas fa-search"></i>
-                        <input type="text" id="search-bar" class="search-input" placeholder="Search for books..." oninput="window.handleSearch(this.value)" autocomplete="off">
-                        <i class="fas fa-times clear-search hidden" id="clear-search" onclick="window.clearSearch()" title="Clear"></i>
-                    </div>
-                    <div id="search-dropdown" class="search-dropdown"></div>
+                <div id="promo-input-mode" style="display: flex; gap: 6px; background: var(--surface2); padding: 4px; border-radius: 8px; border: 1px solid var(--border2); transition: 0.3s;">
+                    <input type="text" id="promo-code-input" placeholder="ENTER CODE" oninput="this.value = this.value.replace(/\s/g, '').toUpperCase()" style="flex: 1; background: transparent; border: none; padding: 6px 10px; color: var(--text); font-size: 0.9rem; font-family: 'DM Mono', monospace; font-weight: 700; outline: none; letter-spacing: 1px; text-align: center;">
+                    <button id="promo-apply-btn" onclick="window.applyPromoCode()" style="background: var(--accent); color: #fff; border: none; padding: 6px 16px; border-radius: 6px; font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: 0.2s;">Apply</button>
                 </div>
 
-                <div class="filters-wrapper">
-                    
-                    <div class="custom-filter" id="price-dropdown-btn" onclick="window.toggleFilterMenu('price')">
-                        <span id="price-label">Price: All</span>
-                        <i class="fas fa-chevron-down"></i>
-                        <div class="filter-options" id="price-options">
-                            <div class="f-option selected" onclick="window.setPriceFilter('all', 'Price: All', event)">All Books</div>
-                            <div class="f-option" onclick="window.setPriceFilter('free', 'Free Books', event)">Free Books</div>
-                            <div class="f-option" onclick="window.setPriceFilter('premium', 'Premium', event)">Premium</div>
+                <div id="promo-success-mode" class="hidden" style="display: flex; justify-content: space-between; align-items: center; background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); padding: 8px 12px; border-radius: 8px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-check-circle" style="color: var(--success); font-size: 1.2rem;"></i>
+                        <div>
+                            <div style="color: var(--success); font-weight: 600; font-size: 0.8rem;">Promo Applied!</div>
+                            <div style="color: var(--text2); font-size: 0.75rem; font-family: 'DM Mono', monospace; margin-top: 2px;" id="promo-applied-code">CODE (-₹0)</div>
                         </div>
                     </div>
-
-                    <div class="custom-filter" id="cat-dropdown-btn" onclick="window.toggleFilterMenu('cat')">
-                        <span id="cat-label">Cat: All</span>
-                        <i class="fas fa-chevron-down"></i>
-                        <div class="filter-options" id="cat-options">
-                            <div class="f-option selected" onclick="window.setCatFilter('all', 'Cat: All', event)">All Categories</div>
-                            <div class="f-option" onclick="window.setCatFilter('quran', 'Quran', event)">Quran</div>
-                            <div class="f-option" onclick="window.setCatFilter('hadith', 'Hadith', event)">Hadith</div>
-                            <div class="f-option" onclick="window.setCatFilter('seerah', 'Seerah', event)">Seerah</div>
-                        </div>
-                    </div>
-
-                    <div class="custom-filter" id="lang-dropdown-btn" onclick="window.toggleFilterMenu('lang')">
-                        <span id="lang-label">Lang: All</span>
-                        <i class="fas fa-chevron-down"></i>
-                        <div class="filter-options" id="lang-options">
-                            <div class="f-option selected" onclick="window.setLangFilter('all', 'Lang: All', event)">All Languages</div>
-                            <div class="f-option" onclick="window.setLangFilter('english', 'English', event)">English</div>
-                            <div class="f-option" onclick="window.setLangFilter('urdu', 'Urdu', event)">Urdu</div>
-                            <div class="f-option" onclick="window.setLangFilter('hindi', 'Hindi', event)">Hindi</div>
-                            <div class="f-option" onclick="window.setLangFilter('arabic', 'Arabic', event)">Arabic</div>
-                            <div class="f-option" onclick="window.setLangFilter('roman urdu / hindi', 'Roman Urdu', event)">Roman Urdu / Hindi</div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <h3 class="mb-2" style="font-size: 1.4rem;">Discover eBooks</h3>
-                
-                <div id="ebook-grid" class="grid-container"></div>
-                
-                <div class="text-center mt-2" style="margin-bottom: 30px;">
-                    <button id="load-more-btn" class="btn btn-outline hidden" style="width: auto; margin: 0 auto; padding: 10px 30px;" onclick="window.loadMoreBooks()">Load More <i class="fas fa-chevron-down" style="margin-left: 6px;"></i></button>
+                    <button onclick="window.removePromoCode()" style="background: var(--surface2); border: 1px solid var(--border2); color: var(--danger); font-size: 0.9rem; cursor: pointer; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: 0.2s;"><i class="fas fa-times"></i></button>
                 </div>
             </div>
+            
+            <p id="det-arabic-phrase" class="arabic-text text-center" style="color:var(--accent2); font-size: 26px; margin-bottom: 20px; font-weight: bold; text-shadow: 0 0 10px var(--glow);"></p>
+            
+            <p id="det-desc" style="font-size: .95rem; color: var(--text2); line-height: 1.8; padding-bottom: 110px;"></p>
         </div>
+    </div> 
 
-        <div id="bottom-nav" class="bottom-nav">
-            <div class="nav-item active" onclick="window.location.href='/'"><i class="fas fa-home"></i><span>Home</span></div>
-            <div class="nav-item" onclick="window.location.href='library/index.html'"><i class="fas fa-book-reader"></i><span>Library</span></div>
-            <a href="/info/" class="nav-item"><i class="fas fa-info-circle"></i><span>Info</span></a>
-        </div>
+    <div id="action-footer" class="action-footer hidden">
+        <div id="det-footer-price"></div> <button id="det-action-btn" class="btn" style="width: auto; padding: 12px 32px; font-size: .95rem; border-radius: 99px;"></button>
     </div>
 
+    <div id="bottom-nav" class="bottom-nav">
+        <div class="nav-item active" onclick="window.location.href='/'"><i class="fas fa-home"></i><span>Home</span></div>
+        <div class="nav-item" onclick="window.location.href='/library/'"><i class="fas fa-book-reader"></i><span>Library</span></div>
+        <a href="/info/" class="nav-item"><i class="fas fa-info-circle"></i><span>Info</span></a>
+    </div>
 <div id="toast-container" style="z-index: 999999 !important;"></div>
+
 <div class="tier-modal-overlay" id="tierModal" onclick="closeTierModal(event)">
     <div class="tier-modal-content" onclick="event.stopPropagation()">
         <div class="tier-icon-large" id="modalTierIcon">🧭</div>
@@ -1181,13 +1147,13 @@ body.instant-load header {
     </div>
 </div>
 
-
     <script type="module">
+        // ✅ FIREBASE IMPORTS (Updated with Auth)
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
-        import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager, collection, getDocs, query, where, enableIndexedDbPersistence } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+        import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
-        // 🛑 BHAIA YAHAN APNI ASLI FIREBASE KEYS ZAROOR PASTE KAR LENA 🛑
+        // ✅ FIREBASE CONFIG
         const firebaseConfig = {
             apiKey: "AIzaSyBhYLRH_0p7f4oRIZTDVf8bOb1bdRKPNe8",
             authDomain: "islamic-library-3b1d4.firebaseapp.com",
@@ -1207,28 +1173,39 @@ const db = initializeFirestore(app, {
 });
 
 
+        const ARABIC_PHRASES = ["سُبْحَانَ اللَّهِ", "الْحَمْدُ لِلَّهِ", "اللَّهُ أَكْبَرُ", "لَا إِلَٰهَ إِلَّا اللَّهُ", "مَا شَاءَ اللَّهُ", "بَارَكَ اللَّهُ فِيكَ"];
 
-        // ✅ STATE VARIABLES
-        let ebooksData = [];
-        let currentPage = 1;
-        const itemsPerPage = 15;
-        let currentPriceFilter = 'all';
-        let currentLangFilter = 'all';
+        let userPayments = [];
+        let currentEbook = null;
+        let apiLocks = {};
+        const userId = localStorage.getItem("islamic_user_id");
 
-        // ✅ GLOBAL UI FUNCTIONS
+        // ✅ 1. REDIRECT KILLER (Guest mode active)
+        onAuthStateChanged(auth, (user) => {
+            if (!user) { 
+                // Yahan se `window.executeLogout(true)` hata diya hai. Ab koi login page par nahi fekega.
+                localStorage.removeItem("islamic_user_id");
+                localStorage.removeItem("islamic_user_name");
+                localStorage.removeItem("islamic_user_mobile");
+            } else {
+                localStorage.setItem("islamic_user_id", user.uid);
+            }
+        });
+
+        // ✅ UI Functions attached to window for HTML handlers
         window.initTheme = function() {
             const currentTheme = document.documentElement.getAttribute("data-theme");
             const icon = document.getElementById("theme-toggle-icon");
             if(icon) icon.className = currentTheme === "light" ? "fas fa-sun" : "fas fa-moon";
-        }
-
+        };
+        
         window.toggleTheme = function() {
             const currentTheme = document.documentElement.getAttribute("data-theme");
             const newTheme = currentTheme === "light" ? "dark" : "light";
             document.documentElement.setAttribute("data-theme", newTheme);
             localStorage.setItem("islamic_theme", newTheme);
             window.initTheme();
-        }
+        };
 
 window.openProfileDrawer = async function() {
     document.getElementById("drawer-overlay").classList.add("active");
@@ -1375,11 +1352,9 @@ window.closeTierModal = function(e) {
             document.getElementById("drawer-overlay").classList.remove("active");
             document.getElementById("profile-drawer").classList.remove("active");
             document.body.style.overflow = '';
-        }
+        };
 
-        window.closeModal = function() {
-            document.getElementById("confirm-modal").classList.add("hidden");
-        }
+        window.closeModal = function() { document.getElementById("confirm-modal").classList.add("hidden"); };
 
         window.showLogoutModal = function() {
             window.closeProfileDrawer();
@@ -1389,7 +1364,8 @@ window.closeTierModal = function(e) {
             actionBtn.innerText = "Yes, Log Out";
             actionBtn.onclick = window.confirmLogout;
             document.getElementById("confirm-modal").classList.remove("hidden");
-        }
+        };
+
 
         // 🔥 MODAL OPEN & CLOSE LOGIC
 window.openChangePassword = function() {
@@ -1402,7 +1378,32 @@ window.closeChangePasswordModal = function() {
     document.getElementById("change-password-modal").classList.add("hidden");
 }
 
-// 🔥 ASLI FIREBASE PASSWORD UPDATE LOGIC
+// 🔥 SMART UNIVERSAL TOAST
+window.showToast = function(msg, type = "success") {
+    const container = document.getElementById("toast-container");
+    if (!container) return;
+    
+    container.innerHTML = ""; // Instant clear loader/old toast
+    
+    const toast = document.createElement("div");
+    toast.className = `toast ${type}`;
+    let iconHTML = '<span>✓</span>';
+    if (type === "error") iconHTML = '<span>✕</span>';
+    if (type === "info") iconHTML = '<i class="fas fa-spinner fa-spin"></i>'; 
+    
+    toast.innerHTML = `<span style="font-size: 1.25rem; display: flex; align-items: center;">${iconHTML}</span> <span>${msg}</span>`;
+    container.appendChild(toast);
+    
+    // Loader (info) par timer mat lagao, success/error ko 3.5s baad hatao
+    if (type !== "info") {
+        setTimeout(() => { 
+            toast.classList.add("fade-out"); 
+            setTimeout(() => toast.remove(), 400); 
+        }, 3500);
+    }
+}
+
+// 🔥 Original Home Page Password Update Logic
 window.executeChangePassword = async function() {
     const newPass = document.getElementById("user_new_password").value.trim();
     const btn = document.getElementById("update-pass-btn");
@@ -1448,493 +1449,763 @@ window.executeChangePassword = async function() {
 }
 
 
-        window.confirmLogout = function() { window.executeLogout(true); }
 
-        window.executeLogout = function(redirect) {
-            const userId = localStorage.getItem("islamic_user_id");
-            if(userId) {
-                localStorage.removeItem(`cache_payments_${userId}_data`);
-                localStorage.removeItem(`cache_payments_${userId}_time`);
-            }
-            localStorage.removeItem("islamic_user_id");
-            localStorage.removeItem("islamic_user_name");
-            localStorage.removeItem("islamic_user_mobile");
-            localStorage.removeItem("islamic_user_photo");
 
-            // ✅ Asli Firebase Logout
-            signOut(auth).then(() => {
-                if(redirect) window.location.replace('/'); 
-            }).catch(() => {
-                if(redirect) window.location.replace('/');
-            });
-        }
-
-        window.showToast = function(msg, type = "success") {
-            const container = document.getElementById("toast-container");
-            if (!container) return;
-            container.innerHTML = "";
-            const toast = document.createElement("div"); 
-            toast.className = `toast ${type}`;
-            let iconHTML = '<span>✓</span>';
-            if (type === "error") iconHTML = '<span>✕</span>';
-            if (type === "info") iconHTML = '<i class="fas fa-spinner fa-spin"></i>'; 
-            toast.innerHTML = `<span style="font-size: 1.25rem; display: flex; align-items: center;">${iconHTML}</span> <span>${msg}</span>`;
-            container.appendChild(toast);
-            
-            if (type !== "info") {
-                setTimeout(() => { 
-                    toast.classList.add("fade-out"); 
-                    setTimeout(() => toast.remove(), 400); 
-                }, 3500);
-            }
-        }
-
-// ✅ PUBLIC INITIALIZATION (Freemium Mode & Redirect Catcher)
-document.addEventListener("DOMContentLoaded", () => {
-    window.initTheme();
-    
-    // 🔥 THE MAGIC: Redirect Catcher
-    const redirectUrl = localStorage.getItem('islamic_redirect_after_login');
-    
-    if (redirectUrl) {
-        // Sabse pehle link ko jala kar raakh kar do (Delete kar do) taaki loop na bane
-        localStorage.removeItem('islamic_redirect_after_login');
+        window.confirmLogout = function() { window.executeLogout(true); };
         
-        // Ab check karo: Kya user sach mein login karke aaya hai?
-        if (localStorage.getItem("islamic_user_id")) {
-            // Haan, login kiya hai! Toh usko wapas uski Book par bhej do.
-            window.location.replace(redirectUrl);
-            return; // Home page ko load hone se rok do, kyonki hum book par ja rahe hain
+        window.executeLogout = function(redirect) {
+            if(userId) { localStorage.removeItem(`cache_payments_${userId}_data`); localStorage.removeItem(`cache_payments_${userId}_time`); }
+            localStorage.removeItem("islamic_user_id"); localStorage.removeItem("islamic_user_name"); localStorage.removeItem("islamic_user_mobile");
+            localStorage.removeItem("islamic_user_photo");
+            signOut(auth).then(() => { if(redirect) window.location.href = "/books/"; })
+                         .catch(() => { if(redirect) window.location.href = "/books/"; });
+        };
+
+        window.shareBook = function() {
+            // 🔥 Fix 1: Properly access the global book data
+            const bookData = window.currentEbook; 
+            if (!bookData) {
+                console.log("Book data not found for sharing");
+                return;
+            }
+            
+            // 🔥 Fix 2: Exact same URL rakha hai, replace() hata diya gaya hai
+            const siteUrl = window.location.href; 
+            
+            const shareText = `📚 Check out this Book: "${bookData.title}" on Islamic Library by Shekh.\n\n${siteUrl}`;
+            
+            if (navigator.share) {
+                navigator.share({ title: bookData.title, text: shareText }).catch((error) => console.log('Error sharing:', error));
+            } else {
+                if (navigator.clipboard && window.isSecureContext) { 
+                    // 🔥 Fix 3: Added window.showToast to prevent reference errors
+                    navigator.clipboard.writeText(shareText).then(() => {
+                        if (window.showToast) window.showToast("Link copied to clipboard!", "success");
+                    }); 
+                } else {
+                    let textArea = document.createElement("textarea"); 
+                    textArea.value = shareText; 
+                    textArea.style.position = "fixed"; 
+                    document.body.appendChild(textArea); 
+                    textArea.focus(); 
+                    textArea.select();
+                    try { 
+                        document.execCommand('copy'); 
+                        if (window.showToast) window.showToast("Link copied to clipboard!", "success"); 
+                    } catch (err) { 
+                        if (window.showToast) window.showToast("Failed to copy link", "error"); 
+                    } 
+                    textArea.remove();
+                }
+            }
+        };
+
+        // SWIPE GESTURE
+        let touchstartX = 0; let touchstartY = 0; let touchendX = 0; let touchendY = 0;
+        document.addEventListener('touchstart', e => { touchstartX = e.changedTouches[0].screenX; touchstartY = e.changedTouches[0].screenY; }, {passive: true});
+        document.addEventListener('touchend', e => { touchendX = e.changedTouches[0].screenX; touchendY = e.changedTouches[0].screenY; handleSwipe(); }, {passive: true});
+        function handleSwipe() {
+            if (document.getElementById("profile-drawer").classList.contains("active")) return;
+            if (Math.abs(touchendY - touchstartY) > 50) return; 
+            if (touchendX > touchstartX + 70) window.location.href = '/'; 
         }
-        // Agar bina login kiye gaddari karke Back button se aaya hai, toh link toh upar delete ho hi gayi hai, 
-        // ab wo normal Home page par hi rahega.
-    }
 
-    // Normal behavior (Agar koi redirect nahi hai)
-    
-        // 🔥 THE FIX: Browser ko pehle Header/Footer paint karne do, 
-    // aur 50 milliseconds baad heavy books load karo taaki jhatka na lage.
-    setTimeout(() => {
-        loadHome();
-    }, 50);
-});
+        function showLoader() { document.getElementById("loader").classList.remove("hidden"); }
+        function hideLoader() { document.getElementById("loader").classList.add("hidden"); }
+        function showToast(msg, type = "success") {
+            const container = document.getElementById("toast-container");
+            const toast = document.createElement("div"); toast.className = "toast";
+            toast.innerHTML = (type === "success" ? '<span style="font-size:1.1rem; color:var(--success)">✓</span>' : '<span style="font-size:1.1rem; color:var(--danger)">✕</span>') + ` <span>${msg}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => { toast.style.transform = "translateX(110%)"; toast.style.opacity = "0"; setTimeout(() => toast.remove(), 400); }, 3000);
+        }
+
+        // 🔥 THE BACKGROUND GLOBAL SYNC: Saari payments ek sath check karega agar 5 min ho gaye
+        async function fetchPaymentsFirebase(uid, cacheKey, onDataChange) {
+            const now = Date.now();
+            const cachedDataStr = localStorage.getItem(cacheKey + "_data");
+            const cachedTime = localStorage.getItem(cacheKey + "_time");
+            const CACHE_TIME_LIMIT = 5 * 60 * 1000;
+
+            let hasCache = false;
+            if (cachedDataStr) { 
+                hasCache = true; 
+                try { onDataChange(JSON.parse(cachedDataStr)); } catch (e) { hasCache = false; } 
+            }
+
+            // Agar 5 min se pehle ka hai, toh request yahin block kar do
+            if (hasCache && cachedTime && (now - parseInt(cachedTime)) < CACHE_TIME_LIMIT) {
+                return; 
+            }
+
+            // Ek baar mein multiple requests ko rokne ke liye API lock
+            if (window.apiLocks && window.apiLocks[cacheKey]) return;
+            window.apiLocks = window.apiLocks || {};
+            window.apiLocks[cacheKey] = true;
+
+            // === IS WALE TRY BLOCK KO DHOUNDHO AUR REPLACE KARO ===
+            try {
+                const { getFirestore, collection, query, where, getDocs } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
+                const dbInstance = getFirestore();
+                
+                // 🔥 Saari payments ek hi baar mein fetch kar raha hai
+                const q = query(collection(dbInstance, "payments"), where("user_id", "==", uid));
+                const snapshot = await getDocs(q);
+                const freshData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                
+                // 🔥 TIER CACHE SYNC: Fresh data aate hi bina token ke badge update karo
+                const freshApprovedCount = freshData.filter(p => p.status && p.status.toLowerCase() === "approved").length;
+                localStorage.setItem(`user_tier_${uid}`, freshApprovedCount.toString());
+                
+                if (typeof window.renderTierUI === "function") {
+                    window.renderTierUI(freshApprovedCount);
+                }
+
+                const freshDataStr = JSON.stringify(freshData);
+                
+                // Agar server par data badla hai tabhi cache update hoga
+                if (cachedDataStr !== freshDataStr) {
+                    localStorage.setItem(cacheKey + "_data", freshDataStr); 
+                    localStorage.setItem(cacheKey + "_time", now.toString());
+                    onDataChange(freshData); // Call the callback to update UI
+                } else { 
+                    // Data same hai, bas lock ka time naya kar do
+                    localStorage.setItem(cacheKey + "_time", now.toString()); 
+                }
+            } catch (error) {
+                console.error("Firebase fetch error:", error);
+            } finally {
+                delete window.apiLocks[cacheKey]; // API lock khol do
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            window.initTheme();
+            initBook();
+        });
+
+        // 🔥 THE MAGIC FIX: BROWSER BACK BUTTON BFCache Reset 🔥
+        // Jab user mobile ka Back button dabakar wapas aayega, toh ye event trigger hoga
+        window.addEventListener("pageshow", (event) => {
+            // Check karta hai ki kya page history/cache se wapas restore hua hai
+            if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+                // Instantly data wapas read karke button ko update kar dega
+                initBook();
+            }
+        });
 
 
-// ✅ BACKGROUND FIREBASE SECURITY CHECK
+        // ✅ BACKGROUND FIREBASE SECURITY CHECK (Freemium Update)
 onAuthStateChanged(auth, (user) => {
-    if (user) {
-        // Agar user login hai, toh cache set kar do
-        localStorage.setItem("islamic_user_id", user.uid);
-    } else {
-        // Bina redirect kiye user ko Home page par Guest ban kar ghoomne do
+    if (!user) { 
+        // Ab hum usko bahar nahi fekenge, Guest mode active rahega
         localStorage.removeItem("islamic_user_id");
         localStorage.removeItem("islamic_user_name");
         localStorage.removeItem("islamic_user_mobile");
     }
 });
 
-
-        function showSkeletons() {
-            const grid = document.getElementById("ebook-grid");
-            grid.innerHTML = "";
-            for(let i=0; i<6; i++) {
-                grid.innerHTML += `
-                <div class="book-card" style="cursor: default;">
-                    <div class="skeleton" style="width: 100%; aspect-ratio: 1/1; border-radius: 0;"></div>
-                    <div class="book-info" style="gap: 12px; padding-bottom: 24px;">
-                        <div class="skeleton" style="height: 16px; width: 80%; border-radius: 4px;"></div>
-                        <div class="skeleton" style="height: 14px; width: 50%; border-radius: 4px;"></div>
-                    </div>
-                </div>`;
+        // ⚡ THE SMART URL ENGINE (Dynamic Routing, Array Cache Saver & SWR)
+        async function initBook() {
+            const urlParams = new URLSearchParams(window.location.search);
+            let bookId = urlParams.get('id');
+            if (!bookId && window.location.pathname.includes('/id/')) {
+                bookId = window.location.pathname.split('/id/')[1].replace(/\//g, '');
             }
-            document.getElementById("load-more-btn").classList.add("hidden");
+            const userId = localStorage.getItem("islamic_user_id");
+
+            if (!bookId) { window.location.replace("/"); return; }
+
+            let foundBook = null;
+            const mainCacheStr = localStorage.getItem("cache_ebooks_data");
+            if (mainCacheStr) {
+                try {
+                    const mainCache = JSON.parse(mainCacheStr);
+                    foundBook = mainCache.find(e => String(e.id) === String(bookId));
+                } catch(e) {}
+            }
+
+            if (!foundBook) {
+                const megaCacheStr = localStorage.getItem("cache_mega_search_index");
+                if (megaCacheStr) {
+                    try {
+                        const megaCache = JSON.parse(megaCacheStr);
+                        foundBook = megaCache.find(e => String(e.id) === String(bookId));
+                    } catch(e) {}
+                }
+            }
+
+            if (foundBook) {
+                // INSTANT RENDER (0 Token)
+                window.currentEbook = foundBook;
+                proceedWithPaymentCheck(userId);
+                revalidateBookSWR(bookId, foundBook); 
+            } else {
+                // B. New Link -> Show Skeletons & Fetch
+                showDetailSkeletons(); 
+                try {
+                    const { getFirestore, doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
+                    const dbInstance = typeof db !== 'undefined' ? db : getFirestore(); 
+                    const bookSnap = await getDoc(doc(dbInstance, "ebooks", String(bookId)));
+                    
+                    if (bookSnap.exists()) {
+                        const fetchedBook = { id: bookSnap.id, ...bookSnap.data() };
+                        
+                        // 🔥 SAFE SHIFT: Pehle Cache Save karo, phir render karo!
+                        let mainCache = [];
+                        const freshCacheStr = localStorage.getItem("cache_ebooks_data"); 
+                        if(freshCacheStr) { try { mainCache = JSON.parse(freshCacheStr); } catch(e){} }
+                        
+                        const exIndex = mainCache.findIndex(e => String(e.id) === String(bookId));
+                        if(exIndex > -1) { mainCache[exIndex] = fetchedBook; } 
+                        else { mainCache.push(fetchedBook); } 
+                        
+                        localStorage.setItem("cache_ebooks_data", JSON.stringify(mainCache));
+                        localStorage.setItem(`cache_time_book_${bookId}`, Date.now().toString());
+
+                        // Ab Render karo
+                        window.currentEbook = fetchedBook;
+                        proceedWithPaymentCheck(userId);
+
+                    } else {
+                        if(window.showToast) window.showToast("Book not found!", "error");
+                        setTimeout(() => window.location.replace("/"), 1500);
+                    }
+                } catch(err) {
+                    console.error("Direct Fetch Error:", err);
+                    if(window.showToast) window.showToast("Network Error", "error");
+                }
+            }
+
         }
-        // ✅ SMART DIFFING CHECKER & FREE-TO-PAID WIPER
-        function isBookDataChanged(oldData, newData) {
-            if (!oldData || !newData) return true;
-            if (oldData.length !== newData.length) return true;
+
+        // 🕵️ PAYMENT CHECK SEPARATOR (Clean Code - Zero Jitter Fix)
+        function proceedWithPaymentCheck(userId) {
+            if (!userId) {
+                window.userPayments = [];
+                renderDetail();
+                return; 
+            }
+
+            const cacheKey = `cache_payments_${userId}`;
+            const cachedPaymentsStr = localStorage.getItem(cacheKey + "_data");
+            if(cachedPaymentsStr) { 
+                try { window.userPayments = JSON.parse(cachedPaymentsStr); } catch(e) { window.userPayments = []; } 
+            } else {
+                window.userPayments = [];
+            }
             
-            let changed = false;
-            for (let i = 0; i < newData.length; i++) {
-                const oldBook = oldData.find(b => String(b.id) === String(newData[i].id));
-                if (!oldBook) return true;
-                
-                // 🔥 THE WIPER: Agar pehle Free thi aur ab Paid ho gayi, toh purani link cache me se uda do!
-                if (String(oldBook.is_free) === "true" && String(newData[i].is_free) === "false") {
-                    delete newData[i].pdf_link;
-                    changed = true;
-                }
-
-                if (oldBook.title !== newData[i].title || oldBook.price !== newData[i].price || oldBook.discount_price !== newData[i].discount_price || String(oldBook.is_free) !== String(newData[i].is_free) || oldBook.sort_order !== newData[i].sort_order || oldBook.thumbnail !== newData[i].thumbnail) {
-                    changed = true;
-                }
-            }
-            return changed;
-        }
-
-// ✅ GLOBALS FOR FILTERS (Ensure these are at the top)
-// ✅ FILTER & RENDER LOGIC
-window.currentCatFilter = 'all'; 
-window.currentPriceFilter = 'all'; 
-window.currentLangFilter = 'all'; 
-
-window.currentPage = 1;
-window.itemsPerPage = 10; // Load more ke liye 10 set kiya
-
-// ✅ BUG-FREE LOADHOME FUNCTION
-async function loadHome() {
-    const cachedDataStr = localStorage.getItem("cache_ebooks_data");
-    const cachedTime = localStorage.getItem("cache_time_ebooks_fetch"); 
-    const userId = localStorage.getItem("islamic_user_id");
-    const lastFetchedUserId = localStorage.getItem("cache_last_fetched_user_id"); // User change detect karne ke liye
-    const now = Date.now();
-    const CACHE_TIME_BOOKS = 30 * 60 * 1000; // 30 Min Timer
-
-    // 1. Fast UI Load
-    if (cachedDataStr) { 
-        try { 
-            window.ebooksData = JSON.parse(cachedDataStr); 
-            renderGrid(true); 
-        } catch (e) { showSkeletons(); } 
-    } else {
-        showSkeletons(); 
-    }
-
-    // =========================================================================
-    // 🚀 FIXED: MEGA INDEX BACKGROUND FETCH (Independent & Cached 30 mins)
-    // =========================================================================
-    const megaIndexTime = localStorage.getItem("cache_time_mega_index");
-    if (!megaIndexTime || (now - parseInt(megaIndexTime)) > CACHE_TIME_BOOKS || !localStorage.getItem("cache_mega_search_index")) {
-        (async () => {
-            try {
-                const { getFirestore, collection, getDocs } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
-                const dbInstance = getFirestore();
-                const chunkSnapshot = await getDocs(collection(dbInstance, "search_indexes"));
-                let megaSearchIndex = [];
-
-                chunkSnapshot.forEach((doc) => {
-                    if (doc.data() && doc.data().books_list) {
-                        megaSearchIndex = megaSearchIndex.concat(doc.data().books_list);
+            renderDetail(); // ⚡ Pehli baar UI render karega
+            
+            if (typeof fetchPaymentsFirebase === "function") {
+                fetchPaymentsFirebase(userId, cacheKey, (data) => {
+                    if (Array.isArray(data)) { 
+                        // 🔥 JITTER FIX: Sirf aur sirf tabhi renderDetail() chalega jab data exactly change hua ho!
+                        if (JSON.stringify(window.userPayments) !== JSON.stringify(data)) {
+                            window.userPayments = data; 
+                            renderDetail(); 
+                        }
                     }
                 });
+            }
+        }
 
-                localStorage.setItem("cache_mega_search_index", JSON.stringify(megaSearchIndex));
-                localStorage.setItem("cache_time_mega_index", now.toString());
+        // 🔥 SILENT BACKGROUND REVALIDATOR & ARRAY UPDATER
+        async function revalidateBookSWR(bookId, oldData) {
+            const CACHE_TIME_LIMIT = 30 * 60 * 1000; // 30 minutes
+            const fetchTimeKey = `cache_time_book_${bookId}`;
+            const lastFetched = localStorage.getItem(fetchTimeKey);
+            const now = Date.now();
+
+            // Agar 30 min se kam hue hain, toh shanti rakho (Save Tokens)
+            if (lastFetched && (now - parseInt(lastFetched)) < CACHE_TIME_LIMIT) return; 
+
+            try {
+                const { getFirestore, doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
+                const dbInstance = typeof db !== 'undefined' ? db : getFirestore();
+                const bookSnap = await getDoc(doc(dbInstance, "ebooks", String(bookId)));
                 
-                // Naya data aate hi agar user search kar raha ho toh refresh karo
-                if(document.getElementById('ebook-grid')) renderGrid(false); 
-            } catch (err) { console.error("Mega Index Error:", err); }
-        })();
+                if (bookSnap.exists()) {
+                    const newData = { id: bookSnap.id, ...bookSnap.data() };
+                    
+                    // 🔥 MAGIC 2: DIFFING & SILENT UI UPDATE
+                    if (JSON.stringify(oldData) !== JSON.stringify(newData)) {
+                        window.currentEbook = newData;
+                        renderDetail(); 
+                        
+                        // Array merge safely
+                        let mainCache = [];
+                        const cacheStr = localStorage.getItem("cache_ebooks_data");
+                        if(cacheStr) { try { mainCache = JSON.parse(cacheStr); } catch(e){} }
+                        
+                        const exIndex = mainCache.findIndex(e => String(e.id) === String(bookId));
+                        if(exIndex > -1) mainCache[exIndex] = newData;
+                        else mainCache.push(newData);
+                        
+                        localStorage.setItem("cache_ebooks_data", JSON.stringify(mainCache));
+                    }
+                    
+                    // Har haal me timer refresh karo taaki aagle 30 min fetch na ho
+                    localStorage.setItem(fetchTimeKey, now.toString()); 
+                }
+            } catch(e) { console.error("SWR update fail", e); }
+        }
+
+        // 🦴 ULTRA-PREMIUM SKELETON UI (Shape, Title & Footer Fixed)
+        function showDetailSkeletons() {
+            // 1. Safe Footer Skeleton (Original IDs ko destroy nahi karna hai)
+            document.getElementById("action-footer").classList.remove("hidden");
+            
+            const footerPrice = document.getElementById("det-footer-price");
+            if(footerPrice) footerPrice.innerHTML = `<div class="skeleton" style="width: 80px; height: 26px; border-radius: 6px;"></div>`;
+            
+            const actionBtn = document.getElementById("det-action-btn");
+            if(actionBtn) {
+                actionBtn.innerHTML = `<div class="skeleton" style="width: 120px; height: 20px; border-radius: 6px;"></div>`;
+                actionBtn.style.background = "var(--surface2)";
+                actionBtn.style.border = "none";
+                actionBtn.style.boxShadow = "none";
+            }
+
+            const priceBox = document.getElementById("det-price-box");
+            if (priceBox) priceBox.innerHTML = "";
+            const promoBox = document.getElementById("promo-container");
+            if (promoBox) promoBox.style.display = "none";
+            
+            // 2. Title Skeleton (Chauda aur Mota)
+            document.getElementById("det-title").innerHTML = `
+                <div class="skeleton" style="height: 46px; width: 90%; border-radius: 8px; margin: 0 auto 12px auto;"></div>
+                <div class="skeleton" style="height: 46px; width: 60%; border-radius: 8px; margin: 0 auto;"></div>
+            `;
+            
+            // 3. Image Skeleton (Perfect Square / Original Shape)
+            const imgEl = document.getElementById("det-thumb");
+            if(imgEl) imgEl.style.display = "none"; 
+            
+            const oldSkel = document.getElementById("img-temp-skel");
+            if(oldSkel) oldSkel.remove();
+            
+            // aspect-ratio 1/1 kar diya hai taaki lamba na ho, aur max-width laga di hai
+            if(imgEl) imgEl.insertAdjacentHTML('afterend', `<div id="img-temp-skel" class="skeleton" style="width: 100%; max-width: 250px; aspect-ratio: 1/1; border-radius: 12px; margin: 0 auto 20px auto; box-shadow: var(--shadow);"></div>`);
+
+            // 4. Description Skeleton (Lamba aur Bhara hua)
+            document.getElementById("det-desc").innerHTML = `
+                <div class="desc-card" style="padding: 24px 20px;">
+                    <div class="skeleton" style="height: 18px; width: 100%; border-radius: 6px; margin-bottom: 16px;"></div>
+                    <div class="skeleton" style="height: 18px; width: 95%; border-radius: 6px; margin-bottom: 16px;"></div>
+                    <div class="skeleton" style="height: 18px; width: 100%; border-radius: 6px; margin-bottom: 16px;"></div>
+                    <div class="skeleton" style="height: 18px; width: 92%; border-radius: 6px; margin-bottom: 16px;"></div>
+                    <div class="skeleton" style="height: 18px; width: 98%; border-radius: 6px; margin-bottom: 16px;"></div>
+                    <div class="skeleton" style="height: 18px; width: 85%; border-radius: 6px; margin-bottom: 16px;"></div>
+                    <div class="skeleton" style="height: 18px; width: 90%; border-radius: 6px; margin-bottom: 16px;"></div>
+                    <div class="skeleton" style="height: 18px; width: 60%; border-radius: 6px;"></div>
+                </div>
+            `;
+        }
+
+// =========================================================================
+// 🔒 SECURE RENDER DETAIL FUNCTION (With 1-Second Delay & Smart Toasts)
+// =========================================================================
+function renderDetail() {
+    // 👇 YEH 4 LINES STARTING MEIN DAAL DE 👇
+    const imgSkel = document.getElementById("img-temp-skel");
+    if(imgSkel) imgSkel.remove();
+    document.getElementById("det-thumb").style.display = "block";
+    const bNav = document.getElementById("bottom-nav");
+    if(bNav) bNav.style.display = ""; // Bottom nav wapas show karne ke liye (agar hide kiya tha)
+
+    document.getElementById("action-footer").classList.remove("hidden");
+    document.getElementById("det-thumb").src = window.currentEbook.thumbnail;
+    // ... BAAKI TERA PURANA renderDetail CODE ...
+
+    document.getElementById("det-title").innerText = window.currentEbook.title;
+    // 🔥 NAYA: PREMIUM DESCRIPTION CARD 🔥
+    let bookDesc = window.currentEbook.description || "No description available for this book.";
+    document.getElementById("det-desc").innerHTML = `
+        <div class="desc-card">
+            <div class="desc-heading">
+                <i class="fas fa-book-open"></i> ABOUT THE BOOK
+            </div>
+            <div class="desc-content">${bookDesc}</div>
+        </div>
+    `;
+
+    if(!document.getElementById("det-arabic-phrase").innerText) {
+        if (typeof ARABIC_PHRASES !== 'undefined' && ARABIC_PHRASES.length > 0) {
+            document.getElementById("det-arabic-phrase").innerText = ARABIC_PHRASES[Math.floor(Math.random() * ARABIC_PHRASES.length)];
+        }
     }
 
-    // =========================================================================
-    // 🛡️ THE GATEKEEPER FOR 15-BOOKS & PAYMENTS (Login Change Detection)
-    // =========================================================================
-    // Agar time nahi hua aur User bhi wahi same hai, toh Firebase mat jao
-    if (cachedTime && cachedDataStr && (now - parseInt(cachedTime)) < CACHE_TIME_BOOKS && userId === lastFetchedUserId) {
-        return; 
+    const isFree = String(window.currentEbook.is_free) === "true";
+    const priceBox = document.getElementById("det-price-box");
+    const footerPrice = document.getElementById("det-footer-price");
+    const actionBtn = document.getElementById("det-action-btn");
+    
+    const ownedBook = (window.userPayments || []).find(p => String(p.ebook_id) === String(window.currentEbook.id) && p.status.toLowerCase() !== "rejected");
+
+    // 🔥 UPDATED: Top Price Box (Pill Shape Badges) 🔥
+    if (isFree) {
+        priceBox.innerHTML = `<div class="price-wrapper"><span class="badge-free">✦ 100% FREE</span></div>`;
+    } else {
+        let priceNum = window.currentEbook.discount_price || window.currentEbook.price;
+        let pHTML = `₹${priceNum}`;
+        if (window.currentEbook.discount_price && window.currentEbook.price > window.currentEbook.discount_price) {
+            pHTML += ` <span class="strike-price">₹${window.currentEbook.price}</span>`;
+        }
+        priceBox.innerHTML = `<div class="price-wrapper"><span class="badge-premium">${pHTML}</span></div>`;
     }
+
+    actionBtn.className = "btn"; actionBtn.disabled = false; actionBtn.style.background = ""; actionBtn.style.color = ""; actionBtn.style.boxShadow = "";
+
+    // 🛡️ SCENARIO 1: PAID BOOK (Local Cache says 'Approved')
+    if (ownedBook) {
+        if (ownedBook.status.toLowerCase() === "approved") {
+            // 🔥 NAYA OWNED BADGE
+            footerPrice.innerHTML = `<span class="badge-owned">Owned ✓</span>`;
+            actionBtn.innerHTML = `<i class="fas fa-download"></i> Download`;
+            actionBtn.style.background = "var(--success)"; actionBtn.style.boxShadow = "0 4px 20px rgba(16,185,129,0.3)"; actionBtn.style.color = "#fff";
+            
+            // 🔥 THE MAGIC: REAL-TIME VERIFICATION + LINK FETCH 🔥
+            actionBtn.onclick = async () => {
+                const currentUserId = localStorage.getItem("islamic_user_id");
+                const originalHTML = actionBtn.innerHTML;
+                
+                window.showToast("Verifying your access... Please wait", "info");
+                actionBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Verifying...`;
+                actionBtn.disabled = true;
+
+                try {
+                    const { getFirestore, doc, getDoc, collection, query, where, getDocs } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
+                    const dbInstance = getFirestore();
+                    
+                    // 🚀 SPEED BOOST: Fetch Payment Verification AND Secure Link at the EXACT same time
+                    const qPay = query(collection(dbInstance, "payments"), where("user_id", "==", currentUserId), where("ebook_id", "==", String(window.currentEbook.id)));
+                    
+                    const [paySnap, secureDocSnap] = await Promise.all([
+                        getDocs(qPay),
+                        getDoc(doc(dbInstance, "secure_links", String(window.currentEbook.id)))
+                    ]);
+                    
+                    let liveStatus = "pending";
+                    if (!paySnap.empty) liveStatus = paySnap.docs[0].data().status.toLowerCase();
+
+                    // Agar Live status Approved nahi hai
+                    if (liveStatus !== "approved") {
+                        let errorMsg = liveStatus === "rejected" ? "Access Denied! Your payment was rejected." : `Access Denied! Your payment is currently ${liveStatus}.`;
+                        window.showToast(errorMsg, "error");
+                        
+                        const cacheKey = `cache_payments_${currentUserId}_data`;
+                        let cachedPayments = JSON.parse(localStorage.getItem(cacheKey)) || [];
+                        const pIndex = cachedPayments.findIndex(p => String(p.ebook_id) === String(window.currentEbook.id));
+                        if(pIndex > -1) cachedPayments[pIndex].status = liveStatus;
+                        localStorage.setItem(cacheKey, JSON.stringify(cachedPayments));
+                        window.userPayments = cachedPayments; 
+                        
+                        renderDetail(); 
+                        return; 
+                    }
+
+                    // 🚨 STEP 2: Access Verified! Tijori (ya Free stash) se link assign karo
+                    let finalPdfLink = null;
+                    if (isFree && window.currentEbook.pdf_link) {
+                        finalPdfLink = window.currentEbook.pdf_link;
+                    } else if (secureDocSnap.exists() && secureDocSnap.data().pdf_link) {
+                        finalPdfLink = secureDocSnap.data().pdf_link;
+                    } else {
+                        const pubDoc = await getDoc(doc(dbInstance, "ebooks", String(window.currentEbook.id)));
+                        if (pubDoc.exists() && pubDoc.data().pdf_link) finalPdfLink = pubDoc.data().pdf_link;
+                    }
+
+                    if (finalPdfLink) {
+                        window.showToast("Access Verified! Opening Your Book...", "success");
+                        setTimeout(() => {
+                            window.open(finalPdfLink, "_blank");
+                            actionBtn.innerHTML = originalHTML;
+                            actionBtn.disabled = false;
+                        }, 1000);
+                    } else {
+                        window.showToast("Unable to load the book. Please contact Support.", "error");
+                        actionBtn.innerHTML = originalHTML;
+                        actionBtn.disabled = false;
+                    }
+                } catch (err) {
+                    console.error("Verification Error:", err);
+                    window.showToast("Network error during verification.", "error");
+                    actionBtn.innerHTML = originalHTML;
+                    actionBtn.disabled = false;
+                }
+
+            };
+            
+        } else {
+            // Pending in Verification
+       
+            // 🔥 NAYA PENDING BADGE
+            footerPrice.innerHTML = `<span class="badge-pending">In Verification</span>`;
+            actionBtn.innerHTML = `<i class="fas fa-hourglass-half spin"></i> Verifying...`;
+            actionBtn.disabled = true; actionBtn.onclick = null;
+        }
+    } 
+    // 🛡️ SCENARIO 2: FREE BOOK HAI (Direct Public Link)
+    else if (isFree) {
+        footerPrice.innerHTML = `<span class="badge-free">✦ FREE</span>`;
+
+        actionBtn.innerHTML = `<i class="fas fa-download"></i> Download`;
+        actionBtn.onclick = () => {
+            if (window.currentEbook.pdf_link) {
+                window.open(window.currentEbook.pdf_link, "_blank");
+            } else {
+                window.showToast("Unable to load the book. Please contact Support.", "error");
+            }
+        };
+    } 
+    // 🛡️ SCENARIO 3: KHARIDNI PADEGI (Buy Now)
+    else {
+        // Naya Promo box sirf tab dikhega jab book paid ho
+        const promoContainer = document.getElementById("promo-container");
+        if (promoContainer) promoContainer.style.display = "block";
+        
+        // Pura UI handle karne ka kaam naye Promo Engine ko de do
+        if (typeof window.updatePriceDisplayAfterPromo === "function") {
+            window.updatePriceDisplayAfterPromo();
+        }
+    }
+} // <-- renderDetail function yahan end hota hai
+
+// =========================================================
+// 🚀 PROMO CODE ENGINE (FAST, NO REFRESH, CRASH-FREE)
+// =========================================================
+
+window.appliedCouponData = null; 
+
+window.applyPromoCode = async function() {
+    const inputField = document.getElementById("promo-code-input");
+    const applyBtn = document.getElementById("promo-apply-btn");
+    const code = inputField.value.trim().toUpperCase();
+
+    if (!code) return; 
+
+    const originalBtnText = applyBtn.innerHTML;
+    applyBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i>`;
+    applyBtn.disabled = true;
+    inputField.disabled = true;
 
     try {
-        const { getFirestore, collection, query, where, getDocs, orderBy, limit } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
+        const { getFirestore, doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
+        const cpnSnap = await getDoc(doc(getFirestore(), "coupons", code));
         
-        const qBooks = query(collection(db, "ebooks"), orderBy("sort_order"), limit(15));
-        const ebooksPromise = getDocs(qBooks);
+        if (!cpnSnap.exists()) throw new Error("Invalid promo code.");
+
+        const cpn = cpnSnap.data();
+        if (!cpn.is_active) throw new Error("Invalid promo code.");
         
-        let paymentsPromise = Promise.resolve(null); 
-        // 🔥 SIRF TABHI FETCH KAREGA JAB USER LOGIN HOGA
-        if (userId) {
-            const qPay = query(collection(db, "payments"), where("user_id", "==", userId));
-            paymentsPromise = getDocs(qPay);
+        const today = new Date().toISOString().split('T')[0];
+        if (cpn.valid_until < today) throw new Error("This promo code has expired.");
+        if (cpn.current_uses >= cpn.max_uses) throw new Error("Coupon limit reached.");
+        
+        if (!cpn.target_books.includes("ALL") && !cpn.target_books.includes(String(window.currentEbook.id))) {
+            throw new Error("Code not applicable on this book.");
         }
 
-        const [querySnapshot, paySnapshot] = await Promise.all([ebooksPromise, paymentsPromise]);
+        let originalPrice = window.currentEbook.discount_price || window.currentEbook.price;
+        let discountAmount = cpn.type === "flat" ? cpn.value : (originalPrice * cpn.value) / 100;
+        let tempPrice = originalPrice - discountAmount;
+        let finalPrice = tempPrice > 0 ? (Math.floor(tempPrice / 10) * 10 + 9) : 0; 
+        const actualDiscountGot = originalPrice - finalPrice;
 
-        const freshEbooks = [];
-        querySnapshot.forEach(doc => freshEbooks.push({ id: doc.id, ...doc.data() }));
+        window.appliedCouponData = {
+            code: code,
+            original_price: originalPrice,
+            discount_amount: actualDiscountGot,
+            final_price: finalPrice
+        };
 
-        if (isBookDataChanged(window.ebooksData, freshEbooks)) {
-            window.ebooksData = freshEbooks;
-            localStorage.setItem("cache_ebooks_data", JSON.stringify(freshEbooks));
-            renderGrid(true); 
-        }
-        localStorage.setItem("cache_time_ebooks_fetch", now.toString());
-        localStorage.setItem("cache_last_fetched_user_id", userId || ""); // Update state
+        document.getElementById("promo-input-mode").style.display = "none";
+        document.getElementById("promo-success-mode").classList.remove("hidden");
+        document.getElementById("promo-applied-code").innerText = `${code} (-₹${actualDiscountGot})`;
+        
+        if(window.showToast) window.showToast("Coupon Applied!", "success");
+        window.updatePriceDisplayAfterPromo();
 
-        // === IS POORE HISSE KO KOPY KARO AUR APNE ENDING SECTION SE REPLACE KAR DO ===
-        if (paySnapshot) {
-            const userPayments = [];
-            paySnapshot.forEach(doc => userPayments.push({ id: doc.id, ...doc.data() }));
-            localStorage.setItem(`cache_payments_${userId}_data`, JSON.stringify(userPayments));
-            localStorage.setItem(`cache_payments_${userId}_time`, now.toString()); // Force reset 5min clock
-            
-            // 🔥 TIER CACHE SYNC: Fresh data aate hi bina token ke badge update karo
-            const freshApprovedCount = userPayments.filter(p => p.status && p.status.toLowerCase() === "approved").length;
-            localStorage.setItem(`user_tier_${userId}`, freshApprovedCount.toString());
-            
-            if (typeof window.renderTierUI === "function") {
-                window.renderTierUI(freshApprovedCount);
-            }
-        }
     } catch (error) {
-        console.error("Firebase error:", error);
+        if(window.showToast) window.showToast(error.message, "error"); 
+        inputField.disabled = false;
+        applyBtn.disabled = false;
+        applyBtn.innerHTML = originalBtnText;
     }
-}
+};
 
-        // ✅ FILTER & RENDER LOGIC
-        let currentCatFilter = 'all'; // Naya variable category ke liye
-
-        window.toggleFilterMenu = function(type) {
-            const priceBtn = document.getElementById('price-dropdown-btn');
-            const langBtn = document.getElementById('lang-dropdown-btn');
-            const catBtn = document.getElementById('cat-dropdown-btn'); // Naya button
-            
-            // Jo click kiya hai usko toggle karo, baaki dono ko band karo
-            if (type === 'price') {
-                priceBtn.classList.toggle('open');
-                langBtn.classList.remove('open');
-                catBtn.classList.remove('open');
-            } else if (type === 'lang') {
-                langBtn.classList.toggle('open');
-                priceBtn.classList.remove('open');
-                catBtn.classList.remove('open');
-            } else if (type === 'cat') {
-                catBtn.classList.toggle('open');
-                priceBtn.classList.remove('open');
-                langBtn.classList.remove('open');
-            }
-        }
-
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('.custom-filter')) {
-                document.getElementById('price-dropdown-btn').classList.remove('open');
-                document.getElementById('lang-dropdown-btn').classList.remove('open');
-                const catBtn = document.getElementById('cat-dropdown-btn');
-                if(catBtn) catBtn.classList.remove('open');
-            }
-            if (!e.target.closest('.search-container')) {
-                const searchDropdown = document.getElementById('search-dropdown');
-                if(searchDropdown) searchDropdown.classList.remove('active');
-            }
-        });
-
-        window.setPriceFilter = function(value, label, event) {
-            event.stopPropagation();
-            currentPriceFilter = value;
-            document.getElementById('price-label').innerText = label;
-            document.querySelectorAll('#price-options .f-option').forEach(el => el.classList.remove('selected'));
-            event.currentTarget.classList.add('selected');
-            const btn = document.getElementById('price-dropdown-btn');
-            if(value !== 'all') btn.classList.add('active-filter'); else btn.classList.remove('active-filter');
-            window.toggleFilterMenu('price');
-            renderGrid(true);
-        }
-
-        window.setLangFilter = function(value, label, event) {
-            event.stopPropagation();
-            currentLangFilter = value;
-            document.getElementById('lang-label').innerText = label;
-            document.querySelectorAll('#lang-options .f-option').forEach(el => el.classList.remove('selected'));
-            event.currentTarget.classList.add('selected');
-            const btn = document.getElementById('lang-dropdown-btn');
-            if(value !== 'all') btn.classList.add('active-filter'); else btn.classList.remove('active-filter');
-            window.toggleFilterMenu('lang');
-            renderGrid(true);
-        }
-
-        // 🔥 NAYA CATEGORY SETTER FUNCTION 🔥
-        window.setCatFilter = function(value, label, event) {
-            event.stopPropagation();
-            window.currentCatFilter = value;  // 🔥 Yahan Fix kiya hai
-            document.getElementById('cat-label').innerText = label;
-            document.querySelectorAll('#cat-options .f-option').forEach(el => el.classList.remove('selected'));
-            event.currentTarget.classList.add('selected');
-            const btn = document.getElementById('cat-dropdown-btn');
-            if(value !== 'all') btn.classList.add('active-filter'); else btn.classList.remove('active-filter');
-            window.toggleFilterMenu('cat');
-            renderGrid(true);
-        }
-
-// ✅ 🔥 PHASE 3 FIX: SKELETON CRASH FIXED & BLINKING REMOVED
-// ✅ 🔥 PAGINATION & 15-BOOKS FIX 🔥
-function renderGrid(reset = false) {
-    const grid = document.getElementById("ebook-grid");
-    const loadMoreBtn = document.getElementById("load-more-btn");
+window.removePromoCode = function() {
+    window.appliedCouponData = null;
+    document.getElementById("promo-code-input").value = "";
+    document.getElementById("promo-code-input").disabled = false;
     
-    if (reset) {
-        window.currentPage = 1;
-        grid.innerHTML = ""; 
-    }
-
-    let booksSource = window.ebooksData || [];
-    const megaIndexStr = localStorage.getItem("cache_mega_search_index");
-    if (megaIndexStr) {
-        try { 
-            let parsed = JSON.parse(megaIndexStr);
-            if(parsed.length > 0) booksSource = parsed; 
-        } catch (e) { booksSource = window.ebooksData; }
-    }
-
-    booksSource.sort((a, b) => (a.sort_order || 999) - (b.sort_order || 999));
-
-    let filteredBooks = booksSource.filter(eb => {
-        const isFree = String(eb.is_free) === "true";
-        let passPrice = true;
-        if (window.currentPriceFilter === 'free' || currentPriceFilter === 'free') passPrice = isFree;
-        if (window.currentPriceFilter === 'premium' || currentPriceFilter === 'premium') passPrice = !isFree;
-
-        let passLang = true;
-        if (currentLangFilter !== 'all') {
-            const langData = eb.language || 'none';
-            let bookLangs = Array.isArray(langData) ? langData.map(l => l.toLowerCase().trim()) : String(langData).split(',').map(l => l.toLowerCase().trim());
-            passLang = bookLangs.includes(currentLangFilter.toLowerCase());
-        }
-
-        let passCat = true;
-        if (window.currentCatFilter && window.currentCatFilter !== 'all') {
-            const catData = eb.category || 'none';
-            let bookCats = Array.isArray(catData) ? catData.map(c => c.toLowerCase().trim()) : String(catData).split(',').map(c => c.toLowerCase().trim());
-            passCat = bookCats.includes(window.currentCatFilter.toLowerCase());
-        }
-        return passPrice && passLang && passCat;
-    });
-
-    if (filteredBooks.length === 0) {
-        grid.innerHTML = `
-            <div class="empty-state">
-                <i class="fas fa-folder-open"></i>
-                <h4>No books available</h4>
-                <p>We couldn't find any books matching your filters right now.</p>
-            </div>`;
-        if(loadMoreBtn) loadMoreBtn.classList.add("hidden");
-        return; 
-    }
-
-    // 🔥 THE 15-THEN-10 MATHS FIX 🔥
-    let startIndex = 0;
-    let endIndex = 15; // Pehle page ke liye 15 books
-
-    if (window.currentPage > 1) {
-        // Dusre page se: Pehli 15 hatakar + (pichle bache hue pages * 10)
-        startIndex = 15 + (window.currentPage - 2) * 10;
-        endIndex = startIndex + 10; // Aage ki 10 books uthao
-    }
-
-    const booksToShow = filteredBooks.slice(startIndex, endIndex);
-
-    let newHTML = "";
-    booksToShow.forEach(eb => {
-        const isFree = String(eb.is_free) === "true";
-         let priceHTML = "";
-        if (isFree) {
-             priceHTML = `<span class="badge-free">✦ FREE</span>`;
-        } else {
-             let pText = `₹${eb.discount_price || eb.price}`;
-             if(eb.discount_price && eb.price > eb.discount_price) {
-                  pText += ` <span class="strike-price">₹${eb.price}</span>`;
-             }
-             priceHTML = `<span class="badge-premium">${pText}</span>`;
-        }
-
-        newHTML += `
-        <div class="book-card" onclick="window.openDetail('${eb.id}')">
-            <img src="${eb.thumbnail}" class="book-thumb">
-            <div class="book-info">
-                <div class="book-title">${eb.title}</div>
-                <div class="price-wrapper">${priceHTML}</div>
-            </div>
-        </div>`;
-
-    });
-
-    if (reset) {
-        grid.innerHTML = newHTML;
-    } else {
-        grid.insertAdjacentHTML('beforeend', newHTML); // Smooth append
-    }
-
-    // Load More button hide karne ka logic
-    if(loadMoreBtn) loadMoreBtn.classList.toggle("hidden", filteredBooks.length <= endIndex);
-}
-
-        window.loadMoreBooks = function() {
-            window.currentPage++; // 🔥 FIX: Ab ye globally update hoga, same books repeat nahi hongi!
-            renderGrid(false);
-        }
-
-// ✅ UPDATED: OPEN DETAIL PAGE (URL Parameter Routing)
-window.openDetail = function(id) {
-    if(!id) return;
-    // Pura session storage logic hata diya. Ab app seedha URL generate karegi
-    window.location.href = `books/index.html?id=${id}`; 
-}
-
-        window.clearSearch = function() {
-            document.getElementById("search-bar").value = "";
-            window.handleSearch("");
-        }
-
-        // ✅ 🔥 PHASE 3 FIX: ZERO-TOKEN MEGA SEARCH BAR LOGIC 🔥
-window.handleSearch = function(query) {
-    const dropdown = document.getElementById("search-dropdown");
-    const clearBtn = document.getElementById("clear-search");
+    const applyBtn = document.getElementById("promo-apply-btn");
+    applyBtn.disabled = false;
+    applyBtn.innerHTML = "Apply";
     
-    if (!query.trim()) {
-        dropdown.classList.remove("active");
-        clearBtn.classList.add("hidden");
+    document.getElementById("promo-success-mode").classList.add("hidden");
+    document.getElementById("promo-input-mode").style.display = "flex";
+
+    if(window.showToast) window.showToast("Promo code removed", "success");
+    window.updatePriceDisplayAfterPromo();
+};
+
+window.updatePriceDisplayAfterPromo = function() {
+    const priceBox = document.getElementById("det-price-box");
+    const footerPrice = document.getElementById("det-footer-price");
+    const actionBtn = document.getElementById("det-action-btn");
+    
+    let basePrice = window.currentEbook.discount_price || window.currentEbook.price;
+
+    if (!window.appliedCouponData) {
+        // DEFAULT PAID UI - Old price perfectly inside the premium badge
+        let pHTML = `<span style="font-weight:bold;">₹${basePrice}</span>`;
+        if (window.currentEbook.discount_price && window.currentEbook.price > window.currentEbook.discount_price) {
+            pHTML += `<span class="strike-price" style="text-decoration: line-through; opacity: 0.75; font-size: 0.85em;">₹${window.currentEbook.price}</span>`;
+        }
+        priceBox.innerHTML = `<div class="price-wrapper"><span class="badge-premium" style="display:inline-flex; align-items:center; gap: 6px;">${pHTML}</span></div>`;
+        footerPrice.innerHTML = `<span class="badge-premium" style="display:inline-flex; align-items:center; gap: 6px;">${pHTML}</span>`;
+        
+        actionBtn.innerHTML = `Buy Now <i class="fas fa-arrow-right" style="margin-left:6px;"></i>`;
+        actionBtn.style.background = "linear-gradient(135deg, #7c6af7, #9f3fbf)";
+        actionBtn.style.color = "#fff";
+        actionBtn.onclick = window.handleBuyNowClick;
         return;
     }
 
-    clearBtn.classList.remove("hidden");
-    const q = query.toLowerCase().trim();
-    const searchTerms = q.split(/\s+/); 
-
-    // 🧠 SYSTEM KA DIMAG: Pehle localStorage se 5000 books wala mega index uthao
-    // Agar background fetch abhi chal hi raha ho (ya pehli baar page khula ho), toh fallback default 15 books par karo.
-    let searchSource = ebooksData;
-    const megaIndexStr = localStorage.getItem("cache_mega_search_index");
-    if (megaIndexStr) {
-        try {
-            searchSource = JSON.parse(megaIndexStr);
-        } catch (e) {
-            searchSource = ebooksData;
-        }
-    }
-
-    // 🔥 SMART MEGA-STRING FILTER LOGIC (Ab poori 5000 books ke dhabbe par chalega!)
-    const results = searchSource.filter(eb => {
-        const isFree = String(eb.is_free) === "true";
-        const priceKeywords = isFree ? "free muft no cost" : "paid premium buy price";
-
-        const megaString = `
-            ${eb.title || ''} 
-            ${eb.description || ''} 
-            ${eb.category || ''} 
-            ${eb.language || ''} 
-            ${priceKeywords}
-        `.toLowerCase();
-
-        // Check karo ki user ke saare typed words is lambi string me hain ya nahi
-        return searchTerms.every(term => megaString.includes(term));
-    });
-    
-    dropdown.innerHTML = "";
-    if (results.length > 0) {
-        dropdown.classList.add("active");
-        results.slice(0, 6).forEach(eb => {
-            dropdown.innerHTML += `
-                <div class="search-item" onclick="window.openDetail('${eb.id}')">
-                    <img src="${eb.thumbnail}" class="search-thumb">
-                    <div class="search-info">
-                        <div class="search-title">${eb.title}</div>
-                        <div class="search-desc">${eb.description || ''}</div>
-                    </div>
-                </div>`;
-        });
+    if (window.appliedCouponData.final_price === 0) {
+        // 100% FREE UI - No old price, just pure Free badge
+        priceBox.innerHTML = `<div class="price-wrapper"><span class="badge-free">✦ 100% FREE</span></div>`;
+        footerPrice.innerHTML = `<span class="badge-free">✦ FREE</span>`;
+        
+        actionBtn.innerHTML = `Claim for Free <i class="fas fa-gift" style="margin-left:6px;"></i>`;
+        actionBtn.style.background = "var(--success)";
+        actionBtn.style.color = "#fff";
+        actionBtn.style.boxShadow = "0 5px 20px rgba(16,185,129,0.4)";
+        actionBtn.onclick = window.handleFreeClaimClick;
     } else {
-        dropdown.classList.remove("active");
+        // DISCOUNTED UI - Both prices cleanly inside the premium badge
+        let pHTML = `<span style="font-weight:bold;">₹${window.appliedCouponData.final_price}</span> <span class="strike-price" style="text-decoration: line-through; opacity: 0.75; font-size: 0.85em;">₹${basePrice}</span>`;
+        priceBox.innerHTML = `<div class="price-wrapper"><span class="badge-premium" style="display:inline-flex; align-items:center; gap: 6px;">${pHTML}</span></div>`;
+        footerPrice.innerHTML = `<span class="badge-premium">Pay: ₹${window.appliedCouponData.final_price}</span>`;
+        
+        actionBtn.innerHTML = `Buy Now (₹${window.appliedCouponData.final_price}) <i class="fas fa-arrow-right" style="margin-left:6px;"></i>`;
+        actionBtn.style.background = "linear-gradient(135deg, #7c6af7, #9f3fbf)";
+        actionBtn.style.color = "#fff";
+        actionBtn.onclick = window.handleBuyNowClick;
     }
-}
+};
+
+window.checkUserLoginForAction = function(actionBtnElement, originalHTML) {
+    const currentUserId = localStorage.getItem("islamic_user_id");
+    if (!currentUserId) {
+        if(window.showToast) window.showToast("Please login to continue", "info");
+        actionBtnElement.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Redirecting...`;
+        actionBtnElement.disabled = true;
+        localStorage.setItem('islamic_redirect_after_login', window.location.href);
+        setTimeout(() => {
+            const tContainer = document.getElementById("toast-container");
+            if(tContainer) tContainer.innerHTML = ""; 
+            window.location.href = '/login/';
+            setTimeout(() => { actionBtnElement.innerHTML = originalHTML; actionBtnElement.disabled = false; }, 500);
+        }, 1500);
+        return false; 
+    }
+    return true; 
+};
+
+window.handleBuyNowClick = () => {
+    const actionBtn = document.getElementById("det-action-btn");
+    if (!window.checkUserLoginForAction(actionBtn, actionBtn.innerHTML)) return;
+
+    if (window.appliedCouponData) {
+        localStorage.setItem("checkout_coupon_data", JSON.stringify(window.appliedCouponData));
+    } else {
+        localStorage.removeItem("checkout_coupon_data");
+    }
+    window.location.href = '../payments/index.html';
+};
+
+window.handleFreeClaimClick = async () => {
+    const actionBtn = document.getElementById("det-action-btn");
+    if (!window.checkUserLoginForAction(actionBtn, actionBtn.innerHTML)) return;
+
+    const originalHTML = actionBtn.innerHTML;
+    actionBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Processing...`;
+    actionBtn.disabled = true;
+    
+    try {
+        const { getFirestore, doc, setDoc, updateDoc, increment } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
+        const db = getFirestore();
+        const currentUserId = localStorage.getItem("islamic_user_id");
+        const customPaymentId = `${currentUserId}_${window.currentEbook.id}`;
+        
+        const payload = {
+            user_id: currentUserId,
+            ebook_id: window.currentEbook.id,
+            txn_id: "FREE_CLAIM", 
+            amount: 0,
+            original_price: window.currentEbook.discount_price || window.currentEbook.price,
+            status: "approved", 
+            createdAt: new Date().toISOString()
+        };
+
+        if (window.appliedCouponData) {
+            payload.coupon_applied = window.appliedCouponData.code;
+            payload.discount_amount = window.appliedCouponData.discount_amount;
+        }
+
+        const dbTasks = [ setDoc(doc(db, "payments", customPaymentId), payload) ];
+        if (window.appliedCouponData) {
+            dbTasks.push(updateDoc(doc(db, "coupons", window.appliedCouponData.code), { current_uses: increment(1) }).catch(e => console.log(e)));
+        }
+        await Promise.all(dbTasks);
+        
+        let currentPayments = [];
+        const cacheKey = `cache_payments_${currentUserId}_data`;
+        const cachedStr = localStorage.getItem(cacheKey);
+        if (cachedStr) { try { currentPayments = JSON.parse(cachedStr); } catch(e){} }
+        currentPayments.push({id: customPaymentId, ...payload});
+        
+        localStorage.setItem(cacheKey, JSON.stringify(currentPayments));
+        localStorage.removeItem(`cache_payments_${currentUserId}_time`); 
+        localStorage.removeItem("checkout_coupon_data"); 
+        
+        window.appliedCouponData = null; 
+        window.userPayments = currentPayments; 
+        
+        if(window.showToast) window.showToast("Book added to Library!", "success");
+        
+        const promoBox = document.getElementById("promo-container");
+        if(promoBox) promoBox.style.display = "none";
+
+        // 🔥 THE FIX: Manual fallback + Direct Scope Call
+        // Pehle UI ko manually turant Download state me laa rahe hain taaki button kabhi atke nahi
+        actionBtn.innerHTML = `<i class="fas fa-download"></i> Download`;
+        actionBtn.style.background = "var(--success)";
+        actionBtn.style.color = "#fff";
+        actionBtn.style.boxShadow = "0 4px 20px rgba(16,185,129,0.3)";
+        actionBtn.disabled = false;
+        
+        const footerPrice = document.getElementById("det-footer-price");
+        if(footerPrice) footerPrice.innerHTML = `<span class="badge-owned">Owned ✓</span>`;
+
+        // Phir background me renderDetail() chalayenge fresh binding ke liye
+        setTimeout(() => {
+            try {
+                renderDetail(); 
+            } catch(e) {
+                console.log("Scope binding issue, but UI is already updated manually.");
+            }
+        }, 200); 
+
+    } catch(err) {
+        if(window.showToast) window.showToast("Something went wrong. Please try again later.", "error");
+        actionBtn.innerHTML = originalHTML;
+        actionBtn.disabled = false;
+    }
+};
 
 // 📂 1. AUTOMATIC URL & FOLDER DETECTOR
 function getCleanPageName() {
@@ -2130,5 +2401,6 @@ window.undoAnnouncement = function() {
 };
 
     </script>
+
 </body>
 </html>
