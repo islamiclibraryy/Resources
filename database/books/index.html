@@ -8,28 +8,6 @@
             window.location.replace("/");
         }
     </script>
-
-    <style>
-        /* Body ka background dikhega (No White Flash), par andar ka header/footer/text hide rahega jab tak sab load na ho */
-        body > * { 
-            opacity: 0; 
-            transition: opacity 0.3s ease; 
-        }
-    </style>
-    <script>
-        // Jab CSS, FontAwesome, aur Google Fonts 100% load ho jayenge, tabhi ek sath sab dikhega
-        function revealPage() {
-            var children = document.body.children;
-            for(var i = 0; i < children.length; i++) {
-                children[i].style.opacity = "1";
-            }
-        }
-        
-        window.addEventListener('load', revealPage);
-        
-        // Fallback: Agar kisi user ka internet bohot slow hai, toh max 1 second baad dikha hi do
-        setTimeout(revealPage, 1000);
-    </script>
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
