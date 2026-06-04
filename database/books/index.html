@@ -1,6 +1,32 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
+    <script>
+        var params = new URLSearchParams(window.location.search);
+        var urlId = params.get('id');
+        if (!urlId && !window.location.pathname.includes('/id/')) {
+            window.location.replace("/");
+        }
+    </script>
+
+    <style>
+        /* Raw page ko hide karo */
+        html { visibility: hidden; opacity: 0; }
+        /* Load hone ke baad smooth fade-in */
+        html.fonts-ready { visibility: visible; opacity: 1; transition: opacity 0.2s ease-in; }
+    </style>
+    <script>
+        // System ko wait karne bolo jab tak fonts ready na ho jayein
+        document.fonts.ready.then(function() {
+            document.documentElement.classList.add("fonts-ready");
+        });
+        
+        // Fallback: Agar connection bohot slow hai toh 2 sec baad dikha do
+        setTimeout(function() {
+            document.documentElement.classList.add("fonts-ready");
+        }, 2000);
+    </script>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
