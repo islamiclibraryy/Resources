@@ -1746,7 +1746,7 @@ onAuthStateChanged(auth, (user) => {
             } catch(e) { console.error("SWR update fail", e); }
         }
 
-        // 🦴 BULLETPROOF PREMIUM SKELETON UI (Realistic Title & Fixed Gaps)
+        // 🦴 BULLETPROOF PREMIUM SKELETON UI
         function showDetailSkeletons() {
             const isDesktop = window.innerWidth > 768;
 
@@ -1774,24 +1774,8 @@ onAuthStateChanged(auth, (user) => {
 
             const promoBox = document.getElementById("promo-container");
             if (promoBox) promoBox.style.display = "none";
-            
-            // 2. Title Skeleton (🔥 REALISTIC 2-LINE LOOK, ALIGNED & 2.5x GAP 🔥)
-            const titleEl = document.getElementById("det-title");
-            if(titleEl) {
-                // Height adjust: Desktop thoda bada (42px), Mobile sirf 30% bada (28px)
-                const tHeight = isDesktop ? "42px" : "28px"; 
-                
-                // 🔥 YEH RAHA TERA 2.5x GAP (Title aur Description ke beech)
-                const tGap = isDesktop ? "100px" : "60px"; 
 
-                // Do lines banayi hain jo center-aligned hain aur description ki width match karengi
-                titleEl.innerHTML = `
-                    <div class="skeleton" style="height: ${tHeight}; width: 90%; border-radius: 8px; margin: 0 auto 12px auto;"></div>
-                    <div class="skeleton" style="height: ${tHeight}; width: 60%; border-radius: 8px; margin: 0 auto ${tGap} auto;"></div>
-                `;
-            }
-            
-            // 3. Image Skeleton (🔥 IMAGE AUR TITLE KA GAP WAPAS NORMAL KAR DIYA 🔥)
+            // 2. Image Skeleton (Gap 40-50% increased from Title)
             const imgEl = document.getElementById("det-thumb");
             if(imgEl) {
                 imgEl.style.setProperty('display', 'none', 'important'); 
@@ -1801,12 +1785,30 @@ onAuthStateChanged(auth, (user) => {
                 
                 const skelWidth = isDesktop ? "500px" : "100%";
                 const skelMaxWidth = isDesktop ? "none" : "250px";
-                // Image aur title ke beech ka normal gap (Desktop 30px, Mobile 20px)
-                const skelMargin = isDesktop ? "0 auto 30px auto" : "0 auto 20px auto";
+                
+                // 🔥 FIX 1 & 5: Image aur Title ke beech gap badhaya (Mobile 30px, Desktop 45px)
+                const imgMarginBottom = isDesktop ? "45px" : "30px"; 
+                const skelMargin = `0 auto ${imgMarginBottom} auto`;
+                
                 const skelRadius = isDesktop ? "24px" : "12px";
                 const skelShadow = isDesktop ? "0 25px 60px rgba(0,0,0,0.6)" : "0 10px 30px rgba(0,0,0,0.4)";
 
                 imgEl.insertAdjacentHTML('afterend', `<div id="img-temp-skel" class="skeleton detail-thumb" style="width: ${skelWidth}; max-width: ${skelMaxWidth}; aspect-ratio: 1/1; border-radius: ${skelRadius}; margin: ${skelMargin}; box-shadow: ${skelShadow}; display: block !important;"></div>`);
+            }
+            
+            // 3. Title Skeleton (100% Width, Strictly Centered, Gap Adjusted)
+            const titleEl = document.getElementById("det-title");
+            if(titleEl) {
+                const tHeight = isDesktop ? "42px" : "28px"; 
+                
+                // 🔥 FIX 3: Desktop mein gap 20% kam kiya (100px -> 80px). Mobile mein 60px.
+                const tGap = isDesktop ? "80px" : "60px"; 
+
+                // 🔥 FIX 2 & 4: Pehli line 100% chaudi, dusri 65%. Dono exactly center mein (margin: 0 auto).
+                titleEl.innerHTML = `
+                    <div class="skeleton" style="display: block; height: ${tHeight}; width: 100%; border-radius: 8px; margin: 0 auto 12px auto;"></div>
+                    <div class="skeleton" style="display: block; height: ${tHeight}; width: 65%; border-radius: 8px; margin: 0 auto ${tGap} auto;"></div>
+                `;
             }
 
             // 4. Description Skeleton 
