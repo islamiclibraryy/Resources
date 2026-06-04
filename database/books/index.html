@@ -31,14 +31,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script>
-        // Sirf tab redirect karo jab user ne koi book select na ki ho (Direct URL visit)
-        if (!sessionStorage.getItem("selected_book_data")) {
-            window.location.replace("/");
-        }
-    </script>
-
-
-    <script>
         (function() {
             const savedTheme = localStorage.getItem('islamic_theme') || 'dark';
             document.documentElement.setAttribute('data-theme', savedTheme);
@@ -1615,8 +1607,14 @@ onAuthStateChanged(auth, (user) => {
 
         // ⚡ THE SMART URL ENGINE (Dynamic Routing & SWR)
         async function initBook() {
+            // 🔥 FIX 1: Super Robust URL Extractor (Query & Path dono ko handle karega)
             const urlParams = new URLSearchParams(window.location.search);
-            const bookId = urlParams.get('id');
+            let bookId = urlParams.get('id');
+            
+            if (!bookId && window.location.pathname.includes('/id/')) {
+                bookId = window.location.pathname.split('/id/')[1].replace(/\//g, '');
+            }
+
             const userId = localStorage.getItem("islamic_user_id");
 
             if (!bookId) {
@@ -1624,7 +1622,6 @@ onAuthStateChanged(auth, (user) => {
                 return;
             }
 
-            // 1. URL ID se Data Local Cache me dhoondho (0 Tokens!)
             let foundBook = null;
             
             // Check 1: 15-Books Cache
@@ -1636,7 +1633,7 @@ onAuthStateChanged(auth, (user) => {
                 } catch(e) {}
             }
 
-            // Check 2: Mega Index (Agar Load More / Search se aayi hai)
+            // Check 2: Mega Index
             if (!foundBook) {
                 const megaCacheStr = localStorage.getItem("cache_mega_search_index");
                 if (megaCacheStr) {
@@ -1647,21 +1644,21 @@ onAuthStateChanged(auth, (user) => {
                 }
             }
 
-            // 2. Data Render Logic
             if (foundBook) {
-                // A. Data Mil Gaya -> INSTANT RENDER (No UI Jumps)
+                // A. Data Mil Gaya -> INSTANT RENDER (0 Token)
                 window.currentEbook = foundBook;
                 proceedWithPaymentCheck(userId);
-                
-                // Background me 30-min SWR revalidation chalega (Bina loading screen)
                 revalidateBookSWR(bookId, foundBook); 
 
             } else {
-                // B. Direct Link / New User -> Show Skeletons & Fetch
-                showDetailSkeletons(); // Tujhe yeh chota function add karna padega
+                // B. New Tab / Incognito -> Firebase Fetch
+                showDetailSkeletons(); 
                 try {
                     const { getFirestore, doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
-                    const dbInstance = getFirestore();
+                    
+                    // 🔥 NAYA FIX: Use global 'db' if available, otherwise getFirestore()
+                    const dbInstance = typeof db !== 'undefined' ? db : getFirestore(); 
+                    
                     const bookSnap = await getDoc(doc(dbInstance, "ebooks", String(bookId)));
                     
                     if (bookSnap.exists()) {
@@ -1678,7 +1675,7 @@ onAuthStateChanged(auth, (user) => {
             }
         }
 
-        // 🕵️ PAYMENT CHECK SEPARATOR (Clean Code)
+        // 🕵️ PAYMENT CHECK SEPARATOR (Clean Code - Zero Jitter Fix)
         function proceedWithPaymentCheck(userId) {
             if (!userId) {
                 window.userPayments = [];
@@ -1694,14 +1691,16 @@ onAuthStateChanged(auth, (user) => {
                 window.userPayments = [];
             }
             
-            renderDetail(); // ⚡ Instant Show
+            renderDetail(); // ⚡ Pehli baar UI render karega
             
-            // Background Payments Sync (Tera original function)
             if (typeof fetchPaymentsFirebase === "function") {
                 fetchPaymentsFirebase(userId, cacheKey, (data) => {
                     if (Array.isArray(data)) { 
-                        window.userPayments = data; 
-                        renderDetail(); 
+                        // 🔥 JITTER FIX: Sirf aur sirf tabhi renderDetail() chalega jab data exactly change hua ho!
+                        if (JSON.stringify(window.userPayments) !== JSON.stringify(data)) {
+                            window.userPayments = data; 
+                            renderDetail(); 
+                        }
                     }
                 });
             }
