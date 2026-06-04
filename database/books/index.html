@@ -1124,11 +1124,6 @@ body.instant-load header {
         <div id="det-footer-price"></div> <button id="det-action-btn" class="btn" style="width: auto; padding: 12px 32px; font-size: .95rem; border-radius: 99px;"></button>
     </div>
 
-    <div id="bottom-nav" class="bottom-nav">
-        <div class="nav-item active" onclick="window.location.href='/'"><i class="fas fa-home"></i><span>Home</span></div>
-        <div class="nav-item" onclick="window.location.href='/library/'"><i class="fas fa-book-reader"></i><span>Library</span></div>
-        <a href="/info/" class="nav-item"><i class="fas fa-info-circle"></i><span>Info</span></a>
-    </div>
 <div id="toast-container" style="z-index: 999999 !important;"></div>
 
 <div class="tier-modal-overlay" id="tierModal" onclick="closeTierModal(event)">
@@ -1753,14 +1748,12 @@ onAuthStateChanged(auth, (user) => {
 
         // 🦴 BULLETPROOF PREMIUM SKELETON UI (Responsive & Merged)
         function showDetailSkeletons() {
-            // 🔥 Check if Desktop (Width > 768px)
             const isDesktop = window.innerWidth > 768;
 
             // 1. Safe Footer Skeleton
             const actionFooter = document.getElementById("action-footer");
             if(actionFooter) actionFooter.classList.remove("hidden");
             
-            // 🔥 Badge/Price Skeleton HATA DIYA (User request)
             const priceBox = document.getElementById("det-price-box");
             if (priceBox) priceBox.innerHTML = ``; 
             
@@ -1782,22 +1775,20 @@ onAuthStateChanged(auth, (user) => {
             const promoBox = document.getElementById("promo-container");
             if (promoBox) promoBox.style.display = "none";
             
-            // 2. Title Skeleton (🔥 EK SINGLE MERGED LINE 🔥)
+            // 2. Title Skeleton (🔥 HEIGHT +60% KI HAI, WIDTH 90% KI HAI 🔥)
             const titleEl = document.getElementById("det-title");
             if(titleEl) {
-                titleEl.innerHTML = `<div class="skeleton" style="height: 40px; width: 100%; border-radius: 8px; margin: 0 auto 10px auto;"></div>`;
+                titleEl.innerHTML = `<div class="skeleton" style="height: 64px; width: 90%; border-radius: 12px; margin: 0 auto 16px auto;"></div>`;
             }
             
-            // 3. Image Skeleton (🔥 DESKTOP & MOBILE RESPONSIVE SIZE + BROKEN IMAGE FIX 🔥)
+            // 3. Image Skeleton 
             const imgEl = document.getElementById("det-thumb");
             if(imgEl) {
-                // !important lagaya taaki teri CSS isko override na kar paye aur broken image chhip jaye
                 imgEl.style.setProperty('display', 'none', 'important'); 
                 
                 const oldSkel = document.getElementById("img-temp-skel");
                 if(oldSkel) oldSkel.remove();
                 
-                // Desktop aur Mobile ke liye alag alag size
                 const skelWidth = isDesktop ? "500px" : "100%";
                 const skelMaxWidth = isDesktop ? "none" : "250px";
                 const skelMargin = isDesktop ? "0 auto 40px auto" : "0 auto 24px auto";
@@ -1807,7 +1798,7 @@ onAuthStateChanged(auth, (user) => {
                 imgEl.insertAdjacentHTML('afterend', `<div id="img-temp-skel" class="skeleton detail-thumb" style="width: ${skelWidth}; max-width: ${skelMaxWidth}; aspect-ratio: 1/1; border-radius: ${skelRadius}; margin: ${skelMargin}; box-shadow: ${skelShadow}; display: block !important;"></div>`);
             }
 
-            // 4. Description Skeleton (🔥 DESKTOP PAR DOUBLE LENGTH 🔥)
+            // 4. Description Skeleton 
             const descEl = document.getElementById("det-desc");
             if(descEl) {
                 let descLines = `
@@ -1819,7 +1810,6 @@ onAuthStateChanged(auth, (user) => {
                     <div class="skeleton" style="height: 16px; width: 70%; border-radius: 4px;"></div>
                 `;
                 
-                // Agar desktop hai, toh lines double kar do
                 if (isDesktop) {
                     descLines += `
                         <div class="skeleton" style="height: 16px; width: 100%; border-radius: 4px; margin-top: 14px; margin-bottom: 14px;"></div>
@@ -1830,7 +1820,6 @@ onAuthStateChanged(auth, (user) => {
                         <div class="skeleton" style="height: 16px; width: 65%; border-radius: 4px;"></div>
                     `;
                 }
-
                 descEl.innerHTML = `<div class="desc-card" style="padding: 24px 20px;">${descLines}</div>`;
             }
         }
@@ -1839,7 +1828,7 @@ onAuthStateChanged(auth, (user) => {
 // 🔒 SECURE RENDER DETAIL FUNCTION (With 1-Second Delay & Smart Toasts)
 // =========================================================================
 function renderDetail() {
-    if (!window.currentEbook) return; // Crash prevention
+    if (!window.currentEbook) return; 
 
     // 🧹 1. SAFAI (Skeleton hatane ka process)
     const imgSkel = document.getElementById("img-temp-skel");
@@ -1849,14 +1838,12 @@ function renderDetail() {
     const imgEl = document.getElementById("det-thumb");
     if(imgEl) {
         imgEl.style.aspectRatio = "1/1"; 
-        // Wapas dikhane ke liye !important zaroori hai
         imgEl.style.setProperty('display', 'block', 'important'); 
         imgEl.style.opacity = "1";
         imgEl.src = window.currentEbook.thumbnail;
     }
 
-    const bNav = document.getElementById("bottom-nav");
-    if(bNav) bNav.style.display = ""; 
+    // 🚫 Yahan se bottom-nav display block karne wali line delete kar di gayi hai!
 
     const actionFooter = document.getElementById("action-footer");
     if(actionFooter) actionFooter.classList.remove("hidden");
@@ -1864,10 +1851,10 @@ function renderDetail() {
     const titleEl = document.getElementById("det-title");
     if(titleEl) titleEl.innerText = window.currentEbook.title;
 
-    // 🔥 2. BUTTON UI RESET (Wapas asli button banana)
+    // 2. Button UI Reset 
     const actionBtn = document.getElementById("det-action-btn");
     if(actionBtn) {
-        actionBtn.className = "btn"; // Wapas 'btn' class lagayi taaki color wapas aaye
+        actionBtn.className = "btn"; 
         actionBtn.disabled = false; 
         actionBtn.style.background = ""; 
         actionBtn.style.color = ""; 
