@@ -1775,10 +1775,11 @@ onAuthStateChanged(auth, (user) => {
             const promoBox = document.getElementById("promo-container");
             if (promoBox) promoBox.style.display = "none";
             
-            // 2. Title Skeleton (🔥 HEIGHT +60% KI HAI, WIDTH 90% KI HAI 🔥)
+            // 2. Title Skeleton (🔥 MOBILE ME +30%, DESKTOP ME +75%, CHAUDAI 95% 🔥)
             const titleEl = document.getElementById("det-title");
             if(titleEl) {
-                titleEl.innerHTML = `<div class="skeleton" style="height: 64px; width: 90%; border-radius: 12px; margin: 0 auto 16px auto;"></div>`;
+                const titleHeight = isDesktop ? "110px" : "84px";
+                titleEl.innerHTML = `<div class="skeleton" style="height: ${titleHeight}; width: 95%; border-radius: 12px; margin: 0 auto 16px auto;"></div>`;
             }
             
             // 3. Image Skeleton 
@@ -1791,7 +1792,8 @@ onAuthStateChanged(auth, (user) => {
                 
                 const skelWidth = isDesktop ? "500px" : "100%";
                 const skelMaxWidth = isDesktop ? "none" : "250px";
-                const skelMargin = isDesktop ? "0 auto 40px auto" : "0 auto 24px auto";
+                // 🔥 GAP KO 2.5x BADHA DIYA HAI (Mobile 60px, Desktop 100px) 🔥
+                const skelMargin = isDesktop ? "0 auto 100px auto" : "0 auto 60px auto";
                 const skelRadius = isDesktop ? "24px" : "12px";
                 const skelShadow = isDesktop ? "0 25px 60px rgba(0,0,0,0.6)" : "0 10px 30px rgba(0,0,0,0.4)";
 
