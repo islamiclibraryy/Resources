@@ -411,11 +411,23 @@
     margin-bottom: 24px; 
     height: 40px !important;
 }
+
 .back-btn, .share-btn { background: var(--surface2); color: var(--text); border: 1px solid var(--border2); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; cursor: pointer; transition: all var(--transition); flex-shrink: 0 !important; }
 .back-btn:hover { border-color: var(--accent); color: var(--accent2); background: var(--glow2); transform: rotate(-5deg) scale(1.05); }
 .share-btn:hover { border-color: var(--accent); color: var(--accent2); background: var(--glow2); transform: scale(1.05); }
 
-        .detail-thumb { width: 100%; max-width: 250px; aspect-ratio: 1/1; border-radius: var(--r3); object-fit: cover; margin: 0 auto 24px auto; display: block; border: 1px solid var(--border); box-shadow: var(--shadow); animation: cardIn .5s ease both; }
+.detail-thumb { 
+    width: 100%; 
+    max-width: 250px; 
+    aspect-ratio: 1/1; 
+    border-radius: var(--r3); 
+    object-fit: cover; 
+    margin: 0 auto 24px auto; 
+    display: block; 
+    border: 1px solid var(--border); 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4) !important;
+    height: 250px !important;
+}
 /* Ye line normal CSS mein dalo taki mobile par bhi dikhe */
 .detail-thumb {
     box-shadow: 0 10px 30px rgba(0,0,0,0.4) !important;
@@ -469,6 +481,9 @@
             font-family: 'Syne', sans-serif;
             font-weight: 700;
             color: var(--text);
+            
+            /* 🔥 SKELETON JUMP FIX FOR MOBILE 🔥 */
+            min-height: 56px !important;
         }
 
         /* 🔥 DESKTOP VIEW FIX (BOOK DETAILS) - FINAL PERFECTED 🔥 */
@@ -502,7 +517,7 @@
                 margin: 0 auto 40px auto !important; 
                 width: 500px !important;      /* Ab ye sach mein bada hoga */
                 max-width: none !important;    /* Purani 250px wali limit khatam */
-                height: auto !important;
+                height: 500px !important;
                 border-radius: 24px !important;
                 box-shadow: 0 25px 60px rgba(0,0,0,0.6) !important;
             }
@@ -513,8 +528,11 @@
                 margin: 0 0 15px 0 !important;
                 font-size: 2.4rem !important; 
                 text-align: left !important; 
+                
+                /* 🔥 SKELETON JUMP FIX FOR DESKTOP 🔥 */
+                min-height: 90px !important;
             }
-            
+
             #det-price-box { 
                 max-width: 800px !important;
                 margin: 0 0 25px 0 !important; 
