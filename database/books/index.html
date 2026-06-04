@@ -1802,8 +1802,17 @@ onAuthStateChanged(auth, (user) => {
 // 🔒 SECURE RENDER DETAIL FUNCTION (With 1-Second Delay & Smart Toasts)
 // =========================================================================
 function renderDetail() {
+    // 👇 YEH 4 LINES STARTING MEIN DAAL DE 👇
+    const imgSkel = document.getElementById("img-temp-skel");
+    if(imgSkel) imgSkel.remove();
+    document.getElementById("det-thumb").style.display = "block";
+    const bNav = document.getElementById("bottom-nav");
+    if(bNav) bNav.style.display = ""; // Bottom nav wapas show karne ke liye (agar hide kiya tha)
+
     document.getElementById("action-footer").classList.remove("hidden");
     document.getElementById("det-thumb").src = window.currentEbook.thumbnail;
+    // ... BAAKI TERA PURANA renderDetail CODE ...
+
     document.getElementById("det-title").innerText = window.currentEbook.title;
     // 🔥 NAYA: PREMIUM DESCRIPTION CARD 🔥
     let bookDesc = window.currentEbook.description || "No description available for this book.";
