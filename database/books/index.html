@@ -404,11 +404,17 @@
         .drawer-footer { padding: 20px; border-top: 1px solid var(--border); flex-shrink: 0; padding-bottom: calc(20px + env(safe-area-inset-bottom)); }
 
         /* Details UI */
-        .detail-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
-        .back-btn, .share-btn { background: var(--surface2); color: var(--text); border: 1px solid var(--border2); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; cursor: pointer; transition: all var(--transition); }
-        .back-btn:hover { border-color: var(--accent); color: var(--accent2); background: var(--glow2); transform: rotate(-5deg) scale(1.05); }
-        .share-btn:hover { border-color: var(--accent); color: var(--accent2); background: var(--glow2); transform: scale(1.05); }
-        
+.detail-header { 
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    margin-bottom: 24px; 
+    height: 40px !important;
+}
+.back-btn, .share-btn { background: var(--surface2); color: var(--text); border: 1px solid var(--border2); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; cursor: pointer; transition: all var(--transition); flex-shrink: 0 !important; }
+.back-btn:hover { border-color: var(--accent); color: var(--accent2); background: var(--glow2); transform: rotate(-5deg) scale(1.05); }
+.share-btn:hover { border-color: var(--accent); color: var(--accent2); background: var(--glow2); transform: scale(1.05); }
+
         .detail-thumb { width: 100%; max-width: 250px; aspect-ratio: 1/1; border-radius: var(--r3); object-fit: cover; margin: 0 auto 24px auto; display: block; border: 1px solid var(--border); box-shadow: var(--shadow); animation: cardIn .5s ease both; }
 /* Ye line normal CSS mein dalo taki mobile par bhi dikhe */
 .detail-thumb {
