@@ -1763,13 +1763,17 @@ onAuthStateChanged(auth, (user) => {
             const footerPrice = document.getElementById("det-footer-price");
             if(footerPrice) footerPrice.innerHTML = `<div class="skeleton" style="width: 80px; height: 24px; border-radius: 6px;"></div>`;
             
+            // 🔥 BUTTON FIX: 'btn' class poori tarah hata di, sirf skeleton rakha
             const actionBtn = document.getElementById("det-action-btn");
             if(actionBtn) {
-                actionBtn.innerHTML = ``; // Button ka text clear karo
-                actionBtn.className = "btn skeleton"; // Button ko hi skeleton bana do
-                actionBtn.style.color = "transparent";
+                actionBtn.innerHTML = ``; 
+                actionBtn.className = "skeleton"; // Sirf skeleton class, no button color
+                actionBtn.style.background = "var(--border2)"; // Grey color
+                actionBtn.style.border = "none";
+                actionBtn.style.boxShadow = "none";
                 actionBtn.style.width = "130px";
                 actionBtn.style.height = "40px";
+                actionBtn.style.borderRadius = "99px";
             }
 
             const promoBox = document.getElementById("promo-container");
@@ -1784,15 +1788,15 @@ onAuthStateChanged(auth, (user) => {
                 `;
             }
             
-            // 3. Image Skeleton (Perfect Book Shape 2/3 ratio)
+            // 3. Image Skeleton (🔥 EXACT 1/1 SHAPE & BROKEN IMAGE HIDDEN 🔥)
             const imgEl = document.getElementById("det-thumb");
             if(imgEl) {
-                imgEl.style.opacity = "0"; // Asli image chhupao
+                imgEl.style.display = "none"; // Broken image ko apni jagah se hata do
                 const oldSkel = document.getElementById("img-temp-skel");
                 if(oldSkel) oldSkel.remove();
                 
-                // Aspect Ratio 2/3 (standard book size)
-                imgEl.insertAdjacentHTML('afterend', `<div id="img-temp-skel" class="skeleton" style="width: 100%; aspect-ratio: 2/3; border-radius: 10px; margin: 0 auto 20px auto; box-shadow: var(--shadow);"></div>`);
+                // Aspect Ratio exactly 1/1 kar diya gaya hai
+                imgEl.insertAdjacentHTML('afterend', `<div id="img-temp-skel" class="skeleton" style="width: 100%; aspect-ratio: 1/1; border-radius: 12px; margin: 0 auto 20px auto; box-shadow: var(--shadow);"></div>`);
             }
 
             // 4. Description Skeleton (Lamba aur bhara hua)
@@ -1822,10 +1826,11 @@ function renderDetail() {
     const imgSkel = document.getElementById("img-temp-skel");
     if(imgSkel) imgSkel.remove();
     
+    // 🔥 IMAGE FIX: Wapas Block karo taaki image theek se dikhe
     const imgEl = document.getElementById("det-thumb");
     if(imgEl) {
-        imgEl.style.opacity = "1";
         imgEl.style.display = "block";
+        imgEl.style.opacity = "1";
         imgEl.src = window.currentEbook.thumbnail;
     }
 
@@ -1838,16 +1843,17 @@ function renderDetail() {
     const titleEl = document.getElementById("det-title");
     if(titleEl) titleEl.innerText = window.currentEbook.title;
 
-    // 2. Button UI Reset (Skeleton hatakar wapas button banana)
+    // 🔥 2. BUTTON UI RESET (Wapas asli button banana)
     const actionBtn = document.getElementById("det-action-btn");
     if(actionBtn) {
-        actionBtn.className = "btn"; 
+        actionBtn.className = "btn"; // Wapas 'btn' class lagayi taaki color wapas aaye
         actionBtn.disabled = false; 
         actionBtn.style.background = ""; 
         actionBtn.style.color = ""; 
         actionBtn.style.boxShadow = "";
         actionBtn.style.width = "auto";
         actionBtn.style.height = "auto";
+        actionBtn.style.borderRadius = "";
     }
 
     // 3. Normal Details Render
@@ -1870,14 +1876,12 @@ function renderDetail() {
         }
     }
 
-    // 👇 VARIABLES DECLARATION (Double declaration bug fixed) 👇
     const isFree = String(window.currentEbook.is_free) === "true";
     const priceBox = document.getElementById("det-price-box");
     const footerPrice = document.getElementById("det-footer-price");
     
     const ownedBook = (window.userPayments || []).find(p => String(p.ebook_id) === String(window.currentEbook.id) && p.status.toLowerCase() !== "rejected");
 
-    // 🔥 UPDATED: Top Price Box (Pill Shape Badges) 🔥
     if (priceBox) {
         if (isFree) {
             priceBox.innerHTML = `<div class="price-wrapper"><span class="badge-free">✦ 100% FREE</span></div>`;
