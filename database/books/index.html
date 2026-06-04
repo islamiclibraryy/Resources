@@ -1071,7 +1071,28 @@ body.instant-load header {
     </div>
 
 <div id="premium-announcement-bar">
+    <script>
+        (function() {
+            var lastAnim = localStorage.getItem("banner_anim_time");
+            var closedVer = localStorage.getItem("closed_banner_version");
+            var now = Date.now();
+            
+            // Agar user ne banner manually close nahi kiya hai, AUR uske animation time ko 30 minute se kam hua hai
+            if (closedVer === null && lastAnim && (now - parseInt(lastAnim)) <= (30 * 60 * 1000)) {
+                var bar = document.currentScript.parentElement;
+                bar.style.transition = 'none'; 
+                bar.classList.add('show-banner');
+                document.body.classList.add('banner-opened');
+                
+                setTimeout(function() {
+                    bar.style.transition = '';
+                }, 50);
+            }
+        })();
+    </script>
+
     <div class="announcement-content">
+
         <a href="javascript:void(0)" id="ann-link" class="ann-text-container">
             <span id="ann-text" class="ann-marquee"></span>
         </a>
