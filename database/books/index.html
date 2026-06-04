@@ -1801,12 +1801,13 @@ onAuthStateChanged(auth, (user) => {
             const titleEl = document.getElementById("det-title");
             if(titleEl) {
                 const tHeight = isDesktop ? "42px" : "28px"; 
-                
-                // 🔥 FIX 3: Desktop mein gap 20% kam kiya (100px -> 80px). Mobile mein 60px.
                 const tGap = isDesktop ? "80px" : "60px"; 
 
-                // 🔥 FIX 2 & 4: Pehli line 100% chaudi, dusri 65%. Dono exactly center mein (margin: 0 auto).
+                // 🔥 NAYA FIX: Skeleton ke time css ki 800px wali limit hata do
+                titleEl.style.setProperty('max-width', '100%', 'important');
+
                 titleEl.innerHTML = `
+
                     <div class="skeleton" style="display: block; height: ${tHeight}; width: 100%; border-radius: 8px; margin: 0 auto 12px auto;"></div>
                     <div class="skeleton" style="display: block; height: ${tHeight}; width: 65%; border-radius: 8px; margin: 0 auto ${tGap} auto;"></div>
                 `;
@@ -1863,7 +1864,11 @@ function renderDetail() {
     if(actionFooter) actionFooter.classList.remove("hidden");
 
     const titleEl = document.getElementById("det-title");
-    if(titleEl) titleEl.innerText = window.currentEbook.title;
+    if(titleEl) {
+        // 🔥 SAFAI: Skeleton wala hack hatao taaki original CSS kaam kare
+        titleEl.style.removeProperty('max-width'); 
+        titleEl.innerText = window.currentEbook.title;
+    }
 
     // 2. Button UI Reset 
     const actionBtn = document.getElementById("det-action-btn");
