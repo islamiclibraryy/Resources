@@ -1613,43 +1613,155 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
-        // ⚡ THE INSTANT RENDER ENGINE
-        function initBook() {
-            const bookDataStr = sessionStorage.getItem("selected_book_data");
+        // ⚡ THE SMART URL ENGINE (Dynamic Routing & SWR)
+        async function initBook() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const bookId = urlParams.get('id');
             const userId = localStorage.getItem("islamic_user_id");
 
-            if(bookDataStr) {
-                window.currentEbook = JSON.parse(bookDataStr);
-                
-                // Guest User: Payment fetch mat karo
-                if (!userId) {
-                    window.userPayments = [];
-                    renderDetail();
-                    return; 
-                }
+            if (!bookId) {
+                window.location.replace("/");
+                return;
+            }
 
-                // Pehle instant render purane cache se (agar hai)
-                const cacheKey = `cache_payments_${userId}`;
-                const cachedPaymentsStr = localStorage.getItem(cacheKey + "_data");
-                if(cachedPaymentsStr) { 
-                    try { window.userPayments = JSON.parse(cachedPaymentsStr); } catch(e) { window.userPayments = []; } 
-                } else {
-                    window.userPayments = [];
+            // 1. URL ID se Data Local Cache me dhoondho (0 Tokens!)
+            let foundBook = null;
+            
+            // Check 1: 15-Books Cache
+            const mainCacheStr = localStorage.getItem("cache_ebooks_data");
+            if (mainCacheStr) {
+                try {
+                    const mainCache = JSON.parse(mainCacheStr);
+                    foundBook = mainCache.find(e => String(e.id) === String(bookId));
+                } catch(e) {}
+            }
+
+            // Check 2: Mega Index (Agar Load More / Search se aayi hai)
+            if (!foundBook) {
+                const megaCacheStr = localStorage.getItem("cache_mega_search_index");
+                if (megaCacheStr) {
+                    try {
+                        const megaCache = JSON.parse(megaCacheStr);
+                        foundBook = megaCache.find(e => String(e.id) === String(bookId));
+                    } catch(e) {}
                 }
+            }
+
+            // 2. Data Render Logic
+            if (foundBook) {
+                // A. Data Mil Gaya -> INSTANT RENDER (No UI Jumps)
+                window.currentEbook = foundBook;
+                proceedWithPaymentCheck(userId);
                 
-                renderDetail(); // ⚡ Instant Show
-                
-                // 🕵️ Background Sync chalao jo 5 min wala logic check karega
+                // Background me 30-min SWR revalidation chalega (Bina loading screen)
+                revalidateBookSWR(bookId, foundBook); 
+
+            } else {
+                // B. Direct Link / New User -> Show Skeletons & Fetch
+                showDetailSkeletons(); // Tujhe yeh chota function add karna padega
+                try {
+                    const { getFirestore, doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
+                    const dbInstance = getFirestore();
+                    const bookSnap = await getDoc(doc(dbInstance, "ebooks", String(bookId)));
+                    
+                    if (bookSnap.exists()) {
+                        window.currentEbook = { id: bookSnap.id, ...bookSnap.data() };
+                        proceedWithPaymentCheck(userId);
+                    } else {
+                        if(window.showToast) window.showToast("Book not found!", "error");
+                        setTimeout(() => window.location.replace("/"), 1500);
+                    }
+                } catch(err) {
+                    console.error("Direct Fetch Error:", err);
+                    if(window.showToast) window.showToast("Network Error", "error");
+                }
+            }
+        }
+
+        // 🕵️ PAYMENT CHECK SEPARATOR (Clean Code)
+        function proceedWithPaymentCheck(userId) {
+            if (!userId) {
+                window.userPayments = [];
+                renderDetail();
+                return; 
+            }
+
+            const cacheKey = `cache_payments_${userId}`;
+            const cachedPaymentsStr = localStorage.getItem(cacheKey + "_data");
+            if(cachedPaymentsStr) { 
+                try { window.userPayments = JSON.parse(cachedPaymentsStr); } catch(e) { window.userPayments = []; } 
+            } else {
+                window.userPayments = [];
+            }
+            
+            renderDetail(); // ⚡ Instant Show
+            
+            // Background Payments Sync (Tera original function)
+            if (typeof fetchPaymentsFirebase === "function") {
                 fetchPaymentsFirebase(userId, cacheKey, (data) => {
                     if (Array.isArray(data)) { 
                         window.userPayments = data; 
-                        renderDetail(); // Agar naya data aaya, toh button hand-to-hand update hoga
+                        renderDetail(); 
                     }
                 });
-
-            } else {
-                window.location.replace("/");
             }
+        }
+
+        // 🔥 SILENT BACKGROUND REVALIDATOR (30 Min SWR)
+        async function revalidateBookSWR(bookId, oldData) {
+            const CACHE_TIME_LIMIT = 30 * 60 * 1000; // 30 minutes
+            const fetchTimeKey = `cache_time_book_${bookId}`;
+            const lastFetched = localStorage.getItem(fetchTimeKey);
+            const now = Date.now();
+
+            if (lastFetched && (now - parseInt(lastFetched)) < CACHE_TIME_LIMIT) {
+                return; // 30 min nahi hue, shanti rakho!
+            }
+
+            // Time ho gaya, chupchap background me update check karo
+            try {
+                const { getFirestore, doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
+                const bookSnap = await getDoc(doc(getFirestore(), "ebooks", String(bookId)));
+                
+                if (bookSnap.exists()) {
+                    const newData = { id: bookSnap.id, ...bookSnap.data() };
+                    
+                    // Agar title, desc, price ya free status me change hua hai, toh chupchap memory me update maro
+                    if (JSON.stringify(oldData) !== JSON.stringify(newData)) {
+                        window.currentEbook = newData;
+                        renderDetail(); // Silent update on screen without refresh
+                        
+                        // Main cache me bhi silent push mar do agar mili toh
+                        let mainCache = JSON.parse(localStorage.getItem("cache_ebooks_data") || "[]");
+                        let mIndex = mainCache.findIndex(e => String(e.id) === String(bookId));
+                        if(mIndex > -1) {
+                            mainCache[mIndex] = newData;
+                            localStorage.setItem("cache_ebooks_data", JSON.stringify(mainCache));
+                        }
+                    }
+                    localStorage.setItem(fetchTimeKey, now.toString()); // Timer reset
+                }
+            } catch(e) { console.error("SWR update fail", e); }
+        }
+
+        // 🦴 LOADING SKELETON UI FOR DIRECT LINKS
+        function showDetailSkeletons() {
+            document.getElementById("action-footer").classList.add("hidden");
+            const priceBox = document.getElementById("det-price-box");
+            if (priceBox) priceBox.innerHTML = "";
+            const promoBox = document.getElementById("promo-container");
+            if (promoBox) promoBox.style.display = "none";
+            
+            document.getElementById("det-title").innerHTML = `<div class="skeleton" style="height: 28px; width: 70%; border-radius: 6px; margin: 0 auto;"></div>`;
+            document.getElementById("det-thumb").style.opacity = 0; // Hide image till load
+            document.getElementById("det-desc").innerHTML = `
+                <div class="desc-card" style="padding: 20px;">
+                    <div class="skeleton" style="height: 16px; width: 100%; border-radius: 4px; margin-bottom: 10px;"></div>
+                    <div class="skeleton" style="height: 16px; width: 90%; border-radius: 4px; margin-bottom: 10px;"></div>
+                    <div class="skeleton" style="height: 16px; width: 95%; border-radius: 4px; margin-bottom: 10px;"></div>
+                    <div class="skeleton" style="height: 16px; width: 60%; border-radius: 4px;"></div>
+                </div>
+            `;
         }
 
 // =========================================================================
