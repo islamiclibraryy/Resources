@@ -1816,61 +1816,34 @@ onAuthStateChanged(auth, (user) => {
 // 🔒 SECURE RENDER DETAIL FUNCTION (With 1-Second Delay & Smart Toasts)
 // =========================================================================
 function renderDetail() {
-    if (!window.currentEbook) return; // Crash prevention
-
-    // 🧹 1. SAFAI (Skeleton hatane ka process)
+    // 👇 YEH 4 LINES STARTING MEIN DAAL DE 👇
     const imgSkel = document.getElementById("img-temp-skel");
     if(imgSkel) imgSkel.remove();
-    
-    const imgEl = document.getElementById("det-thumb");
-    if(imgEl) {
-        imgEl.style.opacity = "1";
-        imgEl.style.display = "block";
-        imgEl.src = window.currentEbook.thumbnail;
-    }
-
+    document.getElementById("det-thumb").style.display = "block";
     const bNav = document.getElementById("bottom-nav");
-    if(bNav) bNav.style.display = ""; 
+    if(bNav) bNav.style.display = ""; // Bottom nav wapas show karne ke liye (agar hide kiya tha)
 
-    const actionFooter = document.getElementById("action-footer");
-    if(actionFooter) actionFooter.classList.remove("hidden");
+    document.getElementById("action-footer").classList.remove("hidden");
+    document.getElementById("det-thumb").src = window.currentEbook.thumbnail;
+    // ... BAAKI TERA PURANA renderDetail CODE ...
 
-    const titleEl = document.getElementById("det-title");
-    if(titleEl) titleEl.innerText = window.currentEbook.title;
-
-    // 2. Button UI Reset (Skeleton hatakar wapas button banana)
-    const actionBtn = document.getElementById("det-action-btn");
-    if(actionBtn) {
-        actionBtn.className = "btn"; 
-        actionBtn.disabled = false; 
-        actionBtn.style.background = ""; 
-        actionBtn.style.color = ""; 
-        actionBtn.style.boxShadow = "";
-        actionBtn.style.width = "auto";
-        actionBtn.style.height = "auto";
-    }
-
-    // 3. Normal Details Render
+    document.getElementById("det-title").innerText = window.currentEbook.title;
+    // 🔥 NAYA: PREMIUM DESCRIPTION CARD 🔥
     let bookDesc = window.currentEbook.description || "No description available for this book.";
-    const descEl = document.getElementById("det-desc");
-    if(descEl) {
-        descEl.innerHTML = `
-            <div class="desc-card">
-                <div class="desc-heading">
-                    <i class="fas fa-book-open"></i> ABOUT THE BOOK
-                </div>
-                <div class="desc-content">${bookDesc}</div>
+    document.getElementById("det-desc").innerHTML = `
+        <div class="desc-card">
+            <div class="desc-heading">
+                <i class="fas fa-book-open"></i> ABOUT THE BOOK
             </div>
-        `;
-    }
+            <div class="desc-content">${bookDesc}</div>
+        </div>
+    `;
 
-    if(document.getElementById("det-arabic-phrase") && !document.getElementById("det-arabic-phrase").innerText) {
+    if(!document.getElementById("det-arabic-phrase").innerText) {
         if (typeof ARABIC_PHRASES !== 'undefined' && ARABIC_PHRASES.length > 0) {
             document.getElementById("det-arabic-phrase").innerText = ARABIC_PHRASES[Math.floor(Math.random() * ARABIC_PHRASES.length)];
         }
     }
-
-    // ... BAAKI TERA NEECHE KA SCENARIO 1, 2, 3 WALA CODE WAISE HI RAHNE DE ...
 
     const isFree = String(window.currentEbook.is_free) === "true";
     const priceBox = document.getElementById("det-price-box");
