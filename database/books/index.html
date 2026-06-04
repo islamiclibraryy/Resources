@@ -1605,26 +1605,18 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
-        // ⚡ THE SMART URL ENGINE (Dynamic Routing & SWR)
+        // ⚡ THE SMART URL ENGINE (Dynamic Routing, Array Cache Saver & SWR)
         async function initBook() {
-            // 🔥 FIX 1: Super Robust URL Extractor (Query & Path dono ko handle karega)
             const urlParams = new URLSearchParams(window.location.search);
             let bookId = urlParams.get('id');
-            
             if (!bookId && window.location.pathname.includes('/id/')) {
                 bookId = window.location.pathname.split('/id/')[1].replace(/\//g, '');
             }
-
             const userId = localStorage.getItem("islamic_user_id");
 
-            if (!bookId) {
-                window.location.replace("/");
-                return;
-            }
+            if (!bookId) { window.location.replace("/"); return; }
 
             let foundBook = null;
-            
-            // Check 1: 15-Books Cache
             const mainCacheStr = localStorage.getItem("cache_ebooks_data");
             if (mainCacheStr) {
                 try {
@@ -1633,7 +1625,6 @@ onAuthStateChanged(auth, (user) => {
                 } catch(e) {}
             }
 
-            // Check 2: Mega Index
             if (!foundBook) {
                 const megaCacheStr = localStorage.getItem("cache_mega_search_index");
                 if (megaCacheStr) {
@@ -1645,25 +1636,36 @@ onAuthStateChanged(auth, (user) => {
             }
 
             if (foundBook) {
-                // A. Data Mil Gaya -> INSTANT RENDER (0 Token)
+                // INSTANT RENDER (0 Token)
                 window.currentEbook = foundBook;
                 proceedWithPaymentCheck(userId);
                 revalidateBookSWR(bookId, foundBook); 
-
             } else {
-                // B. New Tab / Incognito -> Firebase Fetch
+                // NO CACHE: Show Skeleton & Fetch
                 showDetailSkeletons(); 
                 try {
                     const { getFirestore, doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
-                    
-                    // 🔥 NAYA FIX: Use global 'db' if available, otherwise getFirestore()
                     const dbInstance = typeof db !== 'undefined' ? db : getFirestore(); 
-                    
                     const bookSnap = await getDoc(doc(dbInstance, "ebooks", String(bookId)));
                     
                     if (bookSnap.exists()) {
-                        window.currentEbook = { id: bookSnap.id, ...bookSnap.data() };
+                        const fetchedBook = { id: bookSnap.id, ...bookSnap.data() };
+                        window.currentEbook = fetchedBook;
                         proceedWithPaymentCheck(userId);
+                        
+                        // 🔥 MAGIC 1: ARRAY CACHE SAVER (Safely merge new book into old cache)
+                        let mainCache = [];
+                        if(mainCacheStr) { try { mainCache = JSON.parse(mainCacheStr); } catch(e){} }
+                        
+                        const exIndex = mainCache.findIndex(e => String(e.id) === String(bookId));
+                        if(exIndex > -1) { mainCache[exIndex] = fetchedBook; } // Update if exists
+                        else { mainCache.push(fetchedBook); } // Add if new
+                        
+                        localStorage.setItem("cache_ebooks_data", JSON.stringify(mainCache));
+                        
+                        // 🔥 Set Timer so it doesn't refetch on every refresh
+                        localStorage.setItem(`cache_time_book_${bookId}`, Date.now().toString());
+
                     } else {
                         if(window.showToast) window.showToast("Book not found!", "error");
                         setTimeout(() => window.location.replace("/"), 1500);
@@ -1706,59 +1708,92 @@ onAuthStateChanged(auth, (user) => {
             }
         }
 
-        // 🔥 SILENT BACKGROUND REVALIDATOR (30 Min SWR)
+        // 🔥 SILENT BACKGROUND REVALIDATOR & ARRAY UPDATER
         async function revalidateBookSWR(bookId, oldData) {
             const CACHE_TIME_LIMIT = 30 * 60 * 1000; // 30 minutes
             const fetchTimeKey = `cache_time_book_${bookId}`;
             const lastFetched = localStorage.getItem(fetchTimeKey);
             const now = Date.now();
 
-            if (lastFetched && (now - parseInt(lastFetched)) < CACHE_TIME_LIMIT) {
-                return; // 30 min nahi hue, shanti rakho!
-            }
+            // Agar 30 min se kam hue hain, toh shanti rakho (Save Tokens)
+            if (lastFetched && (now - parseInt(lastFetched)) < CACHE_TIME_LIMIT) return; 
 
-            // Time ho gaya, chupchap background me update check karo
             try {
                 const { getFirestore, doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
-                const bookSnap = await getDoc(doc(getFirestore(), "ebooks", String(bookId)));
+                const dbInstance = typeof db !== 'undefined' ? db : getFirestore();
+                const bookSnap = await getDoc(doc(dbInstance, "ebooks", String(bookId)));
                 
                 if (bookSnap.exists()) {
                     const newData = { id: bookSnap.id, ...bookSnap.data() };
                     
-                    // Agar title, desc, price ya free status me change hua hai, toh chupchap memory me update maro
+                    // 🔥 MAGIC 2: DIFFING & SILENT UI UPDATE
                     if (JSON.stringify(oldData) !== JSON.stringify(newData)) {
                         window.currentEbook = newData;
-                        renderDetail(); // Silent update on screen without refresh
+                        renderDetail(); 
                         
-                        // Main cache me bhi silent push mar do agar mili toh
-                        let mainCache = JSON.parse(localStorage.getItem("cache_ebooks_data") || "[]");
-                        let mIndex = mainCache.findIndex(e => String(e.id) === String(bookId));
-                        if(mIndex > -1) {
-                            mainCache[mIndex] = newData;
-                            localStorage.setItem("cache_ebooks_data", JSON.stringify(mainCache));
-                        }
+                        // Array merge safely
+                        let mainCache = [];
+                        const cacheStr = localStorage.getItem("cache_ebooks_data");
+                        if(cacheStr) { try { mainCache = JSON.parse(cacheStr); } catch(e){} }
+                        
+                        const exIndex = mainCache.findIndex(e => String(e.id) === String(bookId));
+                        if(exIndex > -1) mainCache[exIndex] = newData;
+                        else mainCache.push(newData);
+                        
+                        localStorage.setItem("cache_ebooks_data", JSON.stringify(mainCache));
                     }
-                    localStorage.setItem(fetchTimeKey, now.toString()); // Timer reset
+                    
+                    // Har haal me timer refresh karo taaki aagle 30 min fetch na ho
+                    localStorage.setItem(fetchTimeKey, now.toString()); 
                 }
             } catch(e) { console.error("SWR update fail", e); }
         }
 
-        // 🦴 LOADING SKELETON UI FOR DIRECT LINKS
+        // 🦴 PREMIUM LOADING SKELETON UI FOR DIRECT LINKS
         function showDetailSkeletons() {
-            document.getElementById("action-footer").classList.add("hidden");
+            // 1. Bottom Nav hide karo, Action Footer show karo
+            const bNav = document.getElementById("bottom-nav");
+            if (bNav) bNav.style.display = "none";
+            
+            const actionFooter = document.getElementById("action-footer");
+            actionFooter.classList.remove("hidden");
+            
+            // Action Footer Skeleton (Price & Button)
+            actionFooter.innerHTML = `
+                <div class="skeleton" style="width: 80px; height: 24px; border-radius: 12px;"></div>
+                <div class="skeleton" style="width: 140px; height: 45px; border-radius: 99px;"></div>
+            `;
+
             const priceBox = document.getElementById("det-price-box");
             if (priceBox) priceBox.innerHTML = "";
             const promoBox = document.getElementById("promo-container");
             if (promoBox) promoBox.style.display = "none";
             
-            document.getElementById("det-title").innerHTML = `<div class="skeleton" style="height: 28px; width: 70%; border-radius: 6px; margin: 0 auto;"></div>`;
-            document.getElementById("det-thumb").style.opacity = 0; // Hide image till load
+            // 2. Title Skeleton (Thoda lamba aur chauda)
+            document.getElementById("det-title").innerHTML = `
+                <div class="skeleton" style="height: 34px; width: 90%; border-radius: 8px; margin: 0 auto 8px auto;"></div>
+                <div class="skeleton" style="height: 34px; width: 60%; border-radius: 8px; margin: 0 auto;"></div>
+            `;
+            
+            // 3. Image Skeleton (Broken image icon ko chhupao)
+            const imgEl = document.getElementById("det-thumb");
+            imgEl.style.display = "none"; 
+            
+            // Purana skeleton agar hai toh hatao, warna double ho jayega
+            const oldSkel = document.getElementById("img-temp-skel");
+            if(oldSkel) oldSkel.remove();
+            
+            imgEl.insertAdjacentHTML('afterend', `<div id="img-temp-skel" class="skeleton" style="width: 100%; aspect-ratio: 1/1.4; border-radius: 12px; box-shadow: var(--shadow);"></div>`);
+
+            // 4. Description Skeleton (Lamba aur bhara hua)
             document.getElementById("det-desc").innerHTML = `
-                <div class="desc-card" style="padding: 20px;">
-                    <div class="skeleton" style="height: 16px; width: 100%; border-radius: 4px; margin-bottom: 10px;"></div>
-                    <div class="skeleton" style="height: 16px; width: 90%; border-radius: 4px; margin-bottom: 10px;"></div>
-                    <div class="skeleton" style="height: 16px; width: 95%; border-radius: 4px; margin-bottom: 10px;"></div>
-                    <div class="skeleton" style="height: 16px; width: 60%; border-radius: 4px;"></div>
+                <div class="desc-card" style="padding: 24px 20px;">
+                    <div class="skeleton" style="height: 18px; width: 100%; border-radius: 6px; margin-bottom: 14px;"></div>
+                    <div class="skeleton" style="height: 18px; width: 95%; border-radius: 6px; margin-bottom: 14px;"></div>
+                    <div class="skeleton" style="height: 18px; width: 98%; border-radius: 6px; margin-bottom: 14px;"></div>
+                    <div class="skeleton" style="height: 18px; width: 90%; border-radius: 6px; margin-bottom: 14px;"></div>
+                    <div class="skeleton" style="height: 18px; width: 75%; border-radius: 6px; margin-bottom: 14px;"></div>
+                    <div class="skeleton" style="height: 18px; width: 50%; border-radius: 6px;"></div>
                 </div>
             `;
         }
