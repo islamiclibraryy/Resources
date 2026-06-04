@@ -1746,7 +1746,7 @@ onAuthStateChanged(auth, (user) => {
             } catch(e) { console.error("SWR update fail", e); }
         }
 
-        // 🦴 BULLETPROOF PREMIUM SKELETON UI (Responsive & Merged)
+        // 🦴 BULLETPROOF PREMIUM SKELETON UI (Realistic Title & Fixed Gaps)
         function showDetailSkeletons() {
             const isDesktop = window.innerWidth > 768;
 
@@ -1775,14 +1775,23 @@ onAuthStateChanged(auth, (user) => {
             const promoBox = document.getElementById("promo-container");
             if (promoBox) promoBox.style.display = "none";
             
-            // 2. Title Skeleton (🔥 MOBILE ME +30%, DESKTOP ME +75%, CHAUDAI 95% 🔥)
+            // 2. Title Skeleton (🔥 REALISTIC 2-LINE LOOK, ALIGNED & 2.5x GAP 🔥)
             const titleEl = document.getElementById("det-title");
             if(titleEl) {
-                const titleHeight = isDesktop ? "110px" : "84px";
-                titleEl.innerHTML = `<div class="skeleton" style="height: ${titleHeight}; width: 95%; border-radius: 12px; margin: 0 auto 16px auto;"></div>`;
+                // Height adjust: Desktop thoda bada (42px), Mobile sirf 30% bada (28px)
+                const tHeight = isDesktop ? "42px" : "28px"; 
+                
+                // 🔥 YEH RAHA TERA 2.5x GAP (Title aur Description ke beech)
+                const tGap = isDesktop ? "100px" : "60px"; 
+
+                // Do lines banayi hain jo center-aligned hain aur description ki width match karengi
+                titleEl.innerHTML = `
+                    <div class="skeleton" style="height: ${tHeight}; width: 90%; border-radius: 8px; margin: 0 auto 12px auto;"></div>
+                    <div class="skeleton" style="height: ${tHeight}; width: 60%; border-radius: 8px; margin: 0 auto ${tGap} auto;"></div>
+                `;
             }
             
-            // 3. Image Skeleton 
+            // 3. Image Skeleton (🔥 IMAGE AUR TITLE KA GAP WAPAS NORMAL KAR DIYA 🔥)
             const imgEl = document.getElementById("det-thumb");
             if(imgEl) {
                 imgEl.style.setProperty('display', 'none', 'important'); 
@@ -1792,8 +1801,8 @@ onAuthStateChanged(auth, (user) => {
                 
                 const skelWidth = isDesktop ? "500px" : "100%";
                 const skelMaxWidth = isDesktop ? "none" : "250px";
-                // 🔥 GAP KO 2.5x BADHA DIYA HAI (Mobile 60px, Desktop 100px) 🔥
-                const skelMargin = isDesktop ? "0 auto 100px auto" : "0 auto 60px auto";
+                // Image aur title ke beech ka normal gap (Desktop 30px, Mobile 20px)
+                const skelMargin = isDesktop ? "0 auto 30px auto" : "0 auto 20px auto";
                 const skelRadius = isDesktop ? "24px" : "12px";
                 const skelShadow = isDesktop ? "0 25px 60px rgba(0,0,0,0.6)" : "0 10px 30px rgba(0,0,0,0.4)";
 
