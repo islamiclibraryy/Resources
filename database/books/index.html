@@ -1087,7 +1087,7 @@ body.instant-load header {
                 <button class="share-btn" onclick="shareBook()" title="Share this Book"><i class="fas fa-share-alt"></i></button>
             </div>
             
-            <img src="" id="det-thumb" class="detail-thumb">
+            <img src="" id="det-thumb" class="detail-thumb" style="display: none;">
             <h2 id="det-title" style="font-size: 1.6rem; margin-bottom: 12px;"></h2>
             <div id="det-price-box" style="margin-bottom: 20px;"></div>
             
@@ -1764,7 +1764,7 @@ onAuthStateChanged(auth, (user) => {
             if(actionBtn) {
                 actionBtn.innerHTML = ``; 
                 actionBtn.className = "skeleton"; 
-                actionBtn.style.background = "var(--border2)";
+                actionBtn.style.background = ""; // 🔥 FIX: Inline background hataya taaki animation chal sake
                 actionBtn.style.border = "none";
                 actionBtn.style.boxShadow = "none";
                 actionBtn.style.width = "130px";
@@ -1793,7 +1793,8 @@ onAuthStateChanged(auth, (user) => {
                 const skelRadius = isDesktop ? "24px" : "12px";
                 const skelShadow = isDesktop ? "0 25px 60px rgba(0,0,0,0.6)" : "0 10px 30px rgba(0,0,0,0.4)";
 
-                imgEl.insertAdjacentHTML('afterend', `<div id="img-temp-skel" class="skeleton detail-thumb" style="width: ${skelWidth}; max-width: ${skelMaxWidth}; aspect-ratio: 1/1; border-radius: ${skelRadius}; margin: ${skelMargin}; box-shadow: ${skelShadow}; display: block !important;"></div>`);
+                // 🔥 FIX: 'detail-thumb' class hata di taaki skeleton animation block na ho
+                imgEl.insertAdjacentHTML('afterend', `<div id="img-temp-skel" class="skeleton" style="width: ${skelWidth}; max-width: ${skelMaxWidth}; aspect-ratio: 1/1; border-radius: ${skelRadius}; margin: ${skelMargin}; box-shadow: ${skelShadow}; display: block !important;"></div>`);
             }
             
             // 3. Title Skeleton (100% Width, Strictly Centered, Gap Adjusted)
