@@ -1751,24 +1751,27 @@ onAuthStateChanged(auth, (user) => {
             } catch(e) { console.error("SWR update fail", e); }
         }
 
-        // 🦴 BULLETPROOF PREMIUM SKELETON UI
+        // 🦴 BULLETPROOF PREMIUM SKELETON UI (Responsive & Merged)
         function showDetailSkeletons() {
-            // 1. Safe Footer Skeleton (Bina HTML tode)
+            // 🔥 Check if Desktop (Width > 768px)
+            const isDesktop = window.innerWidth > 768;
+
+            // 1. Safe Footer Skeleton
             const actionFooter = document.getElementById("action-footer");
             if(actionFooter) actionFooter.classList.remove("hidden");
             
+            // 🔥 Badge/Price Skeleton HATA DIYA (User request)
             const priceBox = document.getElementById("det-price-box");
-            if (priceBox) priceBox.innerHTML = `<div class="skeleton" style="width: 80px; height: 24px; border-radius: 6px;"></div>`;
+            if (priceBox) priceBox.innerHTML = ``; 
             
             const footerPrice = document.getElementById("det-footer-price");
             if(footerPrice) footerPrice.innerHTML = `<div class="skeleton" style="width: 80px; height: 24px; border-radius: 6px;"></div>`;
             
-            // 🔥 BUTTON FIX: 'btn' class poori tarah hata di, sirf skeleton rakha
             const actionBtn = document.getElementById("det-action-btn");
             if(actionBtn) {
                 actionBtn.innerHTML = ``; 
-                actionBtn.className = "skeleton"; // Sirf skeleton class, no button color
-                actionBtn.style.background = "var(--border2)"; // Grey color
+                actionBtn.className = "skeleton"; 
+                actionBtn.style.background = "var(--border2)";
                 actionBtn.style.border = "none";
                 actionBtn.style.boxShadow = "none";
                 actionBtn.style.width = "130px";
@@ -1779,40 +1782,56 @@ onAuthStateChanged(auth, (user) => {
             const promoBox = document.getElementById("promo-container");
             if (promoBox) promoBox.style.display = "none";
             
-            // 2. Title Skeleton (Ekdum Chauda)
+            // 2. Title Skeleton (🔥 EK SINGLE MERGED LINE 🔥)
             const titleEl = document.getElementById("det-title");
             if(titleEl) {
-                titleEl.innerHTML = `
-                    <div class="skeleton" style="height: 32px; width: 100%; border-radius: 6px; margin: 0 auto 10px auto;"></div>
-                    <div class="skeleton" style="height: 32px; width: 85%; border-radius: 6px; margin: 0 auto;"></div>
-                `;
+                titleEl.innerHTML = `<div class="skeleton" style="height: 40px; width: 100%; border-radius: 8px; margin: 0 auto 10px auto;"></div>`;
             }
             
-            // 3. Image Skeleton (🔥 SIZE FIX: Exact 1/1 Shape & 250px Limit 🔥)
+            // 3. Image Skeleton (🔥 DESKTOP & MOBILE RESPONSIVE SIZE + BROKEN IMAGE FIX 🔥)
             const imgEl = document.getElementById("det-thumb");
             if(imgEl) {
-                imgEl.style.display = "none"; 
+                // !important lagaya taaki teri CSS isko override na kar paye aur broken image chhip jaye
+                imgEl.style.setProperty('display', 'none', 'important'); 
+                
                 const oldSkel = document.getElementById("img-temp-skel");
                 if(oldSkel) oldSkel.remove();
                 
-                // Teri exact CSS property inline daal di hai
-                imgEl.insertAdjacentHTML('afterend', `<div id="img-temp-skel" class="skeleton detail-thumb" style="width: 100%; max-width: 250px; aspect-ratio: 1/1; border-radius: 24px; margin: 0 auto 24px auto; box-shadow: 0 10px 30px rgba(0,0,0,0.4);"></div>`);
+                // Desktop aur Mobile ke liye alag alag size
+                const skelWidth = isDesktop ? "500px" : "100%";
+                const skelMaxWidth = isDesktop ? "none" : "250px";
+                const skelMargin = isDesktop ? "0 auto 40px auto" : "0 auto 24px auto";
+                const skelRadius = isDesktop ? "24px" : "12px";
+                const skelShadow = isDesktop ? "0 25px 60px rgba(0,0,0,0.6)" : "0 10px 30px rgba(0,0,0,0.4)";
+
+                imgEl.insertAdjacentHTML('afterend', `<div id="img-temp-skel" class="skeleton detail-thumb" style="width: ${skelWidth}; max-width: ${skelMaxWidth}; aspect-ratio: 1/1; border-radius: ${skelRadius}; margin: ${skelMargin}; box-shadow: ${skelShadow}; display: block !important;"></div>`);
             }
 
-            // 4. Description Skeleton (Lamba aur bhara hua)
+            // 4. Description Skeleton (🔥 DESKTOP PAR DOUBLE LENGTH 🔥)
             const descEl = document.getElementById("det-desc");
             if(descEl) {
-                descEl.innerHTML = `
-                    <div class="desc-card" style="padding: 24px 20px;">
-                        <div class="skeleton" style="height: 16px; width: 100%; border-radius: 4px; margin-bottom: 14px;"></div>
-                        <div class="skeleton" style="height: 16px; width: 100%; border-radius: 4px; margin-bottom: 14px;"></div>
-                        <div class="skeleton" style="height: 16px; width: 95%; border-radius: 4px; margin-bottom: 14px;"></div>
-                        <div class="skeleton" style="height: 16px; width: 90%; border-radius: 4px; margin-bottom: 14px;"></div>
-                        <div class="skeleton" style="height: 16px; width: 98%; border-radius: 4px; margin-bottom: 14px;"></div>
-                        <div class="skeleton" style="height: 16px; width: 85%; border-radius: 4px; margin-bottom: 14px;"></div>
-                        <div class="skeleton" style="height: 16px; width: 70%; border-radius: 4px;"></div>
-                    </div>
+                let descLines = `
+                    <div class="skeleton" style="height: 16px; width: 100%; border-radius: 4px; margin-bottom: 14px;"></div>
+                    <div class="skeleton" style="height: 16px; width: 95%; border-radius: 4px; margin-bottom: 14px;"></div>
+                    <div class="skeleton" style="height: 16px; width: 98%; border-radius: 4px; margin-bottom: 14px;"></div>
+                    <div class="skeleton" style="height: 16px; width: 90%; border-radius: 4px; margin-bottom: 14px;"></div>
+                    <div class="skeleton" style="height: 16px; width: 85%; border-radius: 4px; margin-bottom: 14px;"></div>
+                    <div class="skeleton" style="height: 16px; width: 70%; border-radius: 4px;"></div>
                 `;
+                
+                // Agar desktop hai, toh lines double kar do
+                if (isDesktop) {
+                    descLines += `
+                        <div class="skeleton" style="height: 16px; width: 100%; border-radius: 4px; margin-top: 14px; margin-bottom: 14px;"></div>
+                        <div class="skeleton" style="height: 16px; width: 95%; border-radius: 4px; margin-bottom: 14px;"></div>
+                        <div class="skeleton" style="height: 16px; width: 92%; border-radius: 4px; margin-bottom: 14px;"></div>
+                        <div class="skeleton" style="height: 16px; width: 88%; border-radius: 4px; margin-bottom: 14px;"></div>
+                        <div class="skeleton" style="height: 16px; width: 80%; border-radius: 4px; margin-bottom: 14px;"></div>
+                        <div class="skeleton" style="height: 16px; width: 65%; border-radius: 4px;"></div>
+                    `;
+                }
+
+                descEl.innerHTML = `<div class="desc-card" style="padding: 24px 20px;">${descLines}</div>`;
             }
         }
 
@@ -1826,12 +1845,12 @@ function renderDetail() {
     const imgSkel = document.getElementById("img-temp-skel");
     if(imgSkel) imgSkel.remove();
     
-    // 🔥 IMAGE FIX: Wapas Block karo taaki image theek se dikhe
-        // 🔥 JHATKA FIX: Image ko load hone se pehle shape hold karne bolo
+    // 🔥 IMAGE FIX (Overriding CSS !important rule)
     const imgEl = document.getElementById("det-thumb");
     if(imgEl) {
-        imgEl.style.aspectRatio = "1/1"; // Jagah hold karke rakhega
-        imgEl.style.display = "block";
+        imgEl.style.aspectRatio = "1/1"; 
+        // Wapas dikhane ke liye !important zaroori hai
+        imgEl.style.setProperty('display', 'block', 'important'); 
         imgEl.style.opacity = "1";
         imgEl.src = window.currentEbook.thumbnail;
     }
