@@ -1641,7 +1641,7 @@ onAuthStateChanged(auth, (user) => {
                 proceedWithPaymentCheck(userId);
                 revalidateBookSWR(bookId, foundBook); 
             } else {
-                // NO CACHE: Show Skeleton & Fetch
+                // B. New Link -> Show Skeletons & Fetch
                 showDetailSkeletons(); 
                 try {
                     const { getFirestore, doc, getDoc } = await import("https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js");
@@ -1650,21 +1650,22 @@ onAuthStateChanged(auth, (user) => {
                     
                     if (bookSnap.exists()) {
                         const fetchedBook = { id: bookSnap.id, ...bookSnap.data() };
-                        window.currentEbook = fetchedBook;
-                        proceedWithPaymentCheck(userId);
                         
-                        // 🔥 MAGIC 1: ARRAY CACHE SAVER (Safely merge new book into old cache)
+                        // 🔥 SAFE SHIFT: Pehle Cache Save karo, phir render karo!
                         let mainCache = [];
-                        if(mainCacheStr) { try { mainCache = JSON.parse(mainCacheStr); } catch(e){} }
+                        const freshCacheStr = localStorage.getItem("cache_ebooks_data"); 
+                        if(freshCacheStr) { try { mainCache = JSON.parse(freshCacheStr); } catch(e){} }
                         
                         const exIndex = mainCache.findIndex(e => String(e.id) === String(bookId));
-                        if(exIndex > -1) { mainCache[exIndex] = fetchedBook; } // Update if exists
-                        else { mainCache.push(fetchedBook); } // Add if new
+                        if(exIndex > -1) { mainCache[exIndex] = fetchedBook; } 
+                        else { mainCache.push(fetchedBook); } 
                         
                         localStorage.setItem("cache_ebooks_data", JSON.stringify(mainCache));
-                        
-                        // 🔥 Set Timer so it doesn't refetch on every refresh
                         localStorage.setItem(`cache_time_book_${bookId}`, Date.now().toString());
+
+                        // Ab Render karo
+                        window.currentEbook = fetchedBook;
+                        proceedWithPaymentCheck(userId);
 
                     } else {
                         if(window.showToast) window.showToast("Book not found!", "error");
@@ -1675,6 +1676,7 @@ onAuthStateChanged(auth, (user) => {
                     if(window.showToast) window.showToast("Network Error", "error");
                 }
             }
+
         }
 
         // 🕵️ PAYMENT CHECK SEPARATOR (Clean Code - Zero Jitter Fix)
@@ -1749,87 +1751,126 @@ onAuthStateChanged(auth, (user) => {
             } catch(e) { console.error("SWR update fail", e); }
         }
 
-        // 🦴 PREMIUM LOADING SKELETON UI FOR DIRECT LINKS
+        // 🦴 BULLETPROOF PREMIUM SKELETON UI
         function showDetailSkeletons() {
-            // 1. Bottom Nav hide karo, Action Footer show karo
-            const bNav = document.getElementById("bottom-nav");
-            if (bNav) bNav.style.display = "none";
-            
+            // 1. Safe Footer Skeleton (Bina HTML tode)
             const actionFooter = document.getElementById("action-footer");
-            actionFooter.classList.remove("hidden");
+            if(actionFooter) actionFooter.classList.remove("hidden");
             
-            // Action Footer Skeleton (Price & Button)
-            actionFooter.innerHTML = `
-                <div class="skeleton" style="width: 80px; height: 24px; border-radius: 12px;"></div>
-                <div class="skeleton" style="width: 140px; height: 45px; border-radius: 99px;"></div>
-            `;
-
             const priceBox = document.getElementById("det-price-box");
-            if (priceBox) priceBox.innerHTML = "";
+            if (priceBox) priceBox.innerHTML = `<div class="skeleton" style="width: 80px; height: 24px; border-radius: 6px;"></div>`;
+            
+            const footerPrice = document.getElementById("det-footer-price");
+            if(footerPrice) footerPrice.innerHTML = `<div class="skeleton" style="width: 80px; height: 24px; border-radius: 6px;"></div>`;
+            
+            const actionBtn = document.getElementById("det-action-btn");
+            if(actionBtn) {
+                actionBtn.innerHTML = ``; // Button ka text clear karo
+                actionBtn.className = "btn skeleton"; // Button ko hi skeleton bana do
+                actionBtn.style.color = "transparent";
+                actionBtn.style.width = "130px";
+                actionBtn.style.height = "40px";
+            }
+
             const promoBox = document.getElementById("promo-container");
             if (promoBox) promoBox.style.display = "none";
             
-            // 2. Title Skeleton (Thoda lamba aur chauda)
-            document.getElementById("det-title").innerHTML = `
-                <div class="skeleton" style="height: 34px; width: 90%; border-radius: 8px; margin: 0 auto 8px auto;"></div>
-                <div class="skeleton" style="height: 34px; width: 60%; border-radius: 8px; margin: 0 auto;"></div>
-            `;
+            // 2. Title Skeleton (Ekdum Chauda)
+            const titleEl = document.getElementById("det-title");
+            if(titleEl) {
+                titleEl.innerHTML = `
+                    <div class="skeleton" style="height: 32px; width: 100%; border-radius: 6px; margin: 0 auto 10px auto;"></div>
+                    <div class="skeleton" style="height: 32px; width: 85%; border-radius: 6px; margin: 0 auto;"></div>
+                `;
+            }
             
-            // 3. Image Skeleton (Broken image icon ko chhupao)
+            // 3. Image Skeleton (Perfect Book Shape 2/3 ratio)
             const imgEl = document.getElementById("det-thumb");
-            imgEl.style.display = "none"; 
-            
-            // Purana skeleton agar hai toh hatao, warna double ho jayega
-            const oldSkel = document.getElementById("img-temp-skel");
-            if(oldSkel) oldSkel.remove();
-            
-            imgEl.insertAdjacentHTML('afterend', `<div id="img-temp-skel" class="skeleton" style="width: 100%; aspect-ratio: 1/1.4; border-radius: 12px; box-shadow: var(--shadow);"></div>`);
+            if(imgEl) {
+                imgEl.style.opacity = "0"; // Asli image chhupao
+                const oldSkel = document.getElementById("img-temp-skel");
+                if(oldSkel) oldSkel.remove();
+                
+                // Aspect Ratio 2/3 (standard book size)
+                imgEl.insertAdjacentHTML('afterend', `<div id="img-temp-skel" class="skeleton" style="width: 100%; aspect-ratio: 2/3; border-radius: 10px; margin: 0 auto 20px auto; box-shadow: var(--shadow);"></div>`);
+            }
 
             // 4. Description Skeleton (Lamba aur bhara hua)
-            document.getElementById("det-desc").innerHTML = `
-                <div class="desc-card" style="padding: 24px 20px;">
-                    <div class="skeleton" style="height: 18px; width: 100%; border-radius: 6px; margin-bottom: 14px;"></div>
-                    <div class="skeleton" style="height: 18px; width: 95%; border-radius: 6px; margin-bottom: 14px;"></div>
-                    <div class="skeleton" style="height: 18px; width: 98%; border-radius: 6px; margin-bottom: 14px;"></div>
-                    <div class="skeleton" style="height: 18px; width: 90%; border-radius: 6px; margin-bottom: 14px;"></div>
-                    <div class="skeleton" style="height: 18px; width: 75%; border-radius: 6px; margin-bottom: 14px;"></div>
-                    <div class="skeleton" style="height: 18px; width: 50%; border-radius: 6px;"></div>
-                </div>
-            `;
+            const descEl = document.getElementById("det-desc");
+            if(descEl) {
+                descEl.innerHTML = `
+                    <div class="desc-card" style="padding: 24px 20px;">
+                        <div class="skeleton" style="height: 16px; width: 100%; border-radius: 4px; margin-bottom: 14px;"></div>
+                        <div class="skeleton" style="height: 16px; width: 100%; border-radius: 4px; margin-bottom: 14px;"></div>
+                        <div class="skeleton" style="height: 16px; width: 95%; border-radius: 4px; margin-bottom: 14px;"></div>
+                        <div class="skeleton" style="height: 16px; width: 90%; border-radius: 4px; margin-bottom: 14px;"></div>
+                        <div class="skeleton" style="height: 16px; width: 98%; border-radius: 4px; margin-bottom: 14px;"></div>
+                        <div class="skeleton" style="height: 16px; width: 85%; border-radius: 4px; margin-bottom: 14px;"></div>
+                        <div class="skeleton" style="height: 16px; width: 70%; border-radius: 4px;"></div>
+                    </div>
+                `;
+            }
         }
 
 // =========================================================================
 // 🔒 SECURE RENDER DETAIL FUNCTION (With 1-Second Delay & Smart Toasts)
 // =========================================================================
 function renderDetail() {
-    // 👇 YEH 4 LINES STARTING MEIN DAAL DE 👇
+    if (!window.currentEbook) return; // Crash prevention
+
+    // 🧹 1. SAFAI (Skeleton hatane ka process)
     const imgSkel = document.getElementById("img-temp-skel");
     if(imgSkel) imgSkel.remove();
-    document.getElementById("det-thumb").style.display = "block";
+    
+    const imgEl = document.getElementById("det-thumb");
+    if(imgEl) {
+        imgEl.style.opacity = "1";
+        imgEl.style.display = "block";
+        imgEl.src = window.currentEbook.thumbnail;
+    }
+
     const bNav = document.getElementById("bottom-nav");
-    if(bNav) bNav.style.display = ""; // Bottom nav wapas show karne ke liye (agar hide kiya tha)
+    if(bNav) bNav.style.display = ""; 
 
-    document.getElementById("action-footer").classList.remove("hidden");
-    document.getElementById("det-thumb").src = window.currentEbook.thumbnail;
-    // ... BAAKI TERA PURANA renderDetail CODE ...
+    const actionFooter = document.getElementById("action-footer");
+    if(actionFooter) actionFooter.classList.remove("hidden");
 
-    document.getElementById("det-title").innerText = window.currentEbook.title;
-    // 🔥 NAYA: PREMIUM DESCRIPTION CARD 🔥
+    const titleEl = document.getElementById("det-title");
+    if(titleEl) titleEl.innerText = window.currentEbook.title;
+
+    // 2. Button UI Reset (Skeleton hatakar wapas button banana)
+    const actionBtn = document.getElementById("det-action-btn");
+    if(actionBtn) {
+        actionBtn.className = "btn"; 
+        actionBtn.disabled = false; 
+        actionBtn.style.background = ""; 
+        actionBtn.style.color = ""; 
+        actionBtn.style.boxShadow = "";
+        actionBtn.style.width = "auto";
+        actionBtn.style.height = "auto";
+    }
+
+    // 3. Normal Details Render
     let bookDesc = window.currentEbook.description || "No description available for this book.";
-    document.getElementById("det-desc").innerHTML = `
-        <div class="desc-card">
-            <div class="desc-heading">
-                <i class="fas fa-book-open"></i> ABOUT THE BOOK
+    const descEl = document.getElementById("det-desc");
+    if(descEl) {
+        descEl.innerHTML = `
+            <div class="desc-card">
+                <div class="desc-heading">
+                    <i class="fas fa-book-open"></i> ABOUT THE BOOK
+                </div>
+                <div class="desc-content">${bookDesc}</div>
             </div>
-            <div class="desc-content">${bookDesc}</div>
-        </div>
-    `;
+        `;
+    }
 
-    if(!document.getElementById("det-arabic-phrase").innerText) {
+    if(document.getElementById("det-arabic-phrase") && !document.getElementById("det-arabic-phrase").innerText) {
         if (typeof ARABIC_PHRASES !== 'undefined' && ARABIC_PHRASES.length > 0) {
             document.getElementById("det-arabic-phrase").innerText = ARABIC_PHRASES[Math.floor(Math.random() * ARABIC_PHRASES.length)];
         }
     }
+
+    // ... BAAKI TERA NEECHE KA SCENARIO 1, 2, 3 WALA CODE WAISE HI RAHNE DE ...
 
     const isFree = String(window.currentEbook.is_free) === "true";
     const priceBox = document.getElementById("det-price-box");
