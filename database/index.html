@@ -15,16 +15,16 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/icons/hikmahlogo.png">
 
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://mysite.pages.dev/">
+    <meta property="og:url" content="https://islamiclibrary.pages.dev/">
     <meta property="og:title" content="Islamic Library by Shekh | Free & Premium Islamic eBooks">
     <meta property="og:description" content="Explore, read, and download top-quality free and premium Islamic eBooks, Quran PDFs, Hadith, and Seerah collections.">
-    <meta property="og:image" content="https://mysite.pages.dev/icons/hikmahlogo.png">
+    <meta property="og:image" content="https://islamiclibrary.pages.dev/icons/hikmahlogo.png">
 
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:url" content="https://mysite.pages.dev/">
+    <meta name="twitter:url" content="https://islamiclibrary.pages.dev/">
     <meta name="twitter:title" content="Islamic Library by Shekh | Free & Premium Islamic eBooks">
     <meta name="twitter:description" content="Explore, read, and download top-quality free and premium Islamic eBooks, Quran PDFs, Hadith, and Seerah collections.">
-    <meta name="twitter:image" content="https://mysite.pages.dev/icons/hikmahlogo.png">
+    <meta name="twitter:image" content="https://islamiclibrary.pages.dev/icons/hikmahlogo.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
@@ -1862,31 +1862,11 @@ function renderGrid(reset = false) {
             renderGrid(false);
         }
 
-// ✅ FIXED: OPEN DETAIL PAGE (Supports 15 Books + Load More Mega Index Books)
+// ✅ UPDATED: OPEN DETAIL PAGE (URL Parameter Routing)
 window.openDetail = function(id) {
-    // 1. Pehle normal 15 books wale dabbe me dhoondho
-    let selectedBook = ebooksData.find(e => String(e.id) === String(id));
-    
-    // 2. Agar wahan nahi mili (matlab Load More ya Search wali book hai), toh Mega Index me dhoondho
-    if (!selectedBook) {
-        const megaIndexStr = localStorage.getItem("cache_mega_search_index");
-        if (megaIndexStr) {
-            try {
-                const megaIndex = JSON.parse(megaIndexStr);
-                selectedBook = megaIndex.find(e => String(e.id) === String(id));
-            } catch (e) {
-                console.error("Mega Index search failed", e);
-            }
-        }
-    }
-
-    // 3. Agar book kahin bhi mil gayi, toh session storage me daalo aur page khol do!
-    if (selectedBook) {
-        sessionStorage.setItem('selected_book_data', JSON.stringify(selectedBook));
-        window.location.href = 'books/index.html'; // Dhyan rakhna path yahi tha na tera?
-    } else {
-        console.error("Book not found in any cache!");
-    }
+    if(!id) return;
+    // Pura session storage logic hata diya. Ab app seedha URL generate karegi
+    window.location.href = `books/index.html?id=${id}`; 
 }
 
         window.clearSearch = function() {
